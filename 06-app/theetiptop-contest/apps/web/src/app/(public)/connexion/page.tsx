@@ -5,7 +5,6 @@ import {
   AuthShell,
   LegalNote,
   OAuthButtons,
-  Separator,
 } from '../../../components/auth/auth-shell';
 import { Button } from '../../../components/ui/button';
 import { Field } from '../../../components/ui/field';
@@ -50,10 +49,7 @@ export default function ConnexionPage() {
         </div>
       }
     >
-      <div className="space-y-6">
-        <OAuthButtons label="Continuer" />
-        <Separator label="ou" />
-
+      <div className="space-y-7">
         <form className="space-y-4">
           <Field label="Adresse de courriel" htmlFor="email" required>
             <Input id="email" name="email" type="email" autoComplete="email" required />
@@ -83,6 +79,8 @@ export default function ConnexionPage() {
             Se connecter
           </Button>
         </form>
+
+        <OAuthButtons />
 
         <LegalNote />
       </div>

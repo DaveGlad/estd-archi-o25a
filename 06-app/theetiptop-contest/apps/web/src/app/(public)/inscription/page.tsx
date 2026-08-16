@@ -4,7 +4,6 @@ import {
   AuthShell,
   LegalNote,
   OAuthButtons,
-  Separator,
 } from '../../../components/auth/auth-shell';
 import { Alert } from '../../../components/ui/alert';
 import { Button } from '../../../components/ui/button';
@@ -58,10 +57,7 @@ export default function InscriptionPage() {
         </div>
       }
     >
-      <div className="space-y-6">
-        <OAuthButtons label="S’inscrire" />
-        <Separator label="ou" />
-
+      <div className="space-y-7">
         <form className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Prénom" htmlFor="firstName" required>
@@ -139,6 +135,8 @@ export default function InscriptionPage() {
             Créer mon compte
           </Button>
         </form>
+
+        <OAuthButtons label="S’inscrire" />
 
         <Alert tone="info">
           <p>

@@ -47,7 +47,7 @@ export default function CguPage() {
           <p>
             La création d&apos;un compte est ouverte à toute personne physique majeure
             résidant en France métropolitaine. Elle s&apos;effectue par formulaire ou
-            par l&apos;intermédiaire d&apos;un compte Google ou Facebook.
+            par l&apos;intermédiaire d&apos;un compte Google ou Apple.
           </p>
           <p>
             L&apos;utilisateur s&apos;engage à fournir des informations exactes et à
