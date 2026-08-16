@@ -1,0 +1,132 @@
+Titre,Étiquette,Epic,Responsable,Deadline,Statut
+"[P1] Contacter le formateur pour les rendus dépassés (26/05, 29/06)",PILOTAGE,EPIC 0 : Pilotage (permanent),,15 août,À faire
+[P2] Rendre « Compréhension projet » et « Vérification avancée projet » même en retard,RENDU,EPIC 0 : Pilotage (permanent),,15 août,À faire
+[P3] Créer le Trello/Notion en accès public et y importer ce backlog,PILOTAGE,EPIC 0 : Pilotage (permanent),,15 août,À faire
+[P4] Créer le dépôt Git + donner accès à l'équipe,PILOTAGE,EPIC 0 : Pilotage (permanent),,15 août,À faire
+[P5] Installer GanttProject,PILOTAGE,EPIC 0 : Pilotage (permanent),,16 août,À faire
+"[P6] Remplir `DECISIONS.md` (stack, briques, agence fictive, TJM, rôles)",PILOTAGE,EPIC 0 : Pilotage (permanent),,16 août,À faire
+[P7] Réunion hebdo + CR formalisé dans `01-pilotage/comptes-rendus/`,PILOTAGE,EPIC 0 : Pilotage (permanent),,chaque semaine,À faire
+[P8] Mettre à jour le Trello après chaque session de travail,PILOTAGE,EPIC 0 : Pilotage (permanent),,permanent,À faire
+"[R1] Plan de veille complet (types, objectifs, axes, sources, outils IA, diffusion, fréquence)",CDC,"EPIC 1 : Recherche & benchmark (CDC parties B, C)",,17 août,À faire
+"[R2] Étude de marché : thé en France, bio, e-commerce, jeux-concours (sources < 5 ans)",CDC,"EPIC 1 : Recherche & benchmark (CDC parties B, C)",,17 août,À faire
+"[R3] Contraintes légales du jeu-concours (règlement, huissier, RGPD, loterie publicitaire)",CDC,"EPIC 1 : Recherche & benchmark (CDC parties B, C)",,17 août,À faire
+[R4] Questionnaire + 2-3 interviews retranscrites (annexe obligatoire),CDC,"EPIC 1 : Recherche & benchmark (CDC parties B, C)",,20 août,À faire
+"[R5] Concurrent direct 1, les 5 audits",CDC,"EPIC 1 : Recherche & benchmark (CDC parties B, C)",,18 août,À faire
+"[R6] Concurrent direct 2, les 5 audits",CDC,"EPIC 1 : Recherche & benchmark (CDC parties B, C)",,18 août,À faire
+"[R7] Concurrent indirect, les 5 audits",CDC,"EPIC 1 : Recherche & benchmark (CDC parties B, C)",,18 août,À faire
+[R8] Conclusions du benchmark + mapping concurrentiel,CDC,"EPIC 1 : Recherche & benchmark (CDC parties B, C)",,19 août,À faire
+[R9] SWOT du client,CDC,"EPIC 1 : Recherche & benchmark (CDC parties B, C)",,19 août,À faire
+[S1] Présentation client + infos juridiques + storytelling,CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,19 août,À faire
+"[S2] Présentation agence + comité de pilotage (MOA 3 pers. + MOE, coordonnées, congés)",CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,19 août,À faire
+"[S3] Cibles, cœur de cible, cible secondaire",CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,19 août,À faire
+[S4] Grilles d'analyse d'état d'esprit par cible,CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,19 août,À faire
+[S5] Personas visuels,CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,19 août,À faire
+[S6] Tableau des acteurs,CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,19 août,À faire
+[S7] Zone de chalandise (carte + légende),CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,19 août,À faire
+[S8] Objectifs de com online/offline + SMART + ROI + RSE,CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,20 août,À faire
+[S9] Stratégie éditoriale,CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,20 août,À faire
+[S10] E-réputation et gestion de crise,CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,20 août,À faire
+[S11] SEO : audit de mots-clés + bonnes pratiques avec exemples,CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,20 août,À faire
+[S12] ✍️ Rédiger le contenu SEO de la page d'accueil,CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,20 août,À faire
+[S13] ✍️ Rédiger le contenu SEO de la page « concept »,CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,20 août,À faire
+"[S14] SMO : plateformes, calendrier éditorial, influenceurs, publicités",CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,20 août,À faire
+"[S15] Emailing : types, base, fréquence, RGPD, prestataire + coût",CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,20 août,À faire
+[S16] Analyse de performance : KPI par action + outils + contraintes légales,CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,20 août,À faire
+[S17] Descriptif rédactionnel fonctionnel (front-office / back-office),CDC,"EPIC 2 : Stratégie (CDC parties A, D)",,21 août,À faire
+[C1] Tri de cartes → arborescence du site,CDC,"EPIC 3 : Conception fonctionnelle & technique (CDC parties E, F)",,21 août,À faire
+[C2] 2 représentations textuelles de cas d'utilisation + 1 use case,CDC,"EPIC 3 : Conception fonctionnelle & technique (CDC parties E, F)",,21 août,À faire
+[C3] 2 diagrammes d'activité,CDC,"EPIC 3 : Conception fonctionnelle & technique (CDC parties E, F)",,21 août,À faire
+[C4] 2 diagrammes de séquence,CDC,"EPIC 3 : Conception fonctionnelle & technique (CDC parties E, F)",,21 août,À faire
+"[C5] MCD / MLD (codes, lots, participations, users, boutiques, remises, tirage)",CDC,"EPIC 3 : Conception fonctionnelle & technique (CDC parties E, F)",,21 août,À faire
+[C6] Technologies + compatibilité navigateurs (versions minimales),CDC,"EPIC 3 : Conception fonctionnelle & technique (CDC parties E, F)",,21 août,À faire
+"[C7] Software utilisés (gestion projet, graphique, technique, audits)",CDC,"EPIC 3 : Conception fonctionnelle & technique (CDC parties E, F)",,21 août,À faire
+[C8] Stratégie de tests applicatifs + outils + export des rapports,CDC,"EPIC 3 : Conception fonctionnelle & technique (CDC parties E, F)",,21 août,À faire
+[C9] Hébergement + nom de domaine « vraie vie » + backups,CDC,"EPIC 3 : Conception fonctionnelle & technique (CDC parties E, F)",,21 août,À faire
+[D1] 3 concepts de logo × 3 déclinaisons + explications,DESIGN,"EPIC 4 : Design (CDC parties G, H)",,19 août,À faire
+[D2] Logo définitif + interdits,DESIGN,"EPIC 4 : Design (CDC parties G, H)",,20 août,À faire
+[D3] Empathy map + experience map,DESIGN,"EPIC 4 : Design (CDC parties G, H)",,22 août,À faire
+[D4] Zoning accueil / connexion-inscription / profil × desktop-tablette-mobile,DESIGN,"EPIC 4 : Design (CDC parties G, H)",,22 août,À faire
+"[D5] Wireframes (mêmes pages, 3 formats)",DESIGN,"EPIC 4 : Design (CDC parties G, H)",,22 août,À faire
+"[D6] Maquettes (mêmes pages, 3 formats)",DESIGN,"EPIC 4 : Design (CDC parties G, H)",,22 août,À faire
+"[D7] Charte graphique (CMJN/RVB/HEX + contrastes, typos + licences, images)",DESIGN,"EPIC 4 : Design (CDC parties G, H)",,22 août,À faire
+[D8] Mentions légales + CGU (+ mention « projet étudiant fictif »),CDC,"EPIC 4 : Design (CDC parties G, H)",,22 août,À faire
+"[T1] A. État des lieux : agence, problématique Brasletti, cycle en V",CST,EPIC 5 : Cahier des spécifications techniques,,24 août,À faire
+[T2] B. Méthodologie à venir justifiée,CST,EPIC 5 : Cahier des spécifications techniques,,24 août,À faire
+[T3] C. DevOps / DevSecOps + topologies d'équipe,CST,EPIC 5 : Cahier des spécifications techniques,,24 août,À faire
+[T4] D.1 Présentation CI/CD + contraintes + tâches à automatiser,CST,EPIC 5 : Cahier des spécifications techniques,,25 août,À faire
+[T5] D.2 Choix techniques service par service + standards (GitFlow),CST,EPIC 5 : Cahier des spécifications techniques,,25 août,À faire
+[T6] D.3 Hébergement (CPU/RAM/disques/BP/SLA/GTR) + backups,CST,EPIC 5 : Cahier des spécifications techniques,,25 août,À faire
+[T7] E. Diagramme d'infrastructure complet (ports + protocoles),CST,EPIC 5 : Cahier des spécifications techniques,,26 août,À faire
+[T8] G. BPMN : déploiement dev / preprod / prod,CST,EPIC 5 : Cahier des spécifications techniques,,26 août,À faire
+[T9] G. BPMN : sauvegarde prod + restauration dev/preprod/prod,CST,EPIC 5 : Cahier des spécifications techniques,,26 août,À faire
+[T10] F. Fiche de poste + contrat + grille de salaire,CST,EPIC 5 : Cahier des spécifications techniques,,27 août,À faire
+[T11] F. Plan de formation au workflow,CST,EPIC 5 : Cahier des spécifications techniques,,27 août,À faire
+[T12] I. Estimation des coûts + rentabilité avec/sans workflow,CST,EPIC 5 : Cahier des spécifications techniques,,27 août,À faire
+[T13] Traçabilité des 8 exigences du sujet,CST,EPIC 5 : Cahier des spécifications techniques,,28 août,À faire
+[G1] Grille de salaires + charges + marge → calcul du TJM (annexe),PILOTAGE,EPIC 6 : Chiffrage (les deux dossiers),,27 août,À faire
+"[G2] Matrices MoSCoW, Eisenhower, RACI, risques",CDC/CST,EPIC 6 : Chiffrage (les deux dossiers),,27 août,À faire
+"[G3] Gantt du projet client sous GanttProject (lots, jalons, prédécesseurs, %)",CDC,EPIC 6 : Chiffrage (les deux dossiers),,27 août,À faire
+[G4] Gantt du workflow sous GanttProject,CST,EPIC 6 : Chiffrage (les deux dossiers),,27 août,À faire
+[G5] Diagramme des ressources,CDC/CST,EPIC 6 : Chiffrage (les deux dossiers),,27 août,À faire
+"[G6] Devis principal + devis optionnels (com, maintenance, formation)",CDC,EPIC 6 : Chiffrage (les deux dossiers),,27 août,À faire
+[X1] Couvertures + sommaires + pagination 1/100,RENDU,EPIC 7 : Rendu du 31 août,,28 août,À faire
+"[X2] Annexes des deux dossiers (questionnaire, interviews, TJM)",RENDU,EPIC 7 : Rendu du 31 août,,28 août,À faire
+[X3] Relecture croisée contre les checklists `PLAN.md`,RENDU,EPIC 7 : Rendu du 31 août,,29 août,À faire
+[X4] Export PDF + vérification du rendu,RENDU,EPIC 7 : Rendu du 31 août,,30 août,À faire
+[X5] Nommage conforme des fichiers,RENDU,EPIC 7 : Rendu du 31 août,,30 août,À faire
+[X6] `Accès organisation projet.pdf` (lien public Trello),RENDU,EPIC 7 : Rendu du 31 août,,30 août,À faire
+[X7] Dépôt sur Teams avant 9h,RENDU,EPIC 7 : Rendu du 31 août,,**31 août**,À faire
+[W1] Commander VPS + domaines (échéance ≥ mars 2027),WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,6 sept.,À faire
+[W2] Socle Linux + Docker + réseaux + durcissement SSH/firewall,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,6 sept.,À faire
+[W3] Reverse proxy + TLS + sous-domaines par outil,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,6 sept.,À faire
+[W4] SCM (GitLab CE / Gitea) + GitFlow + comptes équipe,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,13 sept.,À faire
+[W5] Jenkins + agents Docker + premier pipeline,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,20 sept.,À faire
+[W6] Registry d'images + push depuis la CI,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,20 sept.,À faire
+[W7] Pipeline complet build → tests → image → déploiement dev auto,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,27 sept.,À faire
+"[W8] Optimisation des assets (minification, compression) dans la CI",WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,27 sept.,À faire
+[W9] Environnement preprod/QA + déploiement auto,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,4 oct.,À faire
+[W10] Environnement prod + déploiement (niveau d'automatisation justifié),WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,4 oct.,À faire
+[W11] Tests unitaires + fonctionnels dans la CI + stockage des rapports,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,11 oct.,À faire
+[W12] Métriques : Prometheus + Grafana (+ logs) + dashboards + alertes,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,11 oct.,À faire
+[W13] Backups automatisés du workflow et des projets,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,18 oct.,À faire
+[W14] Test de restauration réel documenté,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,18 oct.,À faire
+"[W15] 3 dépôts + 3 Jenkinsfile : `theetiptop-contest` (Nx) · `demo-static-site` (vitrine HTML/CSS) · `demo-mobile-app` (Expo), pour prouver la généricité du workflow",WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,18 oct.,À faire
+[W16] Jenkinsfile documenté : les devs configurent sans accès au CI,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,18 oct.,À faire
+"[W17] `.dockerignore` racine (`node_modules`, `.nx`, `dist`, `.git`, `.env*`)",WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,6 sept.,À faire
+[W18] Volume persistant `.nx/cache` sur l'agent Jenkins (option : cache distant MinIO),WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,20 sept.,À faire
+[W19] Désactiver le shallow clone + `nx affected --base=origin/develop --head=HEAD`,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,27 sept.,À faire
+[W20] Dimensionnement RAM (16 Go min ou 2 VPS) chiffré dans le CST D.3,WORKFLOW,EPIC 8 : Workflow CI/CD (Phase 2),,25 août,À faire
+[A1] Schéma BDD + migrations (MariaDB),APP,EPIC 9 : Site jeu-concours (Phase 2),,6 sept.,À faire
+[A2] Squelette API + squelette webApp (2 projets distincts),APP,EPIC 9 : Site jeu-concours (Phase 2),,6 sept.,À faire
+[A3] Génération des 500 000 codes avec répartition exacte 60/20/10/6/4 %,APP,EPIC 9 : Site jeu-concours (Phase 2),,13 sept.,À faire
+[A4] Test automatisé de la répartition des gains,APP,EPIC 9 : Site jeu-concours (Phase 2),,13 sept.,À faire
+[A5] Auth formulaire + OAuth Google + OAuth Facebook,APP,EPIC 9 : Site jeu-concours (Phase 2),,20 sept.,À faire
+[A6] Rôles et permissions : client / employé boutique / admin,APP,EPIC 9 : Site jeu-concours (Phase 2),,20 sept.,À faire
+[A7] Page de présentation du jeu et des lots,APP,EPIC 9 : Site jeu-concours (Phase 2),,20 sept.,À faire
+[A8] Participation par numéro de ticket + validation + attribution du gain,APP,EPIC 9 : Site jeu-concours (Phase 2),,27 sept.,À faire
+[A9] Historique des gains côté client,APP,EPIC 9 : Site jeu-concours (Phase 2),,27 sept.,À faire
+"[A10] Back-office : statistiques (tickets fournis/utilisés, lots gagnés, sexe/âge)",APP,EPIC 9 : Site jeu-concours (Phase 2),,4 oct.,À faire
+[A11] Export des données pour emailing,APP,EPIC 9 : Site jeu-concours (Phase 2),,4 oct.,À faire
+"[A12] Vue employé boutique : voir les gains d'un client, marquer « remis »",APP,EPIC 9 : Site jeu-concours (Phase 2),,11 oct.,À faire
+[A13] Tirage au sort du gros lot côté serveur (1 chance par participant),APP,EPIC 9 : Site jeu-concours (Phase 2),,11 oct.,À faire
+[A14] Endpoints API pour les caisses magasin et le futur e-commerce,APP,EPIC 9 : Site jeu-concours (Phase 2),,11 oct.,À faire
+"[A15] RGPD : consentement, cookies, export et suppression des données",APP,EPIC 9 : Site jeu-concours (Phase 2),,18 oct.,À faire
+[A16] Accessibilité (WCAG/WAI) + responsive tous devices,APP,EPIC 9 : Site jeu-concours (Phase 2),,18 oct.,À faire
+"[A17] SEO on-page (title, meta, hn, sitemap.xml, robots.txt, HTTPS)",APP,EPIC 9 : Site jeu-concours (Phase 2),,18 oct.,À faire
+[A18] Tests de performance sur la base des 500 k codes,APP,EPIC 9 : Site jeu-concours (Phase 2),,25 oct.,À faire
+[M1] Créer le compte Google Analytics et le lier au site,MARKETING,EPIC 10 : Marketing opérationnel (à faire *pour de vrai*),,8 nov.,À faire
+"[M2] 4 événements GA : vue de page, formulaire, clic CTA, participation",MARKETING,EPIC 10 : Marketing opérationnel (à faire *pour de vrai*),,8 nov.,À faire
+[M3] Dashboard personnalisé + rapport personnalisé,MARKETING,EPIC 10 : Marketing opérationnel (à faire *pour de vrai*),,8 nov.,À faire
+[M4] Créer ≥ 1 réseau social en privé + publications conformes à la ligne édito,MARKETING,EPIC 10 : Marketing opérationnel (à faire *pour de vrai*),,30 sept.,À faire
+[M5] Créer le compte Hootsuite et le relier aux réseaux,MARKETING,EPIC 10 : Marketing opérationnel (à faire *pour de vrai*),,30 sept.,À faire
+[M6] Créer le compte chez le prestataire d'emailing + template RGPD,MARKETING,EPIC 10 : Marketing opérationnel (à faire *pour de vrai*),,30 sept.,À faire
+[F1] Mise en ligne prod sur les 2 domaines imposés + HTTPS,RENDU,EPIC 11 : Rendus finaux,,8 nov.,À faire
+[F2] Doc « Accès site internet et comptes divers.pdf » (toutes les URL + identifiants),RENDU,EPIC 11 : Rendus finaux,,**16 nov.**,À faire
+[F3] Intégrer les remarques de l'évaluation des dossiers → CDC V2,RENDU,EPIC 11 : Rendus finaux,,29 nov.,À faire
+[F4] Idem → CST V2,RENDU,EPIC 11 : Rendus finaux,,29 nov.,À faire
+[F5] Support de présentation (15-20 min),RENDU,EPIC 11 : Rendus finaux,,6 déc.,À faire
+[F6] Répétitions chronométrées + questions croisées individuelles,RENDU,EPIC 11 : Rendus finaux,,12 déc.,À faire
+[F7] Export BDD + archive du code source,RENDU,EPIC 11 : Rendus finaux,,12 déc.,À faire
+[F8] Dry-run de l'archive complète + vérification du nommage,RENDU,EPIC 11 : Rendus finaux,,12 déc.,À faire
+[F9] Dépôt de l'archive avant 9h,RENDU,EPIC 11 : Rendus finaux,,**14 déc.**,À faire
+[F10] Soutenance,RENDU,EPIC 11 : Rendus finaux,,sem. 14 déc.,À faire
