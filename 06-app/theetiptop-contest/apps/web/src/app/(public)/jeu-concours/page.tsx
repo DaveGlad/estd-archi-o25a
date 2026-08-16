@@ -6,6 +6,11 @@ import { Card, CardBody } from '../../../components/ui/card';
 import { Alert } from '../../../components/ui/alert';
 import { contest } from '../../../lib/mock';
 import { formatDate, formatPrice } from '../../../lib/utils';
+import {
+  JsonLd,
+  breadcrumbJsonLd,
+  faqJsonLd,
+} from '../../../components/seo/json-ld';
 
 export const metadata: Metadata = {
   title: 'Comment participer',
@@ -62,6 +67,14 @@ const faq = [
 export default function JeuConcoursPage() {
   return (
     <>
+      <JsonLd data={faqJsonLd(faq)} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Accueil', path: '/' },
+          { name: 'Le jeu-concours', path: '/jeu-concours' },
+        ])}
+      />
+
       <PageHeader
         eyebrow="Le jeu-concours"
         title="Comment participer"

@@ -11,6 +11,16 @@ import {
   stores,
 } from '../../lib/mock';
 import { daysUntil, formatDate, formatPrice } from '../../lib/utils';
+import {
+  JsonLd,
+  organizationJsonLd,
+  websiteJsonLd,
+} from '../../components/seo/json-ld';
+import {
+  Grain,
+  LeafOrnament,
+  SteamOrnament,
+} from '../../components/layout/ornaments';
 
 const steps = [
   {
@@ -38,15 +48,25 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="border-b border-border bg-surface">
-        <Container className="grid gap-12 py-16 sm:py-24 lg:grid-cols-[1.15fr_1fr] lg:items-center">
+      <JsonLd data={organizationJsonLd} />
+      <JsonLd data={websiteJsonLd} />
+
+      <section className="relative isolate overflow-hidden border-b border-border bg-surface">
+        <Grain />
+        <LeafOrnament className="pointer-events-none absolute -top-16 -right-24 hidden h-[460px] w-[380px] lg:block" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-40 left-1/2 h-96 w-[52rem] -translate-x-1/2 rounded-full bg-accent/8 blur-3xl"
+        />
+
+        <Container className="relative grid gap-12 py-16 sm:py-24 lg:grid-cols-[1.15fr_1fr] lg:items-center">
           <div>
             <Badge tone="accent">
               <Leaf className="size-3.5" aria-hidden="true" />
               Ouverture de notre dixième boutique à {newStore?.city}
             </Badge>
 
-            <h1 className="mt-5 font-serif text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-5 font-serif leading-[1.06] text-[clamp(2.5rem,1.4rem+4.4vw,4rem)]">
               100 % des tickets sont gagnants.
               <span className="block text-accent-strong">Le vôtre aussi.</span>
             </h1>
@@ -87,8 +107,9 @@ export default function HomePage() {
           </div>
 
           <Card className="overflow-hidden">
-            <div className="bg-primary px-7 py-8 text-primary-fg">
-              <p className="text-xs font-semibold tracking-[0.14em] uppercase opacity-85">
+            <div className="relative overflow-hidden bg-primary px-7 py-8 text-primary-fg">
+              <SteamOrnament className="pointer-events-none absolute -top-2 right-6 h-24 w-32 text-primary-fg" />
+              <p className="relative text-xs font-semibold tracking-[0.14em] uppercase opacity-85">
                 Le gros lot
               </p>
               <p className="mt-2 font-serif text-3xl">{grandPrize.label}</p>
