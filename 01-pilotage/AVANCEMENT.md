@@ -15,24 +15,32 @@
 | G. Procédures BPMN | ✅ Rédigée | R3 | 2 380 mots |
 | H. Diagramme de Gantt | ✅ Structure rédigée, à saisir sous GanttProject | R1 | 1 400 mots |
 | I. Coûts et rentabilité | ✅ Rédigée | R1 et R3 | 1 430 mots |
-| Couverture, sommaire, annexes | ⬜ À faire | R1 | |
+| Couverture et sommaire | ✅ Rédigés | R1 | 550 mots |
+| Annexe questionnaire et interviews | 🟡 Questionnaire prêt, entretiens à mener | R2 | 1 290 mots |
 
 ## Cahier des charges, Thé Tip Top
 
 | Partie | Statut | Responsable | Volume |
 |---|---|---|---|
-| A. Descriptifs | 🟡 Rédigée, données à compléter | R1 | 2 800 mots |
-| B. Plan de veille | ✅ Rédigée | R2 | 1 700 mots |
-| C. Benchmark | ⬜ À faire, 3 jours de travail | R2 | |
+| A. Descriptifs | 🟡 Rédigée, données à compléter | R1 | 2 884 mots |
+| B. Plan de veille | ✅ Rédigée | R2 | 1 812 mots |
+| C.1 Étude de marché | ✅ Rédigée, sources réelles | R2 | 1 120 mots |
+| C.2 Benchmark, 3 concurrents | ✅ Rédigée, audits mesurés | R2 | 2 439 mots |
+| C.3 Analyse de stratégie | ✅ Rédigée | R2 | 1 914 mots |
 | D.0 Mix marketing | ✅ Rédigée | R2 | 700 mots |
-| D. Stratégie de communication digitale | ⬜ À faire | R2 | |
+| D. Objectifs, SMART, ROI, RSE, éditorial, e-réputation | ✅ Rédigée | R2 | 1 978 mots |
+| D.3 Référencement, avec les 2 contenus rédigés | ✅ Rédigée | R2 | 1 654 mots |
+| D.4 Réseaux sociaux et influence | ✅ Rédigée | R2 | 1 763 mots |
+| D.5 Emailing | ✅ Rédigée | R2 | 1 351 mots |
+| D.6 Analyse de performance | ✅ Rédigée | R2 | 1 131 mots |
 | E. Cahier des charges fonctionnel | ✅ Rédigée | R3 | 4 275 mots |
 | F. Clauses techniques | ✅ Rédigée | R3 | 2 120 mots |
-| G. Identité visuelle et charte | ⬜ À faire | R4 | |
+| G. Identité visuelle et charte | 🟡 Rédigée, planches visuelles à produire | R4 | 2 779 mots |
 | H. Cahier de légalité | ✅ Rédigée | R4 | 2 400 mots |
 | I. Matrices et Gantt | ✅ Rédigée, Gantt à saisir sous GanttProject | R1 | 3 000 mots |
 | J. Devis | ✅ Rédigée | R1 | 1 570 mots |
-| Couverture, sommaire, annexes | ⬜ À faire | R1 | |
+| Couverture et sommaire | ✅ Rédigés | R1 | 550 mots |
+| Annexe questionnaire et interviews | 🟡 Questionnaire prêt, entretiens à mener | R2 | 1 290 mots |
 
 ## Ce qui bloque
 
