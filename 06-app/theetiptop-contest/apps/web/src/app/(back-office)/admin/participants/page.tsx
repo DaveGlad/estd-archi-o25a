@@ -87,7 +87,7 @@ export default function ParticipantsPage() {
                         {user?.firstName} {user?.lastName}
                       </span>
                       <br />
-                      <span className="text-xs text-fg-muted">{user?.email}</span>
+                      <span className="text-sm text-fg-muted">{user?.email}</span>
                     </Td>
                     <Td>
                       <Badge>
@@ -98,7 +98,7 @@ export default function ParticipantsPage() {
                             : 'Facebook'}
                       </Badge>
                     </Td>
-                    <Td className="font-mono text-xs tracking-wider">
+                    <Td className="font-mono text-sm tracking-wider">
                       {participation.ticketCode}
                     </Td>
                     <Td>{prize.label}</Td>

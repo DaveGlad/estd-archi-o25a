@@ -42,7 +42,7 @@ export const prizes: Prize[] = [
   },
   {
     id: 'prz_detox',
-    label: 'Une boîte de 100 g de thé détox ou d’infusion',
+    label: 'Une boîte de 100 g de thé détox ou d’infusion',
     description:
       'Au choix parmi nos détox et nos infusions, toutes préparées à la main.',
     type: 'TICKET_PRIZE',
@@ -53,7 +53,7 @@ export const prizes: Prize[] = [
   },
   {
     id: 'prz_signature',
-    label: 'Une boîte de 100 g de thé signature',
+    label: 'Une boîte de 100 g de thé signature',
     description:
       'Un de nos mélanges maison, créés et assemblés dans notre atelier.',
     type: 'TICKET_PRIZE',
@@ -64,7 +64,7 @@ export const prizes: Prize[] = [
   },
   {
     id: 'prz_box39',
-    label: 'Un coffret découverte à 39 €',
+    label: 'Un coffret découverte à 39 €',
     description: 'Cinq thés à découvrir, présentés dans un coffret en bois.',
     type: 'TICKET_PRIZE',
     valueCents: 3900,
@@ -74,7 +74,7 @@ export const prizes: Prize[] = [
   },
   {
     id: 'prz_box69',
-    label: 'Un coffret découverte à 69 €',
+    label: 'Un coffret découverte à 69 €',
     description:
       'Notre plus grand coffret : neuf thés, un infuseur et un carnet de dégustation.',
     type: 'TICKET_PRIZE',

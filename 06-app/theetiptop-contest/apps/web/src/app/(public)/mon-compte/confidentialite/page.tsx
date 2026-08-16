@@ -27,7 +27,7 @@ export default function ConfidentialiteComptePage() {
                 est indépendant de votre participation au jeu.
               </p>
               {user.marketingConsentAt && (
-                <p className="mt-1 text-xs text-fg-muted">
+                <p className="mt-1 text-sm text-fg-muted">
                   Consentement donné le {formatDateTime(user.marketingConsentAt)}
                 </p>
               )}
@@ -51,7 +51,7 @@ export default function ConfidentialiteComptePage() {
                 le compte.
               </p>
               {user.contestRulesAcceptedAt && (
-                <p className="mt-1 text-xs text-fg-muted">
+                <p className="mt-1 text-sm text-fg-muted">
                   Accepté le {formatDateTime(user.contestRulesAcceptedAt)}
                 </p>
               )}

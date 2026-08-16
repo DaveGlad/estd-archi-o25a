@@ -42,22 +42,24 @@ const columns = [
 export function SiteFooter() {
   return (
     <footer className="mt-20 border-t border-border bg-surface">
-      <Container className="py-14">
+      <Container className="py-16">
         <div className="grid gap-10 md:grid-cols-[1.2fr_repeat(4,1fr)]">
           <div>
             <Logo />
-            <p className="mt-4 max-w-xs text-sm text-fg-muted">
+            <p className="mt-4 max-w-[30ch] text-[15px] leading-[1.6] text-fg-muted">
               Thés bio et faits main depuis nos dix boutiques, de Paris à Nice.
             </p>
           </div>
 
           {columns.map((column) => (
             <nav key={column.title} aria-label={column.title}>
-              <h2 className="font-serif text-sm font-semibold">{column.title}</h2>
-              <ul className="mt-3 space-y-2">
+              <h2 className="font-serif text-[15px] leading-none font-semibold tracking-[-0.005em]">
+                {column.title}
+              </h2>
+              <ul className="mt-4 space-y-2.5">
                 {column.links.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="text-sm text-fg-muted hover:text-fg">
+                    <Link href={link.href} className="text-[15px] leading-[1.45] text-fg-muted transition-colors hover:text-fg">
                       {link.label}
                     </Link>
                   </li>
@@ -67,7 +69,7 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <div className="mt-12 space-y-2 border-t border-border pt-6 text-xs text-fg-muted">
+        <div className="mt-14 space-y-2.5 border-t border-border pt-8 text-[13.5px] leading-[1.6] text-fg-muted">
           <p>
             Jeu-concours ouvert à toute personne majeure résidant en France
             métropolitaine, pour tout ticket de caisse ou facture supérieure à 49 €.

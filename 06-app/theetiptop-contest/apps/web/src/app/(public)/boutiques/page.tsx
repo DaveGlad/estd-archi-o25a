@@ -31,7 +31,7 @@ export default function BoutiquesPage() {
                 <CardBody className="space-y-3">
                   {store.isNew && <Badge tone="success">Nouvelle boutique</Badge>}
                   <h2 className="font-serif text-xl">{store.name}</h2>
-                  <address className="space-y-2 text-sm text-fg-muted not-italic">
+                  <address className="space-y-2 text-base text-fg-muted not-italic">
                     <span className="flex gap-2">
                       <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                       <span>
@@ -45,7 +45,7 @@ export default function BoutiquesPage() {
                       <a href={`tel:${store.phone.replace(/\s/g, '')}`}>{store.phone}</a>
                     </span>
                   </address>
-                  <p className="text-xs text-fg-muted">
+                  <p className="text-sm text-fg-muted">
                     Ouverte depuis le {formatDate(store.openedAt)}
                   </p>
                 </CardBody>

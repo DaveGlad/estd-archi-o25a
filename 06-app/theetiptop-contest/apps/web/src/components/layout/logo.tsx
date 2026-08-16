@@ -1,33 +1,120 @@
+import { cn } from '../../lib/utils';
+
 /**
- * Concept retenu pour l'identité visuelle : la feuille et la tasse réunies
- * dans un même trait, dans un cartouche inspiré des boîtes à thé.
- * Le logo est vectoriel et hérite de la couleur du texte, ce qui le rend
- * utilisable sur fond clair comme sur fond sombre sans seconde version.
+ * Identité visuelle de Thé Tip Top.
+ *
+ * La marque est une feuille de thé inscrite dans un disque. Elle est
+ * construite géométriquement plutôt que dessinée à main levée : la feuille
+ * est une vésica symétrique, la nervure centrale suit son axe, et les
+ * nervures secondaires se répartissent par paires. L'ensemble est incliné
+ * de 15 degrés pour éviter la raideur d'un axe strictement vertical.
+ *
+ * Contraintes tenues :
+ * - lisible à 16 px, la nervure la plus fine reste au-dessus du demi-pixel ;
+ * - déclinable en une seule couleur pour la gravure et le fax ;
+ * - hérite de la couleur du texte, donc pas de seconde version pour le
+ *   fond sombre ;
+ * - aucune image bitmap, donc net à toutes les densités d'écran.
  */
-export function Logo({ className, withWordmark = true }: { className?: string; withWordmark?: boolean }) {
+
+type MarkVariant = 'solid' | 'outline' | 'mono';
+
+export function LogoMark({
+  className,
+  variant = 'solid',
+}: {
+  className?: string;
+  variant?: MarkVariant;
+}) {
+  const leaf =
+    'M20 6.2C28.4 12.4 28.4 27.6 20 33.8C11.6 27.6 11.6 12.4 20 6.2Z';
+
+  const veins = [
+    'M20 31.6V8.4',
+    'M20 26.3C17.9 25.5 16.3 24.2 15.4 22.2',
+    'M20 26.3C22.1 25.5 23.7 24.2 24.6 22.2',
+    'M20 20.4C18.2 19.7 17 18.6 16.3 16.9',
+    'M20 20.4C21.8 19.7 23 18.6 23.7 16.9',
+  ];
+
   return (
-    <span className={`inline-flex items-center gap-2.5 ${className ?? ''}`}>
-      <svg viewBox="0 0 32 32" className="size-8 shrink-0" role="img" aria-label="Thé Tip Top">
-        <rect x="1" y="1" width="30" height="30" rx="9" className="fill-primary" />
-        <path
-          d="M10 21.5c0-4.6 3.2-8.4 8-9.5-1 4.9-4 8.3-8 9.5Z"
-          className="fill-accent"
+    <svg
+      viewBox="0 0 40 40"
+      className={cn('shrink-0', className)}
+      role="img"
+      aria-label="Thé Tip Top"
+      fill="none"
+    >
+      {variant === 'solid' && <circle cx="20" cy="20" r="19" className="fill-primary" />}
+      {variant === 'outline' && (
+        <circle
+          cx="20"
+          cy="20"
+          r="18.25"
+          className="stroke-current"
+          strokeWidth="1.5"
         />
+      )}
+      {variant === 'mono' && (
+        <circle cx="20" cy="20" r="19" fill="currentColor" />
+      )}
+
+      <g transform="rotate(-15 20 20)">
         <path
-          d="M9 21.5h13a5.5 5.5 0 0 1-5.5 5.5h-2A5.5 5.5 0 0 1 9 21.5Z"
-          className="fill-primary-fg"
-          opacity="0.92"
+          d={leaf}
+          className={
+            variant === 'outline'
+              ? 'fill-none stroke-current'
+              : 'fill-primary-fg stroke-none'
+          }
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+          opacity={variant === 'outline' ? 1 : 0.96}
         />
-        <path
-          d="M22 22.5h1.4a2.6 2.6 0 0 1 0 5.2H21"
-          className="stroke-primary-fg"
-          strokeWidth="1.4"
-          fill="none"
-          opacity="0.92"
-        />
-      </svg>
+        {veins.map((d, index) => (
+          <path
+            key={d}
+            d={d}
+            className={
+              variant === 'outline' ? 'stroke-current' : 'stroke-primary'
+            }
+            strokeWidth={index === 0 ? 1.3 : 1.1}
+            strokeLinecap="round"
+            opacity={variant === 'outline' ? 0.55 : 0.85}
+          />
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+/**
+ * Logotype complet. Le nom est composé en capitales espacées plutôt qu'en
+ * casse mixte : à cette taille, la capitale tient mieux la ligne et donne
+ * à la marque une assise que le bas-de-casse ne lui donnait pas.
+ */
+export function Logo({
+  className,
+  withWordmark = true,
+  size = 'md',
+}: {
+  className?: string;
+  withWordmark?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+}) {
+  const marks = { sm: 'size-7', md: 'size-9', lg: 'size-12' };
+  const words = { sm: 'text-sm', md: 'text-base', lg: 'text-xl' };
+
+  return (
+    <span className={cn('inline-flex items-center gap-3', className)}>
+      <LogoMark className={marks[size]} />
       {withWordmark && (
-        <span className="font-serif text-lg leading-none font-semibold">
+        <span
+          className={cn(
+            'font-serif leading-none font-semibold tracking-[0.1em] uppercase',
+            words[size]
+          )}
+        >
           Thé Tip Top
         </span>
       )}

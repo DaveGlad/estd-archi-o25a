@@ -91,8 +91,8 @@ export function BackOfficeShell({
           <p className="text-sm font-medium">
             {user.firstName} {user.lastName}
           </p>
-          <p className="mt-0.5 text-xs text-fg-muted">{user.email}</p>
-          <button type="button" className="mt-3 text-xs underline">
+          <p className="mt-0.5 text-sm text-fg-muted">{user.email}</p>
+          <button type="button" className="mt-3 text-sm underline">
             Se déconnecter
           </button>
         </div>

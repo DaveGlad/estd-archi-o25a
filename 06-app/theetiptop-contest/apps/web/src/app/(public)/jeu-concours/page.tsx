@@ -95,7 +95,7 @@ export default function JeuConcoursPage() {
                       Étape {index + 1}
                     </p>
                     <h2 className="text-lg font-semibold">{step.title}</h2>
-                    <p className="text-sm text-fg-muted">{step.text}</p>
+                    <p className="text-base text-fg-muted">{step.text}</p>
                   </div>
                 </CardBody>
               </Card>
@@ -108,7 +108,7 @@ export default function JeuConcoursPage() {
             <CardBody className="space-y-2">
               <Calendar className="size-5 text-accent-strong" aria-hidden="true" />
               <h2 className="font-semibold">Les dates</h2>
-              <p className="text-sm text-fg-muted">
+              <p className="text-base text-fg-muted">
                 Jeu ouvert du {formatDate(contest.startsAt)} au{' '}
                 {formatDate(contest.endsAt)}. Réclamation des lots possible jusqu&apos;au{' '}
                 {formatDate(contest.claimDeadline)}.
@@ -119,7 +119,7 @@ export default function JeuConcoursPage() {
             <CardBody className="space-y-2">
               <ShieldCheck className="size-5 text-accent-strong" aria-hidden="true" />
               <h2 className="font-semibold">Le contrôle</h2>
-              <p className="text-sm text-fg-muted">
+              <p className="text-base text-fg-muted">
                 Règlement déposé le {formatDate(contest.rulesFiledAt)} auprès de{' '}
                 {contest.bailiffName}, huissier de justice, qui contrôle également le
                 tirage du gros lot.
@@ -130,7 +130,7 @@ export default function JeuConcoursPage() {
             <CardBody className="space-y-2">
               <Gift className="size-5 text-accent-strong" aria-hidden="true" />
               <h2 className="font-semibold">Les lots</h2>
-              <p className="text-sm text-fg-muted">
+              <p className="text-base text-fg-muted">
                 Cinq lots répartis sur {contest.plannedCodeCount.toLocaleString('fr-FR')}{' '}
                 codes, plus une année de thé tirée au sort à la clôture.
               </p>
@@ -145,8 +145,8 @@ export default function JeuConcoursPage() {
           <dl className="mt-8 divide-y divide-border border-t border-border">
             {faq.map((item) => (
               <div key={item.q} className="py-6">
-                <dt className="font-medium">{item.q}</dt>
-                <dd className="mt-2 max-w-3xl text-sm text-fg-muted">{item.a}</dd>
+                <dt className="text-lg font-medium">{item.q}</dt>
+                <dd className="mt-2 max-w-3xl text-base text-fg-muted">{item.a}</dd>
               </div>
             ))}
           </dl>

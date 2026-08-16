@@ -82,7 +82,7 @@ export function Separator({ label }: { label: string }) {
 
 export function LegalNote() {
   return (
-    <p className="text-xs text-fg-muted">
+    <p className="text-sm text-fg-muted">
       En créant un compte, vous acceptez le{' '}
       <Link href="/jeu-concours/reglement" className="underline">
         règlement du jeu

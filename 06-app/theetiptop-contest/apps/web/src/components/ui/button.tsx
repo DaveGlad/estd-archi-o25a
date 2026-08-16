@@ -5,20 +5,28 @@ import { cn } from '../../lib/utils';
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 type Size = 'sm' | 'md' | 'lg';
 
+/**
+ * Deux détails distinguent ces boutons d'un bouton générique :
+ * le libellé est très légèrement resserré (-0.005em) pour compenser
+ * l'écartement optique des capitales à ces graisses, et l'appui déclenche
+ * un enfoncement d'un pixel plutôt qu'un simple changement de teinte.
+ */
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-[var(--radius-sm)] font-medium transition-colors disabled:pointer-events-none disabled:opacity-50';
+  'group inline-flex items-center justify-center gap-2 rounded-[10px] font-medium tracking-[-0.005em] transition-[background-color,border-color,color,transform,box-shadow] duration-150 active:translate-y-px disabled:pointer-events-none disabled:opacity-45';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-primary text-primary-fg hover:bg-primary-hover',
-  secondary: 'border border-border bg-surface text-fg hover:bg-muted',
-  ghost: 'text-fg hover:bg-muted',
-  danger: 'bg-danger text-white hover:opacity-90',
+  primary:
+    'bg-primary text-primary-fg shadow-[0_1px_0_0_color-mix(in_oklab,var(--primary-fg)_22%,transparent)_inset,0_1px_2px_0_color-mix(in_oklab,var(--fg)_18%,transparent)] hover:bg-primary-hover',
+  secondary:
+    'border border-border bg-surface text-fg hover:border-fg-muted/45 hover:bg-muted',
+  ghost: 'text-fg-muted hover:bg-muted hover:text-fg',
+  danger: 'bg-danger text-white hover:brightness-110',
 };
 
 const sizes: Record<Size, string> = {
-  sm: 'h-9 px-3 text-sm',
-  md: 'h-11 px-5 text-sm',
-  lg: 'h-13 px-7 text-base',
+  sm: 'h-9 px-3.5 text-[13px]',
+  md: 'h-11 px-5 text-[15px]',
+  lg: 'h-[52px] px-7 text-[16px]',
 };
 
 export function Button({

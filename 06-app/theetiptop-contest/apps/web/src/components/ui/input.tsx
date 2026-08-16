@@ -1,21 +1,34 @@
 import type { ComponentProps } from 'react';
 import { cn } from '../../lib/utils';
 
-const field =
-  'w-full rounded-[var(--radius-sm)] border border-border bg-surface px-3.5 text-fg placeholder:text-fg-muted/70 disabled:opacity-50';
+/**
+ * 16 px de corps sur les champs : en dessous, iOS zoome la page au focus.
+ * Le fond passe du gris au blanc à la saisie, ce qui signale l'état actif
+ * sans dépendre uniquement de l'anneau de focus.
+ */
+const field = cn(
+  'w-full rounded-[10px] border border-border bg-muted/45 px-3.5 text-[16px] text-fg',
+  'transition-[background-color,border-color] duration-150',
+  'placeholder:text-fg-muted/60',
+  'hover:border-fg-muted/40',
+  'focus:border-primary focus:bg-surface',
+  'disabled:cursor-not-allowed disabled:opacity-50'
+);
 
 export function Input({ className, ...props }: ComponentProps<'input'>) {
-  return <input className={cn(field, 'h-11', className)} {...props} />;
+  return <input className={cn(field, 'h-12', className)} {...props} />;
 }
 
 export function Select({ className, children, ...props }: ComponentProps<'select'>) {
   return (
-    <select className={cn(field, 'h-11', className)} {...props}>
+    <select className={cn(field, 'h-12 pr-9', className)} {...props}>
       {children}
     </select>
   );
 }
 
 export function Textarea({ className, ...props }: ComponentProps<'textarea'>) {
-  return <textarea className={cn(field, 'py-2.5 min-h-28', className)} {...props} />;
+  return (
+    <textarea className={cn(field, 'min-h-32 py-3 leading-[1.6]', className)} {...props} />
+  );
 }

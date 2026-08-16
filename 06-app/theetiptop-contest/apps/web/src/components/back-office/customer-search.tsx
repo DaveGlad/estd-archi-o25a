@@ -106,7 +106,7 @@ export function CustomerSearch() {
               <p className="text-sm text-fg-muted">
                 Lancez une recherche pour afficher les gains d&apos;un client.
               </p>
-              <p className="text-xs text-fg-muted">
+              <p className="text-sm text-fg-muted">
                 Données simulées, essayez « camille », « theo » ou « leila ».
               </p>
             </CardBody>

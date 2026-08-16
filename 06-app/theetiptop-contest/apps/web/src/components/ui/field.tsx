@@ -1,5 +1,10 @@
 import type { ReactNode } from 'react';
 
+/**
+ * L'aide se place au-dessus du champ, pas en dessous : on lit la consigne
+ * avant de saisir, pas après s'être trompé. L'erreur, elle, vient sous le
+ * champ, à l'endroit où le regard revient après la saisie.
+ */
 export function Field({
   label,
   htmlFor,
@@ -15,29 +20,38 @@ export function Field({
   required?: boolean;
   children: ReactNode;
 }) {
-  const hintId = hint ? `${htmlFor}-hint` : undefined;
-  const errorId = error ? `${htmlFor}-error` : undefined;
-
   return (
-    <div className="space-y-1.5">
-      <label htmlFor={htmlFor} className="block text-sm font-medium">
-        {label}
-        {required && (
-          <span className="text-danger" aria-hidden="true">
-            {' '}
-            *
-          </span>
+    <div className="space-y-2">
+      <div className="space-y-1">
+        <label
+          htmlFor={htmlFor}
+          className="block text-[14px] leading-none font-semibold tracking-[-0.005em]"
+        >
+          {label}
+          {required && (
+            <span className="text-danger" aria-hidden="true">
+              {' '}
+              *
+            </span>
+          )}
+          {required && <span className="sr-only"> (obligatoire)</span>}
+        </label>
+        {hint && (
+          <p id={`${htmlFor}-hint`} className="text-[13.5px] leading-[1.5] text-fg-muted">
+            {hint}
+          </p>
         )}
-        {required && <span className="sr-only"> (obligatoire)</span>}
-      </label>
-      {hint && (
-        <p id={hintId} className="text-xs text-fg-muted">
-          {hint}
-        </p>
-      )}
+      </div>
+
       {children}
+
       {error && (
-        <p id={errorId} role="alert" className="text-xs font-medium text-danger">
+        <p
+          id={`${htmlFor}-error`}
+          role="alert"
+          className="flex items-start gap-1.5 text-[13.5px] leading-[1.5] font-medium text-danger"
+        >
+          <span aria-hidden="true" className="mt-[3px] block size-1.5 shrink-0 rounded-full bg-danger" />
           {error}
         </p>
       )}

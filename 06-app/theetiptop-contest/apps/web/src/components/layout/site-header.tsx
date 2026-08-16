@@ -21,14 +21,14 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-bg/85 backdrop-blur">
-      <Container className="flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-40 border-b border-border bg-bg/80 backdrop-blur-md">
+      <Container className="flex h-[72px] items-center justify-between gap-4">
         <Link href="/" aria-label="Thé Tip Top, retour à l'accueil">
           <Logo />
         </Link>
 
         <nav aria-label="Navigation principale" className="hidden md:block">
-          <ul className="flex items-center gap-1">
+          <ul className="flex items-center gap-1.5">
             {nav.map((item) => {
               const active = pathname.startsWith(item.href);
               return (
@@ -37,8 +37,12 @@ export function SiteHeader() {
                     href={item.href}
                     aria-current={active ? 'page' : undefined}
                     className={cn(
-                      'rounded-[var(--radius-sm)] px-3 py-2 text-sm transition-colors',
-                      active ? 'bg-muted font-medium text-fg' : 'text-fg-muted hover:text-fg'
+                      'relative px-3 py-2 text-[15px] leading-none transition-colors',
+                      'after:absolute after:inset-x-3 after:-bottom-[7px] after:h-px after:origin-left',
+                      'after:bg-accent-strong after:transition-transform after:duration-200',
+                      active
+                        ? 'font-medium text-fg after:scale-x-100'
+                        : 'text-fg-muted after:scale-x-0 hover:text-fg hover:after:scale-x-100'
                     )}
                   >
                     {item.label}
@@ -53,7 +57,7 @@ export function SiteHeader() {
           <ThemeToggle />
           <Link
             href="/mon-compte"
-            className="hidden items-center gap-2 rounded-full border border-border px-4 py-2 text-sm hover:bg-muted md:inline-flex"
+            className="hidden h-10 items-center gap-2 rounded-full border border-border px-4 text-[14.5px] transition-colors hover:border-fg-muted/45 hover:bg-muted md:inline-flex"
           >
             <User className="size-4" aria-hidden="true" />
             Mon compte
@@ -80,7 +84,7 @@ export function SiteHeader() {
                   <Link
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="block rounded-[var(--radius-sm)] px-3 py-3 text-sm hover:bg-muted"
+                    className="block rounded-[10px] px-3 py-3.5 text-[15.5px] hover:bg-muted"
                   >
                     {item.label}
                   </Link>

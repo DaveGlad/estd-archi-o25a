@@ -68,25 +68,25 @@ export default async function GainDetailPage({
 
           <dl className="grid gap-5 border-t border-border pt-5 sm:grid-cols-2">
             <div>
-              <dt className="text-xs text-fg-muted">Code joué</dt>
+              <dt className="text-sm text-fg-muted">Code joué</dt>
               <dd className="mt-0.5 font-mono text-sm tracking-wider">
                 {participation.ticketCode}
               </dd>
             </div>
             <div>
-              <dt className="text-xs text-fg-muted">Date de participation</dt>
+              <dt className="text-sm text-fg-muted">Date de participation</dt>
               <dd className="mt-0.5 text-sm">
                 {formatDateTime(participation.createdAt)}
               </dd>
             </div>
             <div>
-              <dt className="text-xs text-fg-muted">Date limite de réclamation</dt>
+              <dt className="text-sm text-fg-muted">Date limite de réclamation</dt>
               <dd className="mt-0.5 text-sm">
                 {formatDate(participation.claimDeadline)}
               </dd>
             </div>
             <div>
-              <dt className="text-xs text-fg-muted">Référence</dt>
+              <dt className="text-sm text-fg-muted">Référence</dt>
               <dd className="mt-0.5 font-mono text-sm">{participation.id}</dd>
             </div>
           </dl>
@@ -96,13 +96,13 @@ export default async function GainDetailPage({
               <h2 className="font-semibold">Remise du lot</h2>
               <dl className="mt-3 grid gap-4 text-sm sm:grid-cols-2">
                 <div>
-                  <dt className="text-xs text-fg-muted">Remis le</dt>
+                  <dt className="text-sm text-fg-muted">Remis le</dt>
                   <dd className="mt-0.5">
                     {formatDateTime(participation.redemption.issuedAt)}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-fg-muted">Lieu</dt>
+                  <dt className="text-sm text-fg-muted">Lieu</dt>
                   <dd className="mt-0.5">
                     {participation.redemption.channel === 'IN_STORE'
                       ? `Boutique ${store?.name}`

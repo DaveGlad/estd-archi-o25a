@@ -40,7 +40,7 @@ export default function LotsPage() {
 
                   <div>
                     <h2 className="font-serif text-2xl">{prize.label}</h2>
-                    <p className="mt-2 text-sm text-fg-muted">{prize.description}</p>
+                    <p className="mt-2 text-base text-fg-muted">{prize.description}</p>
                   </div>
 
                   <Bar
@@ -65,7 +65,7 @@ export default function LotsPage() {
                   Valeur {formatPrice(grandPrize.valueCents)}
                 </p>
               </div>
-              <CardBody className="space-y-3 text-sm text-fg-muted">
+              <CardBody className="space-y-3 text-base text-fg-muted">
                 <p>{grandPrize.description}</p>
                 <p>
                   Tirage effectué à la clôture du jeu, le {formatDate(contest.endsAt)},
@@ -84,7 +84,7 @@ export default function LotsPage() {
           <h2 id="repartition" className="font-serif text-2xl">
             La répartition en un coup d&apos;œil
           </h2>
-          <p className="mt-2 max-w-3xl text-sm text-fg-muted">
+          <p className="mt-2 max-w-3xl text-base text-fg-muted">
             Ces pourcentages ne sont pas indicatifs. Ils sont garantis par la
             génération des codes, effectuée avant l&apos;ouverture du jeu, et vérifiés
             par un recomptage en base de données dont le rapport est conservé.

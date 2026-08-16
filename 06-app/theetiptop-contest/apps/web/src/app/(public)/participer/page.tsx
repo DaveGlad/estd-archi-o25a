@@ -29,7 +29,7 @@ export default function ParticiperPage() {
 
         <aside className="space-y-5">
           <Card>
-            <CardBody className="space-y-4 text-sm">
+            <CardBody className="space-y-5 text-base">
               <div className="flex gap-3">
                 <Ticket className="mt-0.5 size-5 shrink-0 text-accent-strong" aria-hidden="true" />
                 <div>
