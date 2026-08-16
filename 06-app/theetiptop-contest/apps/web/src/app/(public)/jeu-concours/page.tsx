@@ -27,7 +27,7 @@ const steps = [
   {
     icon: Sparkles,
     title: 'Créez votre compte',
-    text: "Par formulaire, ou en un clic avec votre compte Google ou Apple. Il faut être majeur et résider en France métropolitaine.",
+    text: "Par formulaire, ou en un clic avec votre compte Google ou Facebook. Il faut être majeur et résider en France métropolitaine.",
   },
   {
     icon: Gift,

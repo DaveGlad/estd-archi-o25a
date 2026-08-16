@@ -61,7 +61,7 @@ export interface User {
   contestRulesAcceptedAt: string | null;
   createdAt: string;
   storeId?: string;
-  provider: 'credential' | 'google' | 'apple';
+  provider: 'credential' | 'google' | 'facebook';
 }
 
 export interface TicketCode {

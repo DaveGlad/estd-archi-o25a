@@ -156,7 +156,7 @@ export const users: User[] = [
     marketingConsentAt: '2026-11-12T18:20:00.000Z',
     contestRulesAcceptedAt: '2026-11-12T18:20:00.000Z',
     createdAt: '2026-11-12T18:20:00.000Z',
-    provider: 'apple',
+    provider: 'facebook',
   },
   {
     id: 'usr_employee',

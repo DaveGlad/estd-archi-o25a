@@ -65,6 +65,7 @@
 - [ ] **Zone de chalandise** : carte + légende, zone actuelle et zone(s) d'extension, **basée sur le besoin** (pas sur les boutiques existantes)
 
 ## D. Stratégie de communication digitale
+- [ ] **Mix marketing** (produit, prix, distribution, communication) ⚠️ *exigé par l'énoncé, « Établissement d'un mix Marketing », mais absent de la trame imposée. À placer en ouverture de la partie D.*
 - [ ] Objectifs online **et** offline (Notoriété / Image → Intérêt → Essai / Évaluation → Vente → SAV → Fidélisation) + piliers par objectif
 - [ ] **Objectifs SMART**
 - [ ] **ROI** estimable pour chaque préconisation
@@ -134,7 +135,7 @@
 - [ ] **Eisenhower**
 - [ ] **RACI / RASCI**
 - [ ] **Matrice des risques**
-- [ ] **Gantt** sous **MS Project ou GanttProject uniquement** : du brief client à la livraison, tâches **par lots**, ressources avec taux horaires (charges patronales + salariales + marge), **jalons**, **prédécesseurs**, **% d'achèvement**
+- [ ] **Gantt** sous **MS Project ou GanttProject uniquement**, planifié **en mode ASAP** (au plus tôt), comme l'exige l'énoncé : du brief client à la livraison, tâches **par lots**, ressources avec taux horaires (charges patronales + salariales + marge), **jalons**, **prédécesseurs**, **% d'achèvement**
 - [ ] **Listing des tâches + timeline**
 - [ ] **Diagramme des ressources**
 

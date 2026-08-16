@@ -95,7 +95,7 @@ export default function ParticipantsPage() {
                           ? 'Formulaire'
                           : user?.provider === 'google'
                             ? 'Google'
-                            : 'Apple'}
+                            : 'Facebook'}
                       </Badge>
                     </Td>
                     <Td className="font-mono text-sm tracking-wider">

@@ -79,7 +79,7 @@ export default function InformationsPage() {
               <p className="text-fg-muted">
                 {user.provider === 'credential'
                   ? 'Courriel et mot de passe'
-                  : `Compte ${user.provider === 'google' ? 'Google' : 'Apple'}`}
+                  : `Compte ${user.provider === 'google' ? 'Google' : 'Facebook'}`}
               </p>
             </div>
             <Button variant="secondary" size="sm">

@@ -1,6 +1,6 @@
 # Avancement des deux dossiers
 
-> Mis à jour le 16 août 2026. À tenir à jour à chaque session de travail, et à reporter dans le Trello.
+> Mis à jour le 16 août 2026. La répartition nominative des tâches par rendu figure dans `REPARTITION.md`. À tenir à jour à chaque session de travail, et à reporter dans le Trello.
 
 ## Cahier des spécifications techniques, Furious Ducks
 
@@ -24,6 +24,7 @@
 | A. Descriptifs | 🟡 Rédigée, données à compléter | R1 | 2 800 mots |
 | B. Plan de veille | ✅ Rédigée | R2 | 1 700 mots |
 | C. Benchmark | ⬜ À faire, 3 jours de travail | R2 | |
+| D.0 Mix marketing | ✅ Rédigée | R2 | 700 mots |
 | D. Stratégie de communication digitale | ⬜ À faire | R2 | |
 | E. Cahier des charges fonctionnel | ✅ Rédigée | R3 | 4 275 mots |
 | F. Clauses techniques | ✅ Rédigée | R3 | 2 120 mots |

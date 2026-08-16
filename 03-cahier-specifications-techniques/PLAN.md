@@ -76,7 +76,7 @@ Présenter et **justifier** chaque service :
 - [ ] Procédures rédigées **à destination des utilisateurs** (mode opératoire exploitable)
 
 ## H. Diagramme de Gantt
-- [ ] Sous **MS Project ou GanttProject** uniquement
+- [ ] Sous **MS Project ou GanttProject** uniquement, planification **en mode ASAP**
 - [ ] Du brief à la livraison, tâches **par lots**
 - [ ] Ressources avec **taux horaires** (charges patronales + salariales + marge agence)
 - [ ] **Jalons**, **prédécesseurs**, **% d'achèvement**

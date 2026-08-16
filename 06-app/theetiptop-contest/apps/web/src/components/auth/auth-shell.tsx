@@ -67,12 +67,12 @@ function GoogleIcon() {
   );
 }
 
-function AppleIcon() {
+function FacebookIcon() {
   return (
     <svg width={18} height={18} viewBox="0 0 24 24" aria-hidden="true">
       <path
         fill="currentColor"
-        d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.32 2.32-1.55 4.3-3.74 4.25z"
+        d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.44 2.9h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94Z"
       />
     </svg>
   );
@@ -87,8 +87,11 @@ function AppleIcon() {
  * alternative, elles se présentent donc comme telle.
  *
  * Google garde ses couleurs officielles sur un bouton neutre, ce que ses
- * conditions d'utilisation imposent. Apple prend son aplat noir, comme le
- * prévoient ses propres règles de marque.
+ * conditions d'utilisation imposent. Facebook prend son bleu de marque en
+ * aplat, ce qui distingue les deux boutons autrement que par leur icône.
+ *
+ * Ces deux fournisseurs sont ceux nommés par le client, objectif n°2 point 2
+ * de l'expression de besoin. Ils ne sont pas interchangeables.
  */
 export function OAuthButtons({ label = 'Continuer' }: { label?: string }) {
   const base =
@@ -114,10 +117,10 @@ export function OAuthButtons({ label = 'Continuer' }: { label?: string }) {
 
         <button
           type="button"
-          className={`${base} border border-transparent bg-black text-white hover:bg-black/90`}
+          className={`${base} border border-transparent bg-[#1877F2] text-white hover:bg-[#1568d8]`}
         >
-          <AppleIcon />
-          {label} avec Apple
+          <FacebookIcon />
+          {label} avec Facebook
         </button>
       </div>
     </div>

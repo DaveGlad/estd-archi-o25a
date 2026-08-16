@@ -1,6 +1,6 @@
 # H. Diagramme de Gantt
 
-> Le diagramme doit être saisi sous GanttProject ou MS Project, aucun autre outil n'étant accepté. Cette section fournit la structure à saisir. Le fichier produit est exporté en image pour le dossier, avec la timeline et le diagramme des ressources.
+> Le diagramme doit être saisi sous GanttProject ou MS Project, aucun autre outil n'étant accepté, et planifié **en mode ASAP**. Cette section fournit la structure à saisir. Le fichier produit est exporté en image pour le dossier, avec la timeline et le diagramme des ressources.
 >
 > Le calcul du taux journalier moyen figure en annexe des deux dossiers.
 

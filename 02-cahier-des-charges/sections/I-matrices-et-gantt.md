@@ -90,7 +90,7 @@ Les trois risques les plus critiques ont tous une parade qui consiste à retirer
 
 ## I.2 Diagramme de Gantt
 
-> Le diagramme doit être saisi sous GanttProject ou MS Project, aucun autre outil n'étant accepté. Cette section fournit la structure complète à saisir : lots, tâches, durées, ressources, prédécesseurs et jalons. Le fichier produit est exporté en image pour le dossier et joint au rendu.
+> Le diagramme doit être saisi sous GanttProject ou MS Project, aucun autre outil n'étant accepté, et planifié **en mode ASAP**, c'est-à-dire au plus tôt, comme l'exige l'expression de besoin. Cette section fournit la structure complète à saisir : lots, tâches, durées, ressources, prédécesseurs et jalons. Le fichier produit est exporté en image pour le dossier et joint au rendu.
 
 ### Structure en lots
 

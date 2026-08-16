@@ -27,11 +27,13 @@
 09-recherche/                    Benchmark concurrents, veille, étude de marché
 ```
 
-## 📌 Les 3 documents de pilotage
+## 📌 Les documents de pilotage
 
 1. **`01-pilotage/PLANNING.md`** : le planning macro jusqu'à la soutenance
 2. **`01-pilotage/SPRINT-01-DOSSIERS.md`** : le plan jour par jour jusqu'au 31 août
 3. **`01-pilotage/BACKLOG.md`** : le backlog complet des tâches, à importer dans Trello ou Notion
+4. **`01-pilotage/REPARTITION.md`** : qui fait quoi, rendu par rendu, avec les relecteurs
+5. **`01-pilotage/AVANCEMENT.md`** : l'état d'avancement des deux dossiers
 
 ## ⚠️ Règles non négociables
 
