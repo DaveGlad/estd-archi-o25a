@@ -1,0 +1,70 @@
+// User domain: playing customers, in-store employees, administrators.
+
+model User {
+  id            String  @id @default(cuid())
+  email         String  @unique
+  emailVerified Boolean @default(false)
+  lastName      String
+  firstName     String
+  phone         String?
+  role          Role    @default(CUSTOMER)
+
+  // --- Demographics ---
+  // Collected solely for the statistics required by the brief (winner breakdown by
+  // gender and age). GDPR minimisation: we store the birth date, never a frozen age.
+  gender     Gender    @default(UNDISCLOSED)
+  birthDate  DateTime? @db.Date
+  postalCode String?   @db.VarChar(5)
+
+  // --- GDPR ---
+  // Timestamped consents are the only enforceable proof. Marketing consent is kept
+  // separate from accepting the contest rules: only the former feeds the mailing base.
+  termsAcceptedAt        DateTime?
+  contestRulesAcceptedAt DateTime?
+  marketingConsent       Boolean   @default(false)
+  marketingConsentAt     DateTime?
+  anonymizedAt           DateTime? // right to erasure: anonymise, never hard-delete,
+                                   // participations must stay auditable by the bailiff
+
+  // --- In-store employee ---
+  storeId String?
+  store   Store?  @relation(fields: [storeId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  // Better Auth (classic form + Google and Facebook OAuth)
+  sessions Session[]
+  accounts Account[]
+
+  // Business relations
+  participations    Participation[]
+  redemptionsIssued PrizeRedemption[] @relation("redemptionIssuer")
+  drawsWon          Draw[]            @relation("drawWinner")
+  auditLogs         AuditLog[]
+
+  @@index([role])
+  @@index([storeId])
+  @@index([deletedAt])
+  @@index([marketingConsent])   // mailing base export
+  @@index([gender, birthDate])  // back-office winner statistics
+}
+
+/// Audit trail for sensitive actions: prize redemption, data export, draw execution.
+/// Required both by GDPR accountability and by the bailiff's oversight.
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+}

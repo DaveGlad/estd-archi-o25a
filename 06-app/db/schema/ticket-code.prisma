@@ -1,0 +1,42 @@
+// THE technical core of the project: the 500,000 codes.
+//
+// Constraint from the brief, highlighted in red in the source document:
+// "The codes printed on the receipts must be generated at the very start of the contest
+//  so that the winning percentages are necessarily respected. You must therefore hold
+//  500,000 codes in the database, ready to be used, with their prize already assigned."
+//
+// Modelling consequence: the prize is NOT drawn when the player submits the code.
+// It is frozen at insertion time. Submitting only moves the code from AVAILABLE to USED.
+
+model TicketCode {
+  id String @id @default(cuid())
+
+  /// Code printed on the receipt: 10 alphanumeric characters.
+  /// CHAR(10) rather than TEXT: fixed known length, more compact index over 500,000 rows.
+  /// Uniqueness is enforced by the DATABASE, not just by the generator. That is the only
+  /// safeguard that actually holds if the PRNG ever collides.
+  code String @unique @db.Char(10)
+
+  /// Prize assigned AT GENERATION TIME. This is what guarantees the 60/20/10/6/4% split.
+  prizeId String
+  prize   Prize  @relation(fields: [prizeId], references: [id])
+
+  contestId String
+  contest   Contest @relation(fields: [contestId], references: [id])
+
+  status CodeStatus @default(AVAILABLE)
+  usedAt DateTime?
+
+  /// Optional 1-1: a code can only ever be played once.
+  participation Participation?
+
+  createdAt DateTime @default(now())
+
+  // --- Indexing ---
+  // Lookup by `code` rides the unique index: it is the hottest query on the site
+  // (every player submission). The remaining indexes serve the back-office.
+  @@index([status])              // "number of tickets used" (admin stat)
+  @@index([prizeId, status])     // "number of prizes already won" per prize
+  @@index([contestId, status])
+  @@index([usedAt])              // participation curve over time
+}

@@ -1,0 +1,34 @@
+// Participation = a player submitted a valid code.
+// Carries the prize and its lifecycle (to claim -> redeemed, or expired).
+
+model Participation {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  /// Hard uniqueness: a code can be played once, by one person only.
+  /// The constraint lives in the database rather than in application code, which
+  /// neutralises concurrent double submissions (double-click, network retry, script).
+  ticketCodeId String     @unique
+  ticketCode   TicketCode @relation(fields: [ticketCodeId], references: [id])
+
+  prizeStatus PrizeStatus @default(TO_CLAIM)
+
+  /// Copy of Contest.claimDeadline as it stood when the player participated.
+  /// Deliberate denormalisation: the deadline enforceable against a player is the one
+  /// in force on the day they played, even if the contest settings change afterwards.
+  claimDeadline DateTime
+
+  /// Anti-fraud: hashed IP (SHA-256 + salt), never in clear text, for GDPR minimisation.
+  ipHash String? @db.Char(64)
+
+  redemption PrizeRedemption?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt]) // "my prize history", sorted
+  @@index([prizeStatus])       // prizes still awaiting redemption
+  @@index([createdAt])         // participation statistics
+  @@index([claimDeadline])     // automated expiry job
+}

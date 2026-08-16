@@ -1,0 +1,41 @@
+// Contest configuration.
+// Deliberately isolated: every dated rule from the brief (30 days of play + 30 days to
+// claim, the 49 EUR threshold, the 500,000 code volume) is DATA, not a hard-coded
+// constant. This keeps the platform reusable for a future operation and, more
+// importantly, keeps the rules auditable by the bailiff.
+
+model Contest {
+  id   String @id @default(cuid())
+  name String
+  slug String @unique
+
+  // --- Time rules ---
+  startsAt      DateTime // opening day: D
+  endsAt        DateTime // closing:     D + 30 days
+  claimDeadline DateTime // end of claim window: closing + 30 days
+
+  // --- Participation rules ---
+  /// Minimum receipt or invoice amount, in cents.
+  /// Brief: "receipt or invoice above 49 EUR" -> 4900.
+  minimumPurchaseCents Int @default(4900)
+
+  /// Maximum number of codes distributable over the period. Brief: 500,000.
+  plannedCodeCount Int @default(500000)
+
+  /// Length of the code printed on the receipt. Brief: 10 characters.
+  codeLength Int @default(10)
+
+  // --- Legal oversight ---
+  bailiffName   String? // Maître Arnaud Rick
+  rulesUrl      String?
+  rulesFiledAt  DateTime?
+
+  codes  TicketCode[]
+  prizes Prize[]
+  draws  Draw[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([startsAt, endsAt])
+}
