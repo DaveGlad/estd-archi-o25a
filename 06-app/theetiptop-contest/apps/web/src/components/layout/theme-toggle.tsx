@@ -9,12 +9,15 @@ export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem('theme') as Theme | null;
-    const initial =
-      stored ??
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    setTheme(initial);
-    document.documentElement.dataset.theme = initial;
+    // Le thème est déjà posé sur <html> par le script du layout. On se
+    // contente de lire l'état effectif pour afficher la bonne icône.
+    const applied = document.documentElement.dataset.theme as Theme | undefined;
+    setTheme(
+      applied ??
+        (window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light')
+    );
   }, []);
 
   function toggle() {
