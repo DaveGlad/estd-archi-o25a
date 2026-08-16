@@ -1,0 +1,23 @@
+# Dépendances
+node_modules/
+
+# Build
+.next/
+dist/
+out/
+.nx/
+*.tsbuildinfo
+
+# Environnement
+.env
+.env.*
+!.env.example
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.idea/
+.vscode/*
+!.vscode/extensions.json
