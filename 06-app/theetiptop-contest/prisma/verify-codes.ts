@@ -21,6 +21,7 @@ import {
   PLANNED_CODE_COUNT,
   TICKET_PRIZES,
   assertDistributionIsExact,
+  hasDigitsAndLetters,
 } from '@theetiptop-contest/shared';
 
 import { CONTEST } from './reference-data.js';
@@ -105,6 +106,13 @@ async function main(): Promise<void> {
   // --- 5. Code format ---------------------------------------------------------
   const malformed = distinct.filter((row) => !CODE_PATTERN.test(row.code));
   check(`malformed codes (not ${CODE_LENGTH} chars A-Z0-9)`, 0, malformed.length);
+
+  // The brief asks for codes "comprenant des chiffres et des lettres". Counted here and
+  // not assumed from the generator: a uniform draw over the 36 symbols yields about 3.8%
+  // of all-letter codes, so this check fails loudly against a pool generated without the
+  // rule rather than letting 19,000 non-conforming codes reach the tills.
+  const degenerate = distinct.filter((row) => !hasDigitsAndLetters(row.code));
+  check('codes without both a digit and a letter', 0, degenerate.length);
 
   // --- 6. Pool fingerprint ----------------------------------------------------
   // Recomputed from the table and compared with what the generation run recorded: proves
