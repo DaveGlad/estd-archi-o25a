@@ -61,7 +61,7 @@ L'acteur Client hérite de Visiteur. L'acteur Admin hérite d'Employé boutique.
 | **Acteurs secondaires** | Aucun |
 | **Objectif** | Saisir le code figurant sur un ticket de caisse et découvrir le lot gagné |
 | **Déclencheur** | Le client dispose d'un ticket de caisse ou d'une facture de plus de 49 € portant un code à 10 caractères |
-| **Préconditions** | Le client possède un compte et il est authentifié. Le jeu-concours est ouvert, la date du jour est comprise entre la date d'ouverture et la date de clôture |
+| **Préconditions** | Le client possède un compte et il est authentifié. La saisie est encore ouverte, c'est-à-dire que la date du jour est comprise entre la date d'ouverture et la **date limite de réclamation**, soit les 30 jours du jeu plus les 30 jours suivant sa clôture |
 | **Postconditions en cas de succès** | Le code passe au statut « utilisé ». Une participation est créée, rattachée au client, portant le lot et sa date limite de réclamation |
 | **Postconditions en cas d'échec** | Aucune donnée modifiée |
 
@@ -73,7 +73,7 @@ L'acteur Client hérite de Visiteur. L'acteur Admin hérite d'Employé boutique.
 4. Le système vérifie le format du code
 5. Le système vérifie que le code existe en base
 6. Le système vérifie que le code n'a pas déjà été utilisé
-7. Le système vérifie que le jeu est toujours ouvert
+7. Le système vérifie que la saisie est encore ouverte, date limite de réclamation incluse
 8. Le système marque le code comme utilisé et crée la participation
 9. Le système calcule la date limite de réclamation et l'enregistre sur la participation
 10. Le système affiche le lot gagné, les modalités de retrait et la date limite
@@ -103,7 +103,7 @@ L'acteur Client hérite de Visiteur. L'acteur Admin hérite d'Employé boutique.
 |---|---|
 | RG-01 | Un code ne peut être joué qu'une seule fois, quel que soit le compte |
 | RG-02 | Le lot est déterminé à la génération du code, jamais au moment de la saisie |
-| RG-03 | Le client dispose de 30 jours après la clôture du jeu pour réclamer son lot |
+| RG-03 | Le client dispose des 30 jours du jeu, puis de 30 jours après sa clôture, pour **saisir son code** et réclamer son lot. La fenêtre de saisie est donc de 60 jours, alors que la distribution des codes en caisse s'arrête à la clôture |
 | RG-04 | Tous les codes sont gagnants |
 
 Le message d'erreur E2 est volontairement neutre. Indiquer qu'un code n'existe pas est une information exploitable par quelqu'un qui chercherait à deviner des codes valides. Combiné au blocage E5, cela rend l'énumération inintéressante.

@@ -87,7 +87,7 @@ Toute tentative de fraude, notamment l'utilisation de moyens automatisés pour g
 
 Le lot gagné est affiché immédiatement après la saisie du code et confirmé par courriel.
 
-Le participant dispose de la période du jeu, puis de trente jours suivant sa clôture, pour réclamer son lot. Passé ce délai, le lot est perdu sans possibilité de recours ni de compensation.
+Le participant dispose de la période du jeu, puis de trente jours suivant sa clôture, pour saisir le code de son ticket sur le site et réclamer son lot en boutique ou en ligne. Passé ce délai, le code ne peut plus être joué et le lot est perdu sans possibilité de recours ni de compensation.
 
 Les lots sont retirés en boutique ou en ligne selon les modalités indiquées. Ils ne peuvent être ni échangés, ni repris, ni faire l'objet d'une contrepartie financière.
 

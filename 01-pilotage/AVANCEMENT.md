@@ -52,7 +52,7 @@
 |---|---|---|---|
 | A1 | Schéma BDD + migrations | ✅ | 4 migrations appliquées, 12 tables |
 | A2 | Squelette API + squelette webApp | ✅ | 25 routes API, Swagger sur `/docs` |
-| A3 | **Génération des 500 000 codes** | ✅ | 45,7 s, 11 190 lignes/s, 0 collision |
+| A3 | **Génération des 500 000 codes** | ✅ | 51,6 s, 9 908 lignes/s, 0 collision, chiffres et lettres garantis dans chaque code |
 | A4 | Test automatisé de la répartition | ✅ | `codes:verify` + 13 tests d'intégration |
 | A5 | Auth formulaire + Google + Facebook | ✅ | Better Auth ; OAuth câblé, identifiants à fournir |
 | A6 | Rôles et permissions | ✅ | 3 gardes globales, cloisonnement testé en E2E |

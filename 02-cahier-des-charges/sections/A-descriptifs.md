@@ -82,7 +82,7 @@ Cette répartition a une conséquence directe sur la conception. L'API que nous 
 
 | Contrainte | Nature | Conséquence sur le projet |
 |---|---|---|
-| Le jeu dure 30 jours, suivis de 30 jours de réclamation | Calendaire | Le site doit être ouvert avant l'impression des premiers tickets, et rester en ligne 60 jours au minimum |
+| Le jeu dure 30 jours, suivis de 30 jours de saisie et de réclamation | Calendaire | Le site doit être ouvert avant l'impression des premiers tickets, et rester **pleinement fonctionnel** 60 jours au minimum : la saisie d'un code reste possible trente jours après la clôture, alors que la distribution des codes en caisse s'arrête à la clôture |
 | Les 500 000 codes existent avant l'ouverture | Technique | La génération et son contrôle sont un préalable au lancement, pas une fonctionnalité livrée en cours de route |
 | Règlement déposé chez un huissier | Juridique | Les règles annoncées ne peuvent plus être modifiées après le dépôt, y compris la répartition des lots |
 | Tirage du gros lot sous contrôle d'huissier | Juridique | Le tirage doit être reproductible et vérifiable |

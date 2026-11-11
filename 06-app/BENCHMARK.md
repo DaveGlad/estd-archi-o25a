@@ -51,14 +51,29 @@ avant la première insertion.
 
 **Mesure observée** : 0 collision sur l'exécution du 11 novembre 2026, conforme à l'attente.
 
+### Les rejets qui ne sont pas des collisions
+
+Le sujet demande « un code à 10 caractères comprenant des chiffres et des lettres ». Un
+tirage uniforme sur les 36 symboles ne le garantit pas : la probabilité qu'un code ne
+contienne **aucun chiffre** vaut (26/36)^10 ≈ 3,79 %, soit environ 19 000 codes sur
+500 000. Le premier pool généré en contenait **19 282**, mesurés en base.
+
+Le générateur rejette donc et retire ces codes, exactement comme une collision, et
+`npm run codes:verify` recompte la règle en base. Le coût est d'environ 4 % de tirages
+supplémentaires ; l'espace de codes perdu est négligeable devant 36^10.
+
 ## 2. Génération et insertion
 
 | Étape | Durée mesurée | Détail |
 |---|---|---|
-| Construction + mélange du vecteur de lots | **25 ms** | 500 000 entrées, Fisher-Yates descendant, PRNG xoshiro128** seedé |
-| Tirage des 500 000 codes distincts | **1,02 s** | 5 000 000 d'appels au PRNG, échantillonnage par rejet |
-| Insertion en base | **44,68 s** | 100 lots de 5 000 lignes, soit **11 190 lignes/s** |
-| **Total** | **45,73 s** | |
+| Construction + mélange du vecteur de lots | **26 ms** | 500 000 entrées, Fisher-Yates descendant, PRNG xoshiro128** seedé |
+| Tirage des 500 000 codes distincts | **1,09 s** | ≈ 5 200 000 appels au PRNG, échantillonnage par rejet, chiffres et lettres garantis |
+| Insertion en base | **50,47 s** | 100 lots de 5 000 lignes, soit **9 908 lignes/s** |
+| **Total** | **51,58 s** | |
+
+Mesures du 11 novembre 2026, sur le pool définitif. Empreinte enregistrée :
+`4887052c…9c0913`. L'insertion domine toujours le temps total ; le tirage, règle de
+composition comprise, en représente 2 %.
 
 ### Pourquoi 5 000 lignes par lot
 
@@ -108,14 +123,14 @@ fréquente de l'application.
 
 | Mesure | Valeur |
 |---|---|
-| Recherche par `code` (`findUnique`) | **529 µs** en moyenne sur 200 lectures |
+| Recherche par `code` (`findUnique`) | **540 µs** en moyenne sur 200 lectures |
 
 Mesurée sur une table de 500 000 lignes, index unique B-tree, via le pool de l'adaptateur
 `node-postgres`. La valeur inclut l'aller-retour réseau vers le conteneur, la planification
 et l'exécution.
 
-**Conséquence de dimensionnement** : à 529 µs par lecture, un seul conteneur d'API absorbe
-théoriquement environ 1 890 vérifications de code par seconde sur cette seule requête. Le
+**Conséquence de dimensionnement** : à 540 µs par lecture, un seul conteneur d'API absorbe
+théoriquement environ 1 850 vérifications de code par seconde sur cette seule requête. Le
 sujet annonce 500 000 codes distribués sur 30 jours ; même en concentrant la moitié des
 participations sur une seule journée, on reste trois ordres de grandeur sous cette limite.
 La base n'est donc pas le facteur limitant, ce qui justifie de dimensionner les conteneurs

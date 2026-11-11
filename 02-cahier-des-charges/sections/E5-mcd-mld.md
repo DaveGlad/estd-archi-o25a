@@ -156,5 +156,5 @@ AUDIT_LOG (id, #userId, action, entity, entityId, metadata, ip, createdAt)
 | Employé boutique : voir et marquer « remis » | `PrizeRedemption` + `User.storeId` |
 | Tirage au sort côté serveur, sans avantage au volume | `Draw` sur participants distincts + `seed` + `participantsFingerprint` |
 | RGPD | Consentements horodatés, `anonymizedAt`, `ipHash`, `AuditLog` |
-| Fenêtre de réclamation 30 j + 30 j | `Contest.endsAt` / `Contest.claimDeadline` / `Participation.claimDeadline` |
-| Seuil de 49 € | `Contest.minimumPurchaseCents = 4900` |
+| Fenêtre de saisie et de réclamation 30 j + 30 j | `Contest.endsAt` borne la distribution en caisse, `Contest.claimDeadline` borne la saisie d'un code et la réclamation. Les deux fenêtres sont distinctes : `isDistributionOpen()` et `isSubmissionOpen()` |
+| Seuil de 49 € | `Contest.minimumPurchaseCents = 4900`, comparaison **stricte** : le sujet dit « une somme supérieure à 49 € », donc un ticket de 49,00 € ne donne pas de code (`qualifiesForCode()`) |
