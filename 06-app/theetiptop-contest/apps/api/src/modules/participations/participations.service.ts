@@ -4,6 +4,7 @@ import {
   CODE_PATTERN,
   PARTICIPATIONS_DEFAULT_PAGE_SIZE,
   PLAYABLE_CODE_STATUSES,
+  isSubmissionOpen,
   type AdminParticipationDto,
   type AuthProvider,
   type Paginated,
@@ -177,12 +178,23 @@ export class ParticipationsService {
       return { outcome: 'RATE_LIMITED', retryInMinutes: Math.max(1, Math.ceil(retryAfterSeconds / 60)) };
     }
 
-    // 3. Is the contest open. A code played after closing is refused even if it is valid:
-    //    the contest rules filed with the bailiff set a 30-day window.
+    // 3. Can a code still be played. The boundary is `claimDeadline`, NOT `endsAt`: the
+    //    rules filed with the bailiff grant "les 30 jours du jeu concours ainsi que 30
+    //    jours supplémentaires à compter de la date de clôture du jeu pour aller sur le
+    //    site internet afin tester le code de leur(s) ticket(s) et réclamer leur lot".
+    //
+    //    Closing submissions at `endsAt` would lock out every customer holding a receipt
+    //    from the last days of the contest — exactly the people the extra 30 days exist
+    //    for. Ticket distribution does close at `endsAt`; that check lives in the till
+    //    service, which is the only thing that creates new codes.
     const contest = await this.catalogue.getCurrentContestEntity();
     const now = new Date();
-    if (now < contest.startsAt || now > contest.endsAt) {
-      return { outcome: 'CONTEST_CLOSED', endsAt: contest.endsAt.toISOString() };
+    if (!isSubmissionOpen(contest, now)) {
+      return {
+        outcome: 'CONTEST_CLOSED',
+        endsAt: contest.endsAt.toISOString(),
+        claimDeadline: contest.claimDeadline.toISOString(),
+      };
     }
 
     // 4. Does the code exist. Rides the unique index — 529 µs over 500,000 rows, measured

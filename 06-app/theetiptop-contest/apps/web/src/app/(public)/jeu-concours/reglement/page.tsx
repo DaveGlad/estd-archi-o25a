@@ -43,9 +43,11 @@ export default async function ReglementPage() {
           <h2>Article 2, durée</h2>
           <p>
             Le jeu se déroule du {formatDate(contest.startsAt)} au{' '}
-            {formatDate(contest.endsAt)} inclus. Les participants disposent ensuite de
-            trente jours, soit jusqu&apos;au {formatDate(contest.claimDeadline)}, pour
-            réclamer leur lot.
+            {formatDate(contest.endsAt)} inclus. Les participants disposent des trente
+            jours du jeu ainsi que de trente jours supplémentaires à compter de la
+            clôture, soit jusqu&apos;au {formatDate(contest.claimDeadline)}, pour saisir
+            le code de leur ticket sur le site et réclamer leur lot en boutique ou en
+            ligne.
           </p>
 
           <h2>Article 3, conditions de participation</h2>

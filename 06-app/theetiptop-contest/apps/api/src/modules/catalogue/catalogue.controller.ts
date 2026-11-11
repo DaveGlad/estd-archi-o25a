@@ -23,7 +23,13 @@ export class CatalogueController {
   @ApiOperation({
     summary: 'Le jeu-concours en cours',
     description:
-      'Dates, seuil de participation, volume de codes, huissier. `isOpen` est calculé par le serveur : l’horloge du navigateur du visiteur n’est pas une référence.',
+      'Dates, seuil de participation, volume de codes, huissier.\n\n' +
+      'Deux fenêtres distinctes, toutes deux calculées par le serveur — l’horloge du ' +
+      'navigateur du visiteur n’est pas une référence :\n' +
+      '- `isOpen` : les tickets portent encore un code (`startsAt` → `endsAt`, 30 jours). ' +
+      'C’est la fenêtre de la caisse.\n' +
+      '- `isPlayable` : un code déjà imprimé peut encore être joué (`startsAt` → ' +
+      '`claimDeadline`, 60 jours). C’est la fenêtre du joueur.',
   })
   getContest(): Promise<ContestDto> {
     return this.catalogue.getCurrentContest();

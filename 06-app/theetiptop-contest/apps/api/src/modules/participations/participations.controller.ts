@@ -48,7 +48,7 @@ export class ParticipationsController {
       '| `INVALID_FORMAT` | La saisie ne fait pas 10 caractères alphanumériques |',
       '| `UNKNOWN_CODE` | Le code n’existe pas pour ce jeu |',
       '| `ALREADY_USED` | Le code a déjà été joué, avec la date et un indicateur « par vous-même » |',
-      '| `CONTEST_CLOSED` | Les participations sont fermées |',
+      '| `CONTEST_CLOSED` | La saisie est fermée : avant `startsAt`, ou après `claimDeadline` |',
       '| `RATE_LIMITED` | Trop de tentatives, avec le délai d’attente en minutes |',
       '',
       'Le lot n’est **pas tiré au sort ici** : il a été figé à la génération des 500 000 codes, ce qui est ce qui garantit la répartition 60/20/10/6/4 %.',

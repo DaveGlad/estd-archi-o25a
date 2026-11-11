@@ -60,12 +60,14 @@ export default async function ParticiperPage() {
                   <p className="font-medium">
                     {contest.isOpen
                       ? `Il reste ${daysLeft} jour${daysLeft > 1 ? 's' : ''}`
-                      : 'Le jeu est terminé'}
+                      : contest.isPlayable
+                        ? 'Le jeu est clos, la saisie reste ouverte'
+                        : 'La saisie est terminée'}
                   </p>
                   <p className="mt-1 text-fg-muted">
                     {contest.isOpen ? 'Le jeu ferme le' : 'Le jeu a fermé le'}{' '}
-                    {formatDate(contest.endsAt)}. Vos lots restent réclamables
-                    jusqu&apos;au {formatDate(contest.claimDeadline)}.
+                    {formatDate(contest.endsAt)}, mais vous pouvez saisir vos codes et
+                    réclamer vos lots jusqu&apos;au {formatDate(contest.claimDeadline)}.
                   </p>
                 </div>
               </div>

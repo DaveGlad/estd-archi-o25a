@@ -133,8 +133,8 @@ export default async function JeuConcoursPage() {
               <h2 className="font-semibold">Les dates</h2>
               <p className="text-base text-fg-muted">
                 Jeu ouvert du {formatDate(contest.startsAt)} au{' '}
-                {formatDate(contest.endsAt)}. Réclamation des lots possible
-                jusqu&apos;au {formatDate(contest.claimDeadline)}.
+                {formatDate(contest.endsAt)}. Saisie des codes et réclamation des
+                lots possibles jusqu&apos;au {formatDate(contest.claimDeadline)}.
               </p>
             </CardBody>
           </Card>

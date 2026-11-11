@@ -1,4 +1,10 @@
-import type { ContestDto, PrizeDto, StoreDto } from '@theetiptop-contest/shared';
+import {
+  isDistributionOpen,
+  isSubmissionOpen,
+  type ContestDto,
+  type PrizeDto,
+  type StoreDto,
+} from '@theetiptop-contest/shared';
 
 import { toDateOnlyOrNull, toIso, toIsoOrNull, toNumberOrNull } from '../../common/mapping.js';
 import type { ContestModel, PrizeModel, StoreModel } from '../../generated/prisma/models.js';
@@ -20,9 +26,14 @@ export function toContestDto(contest: ContestModel, now: Date): ContestDto {
     bailiffName: contest.bailiffName,
     rulesUrl: contest.rulesUrl,
     rulesFiledAt: toIsoOrNull(contest.rulesFiledAt),
-    // Computed server-side: the browser's clock is the user's, and a client whose clock is
-    // a day off would be told the contest is closed when it is not.
-    isOpen: now >= contest.startsAt && now <= contest.endsAt,
+    // Both windows are computed server-side: the browser's clock is the user's, and a
+    // client whose clock is a day off would be told the contest is closed when it is not.
+    //
+    // They are genuinely two windows, not one. Tickets stop carrying codes at `endsAt`,
+    // but the right to play a code already printed runs 30 days further, to
+    // `claimDeadline`. See the comment on `isPlayable` in the DTO.
+    isOpen: isDistributionOpen(contest, now),
+    isPlayable: isSubmissionOpen(contest, now),
   };
 }
 

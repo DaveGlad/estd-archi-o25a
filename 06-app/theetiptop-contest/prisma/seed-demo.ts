@@ -454,7 +454,9 @@ async function main(): Promise<void> {
         ticketCodeId: available[codeCursor].id,
         storeId: store.id,
         // Above the threshold, with a realistic spread for a tea purchase.
-        purchaseAmountCents: MINIMUM_PURCHASE_CENTS + random.nextBelow(9_000),
+        // `+ 1` because the threshold is strict: a receipt of exactly 49,00 € earns no
+        // code, so the demo data must not contain one that did.
+        purchaseAmountCents: MINIMUM_PURCHASE_CENTS + 1 + random.nextBelow(9_000),
         dispensedAt,
         usedAt: playedAt,
         // Most prizes get collected; the rest are still waiting.
