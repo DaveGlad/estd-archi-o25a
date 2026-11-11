@@ -1,101 +1,137 @@
-# TheetiptopContest
+# Site jeu-concours Thé Tip Top
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+Monorepo Nx du livrable applicatif : **API REST versionnée**, **site public**,
+**back-office**. Développé pour l'ouverture de la dixième boutique Thé Tip Top, à Nice.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+> Le contexte, les exigences et les décisions sont dans `01-pilotage/DECISIONS.md` et
+> `06-app/ARCHITECTURE.md`. Les mesures de performance sont dans `06-app/BENCHMARK.md`.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## Démarrage
 
-## Run tasks
+```bash
+# 1. Secrets et configuration
+cp .env.example .env
+# puis renseigner BETTER_AUTH_SECRET et IP_HASH_SALT :
+#   openssl rand -base64 32   → BETTER_AUTH_SECRET
+#   openssl rand -hex 32      → IP_HASH_SALT
 
-To run the dev server for your app, use:
+# 2. PostgreSQL 17 + Redis 8
+npm run dev:infra
 
-```sh
-npx nx dev web
+# 3. Schéma, données de référence, puis les 500 000 codes
+npm run db:migrate
+npm run db:seed
+npm run codes:generate     # ~45 s
+npm run codes:verify       # contrôle de la répartition 60/20/10/6/4 %
+
+# 4. Les trois applications, dans trois terminaux
+npm run dev:api            # http://localhost:3333  — Swagger sur /docs
+npm run dev:web            # http://localhost:3000
+npm run dev:admin          # http://localhost:3001
 ```
 
-To create a production bundle:
+Comptes de démonstration, insérés par `db:seed` et **uniquement hors production**. Mot de
+passe commun : `MotDePasse2026!`
 
-```sh
-npx nx build web
+| Compte | Rôle | Ce qu'il permet de voir |
+|---|---|---|
+| `camille.rousseau@example.fr` | client | Saisie de code, historique des gains, droits RGPD |
+| `theo.marchand@example.fr` | client | Second client, pour les tests de cloisonnement |
+| `sofia.legrand@theetiptop.fr` | employé, boutique de Nice | Recherche client, remise des lots |
+| `admin@theetiptop.fr` | administrateur | Statistiques, export emailing, tirage au sort |
+
+## Structure
+
+```
+apps/
+  api/        API REST v1, NestJS 11 + Swagger. Seule à parler à la base
+  web/        Site public : présentation, lots, inscription, saisie de code, mes gains
+  admin/      Back-office : statistiques, export, tirage, et l'espace boutique employé
+packages/
+  shared/     Types, contrats et constantes métier. Aucune dépendance d'exécution
+  ui/         Design system : tokens, primitives, graphiques. Partagé web ↔ admin
+  api-client/ Client typé de l'API v1, avec une frontière serveur / navigateur stricte
+prisma/
+  schema/     Schéma splitté par domaine, base du MLD du cahier des charges
+  migrations/ Migrations versionnées, jouées par le pipeline
+  seed.ts generate-codes.ts verify-codes.ts reset-codes.ts
+tests/        Tests d'intégration et de performance
+e2e/          Tests fonctionnels Playwright
+tools/        Outillage de build
 ```
 
-To see all available targets to run for a project, run:
+### Pourquoi trois applications et non une
 
-```sh
-npx nx show project web
-```
+| | Raison |
+|---|---|
+| `api` séparée des fronts | Elle sert **trois consommateurs**, dont deux que nous n'écrivons pas : les caisses des 10 boutiques et le futur site e-commerce. D'où une API REST versionnée et documentée, et non un back-end privé |
+| `admin` séparée de `web` | Le site public est la surface exposée — indexée, ouverte aux anonymes ; le back-office ne l'est pas. Séparées, les écrans d'administration ne sont même pas joignables sur l'hôte public, et les deux se déploient avec des règles d'entrée distinctes |
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+## Les commandes
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+| Commande | Ce qu'elle fait |
+|---|---|
+| `npm run dev:infra` / `dev:infra:down` | PostgreSQL + Redis en Docker |
+| `npm run db:migrate` | Crée et applique une migration (développement) |
+| `npm run db:deploy` | Applique les migrations existantes (déploiement) |
+| `npm run db:seed` | Jeu, lots, 10 boutiques, comptes de démonstration. Idempotent |
+| `npm run codes:generate` | Les 500 000 codes. **Opération unique**, refusée si le pool existe |
+| `npm run codes:verify` | Recompte la répartition en base. Sort en erreur à la moindre divergence |
+| `npm run codes:reset` | Vide le pool. Développement uniquement |
+| `npm run test` | Tests unitaires |
+| `npm run test:integration` | Tests d'intégration, contre la vraie base |
+| `npm run test:e2e` | Tests fonctionnels Playwright, sur les trois applications |
+| `npm run test:perf` | Tests de performance k6 |
+| `npm run typecheck` / `lint` / `build` | Sur l'ensemble du monorepo |
 
-## Add new projects
+## Les tests
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+Les quatre familles exigées par le sujet, avec export des rapports vers Jenkins.
 
-Use the plugin's generator to create new projects.
+| Famille | Outil | Volume | Rapport |
+|---|---|---|---|
+| Unitaires | Vitest | 54 tests | `reports/junit/vitest.xml` |
+| Intégration | Vitest + PostgreSQL | 32 tests | `reports/junit/vitest.xml` |
+| Fonctionnels | Playwright, 3 projets | 46 tests | `reports/junit/playwright.xml` |
+| Performance | k6 | 3 scénarios | `reports/junit/k6.xml` |
 
-To generate a new application, use:
+Les trois tests qui portent réellement les exigences du sujet :
 
-```sh
-npx nx g @nx/next:app demo
-```
+- **`tests/code-distribution.integration.spec.ts`** recompte la répartition 60/20/10/6/4 %
+  **en base**, pas dans un mock. C'est la seule preuve que le pool contient ce que le
+  règlement déposé chez l'huissier promet.
+- **`tests/draw-fairness.integration.spec.ts`** vérifie qu'un client ayant joué quarante
+  codes a exactement la même chance qu'un client en ayant joué un. Un tirage sur les
+  participations passerait tous les autres tests et échouerait sur celui-là.
+- **`tests/participation-concurrency.integration.spec.ts`** fait courir dix transactions
+  sur un même code et exige qu'une seule gagne.
 
-To generate a new library, use:
+## Points techniques à savoir défendre
 
-```sh
-npx nx g @nx/react:lib mylib
-```
+| Sujet | Où c'est documenté |
+|---|---|
+| Pourquoi la répartition est **exacte** et non statistique | `prisma/generate-codes.ts`, en-tête |
+| Pourquoi la graine de génération n'est **pas** stockée, alors que celle du tirage l'est | `prisma/schema/contest.prisma` et `apps/api/src/modules/draw/draw.service.ts` |
+| Pourquoi le lot est **lu** et jamais tiré à la saisie | `apps/api/src/modules/participations/participations.service.ts` |
+| Comment un code ne peut être joué qu'une fois sous concurrence | la même, méthode `claimCode` |
+| Pourquoi `pg_trgm` et non Elasticsearch | migration `20261111070019_add_trgm_customer_search_indexes` |
+| Pourquoi la caisse n'apprend jamais le lot qu'elle imprime | `apps/api/src/modules/pos/pos.service.ts` |
+| Pourquoi l'effacement RGPD est une **anonymisation** | `apps/api/src/modules/users/users.service.ts`, méthode `anonymize` |
+| Pourquoi l'export CSV neutralise les champs commençant par `=` | `apps/api/src/modules/export/export.service.ts` |
+| Comment l'image de l'API est passée de 1,46 Go à 471 Mo | `05-workflow/docker/README.md` et `tools/pin-runtime-deps.mjs` |
+| Pourquoi `COOKIE_DOMAIN` est vide en local et obligatoire en production | `apps/api/src/config/env.ts` |
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## Conventions
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- **Commentaires de code en anglais.** La prose du projet — dossiers, README, textes
+  affichés à l'utilisateur — reste en français.
+- **TypeScript partout**, y compris les fichiers de configuration : `prisma.config.ts`,
+  `next.config.ts`, `playwright.config.ts`, `vitest.config.mts`.
+- **`.env` jamais versionné**, jamais embarqué dans une image Docker. Les secrets sont
+  injectés à l'exécution par Jenkins.
 
-## Set up CI!
+## Conteneurisation
 
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
-```
-
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
-```
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Trois images multi-étages dans `05-workflow/docker/`, construites depuis **la racine de ce
+monorepo** comme contexte. Voir le README de ce dossier pour les commandes, les tailles
+mesurées et le déploiement par environnement.

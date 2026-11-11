@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Container, PageHeader } from '../../../components/layout/container';
+import { Container, PageHeader } from '@theetiptop-contest/ui/container';
 
 export const metadata: Metadata = {
   title: 'Mentions légales',

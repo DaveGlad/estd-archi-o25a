@@ -1,6 +1,6 @@
 # Avancement des deux dossiers
 
-> Mis à jour le 16 août 2026. La répartition nominative des tâches par rendu figure dans `REPARTITION.md`. À tenir à jour à chaque session de travail, et à reporter dans le Trello.
+> Mis à jour le 11 novembre 2026. La répartition nominative des tâches par rendu figure dans `REPARTITION.md`. À tenir à jour à chaque session de travail, et à reporter dans le Trello.
 
 ## Cahier des spécifications techniques, Furious Ducks
 
@@ -41,6 +41,60 @@
 | J. Devis | ✅ Rédigée | R1 | 1 570 mots |
 | Couverture et sommaire | ✅ Rédigés | R1 | 550 mots |
 | Annexe questionnaire et interviews | 🟡 Questionnaire prêt, entretiens à mener | R2 | 1 290 mots |
+
+## Développement applicatif, site jeu-concours
+
+> Monorepo `06-app/theetiptop-contest`. État vérifié à l'exécution le 11 novembre 2026 :
+> les trois applications démarrent, les 500 000 codes sont en base, 132 tests passent.
+> Détail dans `06-app/ARCHITECTURE.md`, mesures dans `06-app/BENCHMARK.md`.
+
+| Tâche | Intitulé | Statut | Preuve |
+|---|---|---|---|
+| A1 | Schéma BDD + migrations | ✅ | 4 migrations appliquées, 12 tables |
+| A2 | Squelette API + squelette webApp | ✅ | 25 routes API, Swagger sur `/docs` |
+| A3 | **Génération des 500 000 codes** | ✅ | 45,7 s, 11 190 lignes/s, 0 collision |
+| A4 | Test automatisé de la répartition | ✅ | `codes:verify` + 13 tests d'intégration |
+| A5 | Auth formulaire + Google + Facebook | ✅ | Better Auth ; OAuth câblé, identifiants à fournir |
+| A6 | Rôles et permissions | ✅ | 3 gardes globales, cloisonnement testé en E2E |
+| A7 | Page de présentation du jeu et des lots | ✅ | `/jeu-concours`, `/jeu-concours/lots` |
+| A8 | Participation par numéro de ticket | ✅ | 6 issues UC-01, compare-and-swap concurrent |
+| A9 | Historique des gains côté client | ✅ | `/mon-compte`, `/mon-compte/gains/[id]` |
+| A10 | Back-office statistiques | ✅ | 12 agrégats, cache Redis 2 min |
+| A11 | Export des données pour l'emailing | ✅ | CSV et JSON, opt-in seul, injection de formule neutralisée |
+| A12 | Vue employé boutique | ✅ | Recherche `pg_trgm`, remise tracée au journal d'audit |
+| A13 | **Tirage du gros lot côté serveur** | ✅ | 1 chance par participant, rejouable et vérifiable |
+| A14 | Endpoints API pour les caisses | ✅ | 3 routes, clé d'API, `FOR UPDATE SKIP LOCKED` |
+| A15 | RGPD | ✅ | Consentements horodatés serveur, export art. 20, anonymisation art. 17 |
+| A16 | Accessibilité + responsive | ✅ | `jsx-a11y` au lint, projet Playwright mobile |
+| A17 | SEO on-page | ✅ | SSR, métadonnées, sitemap généré, Schema.org |
+| A18 | Tests de performance | 🟡 | Scénarios k6 écrits ; **k6 à installer pour les exécuter** |
+
+### Tests livrés
+
+| Famille | Outil | Volume | Statut |
+|---|---|---|---|
+| Unitaires | Vitest | 54 | ✅ passent |
+| Intégration | Vitest + PostgreSQL | 32 | ✅ passent |
+| Fonctionnels | Playwright, 3 projets | 46 | ✅ passent |
+| Performance | k6 | 3 scénarios | 🟡 écrits, non exécutés |
+
+Rapports JUnit écrits dans `reports/junit/`, prêts pour l'étape `junit` de Jenkins.
+
+### Conteneurisation
+
+| Image | Taille mesurée | Vérifiée à l'exécution |
+|---|---|---|
+| `theetiptop/api` | 471 Mo | ✅ healthy, sert le catalogue et les routes caisse |
+| `theetiptop/web` | 322 Mo | ✅ healthy, rend les pages avec les données réelles |
+| `theetiptop/admin` | 319 Mo | ✅ healthy |
+
+### Ce qui bloque encore, côté applicatif
+
+| Blocage | Ce qu'il empêche | Qui doit agir |
+|---|---|---|
+| Identifiants OAuth Google et Facebook | Les deux connexions sociales. Le code est câblé et se désactive proprement sans eux | R3, après création des applications tierces |
+| k6 non installé | L'exécution des tests de performance, donc les chiffres de débit du CST partie I | R3 |
+| Numéro de classe et de groupe | Les noms de domaine réels dans les `.env` de déploiement | Le groupe |
 
 ## Ce qui bloque
 

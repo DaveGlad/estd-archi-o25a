@@ -1,11 +1,23 @@
 import type { Metadata } from 'next';
-import { Calendar, Gift, Receipt, ShieldCheck, Sparkles, Store } from 'lucide-react';
-import { Container, PageHeader } from '../../../components/layout/container';
-import { ButtonLink } from '../../../components/ui/button';
-import { Card, CardBody } from '../../../components/ui/card';
-import { Alert } from '../../../components/ui/alert';
-import { contest } from '../../../lib/mock';
-import { formatDate, formatPrice } from '../../../lib/utils';
+import {
+  Calendar,
+  Gift,
+  Receipt,
+  ShieldCheck,
+  Sparkles,
+  Store,
+} from 'lucide-react';
+import { Container, PageHeader } from '@theetiptop-contest/ui/container';
+import { ButtonLink } from '@theetiptop-contest/ui/button';
+import { Card, CardBody } from '@theetiptop-contest/ui/card';
+import { Alert } from '@theetiptop-contest/ui/alert';
+import {
+  formatCount,
+  formatDate,
+  formatPrice,
+} from '@theetiptop-contest/ui/utils';
+import { getContest } from '@theetiptop-contest/api-client/server';
+import type { ContestDto } from '@theetiptop-contest/shared';
 import {
   JsonLd,
   breadcrumbJsonLd,
@@ -15,56 +27,64 @@ import {
 export const metadata: Metadata = {
   title: 'Comment participer',
   description:
-    "Tout ticket de caisse de plus de 49 € porte un code à dix caractères. Créez votre compte, saisissez votre code, et découvrez votre lot. 100 % des tickets sont gagnants.",
+    'Tout ticket de caisse de plus de 49 € porte un code à dix caractères. Créez votre compte, saisissez votre code, et découvrez votre lot. 100 % des tickets sont gagnants.',
 };
 
-const steps = [
-  {
-    icon: Receipt,
-    title: 'Repérez votre code',
-    text: `Pour tout achat de plus de ${formatPrice(contest.minimumPurchaseCents)} en boutique, un code à ${contest.codeLength} caractères est imprimé en bas de votre ticket de caisse ou de votre facture.`,
-  },
-  {
-    icon: Sparkles,
-    title: 'Créez votre compte',
-    text: "Par formulaire, ou en un clic avec votre compte Google ou Facebook. Il faut être majeur et résider en France métropolitaine.",
-  },
-  {
-    icon: Gift,
-    title: 'Saisissez le code',
-    text: 'Votre lot apparaît immédiatement à l’écran, et vous recevez une confirmation par courriel.',
-  },
-  {
-    icon: Store,
-    title: 'Retirez votre lot',
-    text: 'Dans la boutique de votre choix ou en ligne, jusqu’à trente jours après la clôture du jeu.',
-  },
-];
+function buildSteps(contest: ContestDto) {
+  return [
+    {
+      icon: Receipt,
+      title: 'Repérez votre code',
+      text: `Pour tout achat de plus de ${formatPrice(contest.minimumPurchaseCents)} en boutique, un code à ${contest.codeLength} caractères est imprimé en bas de votre ticket de caisse ou de votre facture.`,
+    },
+    {
+      icon: Sparkles,
+      title: 'Créez votre compte',
+      text: 'Par formulaire, ou en un clic avec votre compte Google ou Facebook. Il faut être majeur et résider en France métropolitaine.',
+    },
+    {
+      icon: Gift,
+      title: 'Saisissez le code',
+      text: 'Votre lot apparaît immédiatement à l’écran, et vous recevez une confirmation par courriel.',
+    },
+    {
+      icon: Store,
+      title: 'Retirez votre lot',
+      text: 'Dans la boutique de votre choix ou en ligne, jusqu’à trente jours après la clôture du jeu.',
+    },
+  ];
+}
 
-const faq = [
-  {
-    q: 'Combien de codes puis-je jouer ?',
-    a: 'Autant que vous avez de tickets éligibles. Chaque code ne peut en revanche être joué qu’une seule fois, et un seul compte est autorisé par personne.',
-  },
-  {
-    q: 'Est-ce que tous les tickets sont vraiment gagnants ?',
-    a: 'Oui. Les 500 000 codes du jeu ont été générés avant son ouverture, chacun avec son lot déjà attribué. La répartition est fixée par le règlement déposé chez l’huissier.',
-  },
-  {
-    q: 'Jouer plusieurs fois augmente-t-il mes chances au tirage au sort ?',
-    a: 'Non. Pour le gros lot, le tirage porte sur les participants et non sur les participations. Une personne ayant joué vingt codes a exactement la même chance qu’une personne en ayant joué un seul.',
-  },
-  {
-    q: 'Que se passe-t-il si j’oublie de retirer mon lot ?',
-    a: `Vous avez jusqu’au ${formatDate(contest.claimDeadline)} pour le réclamer. Passé cette date, le lot est perdu et ne peut donner lieu à aucune compensation.`,
-  },
-  {
-    q: 'Puis-je échanger mon lot contre de l’argent ?',
-    a: 'Non. Les lots ne peuvent être ni échangés, ni repris, ni faire l’objet d’une contrepartie financière.',
-  },
-];
+function buildFaq(contest: ContestDto) {
+  return [
+    {
+      q: 'Combien de codes puis-je jouer ?',
+      a: 'Autant que vous avez de tickets éligibles. Chaque code ne peut en revanche être joué qu’une seule fois, et un seul compte est autorisé par personne.',
+    },
+    {
+      q: 'Est-ce que tous les tickets sont vraiment gagnants ?',
+      a: 'Oui. Les 500 000 codes du jeu ont été générés avant son ouverture, chacun avec son lot déjà attribué. La répartition est fixée par le règlement déposé chez l’huissier.',
+    },
+    {
+      q: 'Jouer plusieurs fois augmente-t-il mes chances au tirage au sort ?',
+      a: 'Non. Pour le gros lot, le tirage porte sur les participants et non sur les participations. Une personne ayant joué vingt codes a exactement la même chance qu’une personne en ayant joué un seul.',
+    },
+    {
+      q: 'Que se passe-t-il si j’oublie de retirer mon lot ?',
+      a: `Vous avez jusqu’au ${formatDate(contest.claimDeadline)} pour le réclamer. Passé cette date, le lot est perdu et ne peut donner lieu à aucune compensation.`,
+    },
+    {
+      q: 'Puis-je échanger mon lot contre de l’argent ?',
+      a: 'Non. Les lots ne peuvent être ni échangés, ni repris, ni faire l’objet d’une contrepartie financière.',
+    },
+  ];
+}
 
-export default function JeuConcoursPage() {
+export default async function JeuConcoursPage() {
+  const contest = await getContest();
+  const steps = buildSteps(contest);
+  const faq = buildFaq(contest);
+
   return (
     <>
       <JsonLd data={faqJsonLd(faq)} />
@@ -106,23 +126,32 @@ export default function JeuConcoursPage() {
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
           <Card>
             <CardBody className="space-y-2">
-              <Calendar className="size-5 text-accent-strong" aria-hidden="true" />
+              <Calendar
+                className="size-5 text-accent-strong"
+                aria-hidden="true"
+              />
               <h2 className="font-semibold">Les dates</h2>
               <p className="text-base text-fg-muted">
                 Jeu ouvert du {formatDate(contest.startsAt)} au{' '}
-                {formatDate(contest.endsAt)}. Réclamation des lots possible jusqu&apos;au{' '}
-                {formatDate(contest.claimDeadline)}.
+                {formatDate(contest.endsAt)}. Réclamation des lots possible
+                jusqu&apos;au {formatDate(contest.claimDeadline)}.
               </p>
             </CardBody>
           </Card>
           <Card>
             <CardBody className="space-y-2">
-              <ShieldCheck className="size-5 text-accent-strong" aria-hidden="true" />
+              <ShieldCheck
+                className="size-5 text-accent-strong"
+                aria-hidden="true"
+              />
               <h2 className="font-semibold">Le contrôle</h2>
               <p className="text-base text-fg-muted">
-                Règlement déposé le {formatDate(contest.rulesFiledAt)} auprès de{' '}
-                {contest.bailiffName}, huissier de justice, qui contrôle également le
-                tirage du gros lot.
+                Règlement déposé
+                {contest.rulesFiledAt
+                  ? ` le ${formatDate(contest.rulesFiledAt)}`
+                  : ''}{' '}
+                auprès de {contest.bailiffName}, huissier de justice, qui
+                contrôle également le tirage du gros lot.
               </p>
             </CardBody>
           </Card>
@@ -131,7 +160,7 @@ export default function JeuConcoursPage() {
               <Gift className="size-5 text-accent-strong" aria-hidden="true" />
               <h2 className="font-semibold">Les lots</h2>
               <p className="text-base text-fg-muted">
-                Cinq lots répartis sur {contest.plannedCodeCount.toLocaleString('fr-FR')}{' '}
+                Cinq lots répartis sur {formatCount(contest.plannedCodeCount)}{' '}
                 codes, plus une année de thé tirée au sort à la clôture.
               </p>
             </CardBody>
@@ -146,7 +175,9 @@ export default function JeuConcoursPage() {
             {faq.map((item) => (
               <div key={item.q} className="py-6">
                 <dt className="text-lg font-medium">{item.q}</dt>
-                <dd className="mt-2 max-w-3xl text-base text-fg-muted">{item.a}</dd>
+                <dd className="mt-2 max-w-3xl text-base text-fg-muted">
+                  {item.a}
+                </dd>
               </div>
             ))}
           </dl>
@@ -156,7 +187,8 @@ export default function JeuConcoursPage() {
           <Alert tone="info" title="Un doute sur les modalités ?">
             <p>
               Le règlement complet fait foi. Il précise les conditions de
-              participation, la liste des lots et les modalités du tirage au sort.
+              participation, la liste des lots et les modalités du tirage au
+              sort.
             </p>
           </Alert>
 
@@ -164,7 +196,11 @@ export default function JeuConcoursPage() {
             <ButtonLink href="/participer" size="lg">
               Saisir mon code
             </ButtonLink>
-            <ButtonLink href="/jeu-concours/reglement" variant="secondary" size="lg">
+            <ButtonLink
+              href="/jeu-concours/reglement"
+              variant="secondary"
+              size="lg"
+            >
               Lire le règlement
             </ButtonLink>
           </div>

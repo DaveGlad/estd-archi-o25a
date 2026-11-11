@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+/* Design tokens, base layer and print sheet, shared with apps/web. The back office is a
+   separate application but the same product: the brand is defined once, in packages/ui. */
+@import '../../../../packages/ui/src/styles/theme.css';
+
+/* Tailwind only scans the application by default; without this it would miss every
+   class used inside the shared component package. */
+@source '../../../../packages/ui/src';

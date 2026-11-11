@@ -1,30 +1,34 @@
 import { ArrowRight, Leaf, MapPin } from 'lucide-react';
-import { ButtonLink } from '../../components/ui/button';
-import { Badge } from '../../components/ui/badge';
-import { Card, CardInteractive } from '../../components/ui/card';
+import { ButtonLink } from '@theetiptop-contest/ui/button';
+import { Badge } from '@theetiptop-contest/ui/badge';
+import { Card, CardInteractive } from '@theetiptop-contest/ui/card';
 import {
   Container,
   Eyebrow,
   SectionHeader,
-} from '../../components/layout/container';
+} from '@theetiptop-contest/ui/container';
 import {
   Grain,
   LeafOrnament,
   SteamOrnament,
-} from '../../components/layout/ornaments';
+} from '@theetiptop-contest/ui/ornaments';
 import {
   JsonLd,
   organizationJsonLd,
   websiteJsonLd,
 } from '../../components/seo/json-ld';
 import {
-  MOCK_TODAY,
-  contest,
+  getContest,
   getGrandPrize,
+  getStores,
   getTicketPrizes,
-  stores,
-} from '../../lib/mock';
-import { daysUntil, formatDate, formatPrice } from '../../lib/utils';
+} from '@theetiptop-contest/api-client/server';
+import {
+  daysUntil,
+  formatCount,
+  formatDate,
+  formatPrice,
+} from '@theetiptop-contest/ui/utils';
 
 const steps = [
   {
@@ -41,11 +45,18 @@ const steps = [
   },
 ];
 
-export default function HomePage() {
-  const ticketPrizes = getTicketPrizes();
-  const grandPrize = getGrandPrize();
-  const daysLeft = daysUntil(contest.endsAt, MOCK_TODAY);
-  const newStore = stores.find((s) => s.isNew);
+export default async function HomePage() {
+  // Four independent reads, fetched concurrently: awaiting them in sequence would make the
+  // home page's time-to-first-byte their sum, and this is the page a crawler sees first.
+  const [contest, ticketPrizes, grandPrize, stores] = await Promise.all([
+    getContest(),
+    getTicketPrizes(),
+    getGrandPrize(),
+    getStores(),
+  ]);
+
+  const daysLeft = daysUntil(contest.endsAt);
+  const newStore = stores.find((store) => store.isNew);
 
   return (
     <>
@@ -100,7 +111,7 @@ export default function HomePage() {
                 { label: 'Jours restants', value: String(daysLeft) },
                 {
                   label: 'Codes en jeu',
-                  value: contest.plannedCodeCount.toLocaleString('fr-FR'),
+                  value: formatCount(contest.plannedCodeCount),
                 },
                 { label: 'Boutiques', value: String(stores.length) },
               ].map((item) => (
@@ -139,7 +150,7 @@ export default function HomePage() {
                 {[
                   `Tirage au sort le ${formatDate(contest.endsAt)}, sous le contrôle de ${contest.bailiffName}.`,
                   'Une seule chance par participant, quel que soit le nombre de codes joués.',
-                  `Règlement déposé le ${formatDate(contest.rulesFiledAt)}.`,
+                  `Règlement déposé le ${formatDate(contest.rulesFiledAt ?? contest.startsAt)}.`,
                 ].map((line) => (
                   <li key={line} className="flex gap-3">
                     <span
@@ -193,7 +204,7 @@ export default function HomePage() {
             id="les-lots"
             eyebrow="La dotation"
             title="Les lots à gagner"
-            intro={`Cinq lots, répartis sur les ${contest.plannedCodeCount.toLocaleString('fr-FR')} codes du jeu.`}
+            intro={`Cinq lots, répartis sur les ${formatCount(contest.plannedCodeCount)} codes du jeu.`}
             action={
               <ButtonLink href="/jeu-concours/lots" variant="secondary">
                 Tout voir

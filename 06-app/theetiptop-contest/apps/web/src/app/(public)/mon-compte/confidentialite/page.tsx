@@ -1,16 +1,20 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Download, Trash2 } from 'lucide-react';
-import { Alert } from '../../../../components/ui/alert';
-import { Button } from '../../../../components/ui/button';
-import { Card, CardBody, CardHeader, CardTitle } from '../../../../components/ui/card';
-import { currentUser } from '../../../../lib/mock';
-import { formatDateTime } from '../../../../lib/utils';
+import { redirect } from 'next/navigation';
+import { Download } from 'lucide-react';
+import { Alert } from '@theetiptop-contest/ui/alert';
+import { Card, CardBody, CardHeader, CardTitle } from '@theetiptop-contest/ui/card';
+import { formatDateTime } from '@theetiptop-contest/ui/utils';
+import { getCurrentUser } from '@theetiptop-contest/api-client/server';
+
+import { ConsentToggle } from '../../../../components/account/consent-toggle';
+import { DeleteAccount } from '../../../../components/account/delete-account';
 
 export const metadata: Metadata = { title: 'Mes données et confidentialité' };
 
-export default function ConfidentialiteComptePage() {
-  const user = currentUser();
+export default async function ConfidentialiteComptePage() {
+  const user = await getCurrentUser();
+  if (!user) redirect('/connexion?next=/mon-compte/confidentialite');
 
   return (
     <div className="space-y-6">
@@ -32,14 +36,7 @@ export default function ConfidentialiteComptePage() {
                 </p>
               )}
             </div>
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                defaultChecked={user.marketingConsent}
-                className="size-4"
-              />
-              Activé
-            </label>
+            <ConsentToggle initialValue={user.marketingConsent} />
           </div>
 
           <div className="flex flex-wrap items-start justify-between gap-4 border-t border-border pt-5">
@@ -57,6 +54,20 @@ export default function ConfidentialiteComptePage() {
               )}
             </div>
           </div>
+
+          <div className="flex flex-wrap items-start justify-between gap-4 border-t border-border pt-5">
+            <div className="max-w-lg">
+              <p className="font-medium">Conditions générales d&apos;utilisation</p>
+              <p className="mt-1 text-sm text-fg-muted">
+                Acceptées lors de la création du compte.
+              </p>
+              {user.termsAcceptedAt && (
+                <p className="mt-1 text-sm text-fg-muted">
+                  Acceptées le {formatDateTime(user.termsAcceptedAt)}
+                </p>
+              )}
+            </div>
+          </div>
         </CardBody>
       </Card>
 
@@ -69,28 +80,31 @@ export default function ConfidentialiteComptePage() {
             <div className="max-w-lg">
               <p className="font-medium">Télécharger mes données</p>
               <p className="mt-1 text-sm text-fg-muted">
-                Recevez un fichier contenant l&apos;ensemble des données associées à
-                votre compte, dans un format lisible et réutilisable.
+                Un fichier contenant l&apos;ensemble des données associées à votre
+                compte, dans un format lisible et réutilisable.
               </p>
             </div>
-            <Button variant="secondary">
+            {/* A plain link, not a button with a fetch: the response is a file, and the
+                route handler sets Content-Disposition so the browser downloads it. */}
+            <a
+              href="/mon-compte/confidentialite/export"
+              download
+              className="inline-flex h-10 items-center gap-2 rounded-[var(--radius-sm)] border border-border bg-surface px-4 text-sm font-medium hover:bg-muted"
+            >
               <Download className="size-4" aria-hidden="true" />
-              Demander l&apos;export
-            </Button>
+              Télécharger mes données
+            </a>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-5">
+          <div className="flex flex-wrap items-start justify-between gap-4 border-t border-border pt-5">
             <div className="max-w-lg">
               <p className="font-medium">Supprimer mon compte</p>
               <p className="mt-1 text-sm text-fg-muted">
-                Votre compte et vos données personnelles sont supprimés. Cette action
-                est irréversible.
+                Vos données identifiantes sont effacées et vos sessions révoquées.
+                Cette action est irréversible.
               </p>
             </div>
-            <Button variant="danger">
-              <Trash2 className="size-4" aria-hidden="true" />
-              Supprimer mon compte
-            </Button>
+            <DeleteAccount />
           </div>
         </CardBody>
       </Card>
@@ -100,7 +114,8 @@ export default function ConfidentialiteComptePage() {
           Vos participations au jeu sont conservées sous forme anonymisée, sans lien
           avec votre identité. Le règlement déposé chez l&apos;huissier impose en
           effet de pouvoir justifier du bon déroulement du jeu et de la répartition
-          des lots. Les détails figurent dans notre{' '}
+          des lots, ce que l&apos;article 17.3 du RGPD autorise expressément. Les
+          détails figurent dans notre{' '}
           <Link href="/confidentialite" className="underline">
             politique de confidentialité
           </Link>

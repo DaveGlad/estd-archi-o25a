@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import { Container, PageHeader } from '../../../components/layout/container';
-import { Button } from '../../../components/ui/button';
-import { Card, CardBody } from '../../../components/ui/card';
+import { Container, PageHeader } from '@theetiptop-contest/ui/container';
+import { Button } from '@theetiptop-contest/ui/button';
+import { Card, CardBody } from '@theetiptop-contest/ui/card';
 
 export const metadata: Metadata = {
   title: 'Gestion des cookies',

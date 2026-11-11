@@ -24,6 +24,11 @@ node_modules
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Environment - secrets are never committed, see .env.example
+.env
+.env.*
+!.env*.example
+
 # misc
 /.sass-cache
 /connect.lock
@@ -49,3 +54,14 @@ Thumbs.db
 # Next.js
 .next
 out
+
+# Generated Prisma client. Produced by `npm run db:generate` and by the Docker build
+# stage; committing it would mean a 500-file diff on every schema change.
+apps/*/src/generated/
+
+# Test reports and artefacts. Jenkins archives them from the workspace, it does not read
+# them from the repository.
+reports/
+test-results/
+playwright-report/
+.playwright/

@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { Container, PageHeader } from '../../../components/layout/container';
-import { Button } from '../../../components/ui/button';
-import { Card, CardBody } from '../../../components/ui/card';
-import { Field } from '../../../components/ui/field';
-import { Input, Select, Textarea } from '../../../components/ui/input';
+import { Container, PageHeader } from '@theetiptop-contest/ui/container';
+import { Button } from '@theetiptop-contest/ui/button';
+import { Card, CardBody } from '@theetiptop-contest/ui/card';
+import { Field } from '@theetiptop-contest/ui/field';
+import { Input, Select, Textarea } from '@theetiptop-contest/ui/input';
 
 export const metadata: Metadata = {
   title: 'Nous contacter',

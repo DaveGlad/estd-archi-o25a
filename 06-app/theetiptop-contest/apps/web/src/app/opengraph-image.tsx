@@ -18,8 +18,10 @@ const MARK = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
 </svg>`;
 
 /**
- * Image de partage générée à la volée, aux couleurs de la charte.
- * Elle évite d'avoir à maintenir un visuel statique en parallèle du site.
+ * Social sharing image, generated on the fly in the brand colours.
+ *
+ * Generated rather than a static asset: a hand-made PNG would be a second place to update
+ * every time the contest dates or the brand change, and the one that silently goes stale.
  */
 export default function OpengraphImage() {
   return new ImageResponse(
