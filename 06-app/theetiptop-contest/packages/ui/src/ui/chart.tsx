@@ -3,7 +3,7 @@
 import type { ComponentProps, ReactNode } from 'react';
 import { createContext, useContext, useId, useMemo } from 'react';
 import { ResponsiveContainer } from 'recharts';
-import { cn } from '../../lib/utils';
+import { cn } from '../lib/utils';
 
 /**
  * Chart primitives, shadcn/ui "chart" API on top of Recharts.

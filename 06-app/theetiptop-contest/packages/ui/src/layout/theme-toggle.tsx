@@ -9,8 +9,9 @@ export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
-    // Le thème est déjà posé sur <html> par le script du layout. On se
-    // contente de lire l'état effectif pour afficher la bonne icône.
+    // The theme is already set on <html> by the inline script in the layout, which runs
+    // before the first paint. All this does is read the effective state, so the icon
+    // matches — recomputing it here would produce a flash of the wrong one.
     const applied = document.documentElement.dataset.theme as Theme | undefined;
     setTheme(
       applied ??

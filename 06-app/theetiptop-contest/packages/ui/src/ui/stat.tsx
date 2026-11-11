@@ -2,9 +2,11 @@ import type { ReactNode } from 'react';
 import { Card } from './card';
 
 /**
- * Le nombre est composé en romain, à chasse fixe et légèrement resserré :
- * c'est ce qui donne à la tuile son caractère éditorial plutôt que celui
- * d'un widget de tableau de bord générique.
+ * The figure is set in roman, tabular and slightly tightened.
+ *
+ * Tabular is the functional half: a column of statistics stays aligned from one row to the
+ * next, which proportional digits break. The tightening is what gives the tile an
+ * editorial character rather than that of a generic dashboard widget.
  */
 export function Stat({
   label,

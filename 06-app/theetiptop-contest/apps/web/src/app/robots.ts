@@ -8,8 +8,8 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        // Espaces authentifiés : aucun intérêt à être exploré, et cela
-        // évite de gaspiller le budget d'exploration du site.
+        // Signed-in areas. Nothing for a crawler to index, and keeping them out stops
+        // the site's crawl budget being spent on pages that answer 307 to everyone.
         disallow: ['/admin', '/employe', '/mon-compte'],
       },
     ],

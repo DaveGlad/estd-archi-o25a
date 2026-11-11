@@ -1,12 +1,14 @@
 import type { ComponentProps } from 'react';
-import { cn } from '../../lib/utils';
+import { cn } from '../lib/utils';
 
 type Tone = 'neutral' | 'success' | 'warning' | 'danger' | 'accent';
 
 /**
- * 12 px, capitales, interlettrage ouvert. La pastille reste lisible parce
- * qu'elle est courte : les capitales espacées se lisent par la forme du mot
- * entier, pas lettre à lettre.
+ * 12 px, uppercase, open letter-spacing.
+ *
+ * The badge stays readable because it is short: widely spaced capitals are read by the
+ * shape of the whole word rather than letter by letter, which stops working past three or
+ * four words.
  */
 const tones: Record<Tone, string> = {
   neutral: 'bg-muted text-fg-muted ring-border',

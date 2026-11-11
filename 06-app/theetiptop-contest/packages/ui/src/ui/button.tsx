@@ -1,15 +1,16 @@
 import Link from 'next/link';
 import type { ComponentProps, ReactNode } from 'react';
-import { cn } from '../../lib/utils';
+import { cn } from '../lib/utils';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 type Size = 'sm' | 'md' | 'lg';
 
 /**
- * Deux détails distinguent ces boutons d'un bouton générique :
- * le libellé est très légèrement resserré (-0.005em) pour compenser
- * l'écartement optique des capitales à ces graisses, et l'appui déclenche
- * un enfoncement d'un pixel plutôt qu'un simple changement de teinte.
+ * Two details separate these from a generic button.
+ *
+ * The label is very slightly tightened (-0.005em), which compensates for the optical
+ * looseness of capitals at these weights; and pressing moves the button down by one pixel
+ * rather than only changing its tint, so the press is felt as well as seen.
  */
 const base =
   'group inline-flex items-center justify-center gap-2 rounded-[10px] font-medium tracking-[-0.005em] transition-[background-color,border-color,color,transform,box-shadow] duration-150 active:translate-y-px disabled:pointer-events-none disabled:opacity-45';

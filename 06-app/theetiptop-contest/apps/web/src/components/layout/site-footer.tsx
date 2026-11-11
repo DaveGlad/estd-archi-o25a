@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Container } from './container';
-import { Logo } from './logo';
+import { Container } from '@theetiptop-contest/ui/container';
+import { Logo } from '@theetiptop-contest/ui/logo';
 
 const columns = [
   {

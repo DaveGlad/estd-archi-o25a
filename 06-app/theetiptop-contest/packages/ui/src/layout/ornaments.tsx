@@ -1,13 +1,15 @@
 /**
- * Éléments décoratifs de la page d'accueil.
+ * Decorative elements of the home page.
  *
- * Tous sont purement visuels : ils sont marqués aria-hidden et n'ajoutent
- * aucun contenu au fil du document. Ils sont dessinés en SVG plutôt qu'en
- * image, ce qui évite une requête réseau, reste net à toutes les densités
- * d'écran et suit automatiquement le thème clair ou sombre.
+ * All purely visual: every one carries `aria-hidden` and adds nothing to the document
+ * outline, so a screen reader walks straight past them.
+ *
+ * Drawn as inline SVG rather than images. That avoids a network request each, stays sharp
+ * at every screen density, and follows the light or dark theme automatically because the
+ * shapes inherit the current colour — three things a PNG would each need a workaround for.
  */
 
-/** Grain fin appliqué au fond, pour éviter l'aplat numérique parfait. */
+/** Fine grain over the background, which keeps it from reading as a perfect digital flat. */
 export function Grain() {
   return (
     <svg
@@ -28,7 +30,7 @@ export function Grain() {
   );
 }
 
-/** Feuille de thé stylisée, reprise du logo, en filigrane. */
+/** Stylised tea leaf, taken from the logo, used as a watermark. */
 export function LeafOrnament({ className }: { className?: string }) {
   return (
     <svg
@@ -68,7 +70,7 @@ export function LeafOrnament({ className }: { className?: string }) {
   );
 }
 
-/** Volutes de vapeur, au-dessus du bloc du gros lot. */
+/** Curls of steam, above the grand prize block. */
 export function SteamOrnament({ className }: { className?: string }) {
   return (
     <svg

@@ -1,10 +1,12 @@
 import type { ComponentProps } from 'react';
-import { cn } from '../../lib/utils';
+import { cn } from '../lib/utils';
 
 /**
- * 16 px de corps sur les champs : en dessous, iOS zoome la page au focus.
- * Le fond passe du gris au blanc à la saisie, ce qui signale l'état actif
- * sans dépendre uniquement de l'anneau de focus.
+ * 16 px body text on every input: below that, iOS zooms the page in on focus, which on a
+ * form is read as the layout breaking.
+ *
+ * The background goes from grey to white as the field is filled in, so the active state is
+ * signalled by more than the focus ring alone.
  */
 const field = cn(
   'w-full rounded-[10px] border border-border bg-muted/45 px-3.5 text-[16px] text-fg',

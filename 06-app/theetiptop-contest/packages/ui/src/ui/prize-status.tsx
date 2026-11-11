@@ -1,5 +1,5 @@
-import { Badge } from '../ui/badge';
-import type { PrizeStatus } from '../../lib/mock';
+import { Badge } from './badge';
+import type { PrizeStatus } from '@theetiptop-contest/shared';
 
 const labels: Record<PrizeStatus, { text: string; tone: 'success' | 'warning' | 'neutral' }> = {
   TO_CLAIM: { text: 'À réclamer', tone: 'warning' },

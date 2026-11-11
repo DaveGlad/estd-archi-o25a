@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactNode } from 'react';
-import { cn } from '../../lib/utils';
+import { cn } from '../lib/utils';
 
 export function Container({ className, ...props }: ComponentProps<'div'>) {
   return (
@@ -7,7 +7,7 @@ export function Container({ className, ...props }: ComponentProps<'div'>) {
   );
 }
 
-/** Surtitre des en-têtes de page et de section. */
+/** Kicker above a page or section heading. */
 export function Eyebrow({
   children,
   className,
@@ -53,7 +53,7 @@ export function PageHeader({
   );
 }
 
-/** En-tête de section interne, aligné sur la même grammaire que PageHeader. */
+/** In-page section heading, following the same grammar as PageHeader. */
 export function SectionHeader({
   eyebrow,
   title,

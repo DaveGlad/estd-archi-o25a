@@ -1,20 +1,18 @@
-import { cn } from '../../lib/utils';
+import { cn } from '../lib/utils';
 
 /**
- * Identité visuelle de Thé Tip Top.
+ * Thé Tip Top brand mark.
  *
- * La marque est une feuille de thé inscrite dans un disque. Elle est
- * construite géométriquement plutôt que dessinée à main levée : la feuille
- * est une vésica symétrique, la nervure centrale suit son axe, et les
- * nervures secondaires se répartissent par paires. L'ensemble est incliné
- * de 15 degrés pour éviter la raideur d'un axe strictement vertical.
+ * A tea leaf inscribed in a disc, built geometrically rather than drawn freehand: the leaf
+ * is a symmetrical vesica, the midrib follows its axis, and the secondary veins are laid
+ * out in pairs. The whole thing is tilted 15 degrees, which removes the stiffness of a
+ * strictly vertical axis.
  *
- * Contraintes tenues :
- * - lisible à 16 px, la nervure la plus fine reste au-dessus du demi-pixel ;
- * - déclinable en une seule couleur pour la gravure et le fax ;
- * - hérite de la couleur du texte, donc pas de seconde version pour le
- *   fond sombre ;
- * - aucune image bitmap, donc net à toutes les densités d'écran.
+ * Constraints it meets:
+ *  - legible at 16 px — the thinnest vein stays above half a pixel;
+ *  - reducible to a single colour, for engraving and for a fax;
+ *  - inherits the text colour, so there is no second version for the dark theme;
+ *  - no bitmap, so it stays sharp at every screen density.
  */
 
 type MarkVariant = 'solid' | 'outline' | 'mono';
@@ -89,9 +87,10 @@ export function LogoMark({
 }
 
 /**
- * Logotype complet. Le nom est composé en capitales espacées plutôt qu'en
- * casse mixte : à cette taille, la capitale tient mieux la ligne et donne
- * à la marque une assise que le bas-de-casse ne lui donnait pas.
+ * Full logotype.
+ *
+ * The name is set in spaced capitals rather than mixed case: at this size capitals hold
+ * the line better and give the mark a footing that lower case did not.
  */
 export function Logo({
   className,

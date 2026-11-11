@@ -1,9 +1,12 @@
 import type { ReactNode } from 'react';
 
 /**
- * L'aide se place au-dessus du champ, pas en dessous : on lit la consigne
- * avant de saisir, pas après s'être trompé. L'erreur, elle, vient sous le
- * champ, à l'endroit où le regard revient après la saisie.
+ * The hint sits ABOVE the input, not below it: the instruction is read before typing, not
+ * after getting it wrong. The error sits BELOW, which is where the eye returns once the
+ * field has been filled in.
+ *
+ * Both are wired to the input by `id`, so a screen reader announces them with the field
+ * rather than as loose text nearby.
  */
 export function Field({
   label,

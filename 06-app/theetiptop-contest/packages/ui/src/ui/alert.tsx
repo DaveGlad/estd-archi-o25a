@@ -1,13 +1,16 @@
 import type { ReactNode } from 'react';
 import { AlertTriangle, CheckCircle2, Info, XCircle } from 'lucide-react';
-import { cn } from '../../lib/utils';
+import { cn } from '../lib/utils';
 
 type Tone = 'info' | 'success' | 'warning' | 'error';
 
 /**
- * Le filet coloré est vertical, à gauche, plutôt qu'un cadre teinté sur les
- * quatre côtés : le bloc reste calme dans la page et la couleur ne concurrence
- * pas le texte. L'icône double l'information portée par la couleur.
+ * The coloured rule is vertical, on the left, rather than a tinted border on all four
+ * sides: the block stays quiet in the page and the colour does not compete with the text.
+ *
+ * The icon duplicates whatever the colour conveys. That is not decoration — colour alone
+ * is not an accessible signal (WCAG 1.4.1), and a red block means nothing to a reader who
+ * cannot tell it apart from the warning one.
  */
 const tones: Record<Tone, { box: string; rule: string; icon: string; Icon: typeof Info }> = {
   info: { box: 'bg-muted/60', rule: 'bg-fg-muted/40', icon: 'text-fg-muted', Icon: Info },
