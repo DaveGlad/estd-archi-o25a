@@ -24,7 +24,10 @@ npm run db:seed
 npm run codes:generate     # ~45 s
 npm run codes:verify       # contrôle de la répartition 60/20/10/6/4 %
 
-# 4. Les trois applications, dans trois terminaux
+# 4. Jeu de données de démonstration, pour que les écrans aient quelque chose à montrer
+npm run db:seed:demo       # ~3 s : 1 200 clients, 2 000 participations
+
+# 5. Les trois applications, dans trois terminaux
 npm run dev:api            # http://localhost:3333  — Swagger sur /docs
 npm run dev:web            # http://localhost:3000
 npm run dev:admin          # http://localhost:3001
@@ -75,6 +78,7 @@ tools/        Outillage de build
 | `npm run db:migrate` | Crée et applique une migration (développement) |
 | `npm run db:deploy` | Applique les migrations existantes (déploiement) |
 | `npm run db:seed` | Jeu, lots, 10 boutiques, comptes de démonstration. Idempotent |
+| `npm run db:seed:demo` | Jeu de données réaliste : 1 200 clients, 2 000 participations réparties sur les jours du jeu et les 10 boutiques. Rejouable, remet ses codes dans le pool |
 | `npm run codes:generate` | Les 500 000 codes. **Opération unique**, refusée si le pool existe |
 | `npm run codes:verify` | Recompte la répartition en base. Sort en erreur à la moindre divergence |
 | `npm run codes:reset` | Vide le pool. Développement uniquement |
