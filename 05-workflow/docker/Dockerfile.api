@@ -1,0 +1,109 @@
+# API v1, NestJS 11. Multi-stage.
+#
+# Build context: the monorepo root, 06-app/theetiptop-contest.
+#   docker build -f ../../05-workflow/docker/Dockerfile.api -t theetiptop/api:$TAG .
+#
+# Four stages, each existing for one reason:
+#   deps    install once, cached on the lockfile alone
+#   build   compile the API and generate the Prisma client
+#   prune   pin the generated manifest to the versions the build actually resolved
+#   runtime the image that ships, carrying no compiler and no dev dependency
+#
+# The brief requires 100% Docker. It also requires the pipeline to be defensible, which is
+# why every COPY below is a named path rather than `COPY . .` — see the note on the deps
+# stage.
+
+# ---------------------------------------------------------------------------- deps
+FROM node:24-alpine AS deps
+
+WORKDIR /app
+
+# Only the manifests, so this layer is invalidated by a dependency change and by nothing
+# else. `COPY . .` here would rebuild the whole dependency tree on every source edit, which
+# on a Jenkins agent means several minutes added to every single build.
+COPY package.json package-lock.json ./
+COPY apps/api/package.json ./apps/api/
+COPY apps/web/package.json ./apps/web/
+COPY apps/admin/package.json ./apps/admin/
+COPY packages/shared/package.json ./packages/shared/
+COPY packages/ui/package.json ./packages/ui/
+COPY packages/api-client/package.json ./packages/api-client/
+
+# `npm ci` rather than `npm install`: it installs exactly the lockfile and fails if the two
+# have drifted, which is the behaviour a reproducible build needs.
+RUN npm ci --no-audit --no-fund
+
+# --------------------------------------------------------------------------- build
+FROM deps AS build
+
+WORKDIR /app
+
+# The source. `.dockerignore` keeps node_modules, .nx, .next and every .env out of the
+# context — without it this COPY ships several hundred megabytes to the daemon.
+COPY . .
+
+# Prisma 7 generates a TypeScript client into apps/api/src/generated, and that directory is
+# gitignored: it has to be produced here, before the compiler runs.
+RUN npx prisma generate
+
+# Nx builds the API and, through the project graph, the shared packages it depends on.
+# `--skip-nx-cache` is deliberately absent: the agent mounts a persistent volume on
+# .nx/cache (correction 3 of DECISIONS.md § 4 bis), so the cache is the point.
+RUN npx nx build @theetiptop-contest/api
+
+# --------------------------------------------------------------------------- prune
+FROM build AS prune
+
+WORKDIR /app
+
+# `generatePackageJson: true` in apps/api/webpack.config.js already left a package.json
+# next to the bundle, listing exactly the ~20 packages webpack kept external. This pins
+# each of its ranges to the exact version the build stage resolved from the committed
+# lockfile.
+#
+# The script's header documents the three install paths that were measured and rejected
+# first, and the one limitation that remains. Short version: npm's workspace filters do not
+# restrict `ci` or `prune` (both installed the whole 936 MB tree), and `nx prune`'s trimmed
+# lockfile is inconsistent with its own manifest under Express 5.
+RUN node tools/pin-runtime-deps.mjs apps/api/dist/package.json
+
+# ------------------------------------------------------------------------- runtime
+FROM node:24-alpine AS runtime
+
+# `dumb-init` so SIGTERM reaches Node. Without an init process, PID 1 is Node itself and
+# Docker's stop signal is delivered to a process that does not forward it — the container
+# is then killed after the 10-second grace period, mid-request.
+RUN apk add --no-cache dumb-init
+
+ENV NODE_ENV=production
+WORKDIR /app
+
+COPY --from=prune /app/apps/api/dist/package.json ./package.json
+
+# `--no-package-lock`: the manifest is pinned to exact versions, so there is no range left
+# for a lockfile to resolve. `--omit=dev` is belt and braces — the generated manifest has
+# no devDependencies to begin with.
+RUN npm install --omit=dev --no-package-lock --no-audit --no-fund \
+ && npm cache clean --force
+
+COPY --from=prune /app/apps/api/dist/main.js ./main.js
+
+# The schema and migrations travel with the image, so the same artefact that serves traffic
+# is the one that migrates the database. A separate migration image could drift from it.
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/prisma.config.ts ./prisma.config.ts
+
+# Runs as the unprivileged user the base image already provides. A container that does not
+# need root should not have it: a remote code execution then lands on a user that cannot
+# write to the filesystem it runs from.
+USER node
+
+EXPOSE 3333
+
+# Reports whether the process is actually serving, not merely running. Consumed by Docker,
+# by the Prometheus probe and by the post-deploy gate of the Jenkins pipeline.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD node -e "require('http').get('http://127.0.0.1:3333/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
+
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "main.js"]

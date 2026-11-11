@@ -1,0 +1,81 @@
+# Public contest site, Next.js 16. Multi-stage.
+#
+# Build context: the monorepo root, 06-app/theetiptop-contest.
+#   docker build -f ../../05-workflow/docker/Dockerfile.web \
+#     --build-arg NEXT_PUBLIC_API_URL=https://api.example.fr \
+#     -t theetiptop/web:$TAG .
+#
+# ⚠️ The `NEXT_PUBLIC_*` variables are BUILD arguments, not runtime environment. Next
+# inlines them into the client bundle at build time, so an image built with the staging URL
+# will call staging no matter what the production compose file sets. The pipeline therefore
+# builds one image per environment — which is why they are declared as `ARG` below rather
+# than quietly inherited.
+
+FROM node:24-alpine AS deps
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+COPY apps/api/package.json ./apps/api/
+COPY apps/web/package.json ./apps/web/
+COPY apps/admin/package.json ./apps/admin/
+COPY packages/shared/package.json ./packages/shared/
+COPY packages/ui/package.json ./packages/ui/
+COPY packages/api-client/package.json ./packages/api-client/
+
+RUN npm ci --no-audit --no-fund
+
+# --------------------------------------------------------------------------- build
+FROM deps AS build
+
+WORKDIR /app
+
+# Baked into the client bundle. Declared here so a forgotten `--build-arg` produces an
+# obvious localhost URL in the browser rather than a silently broken deployment.
+ARG NEXT_PUBLIC_API_URL=http://localhost:3333
+ARG NEXT_PUBLIC_SITE_URL=http://localhost:3000
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+
+COPY . .
+
+# The site imports types from @theetiptop-contest/shared, which in turn is built from the
+# Prisma-derived contracts. Generating the client keeps the typecheck inside the build
+# honest rather than skipped.
+RUN npx prisma generate
+
+RUN npx nx build @theetiptop-contest/web
+
+# ------------------------------------------------------------------------- runtime
+FROM node:24-alpine AS runtime
+
+RUN apk add --no-cache dumb-init
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+WORKDIR /app
+
+# `output: 'standalone'` in next.config.ts produces a self-contained server with only the
+# modules the app actually imports — a few tens of megabytes instead of the whole
+# node_modules tree. There is no `npm ci` in this stage for that reason.
+COPY --from=build /app/apps/web/.next/standalone ./
+# Static assets and the public directory are not part of the standalone bundle by design,
+# so they are copied explicitly. Forgetting either produces a site with no CSS.
+COPY --from=build /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=build /app/apps/web/public ./apps/web/public
+
+USER node
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD node -e "require('http').get('http://127.0.0.1:3000/',r=>process.exit(r.statusCode<500?0:1)).on('error',()=>process.exit(1))"
+
+ENTRYPOINT ["dumb-init", "--"]
+# The standalone output places the server next to the app it was built from.
+CMD ["node", "apps/web/server.js"]

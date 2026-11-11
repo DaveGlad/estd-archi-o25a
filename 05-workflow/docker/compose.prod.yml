@@ -1,0 +1,203 @@
+# Deployed environment: api + web + admin + PostgreSQL + Redis.
+#
+# One file, three environments. The pipeline passes a different `.env` and a different
+# `COMPOSE_PROJECT_NAME`:
+#
+#   dev        docker compose --env-file .env.dev     -p theetiptop-dev     up -d
+#   preprod    docker compose --env-file .env.preprod -p theetiptop-preprod up -d
+#   prod       docker compose --env-file .env.prod    -p theetiptop-prod    up -d
+#
+# One file rather than three near-identical copies: three files drift, and the drift is only
+# discovered when production behaves unlike the preprod it was validated on. Everything that
+# differs between environments is a variable.
+#
+# ⚠️ The images are pulled from the registry by tag, never built here. Building on the
+# target host would mean the artefact that runs is not the artefact the pipeline tested.
+
+name: ${COMPOSE_PROJECT_NAME:-theetiptop}
+
+services:
+  # ------------------------------------------------------------------ migrations
+  # A one-shot job, not a long-running service.
+  #
+  # Runs `prisma migrate deploy` from the API image — the same artefact that will serve
+  # traffic — then exits. The applications wait on its successful completion, which is what
+  # stops a container from starting against a schema it does not match.
+  #
+  # `migrate deploy` rather than `migrate dev`: it applies committed migrations and never
+  # generates one, so it cannot invent a schema change on a production database.
+  migrate:
+    image: ${REGISTRY:-registry.local}/theetiptop/api:${IMAGE_TAG:-latest}
+    restart: 'no'
+    command: ['npx', 'prisma', 'migrate', 'deploy']
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [backend]
+
+  # ------------------------------------------------------------------------- api
+  api:
+    image: ${REGISTRY:-registry.local}/theetiptop/api:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      API_PORT: 3333
+      # The compose service name, not a public hostname: this connection never leaves the
+      # backend network.
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      # The password is part of the URL: Redis requires one in the deployed environments
+      # (`--requirepass` below), unlike the development compose file.
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      CORS_ORIGINS: ${SITE_URL},${ADMIN_URL}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      BETTER_AUTH_URL: ${API_URL}
+      # Required once the three pieces sit on three subdomains: without it the session
+      # cookie is host-only and every call from the site comes back 401.
+      COOKIE_DOMAIN: ${COOKIE_DOMAIN}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      FACEBOOK_CLIENT_ID: ${FACEBOOK_CLIENT_ID}
+      FACEBOOK_CLIENT_SECRET: ${FACEBOOK_CLIENT_SECRET}
+      IP_HASH_SALT: ${IP_HASH_SALT}
+      POS_API_KEYS: ${POS_API_KEYS}
+      PUBLIC_SITE_URL: ${SITE_URL}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    networks: [backend, edge]
+    # No `ports:`. The reverse proxy on the edge network is the only way in, which is what
+    # keeps the API off the host's public interface.
+    deploy:
+      resources:
+        limits:
+          # Measured headroom, not a guess: the API holds a 10-connection pool and no large
+          # in-memory state. The limit exists so one container cannot starve the others on
+          # a 16 GB host running three environments — see DECISIONS.md § 4 bis, risk 5.
+          memory: 512M
+
+  # ------------------------------------------------------------------------- web
+  web:
+    image: ${REGISTRY:-registry.local}/theetiptop/web:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      # Server-side only. The browser uses NEXT_PUBLIC_API_URL, which was baked into the
+      # bundle at build time — hence one image per environment.
+      API_URL: http://api:3333
+      NEXT_PUBLIC_SITE_URL: ${SITE_URL}
+    depends_on:
+      api:
+        condition: service_healthy
+    networks: [backend, edge]
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  # ----------------------------------------------------------------------- admin
+  admin:
+    image: ${REGISTRY:-registry.local}/theetiptop/admin:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      API_URL: http://api:3333
+      NEXT_PUBLIC_SITE_URL: ${SITE_URL}
+    depends_on:
+      api:
+        condition: service_healthy
+    networks: [backend, edge]
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+
+  # -------------------------------------------------------------------- postgres
+  postgres:
+    # PostgreSQL 17, PostgreSQL licence (OSI approved): satisfies the brief's open-source
+    # requirement, and more permissive than MariaDB's GPL.
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_INITDB_ARGS: '--locale=C --encoding=UTF8'
+    command:
+      - postgres
+      - -c
+      - max_connections=100
+      - -c
+      - shared_buffers=512MB
+      - -c
+      - work_mem=16MB
+      - -c
+      - maintenance_work_mem=256MB
+      # `on`, unlike the development compose file. Development trades durability for a
+      # faster bulk insert of the 500,000 codes; production does not get to make that trade.
+      - -c
+      - synchronous_commit=on
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      # Where the backup job writes. Mounted rather than written inside the container, so a
+      # dump survives the container being replaced.
+      - ${BACKUP_DIR:-./backups}:/backups
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [backend]
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+  # ----------------------------------------------------------------------- redis
+  redis:
+    image: redis:8-alpine
+    restart: unless-stopped
+    command:
+      - redis-server
+      # Append-only on, unlike development: Redis holds the rate-limit windows, and losing
+      # them on a restart hands a brute-force attempt a clean slate.
+      - --appendonly
+      - 'yes'
+      - --maxmemory
+      - 256mb
+      - --maxmemory-policy
+      - allkeys-lru
+      - --requirepass
+      - ${REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', '-a', '${REDIS_PASSWORD}', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [backend]
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  # Internal. PostgreSQL and Redis are reachable from the applications and from nowhere
+  # else — no published port, no route from the host.
+  backend:
+    internal: true
+  # Where the reverse proxy lives. Declared external because it is created once per host and
+  # shared by the three environments, each behind its own subdomain.
+  edge:
+    external: true
+    name: ${EDGE_NETWORK:-theetiptop-edge}

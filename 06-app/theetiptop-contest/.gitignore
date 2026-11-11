@@ -27,7 +27,7 @@ node_modules
 # Environment - secrets are never committed, see .env.example
 .env
 .env.*
-!.env.example
+!.env*.example
 
 # misc
 /.sass-cache
