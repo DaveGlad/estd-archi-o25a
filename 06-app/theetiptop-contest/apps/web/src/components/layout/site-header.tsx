@@ -1,13 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import { Menu, User, X } from 'lucide-react';
-import { cn } from '../../lib/utils';
-import { Container } from './container';
-import { Logo } from './logo';
-import { ThemeToggle } from './theme-toggle';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState, useTransition } from 'react';
+import { LogOut, Menu, User, X } from 'lucide-react';
+import type { Role } from '@theetiptop-contest/shared';
+import { cn } from '@theetiptop-contest/ui/utils';
+import { Container } from '@theetiptop-contest/ui/container';
+import { Logo } from '@theetiptop-contest/ui/logo';
+import { ThemeToggle } from '@theetiptop-contest/ui/theme-toggle';
+import { signOut } from '@theetiptop-contest/api-client/auth';
 
 const nav = [
   { href: '/jeu-concours', label: 'Le jeu-concours' },
@@ -16,9 +18,34 @@ const nav = [
   { href: '/contact', label: 'Contact' },
 ];
 
-export function SiteHeader() {
+/** Only what the header renders. Not the whole `UserDto`: a header has no use for a postcode. */
+interface HeaderUser {
+  firstName: string;
+  role: Role;
+}
+
+export function SiteHeader({ user }: { user: HeaderUser | null }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [signingOut, startSignOut] = useTransition();
+
+  function handleSignOut() {
+    startSignOut(async () => {
+      await signOut();
+      // `refresh()` as well as `push()`: the layout read the session server-side, so the
+      // server components have to re-render or the header keeps showing the old state.
+      router.push('/');
+      router.refresh();
+    });
+  }
+
+  const accountLinks = user
+    ? [{ href: '/mon-compte', label: 'Mon compte' }]
+    : [
+        { href: '/connexion', label: 'Se connecter' },
+        { href: '/inscription', label: 'Créer un compte' },
+      ];
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg/80 backdrop-blur-md">
@@ -55,13 +82,36 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link
-            href="/mon-compte"
-            className="hidden h-10 items-center gap-2 rounded-full border border-border px-4 text-[14.5px] transition-colors hover:border-fg-muted/45 hover:bg-muted md:inline-flex"
-          >
-            <User className="size-4" aria-hidden="true" />
-            Mon compte
-          </Link>
+
+          {user ? (
+            <>
+              <Link
+                href="/mon-compte"
+                className="hidden h-10 items-center gap-2 rounded-full border border-border px-4 text-[14.5px] transition-colors hover:border-fg-muted/45 hover:bg-muted md:inline-flex"
+              >
+                <User className="size-4" aria-hidden="true" />
+                {user.firstName}
+              </Link>
+              <button
+                type="button"
+                onClick={handleSignOut}
+                disabled={signingOut}
+                className="hidden size-10 place-items-center rounded-full border border-border transition-colors hover:border-fg-muted/45 hover:bg-muted disabled:opacity-60 md:grid"
+              >
+                <LogOut className="size-4" aria-hidden="true" />
+                <span className="sr-only">Se déconnecter</span>
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/connexion"
+              className="hidden h-10 items-center gap-2 rounded-full border border-border px-4 text-[14.5px] transition-colors hover:border-fg-muted/45 hover:bg-muted md:inline-flex"
+            >
+              <User className="size-4" aria-hidden="true" />
+              Se connecter
+            </Link>
+          )}
+
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -76,10 +126,14 @@ export function SiteHeader() {
       </Container>
 
       {open && (
-        <nav id="menu-mobile" aria-label="Navigation mobile" className="border-t border-border md:hidden">
+        <nav
+          id="menu-mobile"
+          aria-label="Navigation mobile"
+          className="border-t border-border md:hidden"
+        >
           <Container className="py-2">
             <ul className="flex flex-col">
-              {[...nav, { href: '/mon-compte', label: 'Mon compte' }].map((item) => (
+              {[...nav, ...accountLinks].map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -90,6 +144,22 @@ export function SiteHeader() {
                   </Link>
                 </li>
               ))}
+              {user && (
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpen(false);
+                      handleSignOut();
+                    }}
+                    disabled={signingOut}
+                    className="flex w-full items-center gap-2 rounded-[10px] px-3 py-3.5 text-left text-[15.5px] hover:bg-muted disabled:opacity-60"
+                  >
+                    <LogOut className="size-4" aria-hidden="true" />
+                    Se déconnecter
+                  </button>
+                </li>
+              )}
             </ul>
           </Container>
         </nav>

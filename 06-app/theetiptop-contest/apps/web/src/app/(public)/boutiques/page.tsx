@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { MapPin, Phone } from 'lucide-react';
-import { Container, PageHeader } from '../../../components/layout/container';
-import { Badge } from '../../../components/ui/badge';
-import { Card, CardBody } from '../../../components/ui/card';
-import { stores } from '../../../lib/mock';
-import { formatDate } from '../../../lib/utils';
+import { Container, PageHeader } from '@theetiptop-contest/ui/container';
+import { Badge } from '@theetiptop-contest/ui/badge';
+import { Card, CardBody } from '@theetiptop-contest/ui/card';
+import { formatDate } from '@theetiptop-contest/ui/utils';
+import { getStores } from '@theetiptop-contest/api-client/server';
 
 export const metadata: Metadata = {
   title: 'Nos boutiques',
@@ -12,7 +12,11 @@ export const metadata: Metadata = {
     'Retrouvez nos dix boutiques Thé Tip Top, de Paris à Nice, et venez y retirer votre lot.',
 };
 
-export default function BoutiquesPage() {
+export default async function BoutiquesPage() {
+  const stores = await getStores();
+
+  // The Nice store first: its opening is the reason for the whole operation, and its badge
+  // is the first thing a visitor should see here.
   const sorted = [...stores].sort((a, b) => Number(b.isNew) - Number(a.isNew));
 
   return (
@@ -40,14 +44,20 @@ export default function BoutiquesPage() {
                         {store.postalCode} {store.city}
                       </span>
                     </span>
-                    <span className="flex gap-2">
-                      <Phone className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-                      <a href={`tel:${store.phone.replace(/\s/g, '')}`}>{store.phone}</a>
-                    </span>
+                    {/* Nullable on the API contract, unlike the mock it replaced: a store
+                        may legitimately have no published phone number. */}
+                    {store.phone && (
+                      <span className="flex gap-2">
+                        <Phone className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                        <a href={`tel:${store.phone.replace(/\s/g, '')}`}>{store.phone}</a>
+                      </span>
+                    )}
                   </address>
-                  <p className="text-sm text-fg-muted">
-                    Ouverte depuis le {formatDate(store.openedAt)}
-                  </p>
+                  {store.openedAt && (
+                    <p className="text-sm text-fg-muted">
+                      Ouverte depuis le {formatDate(store.openedAt)}
+                    </p>
+                  )}
                 </CardBody>
               </Card>
             </li>

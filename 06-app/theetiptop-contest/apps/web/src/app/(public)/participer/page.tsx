@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { CalendarClock, ShieldCheck, Ticket } from 'lucide-react';
-import { Container, PageHeader } from '../../../components/layout/container';
-import { Card, CardBody } from '../../../components/ui/card';
+import { Container, PageHeader } from '@theetiptop-contest/ui/container';
+import { Card, CardBody } from '@theetiptop-contest/ui/card';
+import { daysUntil, formatDate, formatPrice } from '@theetiptop-contest/ui/utils';
+import { getContest, getCurrentUser } from '@theetiptop-contest/api-client/server';
+
 import { CodeForm } from '../../../components/participation/code-form';
-import { MOCK_TODAY, contest, currentUser } from '../../../lib/mock';
-import { daysUntil, formatDate } from '../../../lib/utils';
 
 export const metadata: Metadata = {
   title: 'Saisir mon code',
@@ -12,9 +14,16 @@ export const metadata: Metadata = {
     'Entrez le code à dix caractères figurant sur votre ticket de caisse et découvrez immédiatement le lot que vous avez gagné.',
 };
 
-export default function ParticiperPage() {
-  const user = currentUser();
-  const daysLeft = daysUntil(contest.endsAt, MOCK_TODAY);
+export default async function ParticiperPage() {
+  const [user, contest] = await Promise.all([getCurrentUser(), getContest()]);
+
+  // Playing a code requires an account: the participation is attached to a customer, and
+  // the prize has to be claimable by somebody. `next` is carried through so a visitor who
+  // arrived here from a receipt lands back on this page after signing in, rather than on a
+  // generic home page having lost what they were doing.
+  if (!user) redirect('/connexion?next=/participer');
+
+  const daysLeft = daysUntil(contest.endsAt);
 
   return (
     <>
@@ -25,7 +34,10 @@ export default function ParticiperPage() {
       />
 
       <Container className="grid gap-10 py-14 lg:grid-cols-[1.3fr_1fr] lg:items-start">
-        <CodeForm />
+        <CodeForm
+          codeLength={contest.codeLength}
+          minimumPurchaseCents={contest.minimumPurchaseCents}
+        />
 
         <aside className="space-y-5">
           <Card>
@@ -36,7 +48,8 @@ export default function ParticiperPage() {
                   <p className="font-medium">Où trouver mon code</p>
                   <p className="mt-1 text-fg-muted">
                     En bas de votre ticket de caisse ou de votre facture, sous le
-                    montant total. Il ne figure que sur les achats de plus de 49 €.
+                    montant total. Il ne figure que sur les achats de plus de{' '}
+                    {formatPrice(contest.minimumPurchaseCents)}.
                   </p>
                 </div>
               </div>
@@ -44,10 +57,15 @@ export default function ParticiperPage() {
               <div className="flex gap-3">
                 <CalendarClock className="mt-0.5 size-5 shrink-0 text-accent-strong" aria-hidden="true" />
                 <div>
-                  <p className="font-medium">Il reste {daysLeft} jours</p>
+                  <p className="font-medium">
+                    {contest.isOpen
+                      ? `Il reste ${daysLeft} jour${daysLeft > 1 ? 's' : ''}`
+                      : 'Le jeu est terminé'}
+                  </p>
                   <p className="mt-1 text-fg-muted">
-                    Le jeu ferme le {formatDate(contest.endsAt)}. Vos lots restent
-                    réclamables jusqu&apos;au {formatDate(contest.claimDeadline)}.
+                    {contest.isOpen ? 'Le jeu ferme le' : 'Le jeu a fermé le'}{' '}
+                    {formatDate(contest.endsAt)}. Vos lots restent réclamables
+                    jusqu&apos;au {formatDate(contest.claimDeadline)}.
                   </p>
                 </div>
               </div>

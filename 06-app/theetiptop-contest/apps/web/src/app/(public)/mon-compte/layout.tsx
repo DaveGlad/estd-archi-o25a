@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { Container, PageHeader } from '../../../components/layout/container';
-import { currentUser } from '../../../lib/mock';
+import { redirect } from 'next/navigation';
+import { Container, PageHeader } from '@theetiptop-contest/ui/container';
+import { getCurrentUser } from '@theetiptop-contest/api-client/server';
 
 const links = [
   { href: '/mon-compte', label: 'Mes gains' },
@@ -8,8 +9,19 @@ const links = [
   { href: '/mon-compte/confidentialite', label: 'Mes données et confidentialité' },
 ];
 
-export default function AccountLayout({ children }: { children: React.ReactNode }) {
-  const user = currentUser();
+/**
+ * Guards the whole personal area.
+ *
+ * Checked in the layout rather than in each page: a layout wraps every route beneath it,
+ * so a page added later is protected by default. The alternative — a check per page — is
+ * how one screen ends up reachable without a session after a refactor.
+ *
+ * The API enforces this independently; this redirect is about not showing a visitor an
+ * empty, broken page.
+ */
+export default async function AccountLayout({ children }: { children: React.ReactNode }) {
+  const user = await getCurrentUser();
+  if (!user) redirect('/connexion?next=/mon-compte');
 
   return (
     <>
