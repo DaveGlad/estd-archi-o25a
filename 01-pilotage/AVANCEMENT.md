@@ -80,6 +80,28 @@
 
 Rapports JUnit écrits dans `reports/junit/`, prêts pour l'étape `junit` de Jenkins.
 
+### Jeu de données de démonstration
+
+`npm run db:seed:demo` peuple le jeu comme l'aurait fait un mois de trafic réel, en
+environ 3 secondes. Indispensable pour la soutenance : avec les 5 comptes du seed de
+référence, le tableau de bord affiche une seule barre et la courbe quotidienne est plate.
+
+| Mesure | Valeur |
+|---|---|
+| Clients | 1 200, répartis sur les 6 tranches d'âge |
+| Participations | 2 042, réparties sur les 11 jours ouverts du jeu |
+| Lots remis | 1 246 |
+| Base emailing opt-in | 673 |
+| Boutique la plus active | Nice, 348 codes joués |
+
+Il ne fabrique **ni code ni lot** : chaque participation consomme un vrai code `AVAILABLE`
+du pool et le fait passer par les états `DISPENSED` puis `USED`, comme le feraient la
+caisse et le site. `codes:verify` passe donc toujours après.
+
+Propriété qui en découle : les lots réellement gagnés sortent à
+**59,6 / 20,7 / 9,4 / 6,1 / 4,2 %** sans que le script connaisse la répartition. C'est la
+garantie de la génération qui se vérifie d'elle-même.
+
 ### Conteneurisation
 
 | Image | Taille mesurée | Vérifiée à l'exécution |
