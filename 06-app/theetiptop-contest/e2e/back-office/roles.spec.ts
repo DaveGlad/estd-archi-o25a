@@ -103,6 +103,8 @@ test.describe('store employee: handing a prize over', () => {
   test('a search by name finds the customer and shows how many prizes are pending', async ({ page }) => {
     await signIn(page, ACCOUNTS.employee);
 
+    // A surname search is what an employee actually types at the till, so it is worth
+    // covering as such — it may legitimately return several people.
     await page.getByLabel(/rechercher un client/i).fill('rousseau');
     await page.getByRole('button', { name: /rechercher/i }).click();
 
@@ -135,7 +137,11 @@ test.describe('store employee: handing a prize over', () => {
   test('the customer file does not expose the profile the employee has no need for', async ({ page }) => {
     await signIn(page, ACCOUNTS.employee);
 
-    await page.getByLabel(/rechercher un client/i).fill('rousseau');
+    // Searched by email, not by surname. The demonstration data set contains other
+    // customers named Rousseau, so `.first()` on a surname search opens whichever file
+    // pg_trgm happens to rank highest — a test that passes or fails depending on the seed.
+    // The email is unique by construction.
+    await page.getByLabel(/rechercher un client/i).fill(ACCOUNTS.customer.email);
     await page.getByRole('button', { name: /rechercher/i }).click();
     await page.getByRole('link', { name: /voir ses gains/i }).first().click();
 

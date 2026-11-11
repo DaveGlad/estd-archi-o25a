@@ -98,10 +98,24 @@ test.describe('accessibility basics', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
   });
 
-  test('the main landmark is reachable and labelled', async ({ page }) => {
+  test('the main landmark is reachable and labelled', async ({ page }, testInfo) => {
     await page.goto('/jeu-concours');
 
     await expect(page.getByRole('main')).toBeVisible();
-    await expect(page.getByRole('navigation', { name: /navigation principale/i })).toBeAttached();
+    // The skip link is the first thing a keyboard user meets, and it is useless if its
+    // target does not exist.
+    await expect(page.getByRole('link', { name: /aller au contenu principal/i })).toBeAttached();
+
+    // The primary navigation is a different element on each viewport, and asserting the
+    // desktop one on a phone would never pass: the desktop `<nav>` is `display: none`
+    // below `md`, which removes it from the accessibility tree entirely — `getByRole`
+    // cannot see it, attached or not. On mobile the labelled nav only exists once the
+    // menu is open, so opening it is part of what this test covers.
+    if (testInfo.project.name === 'public-site-mobile') {
+      await page.getByRole('button', { name: /ouvrir le menu/i }).click();
+      await expect(page.getByRole('navigation', { name: /navigation mobile/i })).toBeVisible();
+    } else {
+      await expect(page.getByRole('navigation', { name: /navigation principale/i })).toBeVisible();
+    }
   });
 });
