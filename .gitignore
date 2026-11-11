@@ -21,3 +21,11 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Autorisations locales de Claude Code, personnelles et non partagées
+.claude/settings.local.json
+
+# Rapports de test, archivés par Jenkins depuis l'espace de travail
+reports/
+test-results/
+playwright-report/
