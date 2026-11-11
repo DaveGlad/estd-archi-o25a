@@ -51,7 +51,13 @@ export type SubmitCodeResult =
   | { outcome: 'INVALID_FORMAT' }
   | { outcome: 'UNKNOWN_CODE' }
   | { outcome: 'ALREADY_USED'; usedAt: string; byCurrentUser: boolean }
-  | { outcome: 'CONTEST_CLOSED'; endsAt: string }
+  | {
+      outcome: 'CONTEST_CLOSED';
+      /** When ticket distribution stopped. */
+      endsAt: string;
+      /** When the right to play a code expired: 30 days after `endsAt`. */
+      claimDeadline: string;
+    }
   | { outcome: 'RATE_LIMITED'; retryInMinutes: number };
 
 /** Customer record as the in-store employee sees it, for handing prizes over. */
