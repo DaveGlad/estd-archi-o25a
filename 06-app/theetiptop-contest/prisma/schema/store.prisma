@@ -1,0 +1,54 @@
+// The 10 Thé Tip Top stores, including the Nice one whose opening drives the contest.
+
+model Store {
+  id         String  @id @default(cuid())
+  name       String
+  address    String
+  postalCode String  @db.VarChar(5)
+  city       String
+  phone      String?
+  active     Boolean @default(true)
+
+  /// Opening date, so the front end can highlight the 10th store (Nice).
+  openedAt DateTime? @db.Date
+
+  employees   User[]
+  redemptions PrizeRedemption[]
+
+  /// Codes this store's till printed on a receipt. Feeds the "codes used per store"
+  /// statistic of the admin dashboard.
+  dispensedCodes TicketCode[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([city])
+  @@index([active])
+}
+
+/// Actual handover of a prize to a customer.
+/// Answers requirement 7 of the brief: "allow in-store employees to view a customer's
+/// prizes in order to hand them over and mark the prize as redeemed".
+model PrizeRedemption {
+  id String @id @default(cuid())
+
+  /// 1-1: a participation can only ever be redeemed once.
+  participationId String        @unique
+  participation   Participation @relation(fields: [participationId], references: [id])
+
+  /// Who handed the prize over. Essential traceability in case of dispute.
+  issuedById String
+  issuedBy   User   @relation("redemptionIssuer", fields: [issuedById], references: [id])
+
+  /// Null when channel = ONLINE (the brief allows claiming in store or online).
+  storeId String?
+  store   Store?  @relation(fields: [storeId], references: [id])
+
+  channel  RedemptionChannel @default(IN_STORE)
+  note     String?
+  issuedAt DateTime          @default(now())
+
+  @@index([issuedById])
+  @@index([storeId, issuedAt])
+  @@index([issuedAt])
+}

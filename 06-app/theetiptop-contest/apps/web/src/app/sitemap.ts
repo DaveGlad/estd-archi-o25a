@@ -3,9 +3,12 @@ import type { MetadataRoute } from 'next';
 const BASE = 'https://dsp5-archi-o25a-15m-g1.fr';
 
 /**
- * Sitemap généré depuis le code plutôt que maintenu à la main.
- * Les pages du back-office et de l'espace boutique en sont exclues,
- * elles sont également bloquées dans robots.txt.
+ * Generated from code rather than maintained by hand, so a route added later cannot be
+ * forgotten here.
+ *
+ * The back office and the in-store area are excluded; they are also blocked in robots.txt
+ * and carry an `X-Robots-Tag: noindex` header. Three layers, because the back office holds
+ * customer names and prize history.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date('2026-11-18');

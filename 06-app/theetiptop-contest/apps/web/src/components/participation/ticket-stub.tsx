@@ -1,18 +1,16 @@
 import type { ReactNode } from 'react';
-import { cn } from '../../lib/utils';
+import { cn } from '@theetiptop-contest/ui/utils';
 
 /**
- * Talon de ticket de caisse.
+ * Till receipt stub.
  *
- * Le joueur arrive avec un ticket dans la main. Plutôt que de lui présenter
- * un formulaire de plus, on lui présente l'objet qu'il tient déjà : même
- * proportions, même perforation, même composition en caractères à chasse
- * fixe. C'est le seul élément de l'interface qui ne pourrait pas être
- * transposé tel quel à un autre projet.
+ * The customer arrives with a receipt in their hand. Rather than showing them one more
+ * web form, this shows them the object they are already holding: same proportions, same
+ * perforation, same monospaced setting. It is the one component here that could not be
+ * lifted into another project unchanged.
  *
- * La perforation est obtenue par deux encoches en couleur de fond posées de
- * part et d'autre du filet pointillé. Elles suivent donc le thème sans
- * retouche.
+ * The perforation is two notches in the background colour, placed either side of the
+ * dotted rule. They therefore follow the light or dark theme with no second version.
  */
 export function TicketStub({
   header,
@@ -69,7 +67,7 @@ export function TicketStub({
   );
 }
 
-/** Ligne d'entête composée comme un ticket : libellé à gauche, valeur à droite. */
+/** Header line, set like a receipt: label left, value right. */
 export function StubLine({
   label,
   value,

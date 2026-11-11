@@ -1,0 +1,73 @@
+// THE technical core of the project: the 500,000 codes.
+//
+// Constraint from the brief, highlighted in red in the source document:
+// "The codes printed on the receipts must be generated at the very start of the contest
+//  so that the winning percentages are necessarily respected. You must therefore hold
+//  500,000 codes in the database, ready to be used, with their prize already assigned."
+//
+// Modelling consequence: the prize is NOT drawn when the player submits the code.
+// It is frozen at insertion time. Submitting only moves the code to USED.
+
+model TicketCode {
+  id String @id @default(cuid())
+
+  /// Code printed on the receipt: 10 alphanumeric characters.
+  /// CHAR(10) rather than TEXT: fixed known length, more compact index over 500,000 rows.
+  /// Uniqueness is enforced by the DATABASE, not just by the generator. That is the only
+  /// safeguard that actually holds if the PRNG ever collides.
+  code String @unique @db.Char(10)
+
+  /// Prize assigned AT GENERATION TIME. This is what guarantees the 60/20/10/6/4% split.
+  prizeId String
+  prize   Prize  @relation(fields: [prizeId], references: [id])
+
+  contestId String
+  contest   Contest @relation(fields: [contestId], references: [id])
+
+  status CodeStatus @default(AVAILABLE)
+
+  // --- Dispensing: the code leaves the pool and gets printed on a receipt ---------------
+  // Requirement 8 of the brief ("make the API available to the tills and to the future
+  // e-commerce site") only means something if the database records WHICH code was handed
+  // out, BY WHOM and for WHAT amount. Without these four fields:
+  //   - nothing stops the same code being printed on two different receipts;
+  //   - the "codes used per store" statistic of the admin dashboard is not computable;
+  //   - the 49 EUR threshold cannot be audited after the fact by the bailiff.
+
+  /// When a till (or the e-commerce site) was handed this code.
+  dispensedAt DateTime?
+
+  /// Store that printed the receipt. Null when the code was issued online.
+  storeId String?
+  store   Store?  @relation(fields: [storeId], references: [id])
+
+  /// Receipt or invoice amount in cents, as checked against Contest.minimumPurchaseCents.
+  /// Retained as evidence: the threshold enforceable on a customer is the one that applied
+  /// on the day of purchase.
+  purchaseAmountCents Int?
+
+  /// Till receipt or order reference, for accounting reconciliation.
+  dispenseReference String?
+
+  // --- Playing -------------------------------------------------------------------------
+
+  usedAt DateTime?
+
+  /// Optional 1-1: a code can only ever be played once.
+  participation Participation?
+
+  /// Reason the code was voided. Only set when status = VOIDED.
+  voidedReason String?
+
+  createdAt DateTime @default(now())
+
+  // --- Indexing ------------------------------------------------------------------------
+  // Lookup by `code` rides the unique index: it is the hottest query on the site
+  // (every player submission). The remaining indexes serve the back office and the tills.
+  @@index([status])                 // "number of tickets used" (admin stat)
+  @@index([prizeId, status])        // "number of prizes already won" per prize
+  @@index([contestId, status])      // picking the next code to dispense
+  @@index([usedAt])                 // participation curve over time
+  @@index([storeId, status])        // codes used per store (admin stat)
+  @@index([dispensedAt])            // dispensing curve, and till reconciliation
+}

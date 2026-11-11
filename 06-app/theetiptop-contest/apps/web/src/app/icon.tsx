@@ -4,10 +4,11 @@ export const size = { width: 64, height: 64 };
 export const contentType = 'image/png';
 
 /**
- * Favicon dessiné à partir de la même géométrie que le logo du site,
- * pour qu'une retouche de la marque se propage automatiquement ici.
- * Les couleurs sont figées en dur : le rendu se fait hors du navigateur,
- * il n'a pas accès aux variables CSS du thème.
+ * Favicon, drawn from the same geometry as the site logo, so a change to the brand
+ * propagates here without a second file to remember.
+ *
+ * The colours are hard-coded rather than taken from the theme: this renders on the server,
+ * outside any browser, with no access to the CSS custom properties.
  */
 const MARK = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
   <circle cx="20" cy="20" r="20" fill="#185b37"/>

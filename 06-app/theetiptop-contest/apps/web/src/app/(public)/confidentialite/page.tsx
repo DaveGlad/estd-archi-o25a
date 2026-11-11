@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Container, PageHeader } from '../../../components/layout/container';
-import { Table, Td, Th } from '../../../components/ui/table';
-import { Alert } from '../../../components/ui/alert';
+import { Container, PageHeader } from '@theetiptop-contest/ui/container';
+import { Table, Td, Th } from '@theetiptop-contest/ui/table';
+import { Alert } from '@theetiptop-contest/ui/alert';
 
 export const metadata: Metadata = {
   title: 'Politique de confidentialité',

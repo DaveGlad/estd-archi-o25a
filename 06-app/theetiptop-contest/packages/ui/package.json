@@ -1,0 +1,135 @@
+{
+  "name": "@theetiptop-contest/ui",
+  "version": "0.0.1",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./package.json": "./package.json",
+    "./styles/theme.css": "./src/styles/theme.css",
+    "./utils": "./src/lib/utils.ts",
+    "./alert": {
+      "types": "./src/ui/alert.tsx",
+      "import": "./src/ui/alert.tsx",
+      "default": "./src/ui/alert.tsx"
+    },
+    "./badge": {
+      "types": "./src/ui/badge.tsx",
+      "import": "./src/ui/badge.tsx",
+      "default": "./src/ui/badge.tsx"
+    },
+    "./bar": {
+      "types": "./src/ui/bar.tsx",
+      "import": "./src/ui/bar.tsx",
+      "default": "./src/ui/bar.tsx"
+    },
+    "./button": {
+      "types": "./src/ui/button.tsx",
+      "import": "./src/ui/button.tsx",
+      "default": "./src/ui/button.tsx"
+    },
+    "./card": {
+      "types": "./src/ui/card.tsx",
+      "import": "./src/ui/card.tsx",
+      "default": "./src/ui/card.tsx"
+    },
+    "./chart": {
+      "types": "./src/ui/chart.tsx",
+      "import": "./src/ui/chart.tsx",
+      "default": "./src/ui/chart.tsx"
+    },
+    "./field": {
+      "types": "./src/ui/field.tsx",
+      "import": "./src/ui/field.tsx",
+      "default": "./src/ui/field.tsx"
+    },
+    "./input": {
+      "types": "./src/ui/input.tsx",
+      "import": "./src/ui/input.tsx",
+      "default": "./src/ui/input.tsx"
+    },
+    "./skeleton": {
+      "types": "./src/ui/skeleton.tsx",
+      "import": "./src/ui/skeleton.tsx",
+      "default": "./src/ui/skeleton.tsx"
+    },
+    "./stat": {
+      "types": "./src/ui/stat.tsx",
+      "import": "./src/ui/stat.tsx",
+      "default": "./src/ui/stat.tsx"
+    },
+    "./table": {
+      "types": "./src/ui/table.tsx",
+      "import": "./src/ui/table.tsx",
+      "default": "./src/ui/table.tsx"
+    },
+    "./container": {
+      "types": "./src/layout/container.tsx",
+      "import": "./src/layout/container.tsx",
+      "default": "./src/layout/container.tsx"
+    },
+    "./logo": {
+      "types": "./src/layout/logo.tsx",
+      "import": "./src/layout/logo.tsx",
+      "default": "./src/layout/logo.tsx"
+    },
+    "./ornaments": {
+      "types": "./src/layout/ornaments.tsx",
+      "import": "./src/layout/ornaments.tsx",
+      "default": "./src/layout/ornaments.tsx"
+    },
+    "./theme-toggle": {
+      "types": "./src/layout/theme-toggle.tsx",
+      "import": "./src/layout/theme-toggle.tsx",
+      "default": "./src/layout/theme-toggle.tsx"
+    },
+    "./charts/age-chart": {
+      "types": "./src/charts/age-chart.tsx",
+      "import": "./src/charts/age-chart.tsx",
+      "default": "./src/charts/age-chart.tsx"
+    },
+    "./charts/gender-chart": {
+      "types": "./src/charts/gender-chart.tsx",
+      "import": "./src/charts/gender-chart.tsx",
+      "default": "./src/charts/gender-chart.tsx"
+    },
+    "./charts/participation-chart": {
+      "types": "./src/charts/participation-chart.tsx",
+      "import": "./src/charts/participation-chart.tsx",
+      "default": "./src/charts/participation-chart.tsx"
+    },
+    "./charts/prize-chart": {
+      "types": "./src/charts/prize-chart.tsx",
+      "import": "./src/charts/prize-chart.tsx",
+      "default": "./src/charts/prize-chart.tsx"
+    },
+    "./charts/store-chart": {
+      "types": "./src/charts/store-chart.tsx",
+      "import": "./src/charts/store-chart.tsx",
+      "default": "./src/charts/store-chart.tsx"
+    },
+    "./prize-status": {
+      "types": "./src/ui/prize-status.tsx",
+      "import": "./src/ui/prize-status.tsx",
+      "default": "./src/ui/prize-status.tsx"
+    }
+  },
+  "private": true,
+  "sideEffects": false,
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.6.0",
+    "lucide-react": "^1.31.0",
+    "recharts": "^3.10.1",
+    "@theetiptop-contest/shared": "0.0.1"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "~16.1.6"
+  }
+}

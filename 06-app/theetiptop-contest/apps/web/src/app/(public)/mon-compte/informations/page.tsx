@@ -1,15 +1,25 @@
 import type { Metadata } from 'next';
-import { Button } from '../../../../components/ui/button';
-import { Card, CardBody, CardFooter, CardHeader, CardTitle } from '../../../../components/ui/card';
-import { Field } from '../../../../components/ui/field';
-import { Input, Select } from '../../../../components/ui/input';
-import { currentUser } from '../../../../lib/mock';
-import { formatDate } from '../../../../lib/utils';
+import { redirect } from 'next/navigation';
+import { Card, CardBody, CardHeader, CardTitle } from '@theetiptop-contest/ui/card';
+import { formatDate } from '@theetiptop-contest/ui/utils';
+import { getCurrentUser } from '@theetiptop-contest/api-client/server';
+
+import { ProfileForm } from '../../../../components/account/profile-form';
 
 export const metadata: Metadata = { title: 'Mes informations' };
 
-export default function InformationsPage() {
-  const user = currentUser();
+const PROVIDER_LABELS: Record<string, string> = {
+  credential: 'Courriel et mot de passe',
+  google: 'Compte Google',
+  facebook: 'Compte Facebook',
+};
+
+export default async function InformationsPage() {
+  const user = await getCurrentUser();
+
+  // The layout already guards the area; this is here so TypeScript knows `user` is not
+  // null, and so the page is still correct if it is ever rendered outside that layout.
+  if (!user) redirect('/connexion?next=/mon-compte/informations');
 
   return (
     <div className="space-y-6">
@@ -17,55 +27,7 @@ export default function InformationsPage() {
         <CardHeader>
           <CardTitle>Informations personnelles</CardTitle>
         </CardHeader>
-        <CardBody>
-          <form className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Prénom" htmlFor="firstName" required>
-                <Input id="firstName" name="firstName" defaultValue={user.firstName} required />
-              </Field>
-              <Field label="Nom" htmlFor="lastName" required>
-                <Input id="lastName" name="lastName" defaultValue={user.lastName} required />
-              </Field>
-            </div>
-
-            <Field
-              label="Adresse de courriel"
-              htmlFor="email"
-              required
-              hint="Un lien de confirmation sera envoyé à la nouvelle adresse."
-            >
-              <Input id="email" name="email" type="email" defaultValue={user.email} required />
-            </Field>
-
-            <Field label="Téléphone" htmlFor="phone">
-              <Input id="phone" name="phone" type="tel" defaultValue={user.phone ?? ''} />
-            </Field>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Genre" htmlFor="gender">
-                <Select id="gender" name="gender" defaultValue={user.gender}>
-                  <option value="FEMALE">Femme</option>
-                  <option value="MALE">Homme</option>
-                  <option value="OTHER">Autre</option>
-                  <option value="UNDISCLOSED">Je préfère ne pas répondre</option>
-                </Select>
-              </Field>
-              <Field label="Code postal" htmlFor="postalCode">
-                <Input
-                  id="postalCode"
-                  name="postalCode"
-                  inputMode="numeric"
-                  maxLength={5}
-                  defaultValue={user.postalCode ?? ''}
-                />
-              </Field>
-            </div>
-          </form>
-        </CardBody>
-        <CardFooter className="flex justify-end gap-3">
-          <Button variant="secondary">Annuler</Button>
-          <Button>Enregistrer</Button>
-        </CardFooter>
+        <ProfileForm user={user} />
       </Card>
 
       <Card>
@@ -73,22 +35,13 @@ export default function InformationsPage() {
           <CardTitle>Connexion</CardTitle>
         </CardHeader>
         <CardBody className="space-y-4 text-sm">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="font-medium">Méthode de connexion</p>
-              <p className="text-fg-muted">
-                {user.provider === 'credential'
-                  ? 'Courriel et mot de passe'
-                  : `Compte ${user.provider === 'google' ? 'Google' : 'Facebook'}`}
-              </p>
-            </div>
-            <Button variant="secondary" size="sm">
-              Changer de mot de passe
-            </Button>
+          <div>
+            <p className="font-medium">Méthode de connexion</p>
+            <p className="text-fg-muted">
+              {PROVIDER_LABELS[user.provider] ?? user.provider}
+            </p>
           </div>
-          <p className="text-fg-muted">
-            Compte créé le {formatDate(user.createdAt)}.
-          </p>
+          <p className="text-fg-muted">Compte créé le {formatDate(user.createdAt)}.</p>
         </CardBody>
       </Card>
     </div>

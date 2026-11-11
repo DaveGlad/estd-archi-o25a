@@ -1,14 +1,17 @@
 /**
- * Données structurées Schema.org.
- * Elles ne changent rien à l'affichage mais permettent aux moteurs de
- * comprendre la nature de l'opération, et ouvrent l'affichage enrichi
- * sur les questions fréquentes.
+ * Schema.org structured data.
+ *
+ * Changes nothing on screen. What it does is let a search engine understand what the
+ * operation actually is, and makes the frequently-asked questions eligible for a rich
+ * result — which is one of the few SEO levers that is entirely under our control.
  */
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script
       type="application/ld+json"
-      // Contenu figé côté serveur, aucune donnée utilisateur n'y transite.
+      // Server-authored content only, with no user input anywhere in it. That is what
+      // makes `dangerouslySetInnerHTML` acceptable here: the JSON is built from constants
+      // and from the contest row, never from a request parameter.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );

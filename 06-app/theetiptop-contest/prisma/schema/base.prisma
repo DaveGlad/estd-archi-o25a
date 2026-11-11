@@ -1,0 +1,70 @@
+// Foundation: generator, datasource and shared enums.
+// deal-israel convention: schema split per domain under prisma/schema/.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../../apps/api/src/generated/prisma"
+  // The API is bundled to CommonJS by Nx; state it explicitly rather than relying on
+  // the generator inferring it from the nearest package.json.
+  moduleFormat = "cjs"
+  runtime      = "nodejs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Application roles. The brief requires three distinct profiles:
+/// the customer who plays, the in-store employee who hands out prizes, the admin.
+enum Role {
+  CUSTOMER
+  EMPLOYEE
+  ADMIN
+}
+
+/// Required by the admin dashboard: the brief explicitly asks for
+/// "statistics on winners in terms of gender, age, etc.".
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  UNDISCLOSED
+}
+
+/// Lifecycle of a code printed on a receipt.
+///
+/// AVAILABLE: generated during the initial run of 500,000, not yet handed to anybody.
+/// DISPENSED: printed on a receipt by a till, or issued by the future e-commerce site.
+/// USED:      played on the site, a Participation exists.
+/// VOIDED:    receipt cancelled, the code must never become playable.
+///
+/// DISPENSED is what makes requirement 7 and the per-store statistics possible: without
+/// it there is no way to know which store a played code came from, nor to stop the same
+/// code being printed on two different receipts.
+enum CodeStatus {
+  AVAILABLE
+  DISPENSED
+  USED
+  VOIDED
+}
+
+/// Lifecycle of the prize attached to a participation.
+/// EXPIRED: the player did not claim within 30 days after the contest closed.
+enum PrizeStatus {
+  TO_CLAIM
+  REDEEMED
+  EXPIRED
+}
+
+/// The brief states the prize is claimed "in store or online".
+enum RedemptionChannel {
+  IN_STORE
+  ONLINE
+}
+
+/// TICKET_PRIZE: the 5 prizes spread over the 500,000 codes (60/20/10/6/4%).
+/// GRAND_PRIZE : the one-year tea supply (360 EUR) drawn at closing time.
+enum PrizeType {
+  TICKET_PRIZE
+  GRAND_PRIZE
+}

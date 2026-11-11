@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { Download } from 'lucide-react';
-import { Container, PageHeader } from '../../../../components/layout/container';
-import { Button } from '../../../../components/ui/button';
-import { Alert } from '../../../../components/ui/alert';
-import { contest, getGrandPrize, getTicketPrizes } from '../../../../lib/mock';
-import { formatDate, formatPrice } from '../../../../lib/utils';
+import { Container, PageHeader } from '@theetiptop-contest/ui/container';
+import { Button } from '@theetiptop-contest/ui/button';
+import { Alert } from '@theetiptop-contest/ui/alert';
+import { getContest, getGrandPrize, getTicketPrizes } from '@theetiptop-contest/api-client/server';
+import { formatCount, formatDate, formatPrice } from '@theetiptop-contest/ui/utils';
 
 export const metadata: Metadata = {
   title: 'Règlement du jeu',
@@ -12,16 +12,19 @@ export const metadata: Metadata = {
     'Règlement complet du Grand Jeu Thé Tip Top, déposé auprès de Maître Arnaud Rick, huissier de justice.',
 };
 
-export default function ReglementPage() {
-  const ticketPrizes = getTicketPrizes();
-  const grandPrize = getGrandPrize();
+export default async function ReglementPage() {
+  const [contest, ticketPrizes, grandPrize] = await Promise.all([
+    getContest(),
+    getTicketPrizes(),
+    getGrandPrize(),
+  ]);
 
   return (
     <>
       <PageHeader
         eyebrow="Le jeu-concours"
         title="Règlement du jeu"
-        intro={`Déposé le ${formatDate(contest.rulesFiledAt)} auprès de ${contest.bailiffName}, huissier de justice.`}
+        intro={`Déposé le ${formatDate(contest.rulesFiledAt ?? contest.startsAt)} auprès de ${contest.bailiffName}, huissier de justice.`}
       />
       <Container className="py-14">
         <Button variant="secondary">
@@ -66,7 +69,7 @@ export default function ReglementPage() {
 
           <h2>Article 4, dotation</h2>
           <p>
-            {contest.plannedCodeCount.toLocaleString('fr-FR')} codes sont mis en jeu.
+            {formatCount(contest.plannedCodeCount)} codes sont mis en jeu.
             Tous sont gagnants. Ils ont été générés avant l&apos;ouverture du jeu, avec
             leur lot déjà attribué, selon la répartition suivante :
           </p>

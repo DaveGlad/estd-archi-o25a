@@ -2,25 +2,23 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, MapPin, Package, Store } from 'lucide-react';
-import { PrizeStatusBadge } from '../../../../../components/account/prize-status';
-import { Alert } from '../../../../../components/ui/alert';
-import { Button, ButtonLink } from '../../../../../components/ui/button';
-import { Card, CardBody } from '../../../../../components/ui/card';
+import { PrizeStatusBadge } from '@theetiptop-contest/ui/prize-status';
+import { Alert } from '@theetiptop-contest/ui/alert';
+import { Button, ButtonLink } from '@theetiptop-contest/ui/button';
+import { Card, CardBody } from '@theetiptop-contest/ui/card';
 import {
-  MOCK_TODAY,
+  ApiError,
   getParticipation,
-  getPrize,
-  getStore,
-  participations,
-  stores,
-} from '../../../../../lib/mock';
-import { daysUntil, formatDate, formatDateTime, formatPrice } from '../../../../../lib/utils';
+  getStores,
+} from '@theetiptop-contest/api-client/server';
+import {
+  daysUntil,
+  formatDate,
+  formatDateTime,
+  formatPrice,
+} from '@theetiptop-contest/ui/utils';
 
 export const metadata: Metadata = { title: 'Détail de mon gain' };
-
-export function generateStaticParams() {
-  return participations.map((p) => ({ id: p.id }));
-}
 
 export default async function GainDetailPage({
   params,
@@ -28,12 +26,22 @@ export default async function GainDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const participation = getParticipation(id);
-  if (!participation) notFound();
 
-  const prize = getPrize(participation.prizeId);
-  const store = getStore(participation.redemption?.storeId);
-  const daysLeft = daysUntil(participation.claimDeadline, MOCK_TODAY);
+  // 404 and 403 both become notFound(): telling a visitor "this prize exists but is not
+  // yours" confirms the id is valid, which is an enumeration oracle on a cuid. The API
+  // already refuses the read; the front end simply does not explain why.
+  let participation;
+  try {
+    participation = await getParticipation(id);
+  } catch (error) {
+    if (ApiError.is(error) && (error.status === 404 || error.status === 403))
+      notFound();
+    throw error;
+  }
+
+  const stores = await getStores();
+  const prize = participation.prize;
+  const daysLeft = daysUntil(participation.claimDeadline);
 
   return (
     <div className="space-y-8">
@@ -80,7 +88,9 @@ export default async function GainDetailPage({
               </dd>
             </div>
             <div>
-              <dt className="text-sm text-fg-muted">Date limite de réclamation</dt>
+              <dt className="text-sm text-fg-muted">
+                Date limite de réclamation
+              </dt>
               <dd className="mt-0.5 text-sm">
                 {formatDate(participation.claimDeadline)}
               </dd>
@@ -105,7 +115,7 @@ export default async function GainDetailPage({
                   <dt className="text-sm text-fg-muted">Lieu</dt>
                   <dd className="mt-0.5">
                     {participation.redemption.channel === 'IN_STORE'
-                      ? `Boutique ${store?.name}`
+                      ? `Boutique ${participation.redemption.storeName ?? '—'}`
                       : 'Envoi en ligne'}
                   </dd>
                 </div>
@@ -119,20 +129,23 @@ export default async function GainDetailPage({
         <>
           <Alert tone="info" title="Comment récupérer votre lot">
             <p>
-              Présentez cette page ou votre pièce d&apos;identité dans la boutique de
-              votre choix. Vous pouvez aussi demander un envoi à domicile, les frais
-              de port étant à la charge de Thé Tip Top.
+              Présentez cette page ou votre pièce d&apos;identité dans la
+              boutique de votre choix. Vous pouvez aussi demander un envoi à
+              domicile, les frais de port étant à la charge de Thé Tip Top.
             </p>
           </Alert>
 
           <div className="grid gap-5 sm:grid-cols-2">
             <Card>
               <CardBody className="space-y-3">
-                <Store className="size-5 text-accent-strong" aria-hidden="true" />
+                <Store
+                  className="size-5 text-accent-strong"
+                  aria-hidden="true"
+                />
                 <h2 className="font-semibold">Retirer en boutique</h2>
                 <p className="text-sm text-fg-muted">
-                  Dans n&apos;importe laquelle de nos {stores.length} boutiques, aux
-                  horaires d&apos;ouverture.
+                  Dans n&apos;importe laquelle de nos {stores.length} boutiques,
+                  aux horaires d&apos;ouverture.
                 </p>
                 <ButtonLink href="/boutiques" variant="secondary">
                   <MapPin className="size-4" aria-hidden="true" />
@@ -143,11 +156,14 @@ export default async function GainDetailPage({
 
             <Card>
               <CardBody className="space-y-3">
-                <Package className="size-5 text-accent-strong" aria-hidden="true" />
+                <Package
+                  className="size-5 text-accent-strong"
+                  aria-hidden="true"
+                />
                 <h2 className="font-semibold">Recevoir à domicile</h2>
                 <p className="text-sm text-fg-muted">
-                  Livraison sous cinq à sept jours ouvrés à l&apos;adresse de votre
-                  choix.
+                  Livraison sous cinq à sept jours ouvrés à l&apos;adresse de
+                  votre choix.
                 </p>
                 <Button variant="secondary">Demander un envoi</Button>
               </CardBody>

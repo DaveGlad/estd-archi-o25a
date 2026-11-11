@@ -1,0 +1,57 @@
+# ⚠️ Critical file, identified as fix #2 in 01-pilotage/DECISIONS.md § 4 bis.
+#
+# Without it, the `COPY . .` of the multi-stage Dockerfiles ships `node_modules` and the Nx
+# cache to the Docker daemon: several hundred megabytes of build context, for 3
+# applications x 3 environments, on every Jenkins build.
+
+# Dependencies and caches - rebuilt inside the build stage
+node_modules
+**/node_modules
+.nx
+**/.next
+tmp
+out-tsc
+coverage
+reports
+test-results
+
+# Build output, at any depth. `dist` alone would only match the root one, and a local
+# `nx prune` leaves apps/api/dist/workspace_modules behind — which the build stage then
+# copies in, giving Nx two projects called @theetiptop-contest/shared and failing the build.
+dist
+**/dist
+
+# Generated Prisma client: produced inside the build stage by `prisma generate`.
+apps/api/src/generated
+
+# Secrets - injected at runtime by Jenkins, never in an image layer
+.env
+.env.*
+!.env.example
+
+# Git history - useless at runtime, and carries the whole past of the repository
+.git
+.gitignore
+.github
+
+# Local tooling
+.vscode
+.idea
+.claude
+.editorconfig
+.prettierrc
+.prettierignore
+**/*.log
+
+# Docs and tests - no reason to weigh down a production image
+**/*.md
+!README.md
+e2e
+**/*.spec.ts
+**/*.test.ts
+playwright-report
+test-results
+
+# System files
+.DS_Store
+Thumbs.db

@@ -1,30 +1,50 @@
 'use client';
 
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useRef, useState, useTransition } from 'react';
 import { Loader2, PartyPopper, ScanLine } from 'lucide-react';
-import { Alert } from '../ui/alert';
-import { Button, ButtonLink } from '../ui/button';
-import { StubLine, TicketStub } from './ticket-stub';
-import { contest, submitCode } from '../../lib/mock';
-import type { SubmitCodeResult } from '../../lib/mock';
-import { formatDate, formatDateTime, formatPrice } from '../../lib/utils';
+import { Alert } from '@theetiptop-contest/ui/alert';
+import { Button, ButtonLink } from '@theetiptop-contest/ui/button';
+import { formatDate, formatDateTime, formatPrice } from '@theetiptop-contest/ui/utils';
 
-export function CodeForm() {
+import { StubLine, TicketStub } from './ticket-stub';
+import {
+  submitCodeAction,
+  type SubmitCodeActionResult,
+} from '../../app/(public)/participer/actions';
+
+interface CodeFormProps {
+  /** Comes from the contest row rather than a constant: the rules are data, not code. */
+  codeLength: number;
+  minimumPurchaseCents: number;
+}
+
+/**
+ * Use case UC-01, client side.
+ *
+ * The submission goes through a **server action**, not a `fetch`. The call needs the
+ * session cookie and the internal API address, and routing it through the server keeps
+ * both out of the browser — see `participer/actions.ts`.
+ *
+ * `useTransition` rather than a hand-rolled pending flag: it is what React provides for
+ * exactly this, and it keeps the input responsive while the action is in flight.
+ */
+export function CodeForm({ codeLength, minimumPurchaseCents }: CodeFormProps) {
   const [code, setCode] = useState('');
-  const [pending, setPending] = useState(false);
-  const [result, setResult] = useState<SubmitCodeResult | null>(null);
+  const [result, setResult] = useState<SubmitCodeActionResult | null>(null);
+  const [pending, startTransition] = useTransition();
   const liveRef = useRef<HTMLDivElement>(null);
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    setPending(true);
-    // Latence simulée, pour que l'état de chargement soit visible sur la maquette.
-    window.setTimeout(() => {
-      setResult(submitCode(code));
-      setPending(false);
+
+    startTransition(async () => {
+      const outcome = await submitCodeAction(code);
+      setResult(outcome);
+      // Moves focus into the live region so a screen reader announces the outcome, rather
+      // than leaving the user on a submit button whose page silently changed underneath.
       liveRef.current?.focus();
-    }, 450);
+    });
   }
 
   function reset() {
@@ -34,10 +54,10 @@ export function CodeForm() {
 
   const fieldError =
     result?.outcome === 'INVALID_FORMAT'
-      ? 'Le code comporte exactement 10 caractères, lettres et chiffres.'
+      ? `Le code comporte exactement ${codeLength} caractères, lettres et chiffres.`
       : undefined;
 
-  /* Gain                                                                */
+  /* Won                                                                  */
   if (result?.outcome === 'WON') {
     return (
       <TicketStub
@@ -79,10 +99,10 @@ export function CodeForm() {
             <StubLine label="Référence" value={result.participation.id} />
           </div>
 
-          <Alert tone="success" title="Confirmation envoyée">
+          <Alert tone="success" title="Lot enregistré">
             <p>
-              Un courriel récapitulatif vient de vous être envoyé. Votre lot est
-              également disponible dans votre espace personnel.
+              Votre lot est disponible dans votre espace personnel. Présentez-vous en
+              boutique avec cette référence, ou réclamez-le en ligne.
             </p>
           </Alert>
         </div>
@@ -90,18 +110,15 @@ export function CodeForm() {
     );
   }
 
-  /* Saisie                                                              */
+  /* Entry                                                               */
   return (
     <div className="space-y-6">
       <TicketStub
         header={
           <div className="space-y-1">
             <StubLine label="Thé Tip Top" value="Ticket de caisse" />
-            <StubLine
-              label="Montant minimum"
-              value={formatPrice(contest.minimumPurchaseCents)}
-            />
-            <StubLine label="Code à saisir" value={`${contest.codeLength} caractères`} />
+            <StubLine label="Montant minimum" value={formatPrice(minimumPurchaseCents)} />
+            <StubLine label="Code à saisir" value={`${codeLength} caractères`} />
           </div>
         }
       >
@@ -118,7 +135,7 @@ export function CodeForm() {
             name="code"
             value={code}
             onChange={(e) => setCode(e.target.value.toUpperCase())}
-            maxLength={contest.codeLength}
+            maxLength={codeLength}
             autoComplete="off"
             inputMode="text"
             spellCheck={false}
@@ -168,8 +185,8 @@ export function CodeForm() {
         {result?.outcome === 'UNKNOWN_CODE' && (
           <Alert tone="error" title="Ce code n'est pas valide">
             <p>
-              Vérifiez la saisie, en particulier les caractères qui se ressemblent.
-              Si le problème persiste, contactez-nous avec une photo de votre ticket.
+              Vérifiez la saisie, en particulier les caractères qui se ressemblent. Si
+              le problème persiste, contactez-nous avec une photo de votre ticket.
             </p>
           </Alert>
         )}
@@ -208,23 +225,24 @@ export function CodeForm() {
           <Alert tone="error" title="Trop de tentatives">
             <p>
               Par sécurité, la saisie est suspendue pendant {result.retryInMinutes}{' '}
-              minutes. Cette limite protège le jeu contre les tentatives
-              automatisées.
+              minutes. Cette limite protège le jeu contre les tentatives automatisées.
+            </p>
+          </Alert>
+        )}
+
+        {/* Added by the server action rather than by the API: the session expired between
+            loading this page and submitting the form. */}
+        {result?.outcome === 'SESSION_EXPIRED' && (
+          <Alert tone="warning" title="Votre session a expiré">
+            <p>
+              <Link href="/connexion?next=/participer" className="underline">
+                Reconnectez-vous
+              </Link>{' '}
+              pour jouer votre code. Il n&apos;a pas été consommé.
             </p>
           </Alert>
         )}
       </div>
-
-      <Alert tone="info" title="Codes de démonstration">
-        <p>
-          Cette version fonctionne sur des données simulées. Essayez{' '}
-          <code className="font-mono">A7K2M9QX41</code> pour un gain,{' '}
-          <code className="font-mono">F8N4X2KC63</code> pour un code déjà joué,{' '}
-          <code className="font-mono">XXXXXXXXXX</code> pour un code inconnu, ou{' '}
-          <code className="font-mono">ZZZZZZZZZZ</code> pour la limitation de
-          tentatives.
-        </p>
-      </Alert>
     </div>
   );
 }

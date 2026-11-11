@@ -1,0 +1,81 @@
+# Local development environment for the contest site.
+#
+# Holds the infrastructure services ONLY: the applications (api, web, admin) run directly
+# on the developer's machine through `nx dev`, to keep hot reload. The multi-stage
+# application images are for the dev / preprod-QA / prod environments Jenkins deploys,
+# see compose.prod.yml.
+#
+# Start:  docker compose -f 05-workflow/docker/compose.dev.yml up -d
+# Stop:   docker compose -f 05-workflow/docker/compose.dev.yml down
+# Full reset (⚠️ destroys the 500,000 codes):
+#         docker compose -f 05-workflow/docker/compose.dev.yml down -v
+
+name: theetiptop-dev
+
+services:
+  postgres:
+    # PostgreSQL 17, PostgreSQL licence (OSI approved): satisfies the brief's "open source
+    # applications" requirement, and is more permissive than MariaDB's GPL.
+    image: postgres:17-alpine
+    container_name: theetiptop-dev-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-theetiptop}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-theetiptop}
+      POSTGRES_DB: ${POSTGRES_DB:-theetiptop}
+      # Deterministic collation: required so the unique index on `code` behaves identically
+      # in dev, preprod and prod.
+      POSTGRES_INITDB_ARGS: '--locale=C --encoding=UTF8'
+    ports:
+      # 5434 on the host: 5432 and 5433 are already taken by other projects on this machine.
+      - '${POSTGRES_PORT:-5434}:5432'
+    command:
+      # Tuned for the bulk insert of the 500,000 codes.
+      # Measurements and rationale: CST part I, and 06-app/BENCHMARK.md.
+      - postgres
+      - -c
+      - max_connections=100
+      - -c
+      - shared_buffers=256MB
+      - -c
+      - work_mem=16MB
+      - -c
+      - maintenance_work_mem=256MB
+      - -c
+      - synchronous_commit=off
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-theetiptop} -d ${POSTGRES_DB:-theetiptop}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    # Redis 8: rate limiting on code submission (brute-force protection over 10 characters)
+    # and caching of the back-office statistics.
+    image: redis:8-alpine
+    container_name: theetiptop-dev-redis
+    restart: unless-stopped
+    ports:
+      - '${REDIS_PORT:-6381}:6379'
+    command:
+      - redis-server
+      - --appendonly
+      - 'no'
+      - --maxmemory
+      - 256mb
+      - --maxmemory-policy
+      - allkeys-lru
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres-data:
+  redis-data:
