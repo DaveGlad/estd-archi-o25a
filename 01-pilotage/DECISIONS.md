@@ -59,16 +59,45 @@ Référence : `/Users/daveglad/Documents/work/deal-israel` (+ `.agent/convention
 
 | Poste | Choix | Pourquoi (à écrire dans le CDC) | Statut |
 |---|---|---|---|
-| Monorepo | **Nx 22** (npm workspaces) | Un seul dépôt pour API + webApp + admin ⇒ un seul pipeline Jenkins, cache de build Nx, `nx affected` = builds courts (argument **RSE / éco-conception**) | ✅ |
+| Monorepo | **Nx 23.1** (npm workspaces) | Un seul dépôt pour API + webApp + admin ⇒ un seul pipeline Jenkins, cache de build Nx, `nx affected` = builds courts (argument **RSE / éco-conception**) | ✅ |
 | Front webApp | **Next.js 16** + React 19 + **Tailwind v4** + shadcn/ui | SSR/SSG ⇒ **SEO** (exigence du sujet), accessibilité native de Radix (shadcn), images optimisées ⇒ Green IT | ✅ |
 | Back-office admin | **Next.js** (`apps/admin`) | Sépare le back-office admin/employé du front public : surface d'attaque réduite, droits distincts | ✅ |
-| API | **NestJS 11** + Swagger, routes `v1/…` | REST versionnée et documentée, indispensable puisque l'API sert **3 consommateurs** : webApp, **caisses magasin**, **futur e-commerce** | ✅ |
-| ORM | **Prisma 7** (schémas splittés par domaine) | Migrations versionnées ⇒ rejouables par la CI sur dev/preprod/prod. Le schéma Prisma sert de base au **MLD** du CDC | ✅ |
+| API | **NestJS 11.2.9** + Swagger, routes `v1/…` | REST versionnée et documentée, indispensable puisque l'API sert **3 consommateurs** : webApp, **caisses magasin**, **futur e-commerce**. 25 routes livrées | ✅ |
+| ORM | **Prisma 7.10** (schémas splittés par domaine) | Migrations versionnées ⇒ rejouables par la CI sur dev/preprod/prod. Le schéma Prisma sert de base au **MLD** du CDC. ⚠️ Prisma 7 **impose un driver adapter** : `@prisma/adapter-pg`, le moteur Rust a disparu | ✅ |
 | BDD | **PostgreSQL 17** | **Open source** (licence PostgreSQL, OSI) ⇒ conforme à l'exigence du sujet, plus permissive que la GPL de MariaDB. Requis pour insérer et indexer **500 000 codes** (`COPY`, index B-tree unique) | ✅ |
 | Cache / file | **Redis** | Rate-limiting de la saisie de codes (anti-brute-force), sessions, file du batch de génération | ✅ |
 | Auth | **Better Auth** | Couvre en une brique les 3 modes exigés : **formulaire classique + OAuth Google + OAuth Facebook**, avec rôles `client / employé / admin` | ✅ |
-| Tests | **Vitest** (unitaires + intégration) · **Playwright** (fonctionnels/E2E) · **k6** (performance) | Le sujet exige les 4 familles + l'**export des rapports** vers Jenkins (JUnit XML) | ⬜ à confirmer |
+| Tests | **Vitest 5** (unitaires + intégration) · **Playwright 1.65** (fonctionnels/E2E) · **k6** (performance) | Le sujet exige les 4 familles + l'**export des rapports** vers Jenkins (JUnit XML). 132 tests livrés et verts ; k6 écrit mais non exécuté, le binaire reste à installer | ✅ |
 | Mobile *(hors périmètre livrable)* | Expo / React Native | Sert de **projet de démonstration n°3** du workflow (« app mobile hybride ») | ⬜ |
+
+### Décisions prises pendant l'implémentation
+
+Six choix n'apparaissaient pas dans le tableau ci-dessus parce qu'ils ne se posent qu'une
+fois le code écrit. Tous sont documentés à l'endroit où ils s'appliquent ; ils sont listés
+ici parce qu'ils sont **défendables individuellement en soutenance**.
+
+| Décision | Pourquoi | Où c'est argumenté |
+|---|---|---|
+| **`pg_trgm` à la place d'Elasticsearch** | La recherche client de l'employé est une sous-chaîne non ancrée, qu'un index B-tree ne peut pas servir. `pg_trgm` est un module contrib de PostgreSQL, sous la même licence OSI, et suffit sur une table de quelques dizaines de milliers de lignes. Elasticsearch était de toute façon écarté (licence SSPL depuis 7.11) | migration `20261111070019` |
+| **`@nestjs/config` et `@nestjs/throttler` retirés** | Le premier doublonnait la validation `zod` du fichier `env.ts` pour le seul bénéfice de lire un `.env`. Le second ne stocke ses compteurs qu'en mémoire : avec trois conteneurs, trois compteurs indépendants, donc une limite qui ne limite rien. La limitation réelle passe par Redis. Argument RSE : aucune dépendance qui n'apporte rien | `apps/api/src/config/load-env.ts` |
+| **Pas de couche `repository` distincte** | Écart assumé par rapport à la convention `deal-israel`. Le client Prisma **est** la couche d'accès. Une classe de plus qui réexporterait ses méthodes n'ajouterait rien ; en revanche chaque module convertit systématiquement les lignes en DTO via un `*.mapper.ts`, parce qu'une ligne Prisma porte des colonnes qu'aucun client ne doit voir | `06-app/ARCHITECTURE.md` |
+| **Les 6 issues de la saisie de code répondent 200** | « Dis-moi ce que vaut mon code » a six réponses normales, toutes affichées par un écran. Les mapper sur 400/404/409/429 obligerait le front à brancher sur le statut, à reparser des corps d'erreur, et à maintenir cette correspondance à la main. Le front avait été maquetté contre cette union discriminée avant que l'API existe | `participations.controller.ts` |
+| **Graine de génération non stockée, graine de tirage stockée** | Asymétrie volontaire. La première permet de dériver 500 000 codes non joués et leurs lots : la base n'en garde que le SHA-256. La seconde décrit une opération terminée : la connaître ne permet que de recalculer un résultat déjà public, et c'est ce qui rend le tirage vérifiable | `contest.prisma`, `draw.service.ts` |
+| **Image API : manifeste épinglé plutôt que lockfile élagué** | Dans un workspace npm, ni `npm ci -w <app>` ni `npm prune --omit=dev` ne restreignent l'installation à une application : les deux installent l'arbre entier, 936 Mo mesurés. Et le lockfile élagué par `nx prune` est incohérent avec son propre manifeste sous Express 5. Le manifeste généré par webpack est donc épinglé aux versions exactes résolues par l'étage de build : **1,46 Go → 471 Mo** | `05-workflow/docker/README.md` |
+
+### Deux corrections de schéma, à répercuter dans le MLD du CDC
+
+Le schéma initial ne permettait pas de tenir deux exigences du sujet.
+
+1. **Distribution des codes.** `CodeStatus` ignorait l'état « imprimé sur un ticket », et
+   `TicketCode` n'avait aucun lien vers une boutique. L'exigence n° 8 (API pour les caisses)
+   était donc incomplète, et la statistique « codes joués par boutique » **non calculable**.
+   Ajoutés : `CodeStatus.DISPENSED`, `dispensedAt`, `storeId`, `purchaseAmountCents`,
+   `dispenseReference`, `voidedReason`.
+2. **Auditabilité de la génération.** Ajoutés sur `Contest` : `codesGeneratedAt`,
+   `codeGenerationSeedHash`, `codePoolFingerprint`.
+
+⚠️ `02-cahier-des-charges/sections/E5-mcd-mld.md` doit être mis à jour en conséquence.
 
 ### ⚠️ Écarts à traiter par rapport à `deal-israel`
 
@@ -77,7 +106,7 @@ Référence : `/Users/daveglad/Documents/work/deal-israel` (+ `.agent/convention
 | **Elasticsearch** | ❌ **À retirer.** Sous licence Elastic v2 / SSPL depuis 7.11 = **non open source** ⇒ viole la contrainte du sujet. Et inutile ici. Si un besoin de recherche apparaît (recherche client par l'employé boutique), utiliser l'index `pg_trgm` de Postgres. |
 | **Stripe** | ❌ Retirer, aucun paiement dans un jeu-concours. |
 | **MinIO** | 🟡 Optionnel (assets, visuels du jeu). AGPL = open source, donc conforme si conservé. |
-| **Better Auth** | 🟡 Vérifier que le provider **Facebook** est bien configuré (le sujet l'exige explicitement, Google seul ne suffit pas). |
+| **Better Auth** | ✅ Les trois modes sont câblés. Les deux fournisseurs ne sont enregistrés que si leur paire d'identifiants est complète, donc l'API démarre sans eux avec le seul formulaire. **Identifiants Google et Facebook à créer.** |
 | **Notifications push / chat / Expo** | ❌ Hors périmètre du site jeu-concours. |
 
 ## 4. Briques du workflow CI/CD
