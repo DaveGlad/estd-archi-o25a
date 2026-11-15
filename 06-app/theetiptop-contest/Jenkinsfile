@@ -34,7 +34,7 @@ pipeline {
   }
 
   environment {
-    REGISTRY          = 'registry.dsp5-archi-o25a-15m-g1.fr'
+    REGISTRY          = 'registry.wk-archi-o25a-15m-g1.fr'
     IMAGE_NAMESPACE   = 'theetiptop'
     // The commit, never `latest`. A deployed artefact has to be identifiable and
     // reversible — CST D.2, "Versionnement des images".

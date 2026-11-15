@@ -71,6 +71,32 @@ services:
     networks: [backend, edge]
     # No `ports:`. The reverse proxy on the edge network is the only way in, which is what
     # keeps the API off the host's public interface.
+    #
+    # Traefik discovers this container through the labels below. Without them it is on the
+    # edge network and still unreachable: the proxy routes nothing it has not been told
+    # about, because `exposedbydefault` is false — which is the right default, and the
+    # reason every service has to opt in explicitly.
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      traefik.http.routers.theetiptop-api.rule: Host(`${API_HOST}`)
+      traefik.http.routers.theetiptop-api.entrypoints: websecure
+      traefik.http.routers.theetiptop-api.tls.certresolver: letsencrypt
+      traefik.http.services.theetiptop-api.loadbalancer.server.port: '3333'
+      #
+      # ⚠️ Router names are LITERAL, not templated by environment, and that is a Compose
+      # limitation rather than a choice: Compose interpolates variables in label VALUES
+      # and never in label KEYS. `${COMPOSE_PROJECT_NAME}-api` in the key is passed to
+      # Traefik verbatim.
+      #
+      # Consequence: one Traefik cannot carry two environments from this file as it
+      # stands — two routers with the same name silently keep one of the two, and which
+      # one depends on container start order. Running dev or preprod beside production on
+      # the same host therefore needs `compose.preprod-routers.yml` alongside it, which
+      # overrides these three keys with distinct literals.
+      #
+      # On this project it does not bite: the VPS carries the workflow and PRODUCTION, and
+      # CST D.3 already says the environments move to a second host when RAM allows.
     deploy:
       resources:
         limits:
@@ -94,6 +120,19 @@ services:
       api:
         condition: service_healthy
     networks: [backend, edge]
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      # Both the apex and www answer, and www redirects. Serving the same pages on two
+      # hostnames would split the SEO the brief asks for across two addresses.
+      traefik.http.routers.theetiptop-web.rule: Host(`${SITE_HOST}`) || Host(`www.${SITE_HOST}`)
+      traefik.http.routers.theetiptop-web.entrypoints: websecure
+      traefik.http.routers.theetiptop-web.tls.certresolver: letsencrypt
+      traefik.http.routers.theetiptop-web.middlewares: theetiptop-www@docker
+      traefik.http.middlewares.theetiptop-www.redirectregex.regex: ^https://www\\.(.*)
+      traefik.http.middlewares.theetiptop-www.redirectregex.replacement: https://$${1}
+      traefik.http.middlewares.theetiptop-www.redirectregex.permanent: 'true'
+      traefik.http.services.theetiptop-web.loadbalancer.server.port: '3000'
     deploy:
       resources:
         limits:
@@ -112,6 +151,17 @@ services:
       api:
         condition: service_healthy
     networks: [backend, edge]
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      traefik.http.routers.theetiptop-admin.rule: Host(`${ADMIN_HOST}`)
+      traefik.http.routers.theetiptop-admin.entrypoints: websecure
+      traefik.http.routers.theetiptop-admin.tls.certresolver: letsencrypt
+      traefik.http.services.theetiptop-admin.loadbalancer.server.port: '3001'
+      # The back office is on its own subdomain and nothing else. It is not indexed, not
+      # linked from the public site, and a separate hostname is what lets the proxy carry
+      # a different ingress rule for it later — an IP allow-list, say — without touching
+      # the public site.
     deploy:
       resources:
         limits:
@@ -200,4 +250,9 @@ networks:
   # shared by the three environments, each behind its own subdomain.
   edge:
     external: true
-    name: ${EDGE_NETWORK:-theetiptop-edge}
+    # Defaults to `edge`, the network Traefik is started with
+    # (`--providers.docker.network=edge`). They MUST be the same network: a container on a
+    # different one is invisible to the proxy however correct its labels are.
+    # Created once per host by bootstrap-vps.sh, never by a compose file — whichever ran
+    # second would fail on an existing network.
+    name: ${EDGE_NETWORK:-edge}
