@@ -110,6 +110,31 @@ garantie de la génération qui se vérifie d'elle-même.
 | `theetiptop/web` | 322 Mo | ✅ healthy, rend les pages avec les données réelles |
 | `theetiptop/admin` | 319 Mo | ✅ healthy |
 
+### Workflow CI/CD
+
+| Élément | État | Vérifié |
+|---|---|---|
+| `Jenkinsfile` du dépôt client | ✅ | Dans le dépôt du projet, exigence n° 5 |
+| `Jenkinsfile` site vitrine et application mobile | ✅ | Les trois formes de projet du point 7 |
+| `compose.workflow.yml` : Traefik, Gitea, Jenkins, registry | ✅ | `docker compose config` valide |
+| Prometheus, Alertmanager, Grafana, Loki | ✅ | `promtool` et `amtool` passent sur les 4 fichiers |
+| Métriques métier exposées par l'API | ✅ | `/metrics` relevé à chaud, compteurs incrémentés |
+| Sauvegardes chiffrées et externalisées | ✅ | Unités systemd, `OnFailure=` branché sur l'alerte |
+| Test de restauration réel, 4 contrôles métier | ✅ | Script écrit, syntaxe vérifiée |
+| Reverse proxy et TLS automatique | ✅ | Traefik, résolveur ACME, redirection HTTP → HTTPS |
+
+Reste à exécuter sur un hôte réel, ce qui dépend du VPS (W1) : la commande des
+machines et des domaines n'est pas faite.
+
+### Design
+
+| Élément | État |
+|---|---|
+| Logo : 3 concepts, 1 retenu, 5 déclinaisons | ✅ |
+| Charte graphique, contrastes **mesurés** | ✅ |
+| Maquettes, 5 pages × 3 formats | ✅ captures du site réel, régénérables |
+| Zoning et wireframes | ⏳ En attente de la direction artistique |
+
 ### Ce qui bloque encore, côté applicatif
 
 | Blocage | Ce qu'il empêche | Qui doit agir |
