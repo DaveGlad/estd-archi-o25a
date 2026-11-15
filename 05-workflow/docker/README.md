@@ -139,12 +139,17 @@ environnements déployés par Jenkins.
 Ports décalés en local — 5434 pour PostgreSQL, 6381 pour Redis — pour ne pas entrer en
 conflit avec une autre instance déjà installée sur la machine du développeur.
 
-## Reste à produire dans ce dossier
+## Les trois fichiers compose du projet
 
-| Élément | Tâche du backlog |
-|---|---|
-| `Jenkinsfile` du monorepo | W7, W16 |
-| `Jenkinsfile` des deux dépôts de démonstration | W15 |
-| Sauvegarde automatisée de PostgreSQL + test de restauration | W12 |
-| Prometheus, Grafana, et l'exposition des métriques de l'API | W13 |
-| Reverse proxy et certificats TLS du réseau `edge` | W5 |
+| Fichier | Où | Ce qu'il lance |
+|---|---|---|
+| `compose.dev.yml` | ici | PostgreSQL + Redis, poste du développeur |
+| `compose.ci.yml` | ici | PostgreSQL + Redis **jetables**, étape d'intégration du pipeline |
+| `compose.prod.yml` | ici | Les trois applications, un fichier pour trois environnements |
+| `../compose.workflow.yml` | dossier parent | Le workflow lui-même : Traefik, Gitea, Jenkins, registry, Prometheus, Grafana, Loki |
+
+`compose.ci.yml` est séparé de `compose.dev.yml` pour une raison précise : le fichier du
+développeur **conserve** ses données entre deux sessions — perdre les 500 000 codes à
+chaque `down` rendrait le travail local pénible — alors qu'une exécution de CI doit partir
+de rien à chaque fois, sinon un test peut passer sur un résidu du build précédent. Son
+répertoire de données est un disque RAM, qui ne peut pas survivre au conteneur.

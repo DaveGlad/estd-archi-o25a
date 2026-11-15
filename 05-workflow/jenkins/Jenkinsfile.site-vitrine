@@ -1,0 +1,184 @@
+// Pipeline of the `demo-site-vitrine` repository — a plain HTML/CSS brochure site.
+//
+// First of the three project shapes requirement n° 7 names: "Site vitrine HTML-CSS". It
+// exists to prove the workflow is generic rather than built around one project. A pipeline
+// that only ever ran the Nx monorepo would prove nothing about the agency's other clients.
+//
+// What this shape needs that the monorepo does not:
+//   - asset optimisation is the WHOLE build, not a side effect of a framework (req. 4a)
+//   - HTML validation, since there is no compiler to catch a malformed tag
+//   - a Nginx image serving static files, with no runtime to speak of
+//
+// What it does not need: database migrations, integration tests, a release train. Stages
+// are therefore absent rather than stubbed — an empty stage that always passes is a lie
+// told once per build.
+//
+// Copy this file to the root of the vitrine repository.
+
+pipeline {
+  agent none
+
+  options {
+    timestamps()
+    ansiColor('xterm')
+    timeout(time: 20, unit: 'MINUTES')
+    buildDiscarder(logRotator(numToKeepStr: '30'))
+  }
+
+  environment {
+    REGISTRY        = 'registry.dsp5-archi-o25a-15m-g1.fr'
+    IMAGE_NAMESPACE = 'demo'
+    IMAGE_NAME      = 'site-vitrine'
+    TAG             = "${env.GIT_COMMIT ?: 'dev'}".take(12)
+  }
+
+  stages {
+
+    stage('Optimise assets') {
+      agent {
+        docker {
+          image 'node:24-alpine'
+          args '-v npm-cache:/root/.npm'
+        }
+      }
+      steps {
+        // Requirement 4a, and on this project it is the point of having a pipeline at all.
+        // A brochure site is shipped by hand otherwise, and "shipped by hand" is
+        // dysfunction n° 3 of the état des lieux.
+        //
+        // Also an eco-responsibility lever, which the brief asks the agency to take into
+        // account: bytes not sent are energy not spent, at every visit, for the life of
+        // the site.
+        sh '''
+          npm ci --no-audit --no-fund
+
+          npx html-minifier-terser --input-dir src --output-dir dist \
+            --file-ext html --collapse-whitespace --remove-comments \
+            --minify-css true --minify-js true
+
+          npx lightningcss --minify --bundle --targets '>= 0.25%' \
+            src/css/style.css -o dist/css/style.css
+
+          npx terser src/js/*.js --compress --mangle -o dist/js/app.js
+
+          # Images are usually the bulk of a brochure site. AVIF and WebP are emitted
+          # beside the original, so <picture> can offer them and old browsers still get a
+          # file they understand.
+          npx sharp-cli --input "src/img/*.{jpg,png}" --output dist/img --format avif --quality 60
+          npx sharp-cli --input "src/img/*.{jpg,png}" --output dist/img --format webp --quality 75
+          cp -r src/img/. dist/img/
+
+          # Pre-compressed variants, so Nginx serves them with gzip_static/brotli_static
+          # instead of compressing on every request.
+          find dist -type f \\( -name '*.html' -o -name '*.css' -o -name '*.js' -o -name '*.svg' \\) \
+            -exec gzip -9 -k {} \\; -exec brotli -q 11 -k {} \\;
+
+          echo "--- weight before / after ---"
+          du -sh src dist
+        '''
+        stash name: 'dist', includes: 'dist/**'
+      }
+    }
+
+    stage('Validate') {
+      agent {
+        docker {
+          image 'node:24-alpine'
+          args '-v npm-cache:/root/.npm'
+        }
+      }
+      parallel {
+        stage('HTML') {
+          steps {
+            // No compiler on this project, so the validator is the only thing standing
+            // between a typo and production.
+            sh 'npx html-validate "src/**/*.html" --formatter junit > reports/junit/html-validate.xml'
+          }
+        }
+        stage('Links') {
+          steps {
+            // A brochure site is mostly links; a dead one is the defect a client notices.
+            sh 'npx linkinator ./dist --recurse --silent --format junit > reports/junit/links.xml'
+          }
+        }
+        stage('Accessibility and performance') {
+          steps {
+            // The brief requires accessibility and SEO good practice. Asserted as a
+            // threshold, not read off a report nobody opens.
+            sh '''
+              npx @lhci/cli autorun \
+                --collect.staticDistDir=./dist \
+                --assert.preset=lighthouse:recommended \
+                --assert.assertions.categories:accessibility=error \
+                --assert.assertions.categories:seo=error
+            '''
+          }
+        }
+      }
+    }
+
+    stage('Build image') {
+      when { anyOf { branch 'develop'; buildingTag() } }
+      agent { label 'docker' }
+      steps {
+        unstash 'dist'
+        // nginx:alpine serving `dist`, nothing else. No runtime, no dependencies, nothing
+        // to patch monthly — which is the right answer for a static site and the reason
+        // this shape deploys in seconds.
+        sh 'docker build -t $REGISTRY/$IMAGE_NAMESPACE/$IMAGE_NAME:$TAG .'
+      }
+    }
+
+    stage('Scan and push') {
+      when { anyOf { branch 'develop'; buildingTag() } }
+      agent { label 'docker' }
+      steps {
+        sh '''
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            -v trivy-cache:/root/.cache aquasec/trivy:latest image \
+            --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed \
+            $REGISTRY/$IMAGE_NAMESPACE/$IMAGE_NAME:$TAG
+        '''
+        withCredentials([usernamePassword(credentialsId: 'registry-credentials',
+                                          usernameVariable: 'REG_USER',
+                                          passwordVariable: 'REG_PASS')]) {
+          sh '''
+            echo "$REG_PASS" | docker login "$REGISTRY" -u "$REG_USER" --password-stdin
+            docker push $REGISTRY/$IMAGE_NAMESPACE/$IMAGE_NAME:$TAG
+            docker logout "$REGISTRY"
+          '''
+        }
+      }
+    }
+
+    stage('Deploy to dev') {
+      when { branch 'develop' }
+      agent { label 'docker' }
+      steps {
+        sh './scripts/deploy.sh dev "$TAG"'
+      }
+    }
+
+    stage('Deploy to production') {
+      when { buildingTag() }
+      agent { label 'docker' }
+      steps {
+        // Same human gate as the client project, for a much smaller reason: the site is
+        // the client's public face, and the agency does not publish to it unattended.
+        timeout(time: 60, unit: 'MINUTES') {
+          input message: "Publish ${env.TAG_NAME} to PRODUCTION?", ok: 'Publish'
+        }
+        sh './scripts/deploy.sh prod "$TAG"'
+      }
+    }
+  }
+
+  post {
+    always {
+      node('docker') {
+        junit allowEmptyResults: true, testResults: 'reports/junit/*.xml'
+        archiveArtifacts artifacts: 'reports/**/*,.lighthouseci/**/*', allowEmptyArchive: true
+      }
+    }
+  }
+}
