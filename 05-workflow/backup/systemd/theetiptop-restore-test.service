@@ -1,0 +1,23 @@
+# Real restore drill. Task W14.
+#
+# A separate unit from the backup on purpose: a backup that has never been restored is a
+# hypothesis, and the two failures are different. One means "we have no copy", the other
+# means "we have a copy we cannot use" -- which is only ever discovered during an incident
+# unless something like this runs on a schedule.
+
+[Unit]
+Description=Test de restauration réel, avec contrôles métier
+Requires=docker.service
+After=docker.service network-online.target
+OnFailure=theetiptop-backup-failed@%n.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/theetiptop/backup.env
+ExecStart=/opt/theetiptop/backup/restore-test.sh monthly
+TimeoutStartSec=2h
+# Restores into a throw-away container, never into a live database. The drill must be safe
+# enough that nobody is tempted to skip it.
+IOSchedulingClass=idle
+Nice=19
+User=root

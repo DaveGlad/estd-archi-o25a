@@ -1,0 +1,17 @@
+# Monthly backup, kept for twelve months. Covers slow corruption: a defect noticed in
+# March may have started in January, which 30 days of dailies would only hold copies of.
+
+[Unit]
+Description=Sauvegarde mensuelle, conservation 12 mois
+Requires=docker.service
+After=docker.service network-online.target
+OnFailure=theetiptop-backup-failed@%n.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/theetiptop/backup.env
+ExecStart=/opt/theetiptop/backup/backup.sh monthly
+TimeoutStartSec=3h
+IOSchedulingClass=idle
+Nice=19
+User=root

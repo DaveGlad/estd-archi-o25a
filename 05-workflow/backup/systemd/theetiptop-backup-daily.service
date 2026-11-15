@@ -1,0 +1,22 @@
+# Daily backup of the workflow and of every project it manages. Requirement n° 8.
+
+[Unit]
+Description=Sauvegarde quotidienne du workflow et des projets
+# Docker has to be up: every step of the script talks to a container.
+Requires=docker.service
+After=docker.service network-online.target
+# The alert path. Without this line a failed backup is a line in a journal nobody reads.
+OnFailure=theetiptop-backup-failed@%n.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/theetiptop/backup.env
+ExecStart=/opt/theetiptop/backup/backup.sh daily
+# A backup that takes more than two hours has a problem of its own, and holding the lock
+# until the next day's run would hide it.
+TimeoutStartSec=2h
+# Lowest I/O priority: this runs at 03:15 but the contest site is open to the public at
+# all hours, and a restore is never worth a degraded response time tonight.
+IOSchedulingClass=idle
+Nice=19
+User=root
