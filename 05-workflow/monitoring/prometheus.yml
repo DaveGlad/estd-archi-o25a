@@ -1,0 +1,118 @@
+# Prometheus scrape configuration for the workflow and the three deployed environments.
+#
+# Requirement n° 3: the workflow has to carry metrics. Dysfunction n° 7 of the état des
+# lieux is the absence of any, which is why Furious Ducks learns about outages from its
+# clients.
+#
+# Deliberately short. A monitoring stack nobody understands is one nobody acts on, and
+# every target below answers a question somebody actually asks during an incident.
+
+global:
+  # 15s is the usual compromise: fine enough to see a spike in a request rate, coarse
+  # enough that a year of history stays in a few gigabytes.
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    infrastructure: dsp5-archi-o25a
+
+rule_files:
+  - /etc/prometheus/alerts.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['alertmanager:9093']
+
+scrape_configs:
+  # --- the host itself -------------------------------------------------------
+  - job_name: node
+    static_configs:
+      - targets: ['node-exporter:9100']
+    # node_exporter's textfile collector is also how the backup scripts report. A backup
+    # that stops running then shows up as a stale gauge, and the alert rule fires -- rather
+    # than the failure being noticed during a restore.
+
+  # --- containers ------------------------------------------------------------
+  - job_name: cadvisor
+    static_configs:
+      - targets: ['cadvisor:8080']
+    # Per-container CPU and memory. This is what tells you whether the API is slow because
+    # of the database or because its container is being throttled, which are two very
+    # different nights.
+
+  # --- the workflow's own services -------------------------------------------
+  - job_name: jenkins
+    metrics_path: /prometheus
+    static_configs:
+      - targets: ['jenkins:8080']
+    # Queue length and executor saturation. A pipeline that got slower is usually a queue
+    # that got longer, not a build that got heavier.
+
+  - job_name: traefik
+    static_configs:
+      - targets: ['traefik:8082']
+    # The only place every request is visible, including the ones that never reached an
+    # application. A 502 rate here with nothing in the API logs means the container is down.
+
+  - job_name: gitea
+    static_configs:
+      - targets: ['gitea:3000']
+
+  # --- the three deployed environments ---------------------------------------
+  #
+  # One job per environment rather than one job with an `env` label, so a scrape failure
+  # in preprod cannot be mistaken for one in production at a glance.
+  - job_name: contest-api-prod
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['api.dsp5-archi-o25a-15m-g1.fr:3333']
+        labels: { environment: prod }
+
+  - job_name: contest-api-preprod
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['api.preprod.dsp5-archi-o25a-15m-g1.fr:3333']
+        labels: { environment: preprod }
+
+  - job_name: contest-api-dev
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['api.dev.dsp5-archi-o25a-15m-g1.fr:3333']
+        labels: { environment: dev }
+
+  # --- the datastores --------------------------------------------------------
+  - job_name: postgres
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    # Connection count above all. The API pools at 10 per container; PostgreSQL defaults to
+    # 100 total. Three environments and a few replicas reach that ceiling quietly, and the
+    # symptom is a timeout that looks like a slow query.
+
+  - job_name: redis
+    static_configs:
+      - targets: ['redis-exporter:9121']
+    # The rate limiter fails OPEN by design -- a customer must not be locked out because
+    # Redis blinked. The consequence is that a Redis outage removes the brute-force
+    # protection without anything in the application noticing, so it has to be watched here.
+
+  # --- the public endpoint, from outside -------------------------------------
+  - job_name: blackbox
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+          - https://dsp5-archi-o25a-15m-g1.fr
+          - https://dsp5-archi-o25a-15m-g1.fr/participer
+          - https://api.dsp5-archi-o25a-15m-g1.fr/health
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+    # Every other job scrapes from inside the network and therefore cannot see a broken
+    # certificate, a DNS mistake or a reverse proxy misroute. This one answers the only
+    # question a customer asks: does the site load. It also exposes the TLS expiry date,
+    # which is what the certificate alert reads.

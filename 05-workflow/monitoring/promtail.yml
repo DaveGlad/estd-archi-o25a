@@ -1,0 +1,44 @@
+# Ships container logs to Loki.
+#
+# Discovered through the Docker API rather than listed: a service added to the compose file
+# is collected without anybody editing this file, which is the only way log collection stays
+# complete over a year.
+
+server:
+  http_listen_port: 9080
+
+positions:
+  # Survives restarts, so promtail resumes where it stopped instead of replaying every log
+  # it can still see.
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: docker
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 15s
+
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_name']
+        regex: '/(.*)'
+        target_label: 'container'
+      - source_labels: ['__meta_docker_container_log_stream']
+        target_label: 'stream'
+      # The compose project becomes a label, so production logs are one filter away from
+      # preprod logs instead of being read side by side by mistake during an incident.
+      - source_labels: ['__meta_docker_container_label_com_docker_compose_project']
+        target_label: 'environment'
+
+    pipeline_stages:
+      # The API logs JSON. Parsed here so a search can filter on level and route rather
+      # than on substrings of a line.
+      - json:
+          expressions:
+            level: level
+            route: route
+          drop_malformed: true
+      - labels:
+          level:

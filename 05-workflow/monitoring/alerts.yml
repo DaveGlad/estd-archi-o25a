@@ -1,0 +1,158 @@
+# Alert rules.
+#
+# Every rule here is one somebody would get out of bed for. That is the whole editorial
+# policy: a monitoring stack with forty rules trains the team to ignore the page, and the
+# one that mattered arrives in the same muted channel as the other thirty-nine.
+#
+# Each rule carries `summary` (what broke) and `description` (what to do about it).
+# An alert that does not say what to do is a notification, not an alert.
+
+groups:
+  # ------------------------------------------------------------------ availability
+  - name: availability
+    rules:
+      - alert: SiteDown
+        expr: probe_success{job="blackbox"} == 0
+        for: 2m
+        labels: { severity: critical }
+        annotations:
+          summary: '{{ $labels.instance }} ne répond plus'
+          description: >-
+            Sonde externe en échec depuis 2 minutes. Vérifier Traefik puis le conteneur :
+            `docker compose -p theetiptop-prod ps`. Deux minutes de tolérance pour ne pas
+            réveiller quelqu'un sur un redémarrage de 20 secondes.
+
+      - alert: ApiDown
+        expr: up{job=~"contest-api-.*", environment="prod"} == 0
+        for: 2m
+        labels: { severity: critical }
+        annotations:
+          summary: "L'API de production ne répond plus"
+          description: >-
+            Le site public est servi par rendu serveur : sans API, aucune page ne s'affiche,
+            y compris celles que les moteurs de recherche indexent.
+
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(traefik_service_requests_total{code=~"5..",service=~".*prod.*"}[5m]))
+            / sum(rate(traefik_service_requests_total{service=~".*prod.*"}[5m])) > 0.05
+        for: 5m
+        labels: { severity: critical }
+        annotations:
+          summary: '{{ $value | humanizePercentage }} de réponses 5xx en production'
+          description: >-
+            Mesuré au proxy, donc inclut les requêtes qui n'ont jamais atteint l'application.
+            Un taux, pas un compte : 50 erreurs sur 50 requêtes et 50 sur 50 000 ne sont pas
+            le même incident.
+
+  # ------------------------------------------------------------------- the contest
+  #
+  # Business rules, and the ones that actually justify this stack. The contest runs for 30
+  # days on codes already printed on receipts in customers' pockets. Infrastructure alerts
+  # tell you the site is up; these tell you the game still works.
+  - name: contest
+    rules:
+      - alert: CodePoolRunningLow
+        expr: theetiptop_codes_available{environment="prod"} < 10000
+        for: 10m
+        labels: { severity: warning }
+        annotations:
+          summary: 'Moins de {{ $value }} codes disponibles'
+          description: >-
+            Les caisses ne pourront plus imprimer de code quand le pool sera vide, et le
+            pool NE PEUT PAS être réapprovisionné : la répartition 60/20/10/6/4 % est figée
+            et déposée chez l'huissier. Seuil à 10 000, soit plusieurs jours de marge au
+            rythme observé — assez pour prévenir le client, pas pour le découvrir trop tard.
+
+      - alert: CodeSubmissionFailing
+        expr: |
+          sum(rate(theetiptop_participations_total{outcome="ERROR",environment="prod"}[5m]))
+            / sum(rate(theetiptop_participations_total{environment="prod"}[5m])) > 0.02
+        for: 5m
+        labels: { severity: critical }
+        annotations:
+          summary: 'La saisie de code échoue pour {{ $value | humanizePercentage }} des joueurs'
+          description: >-
+            Le parcours que tout le jeu-concours sert. Un code refusé par erreur est perdu
+            pour le joueur : il a déjà son ticket, il ne peut pas recommencer ailleurs.
+
+      - alert: RateLimiterBlind
+        expr: up{job="redis"} == 0
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: 'Redis est hors service : la limitation de débit ne protège plus rien'
+          description: >-
+            Le limiteur échoue OUVERT, volontairement — verrouiller un vrai client serait
+            pire. Conséquence : pendant cette panne, la protection contre la force brute
+            sur les codes est absente et l'application ne s'en aperçoit pas. C'est
+            exactement pourquoi la règle existe ici.
+
+  # -------------------------------------------------------------------- backups
+  - name: backups
+    rules:
+      - alert: BackupStale
+        expr: time() - backup_last_success_timestamp_seconds{kind="daily"} > 26 * 3600
+        labels: { severity: critical }
+        annotations:
+          summary: 'Aucune sauvegarde réussie depuis {{ $value | humanizeDuration }}'
+          description: >-
+            26 heures et non 24 : la tâche a un décalage aléatoire de 10 minutes et peut
+            rattraper un redémarrage, donc 24 h pile produirait de fausses alertes. Au-delà
+            de 26 h, une exécution a bien été manquée.
+
+      - alert: RestoreTestFailed
+        expr: restore_test_failed_checks > 0
+        labels: { severity: critical }
+        annotations:
+          summary: '{{ $value }} contrôle(s) en échec au test de restauration'
+          description: >-
+            Les sauvegardes existent mais ne redonnent pas le jeu-concours. C'est la panne
+            qu'on ne découvre normalement qu'au sinistre, et c'est la raison d'être du
+            test mensuel.
+
+      - alert: RestoreTestNotRun
+        expr: time() - restore_test_last_success_timestamp_seconds > 45 * 24 * 3600
+        labels: { severity: warning }
+        annotations:
+          summary: 'Aucun test de restauration réussi depuis 45 jours'
+          description: >-
+            Une sauvegarde jamais restaurée est une hypothèse. 45 jours laisse passer un
+            mois manqué sans alerter, pas deux.
+
+  # ------------------------------------------------------------------ resources
+  - name: resources
+    rules:
+      - alert: DiskFillingUp
+        expr: |
+          predict_linear(node_filesystem_avail_bytes{mountpoint="/"}[6h], 4 * 24 * 3600) < 0
+        for: 30m
+        labels: { severity: warning }
+        annotations:
+          summary: 'Disque plein sous 4 jours au rythme actuel'
+          description: >-
+            Prédictif et non un seuil : à 80 % on alerte sur un disque stable depuis six
+            mois, et on rate celui qui passe de 40 % à 100 % en une nuit parce qu'un build
+            boucle. Quatre jours laissent le temps d'agir sans astreinte de nuit.
+            Candidats habituels : images Docker, journaux Jenkins, dumps locaux.
+
+      - alert: PostgresConnectionsHigh
+        expr: sum(pg_stat_activity_count) / max(pg_settings_max_connections) > 0.8
+        for: 10m
+        labels: { severity: warning }
+        annotations:
+          summary: '{{ $value | humanizePercentage }} des connexions PostgreSQL utilisées'
+          description: >-
+            Trois environnements partagent l'instance, chaque conteneur d'API ouvre 10
+            connexions. Le symptôme, au plafond, est un délai d'attente qui ressemble à une
+            requête lente — d'où cette règle plutôt qu'un diagnostic à l'aveugle.
+
+      - alert: CertificateExpiringSoon
+        expr: probe_ssl_earliest_cert_expiry - time() < 14 * 24 * 3600
+        labels: { severity: warning }
+        annotations:
+          summary: 'Certificat TLS de {{ $labels.instance }} expirant dans {{ $value | humanizeDuration }}'
+          description: >-
+            Traefik renouvelle automatiquement à 30 jours. Cette alerte ne surveille donc
+            pas l'expiration, elle surveille le RENOUVELLEMENT : si elle se déclenche,
+            c'est qu'ACME échoue depuis deux semaines. Il reste 14 jours pour corriger.

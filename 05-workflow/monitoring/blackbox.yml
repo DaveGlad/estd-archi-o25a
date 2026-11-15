@@ -1,0 +1,23 @@
+# Probes run from outside the application network.
+#
+# Every other Prometheus job scrapes from inside, and therefore cannot see a broken
+# certificate, a DNS mistake or a reverse proxy routing to the wrong container. These
+# probes answer the only question a customer asks: does the site load.
+
+modules:
+  http_2xx:
+    prober: http
+    timeout: 10s
+    http:
+      valid_status_codes: [200]
+      valid_http_versions: ['HTTP/1.1', 'HTTP/2.0']
+      method: GET
+      # Follows redirects: http:// is permanently redirected to https:// at the proxy, and
+      # a probe that stopped at the 308 would report the site down.
+      follow_redirects: true
+      preferred_ip_protocol: ip4
+      # Certificate verification left ON deliberately. Turning it off would make the probe
+      # pass through an expired certificate — which is precisely the failure the
+      # CertificateExpiringSoon alert reads from this module.
+      tls_config:
+        insecure_skip_verify: false
