@@ -13,6 +13,7 @@ import {
 } from '@theetiptop-contest/shared';
 
 import type { AuthenticatedUser } from '../../common/auth-context.js';
+import { MetricsService } from '../metrics/metrics.service.js';
 import { ForbiddenException, NotFoundException } from '../../common/exceptions/domain.exception.js';
 import { APP_CONFIG, type AppConfig } from '../../config/env.js';
 import { PrismaService } from '../../infra/prisma/prisma.service.js';
@@ -74,6 +75,7 @@ export class ParticipationsService {
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
     private readonly catalogue: CatalogueService,
+    private readonly metrics: MetricsService,
     @Inject(APP_CONFIG) private readonly config: AppConfig
   ) {}
 
@@ -163,8 +165,30 @@ export class ParticipationsService {
   /**
    * The six outcomes below are returned with HTTP 200, as a discriminated union. See the
    * rationale on `ParticipationsController.submit`.
+   *
+   * This wrapper exists only to record the outcome for Prometheus. Instrumenting each of
+   * the six `return` statements instead would mean a seventh branch added later silently
+   * stops being counted — and the `ERROR` case, the one an alert actually fires on, has no
+   * `return` to attach to at all.
    */
   async submitCode(
+    user: AuthenticatedUser,
+    rawCode: string,
+    ip: string | undefined
+  ): Promise<SubmitCodeResult> {
+    try {
+      const result = await this.resolveSubmission(user, rawCode, ip);
+      this.metrics.recordParticipation(result.outcome);
+      return result;
+    } catch (error) {
+      // Counted, then rethrown untouched: the exception filter owns the response. A
+      // metric must never change what the caller sees.
+      this.metrics.recordParticipation('ERROR');
+      throw error;
+    }
+  }
+
+  private async resolveSubmission(
     user: AuthenticatedUser,
     rawCode: string,
     ip: string | undefined

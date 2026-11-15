@@ -7,6 +7,7 @@ import {
 } from '@theetiptop-contest/shared';
 
 import { AuditService } from '../../common/audit/audit.service.js';
+import { MetricsService } from '../metrics/metrics.service.js';
 import type { ApiKeyConsumer } from '../../common/auth-context.js';
 import {
   ConflictException,
@@ -40,6 +41,7 @@ export class PosService {
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     private readonly catalogue: CatalogueService,
+    private readonly metrics: MetricsService,
     @Inject(APP_CONFIG) private readonly config: AppConfig
   ) {}
 
@@ -206,6 +208,10 @@ export class PosService {
         },
       });
     }
+
+    // Feeds the burn-down behind the CodePoolRunningLow alert: the pool cannot be topped
+    // up, so the rate at which it empties is what says whether it will last the 30 days.
+    this.metrics.recordDispense(input.channel);
 
     return {
       code: row.code,
