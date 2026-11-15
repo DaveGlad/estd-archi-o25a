@@ -30,6 +30,11 @@ const API_URL = __ENV.API_URL || 'http://localhost:3333';
 const SITE_URL = __ENV.SITE_URL || 'http://localhost:3000';
 const API_KEY = __ENV.POS_API_KEY || 'dev-key-caisses';
 
+/** Demonstration customer, inserted by `npm run db:seed` and absent in production. */
+const ACCOUNT_EMAIL = __ENV.PERF_ACCOUNT_EMAIL || 'camille.rousseau@example.fr';
+const ACCOUNT_PASSWORD = __ENV.PERF_ACCOUNT_PASSWORD || 'MotDePasse2026!';
+const SESSION_COOKIE_NAME = 'better-auth.session_token';
+
 /** Custom metrics, so the report separates the paths that matter from the overall average. */
 const codeLookupDuration = new Trend('code_lookup_duration', true);
 const catalogueDuration = new Trend('catalogue_duration', true);
@@ -154,28 +159,80 @@ export function browseCatalogue(): void {
 }
 
 /**
- * Code submission.
+ * Signs in once, before the scenarios start, and hands the session cookie to every
+ * virtual user.
  *
- * Unauthenticated, so the API answers 401 before the database lookup — which is why the
- * public landing page is hit as well, to keep a real server-rendered page in the mix. The
- * authenticated variant would need a session per virtual user, and 50 sign-ins a second
- * would measure the password hash, which is deliberately slow and not what is under test.
+ * Once, not per iteration. Better Auth hashes passwords with a deliberately slow KDF, so
+ * 50 sign-ins a second would turn this into a benchmark of the hash. One sign-in in
+ * `setup()` costs a few hundred milliseconds that are not counted in any scenario, and
+ * every iteration afterwards exercises the path under test with a real session.
+ *
+ * This is what makes the submission scenario honest. Run unauthenticated, the API answers
+ * 401 at the guard and never touches the database — the reported `code_lookup_duration`
+ * would then describe a guard, under a name that claims an index lookup.
  */
-export function submitCode(): void {
+export function setup(): { cookie: string } {
+  const response = http.post(
+    `${API_URL}/api/auth/sign-in/email`,
+    JSON.stringify({ email: ACCOUNT_EMAIL, password: ACCOUNT_PASSWORD }),
+    { headers: { 'Content-Type': 'application/json' }, tags: { name: 'POST /api/auth/sign-in/email' } }
+  );
+
+  if (response.status !== 200) {
+    throw new Error(
+      `Sign-in failed (${response.status}). Run: npm run db:seed — and check the API is up on ${API_URL}.`
+    );
+  }
+
+  const raw = response.headers['Set-Cookie'] ?? '';
+  const token = String(raw).split(';')[0];
+
+  if (!token.startsWith(SESSION_COOKIE_NAME)) {
+    throw new Error(`No ${SESSION_COOKIE_NAME} cookie in the sign-in response.`);
+  }
+
+  return { cookie: token };
+}
+
+/**
+ * Code submission: the hottest query on the site, and the one this test exists for.
+ *
+ * Authenticated with the shared session, so the request goes all the way to the unique
+ * index on `TicketCode.code` over 500,000 rows. The codes submitted are well-formed but
+ * absent from the pool, so the answer is `UNKNOWN_CODE` and nothing is consumed — the
+ * lookup is identical either way, a winning submission differing only by the INSERT that
+ * follows.
+ *
+ * ⚠️ The API must be started with the rate limits raised, or every iteration past the
+ * tenth returns RATE_LIMITED before the database is reached. The limits live on the
+ * server, so k6 cannot raise them itself:
+ *
+ *     npm run dev:api:perf     instead of   npm run dev:api
+ *
+ * The API defaults remain the production values; only this entry point raises them. The
+ * check below fails the run if a submission comes back as anything but UNKNOWN_CODE,
+ * precisely so a forgotten `dev:api` cannot produce a fast, meaningless number.
+ */
+export function submitCode(data: { cookie: string }): void {
   group('submission', () => {
     const response = http.post(
       `${API_URL}/v1/participations`,
       JSON.stringify({ code: unknownCode() }),
-      { headers: { 'Content-Type': 'application/json' }, tags: { name: 'POST /v1/participations' } }
+      {
+        headers: { 'Content-Type': 'application/json', Cookie: data.cookie },
+        tags: { name: 'POST /v1/participations' },
+      }
     );
 
     codeLookupDuration.add(response.timings.duration);
 
     const ok = check(response, {
-      // 401 is the expected answer without a session: it proves the guard runs and the
-      // endpoint is reachable under load.
-      'submission is authenticated or rejected cleanly': (r) =>
-        r.status === 401 || r.status === 200 || r.status === 403,
+      'submission reaches the lookup': (r) => r.status === 200,
+      // The point of the assertion: anything else means the request stopped earlier than
+      // the database — at the guard (401) or at the limiter (RATE_LIMITED) — and the
+      // duration recorded above would not be a lookup at all.
+      'the answer is UNKNOWN_CODE, not a guard or the limiter': (r) =>
+        r.status === 200 && r.json('outcome') === 'UNKNOWN_CODE',
       'submission never 5xx': (r) => r.status < 500,
     });
     businessErrors.add(!ok);
@@ -187,7 +244,16 @@ export function submitCode(): void {
   });
 }
 
-/** Till dispensing: a `FOR UPDATE SKIP LOCKED` pop under contention. */
+/**
+ * The till's read path: the state a terminal polls before printing anything.
+ *
+ * Deliberately a read and not a dispense. Dispensing would take codes out of the pool at
+ * 5 a second and leave the conformity check counting a pool this test had eaten, so the
+ * `FOR UPDATE SKIP LOCKED` pop is proven under contention by
+ * `tests/participation-concurrency.integration.spec.ts` instead, where the codes can be
+ * rolled back. What is measured here is that `codesRemaining` — an aggregate over 500,000
+ * rows — stays fast while the submission scenario hammers the same table.
+ */
 export function dispenseCode(): void {
   group('pos', () => {
     const info = http.get(`${API_URL}/v1/pos/contest`, {

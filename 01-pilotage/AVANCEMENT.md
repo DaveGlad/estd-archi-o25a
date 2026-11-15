@@ -67,7 +67,7 @@
 | A15 | RGPD | ✅ | Consentements horodatés serveur, export art. 20, anonymisation art. 17 |
 | A16 | Accessibilité + responsive | ✅ | `jsx-a11y` au lint, projet Playwright mobile |
 | A17 | SEO on-page | ✅ | SSR, métadonnées, sitemap généré, Schema.org |
-| A18 | Tests de performance | 🟡 | Scénarios k6 écrits ; **k6 à installer pour les exécuter** |
+| A18 | Tests de performance | ✅ | k6 v2.3, 2 492 itérations, 6 seuils sur 6. 50 soumissions/s tenues à 15,6 ms p(95) |
 
 ### Tests livrés
 
@@ -76,7 +76,7 @@
 | Unitaires | Vitest | 54 | ✅ passent |
 | Intégration | Vitest + PostgreSQL | 32 | ✅ passent |
 | Fonctionnels | Playwright, 3 projets | 46 | ✅ passent |
-| Performance | k6 | 3 scénarios | 🟡 écrits, non exécutés |
+| Performance | k6 | 3 scénarios, 2 492 itérations | ✅ 6 seuils sur 6 |
 
 Rapports JUnit écrits dans `reports/junit/`, prêts pour l'étape `junit` de Jenkins.
 
@@ -115,7 +115,6 @@ garantie de la génération qui se vérifie d'elle-même.
 | Blocage | Ce qu'il empêche | Qui doit agir |
 |---|---|---|
 | Identifiants OAuth Google et Facebook | Les deux connexions sociales. Le code est câblé et se désactive proprement sans eux | R3, après création des applications tierces |
-| k6 non installé | L'exécution des tests de performance, donc les chiffres de débit du CST partie I | R3 |
 | Numéro de classe et de groupe | Les noms de domaine réels dans les `.env` de déploiement | Le groupe |
 
 ## Ce qui bloque

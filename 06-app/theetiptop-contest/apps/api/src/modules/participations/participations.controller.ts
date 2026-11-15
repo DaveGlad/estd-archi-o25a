@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, Req } from '@nestjs/common';
 import { ApiCookieAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import type {
   AdminParticipationDto,
@@ -37,6 +37,13 @@ export class ParticipationsController {
    */
   @Roles('CUSTOMER')
   @Post()
+  // Nest answers 201 to a POST by default, and the Swagger block below has always
+  // declared 200. Three of this endpoint's six outcomes create nothing at all, so 200 is
+  // the honest answer — and more to the point, the API is published to consumers we do
+  // not write, the tills and the future e-commerce site. A documented status the server
+  // does not return is a bug in their client, not in ours, which is the worst place for
+  // it to surface.
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Jouer un code de ticket de caisse',
     description: [

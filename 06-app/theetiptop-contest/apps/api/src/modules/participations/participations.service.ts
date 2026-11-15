@@ -61,11 +61,14 @@ export class ParticipationsService {
    * automated script from consuming the API, not to be the thing standing between an
    * attacker and the prizes. Locking out a real customer would be the worse failure, which
    * is also why the Redis limiter fails open.
+   *
+   * The four numbers come from the validated environment, with those same values as
+   * defaults. They are configuration rather than constants for two reasons: an
+   * environment may need to tighten them without a release, and the load test has to be
+   * able to raise them — against the production ceiling it would measure the limiter
+   * rejecting, not the indexed lookup it reports on. There is no value that disables the
+   * limiter.
    */
-  private static readonly USER_LIMIT = 10;
-  private static readonly USER_WINDOW_SECONDS = 600;
-  private static readonly IP_LIMIT = 40;
-  private static readonly IP_WINDOW_SECONDS = 3_600;
 
   constructor(
     private readonly prisma: PrismaService,
@@ -98,8 +101,8 @@ export class ParticipationsService {
     const checks = [
       this.redis.consumeRateLimit(
         `rl:participation:user:${userId}`,
-        ParticipationsService.USER_LIMIT,
-        ParticipationsService.USER_WINDOW_SECONDS
+        this.config.security.participationRateLimit.userLimit,
+        this.config.security.participationRateLimit.userWindowSeconds
       ),
     ];
 
@@ -109,8 +112,8 @@ export class ParticipationsService {
       checks.push(
         this.redis.consumeRateLimit(
           `rl:participation:ip:${this.hashIp(ip)}`,
-          ParticipationsService.IP_LIMIT,
-          ParticipationsService.IP_WINDOW_SECONDS
+          this.config.security.participationRateLimit.ipLimit,
+          this.config.security.participationRateLimit.ipWindowSeconds
         )
       );
     }

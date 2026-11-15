@@ -208,10 +208,10 @@ Exécutions du 11 novembre 2026.
 
 | Famille | Outil | Volume | Durée | Résultat |
 |---|---|---|---|---|
-| Unitaires | Vitest 5 | 54 tests | 0,5 s | ✅ |
-| Intégration | Vitest + PostgreSQL | 32 tests | 2,9 s | ✅ |
-| Fonctionnels | Playwright, 3 projets | 46 tests | 2,5 h ⚠️ | ✅ |
-| Performance | k6 | 3 scénarios | — | 🟡 écrits, k6 non installé |
+| Unitaires | Vitest 5 | 69 tests | 0,5 s | ✅ |
+| Intégration | Vitest + PostgreSQL | 32 tests | 3,1 s | ✅ |
+| Fonctionnels | Playwright, 3 projets | 53 tests | 42 s | ✅ |
+| Performance | k6 v2.3 | 3 scénarios, 2 492 itérations | 1 min | ✅ 6 seuils sur 6 |
 
 ⚠️ **Les 2,5 heures du suite fonctionnelle sont un artefact du serveur de développement** :
 `next dev` compile chaque route à sa première visite, et la suite en parcourt une vingtaine
@@ -219,11 +219,45 @@ sur trois projets de navigateur. En CI, `playwright.config.ts` démarre les **bu
 production** (`next start`), ce qui supprime l'essentiel de ce temps — et teste au passage
 l'artefact qui est réellement déployé.
 
-## 8. Ce qui reste à mesurer
+## 8. Charge, mesurée avec k6
+
+Exécution du 15 novembre 2026, k6 v2.3, trois scénarios simultanés, **2 492 itérations, 0
+interrompue, 0 requête en échec**. Les six seuils déclarés passent ; le rapport part en
+JUnit dans `reports/junit/k6.xml`, que Jenkins lit.
+
+| Scénario | Exécuteur | Charge | p(95) mesuré | Seuil |
+|---|---|---|---|---|
+| Catalogue public | `ramping-vus` | montée à 50 VU sur 60 s | **12,1 ms** | < 200 ms |
+| Soumission de code | `constant-arrival-rate` | **50 soumissions/s** pendant 45 s | **15,6 ms** | < 300 ms |
+| État du jeu, caisse | `constant-arrival-rate` | 5 appels/s pendant 30 s | **35,0 ms** | < 500 ms |
+
+Les 50 soumissions par seconde ont été tenues sans dégradation : l'arrivée est à taux
+constant, donc une API qui ralentit ne verrait pas sa charge baisser, elle accumulerait du
+retard. Rien n'a été accumulé.
+
+### Ce qu'il a fallu corriger pour que ces chiffres veuillent dire quelque chose
+
+Le scénario de soumission tournait **sans session**. L'API répondait 401 au garde, avant
+toute requête en base : la métrique nommée `code_lookup_duration` mesurait un refus
+d'authentification. Le scénario ouvre désormais **une** session dans `setup()` — une
+seule, parce que le hachage du mot de passe est volontairement lent et que 50 connexions
+par seconde mesureraient la fonction de dérivation — et chaque itération atteint
+réellement l'index unique sur `TicketCode.code`.
+
+Deuxième obstacle : la limitation de débit. Au-delà de la dixième tentative, la réponse
+est `RATE_LIMITED` et revient, elle aussi, avant la base. Les quatre seuils sont donc
+devenus des variables d'environnement, **dont les valeurs par défaut sont celles de
+production**, et le test de charge les relève pour sa propre exécution. Aucune valeur ne
+désactive le limiteur.
+
+Les codes soumis sont bien formés mais absents du pool : la réponse est `UNKNOWN_CODE` et
+**rien n'est consommé**. `codes:verify` passé après l'exécution le confirme, empreinte du
+pool comprise. Le chemin mesuré est identique à celui d'un code gagnant, à l'`INSERT`
+près.
+
+## 9. Ce qui reste à mesurer
 
 | Mesure | Outil prévu | Pourquoi ce n'est pas fait | Tâche |
 |---|---|---|---|
-| Débit de participations concurrentes | k6 | Le binaire k6 n'est pas installé. Les scénarios sont écrits dans `tests/performance/participation.k6.ts`, exécutables aussi via l'image `grafana/k6` | A18 |
-| Latence du tableau de bord sous charge | k6 | Idem | A18 |
 | Temps du tirage sur 40 000 participants | script dédié | Demande un jeu de données de 40 000 participants, qui n'existe pas encore | A13 |
 | Insertion avec `synchronous_commit=on` | `codes:generate` en préprod | Demande l'environnement de préprod, qui dépend du workflow | A18 |

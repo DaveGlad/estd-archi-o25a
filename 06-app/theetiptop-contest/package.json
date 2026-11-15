@@ -6,6 +6,7 @@
     "dev:infra": "docker compose -f ../../05-workflow/docker/compose.dev.yml --env-file .env up -d",
     "dev:infra:down": "docker compose -f ../../05-workflow/docker/compose.dev.yml down",
     "dev:api": "nx serve @theetiptop-contest/api",
+    "dev:api:perf": "PARTICIPATION_RATE_LIMIT_USER=1000000 PARTICIPATION_RATE_LIMIT_IP=1000000 nx serve @theetiptop-contest/api",
     "dev:web": "nx dev @theetiptop-contest/web",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
@@ -26,7 +27,7 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:perf": "k6 run tests/performance/participation.k6.js",
+    "test:perf": "k6 run tests/performance/participation.k6.ts",
     "db:seed:demo": "tsx prisma/seed-demo.ts"
   },
   "private": true,
