@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 140" width="320" height="140" role="img" aria-label="Concept A, la feuille inscrite">
+  <title>Concept A — la feuille inscrite</title>
+  <desc>Feuille de thé symétrique inscrite dans un disque, inclinée de 15 degrés. Construction géométrique : la feuille est une vesica, la nervure centrale suit son axe, les nervures secondaires sont appariées.</desc>
+  <rect width="320" height="140" fill="#FCFAF4"/>
+  <g transform="translate(20 30)">
+    <circle cx="40" cy="40" r="38" fill="#185B37"/>
+    <g transform="rotate(-15 40 40)">
+      <path d="M40 12.4C56.8 24.8 56.8 55.2 40 67.6C23.2 55.2 23.2 24.8 40 12.4Z" fill="#FDFCF8" opacity="0.96"/>
+      <path d="M40 63.2V16.8" stroke="#185B37" stroke-width="2.6" stroke-linecap="round" opacity="0.85"/>
+      <path d="M40 52.6C35.8 51 32.6 48.4 30.8 44.4" stroke="#185B37" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
+      <path d="M40 52.6C44.2 51 47.4 48.4 49.2 44.4" stroke="#185B37" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
+      <path d="M40 40.8C36.4 39.4 34 37.2 32.6 33.8" stroke="#185B37" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
+      <path d="M40 40.8C43.6 39.4 46 37.2 47.4 33.8" stroke="#185B37" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
+    </g>
+  </g>
+  <text x="116" y="78" font-family="Fraunces, Georgia, serif" font-size="21" font-weight="600" letter-spacing="2.1" fill="#18221B">THÉ TIP TOP</text>
+</svg>

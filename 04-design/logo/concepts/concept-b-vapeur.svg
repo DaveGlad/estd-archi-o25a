@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 140" width="320" height="140" role="img" aria-label="Concept B, la vapeur">
+  <title>Concept B — la vapeur</title>
+  <desc>Trois volutes de vapeur au-dessus d'une ligne de tasse. Écarté : illisible sous 24 pixels, les volutes se referment.</desc>
+  <rect width="320" height="140" fill="#FCFAF4"/>
+  <g transform="translate(26 26)" fill="none" stroke="#185B37" stroke-linecap="round">
+    <path d="M24 46C24 38 32 36 32 28C32 20 24 18 24 10" stroke-width="3.4"/>
+    <path d="M40 48C40 39 49 37 49 28C49 19 40 17 40 8" stroke-width="3.4"/>
+    <path d="M56 46C56 38 64 36 64 28C64 20 56 18 56 10" stroke-width="3.4"/>
+    <path d="M12 58h64a8 8 0 0 1-8 8H20a8 8 0 0 1-8-8Z" stroke-width="3.4" stroke-linejoin="round"/>
+  </g>
+  <text x="116" y="78" font-family="Fraunces, Georgia, serif" font-size="21" font-weight="600" letter-spacing="2.1" fill="#18221B">THÉ TIP TOP</text>
+</svg>

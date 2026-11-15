@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 140" width="320" height="140" role="img" aria-label="Concept C, le monogramme">
+  <title>Concept C — le monogramme TTT</title>
+  <desc>Trois T adossés formant un motif à symétrie centrale. Écarté : ne dit rien du thé, et se confond avec un sigle d'entreprise de services.</desc>
+  <rect width="320" height="140" fill="#FCFAF4"/>
+  <g transform="translate(22 28)">
+    <rect x="2" y="2" width="76" height="76" rx="18" fill="none" stroke="#185B37" stroke-width="3.2"/>
+    <g stroke="#185B37" stroke-width="4.4" stroke-linecap="round">
+      <path d="M22 26h36"/><path d="M40 26v32"/>
+      <path d="M22 58h36"/>
+    </g>
+  </g>
+  <text x="116" y="78" font-family="Fraunces, Georgia, serif" font-size="21" font-weight="600" letter-spacing="2.1" fill="#18221B">THÉ TIP TOP</text>
+</svg>
