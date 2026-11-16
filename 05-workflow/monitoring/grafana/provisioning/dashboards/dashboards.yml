@@ -9,4 +9,7 @@ providers:
     allowUiUpdates: false
     options:
       path: /var/lib/grafana/dashboards
-      foldersFromFilesStructure: true
+      # NOT `foldersFromFilesStructure`. It takes precedence over `folder:` above, and the
+      # dashboards sit flat in one directory — so it silently filed them under "General"
+      # instead of the named folder. Caught by starting the stack, not by reading the file.
+      foldersFromFilesStructure: false
