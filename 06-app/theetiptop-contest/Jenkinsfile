@@ -181,6 +181,11 @@ pipeline {
               docker build -f ../../05-workflow/docker/Dockerfile.api \
                 -t \$REGISTRY/\$IMAGE_NAMESPACE/api:\$TAG .
 
+              # Same Dockerfile, same build, same tag: the migration image cannot drift
+              # from the API it migrates for.
+              docker build -f ../../05-workflow/docker/Dockerfile.api --target migrate \
+                -t \$REGISTRY/\$IMAGE_NAMESPACE/migrate:\$TAG .
+
               docker build -f ../../05-workflow/docker/Dockerfile.web \
                 --build-arg NEXT_PUBLIC_API_URL=https://api.${host} \
                 --build-arg NEXT_PUBLIC_SITE_URL=https://${host} \
@@ -203,9 +208,9 @@ pipeline {
         // Before publication, not after: an image in the registry is an image somebody can
         // deploy. HIGH and CRITICAL fail the build; everything else is reported.
         sh '''
-          for image in api web admin; do
+          for image in api migrate web admin; do
             name=$REGISTRY/$IMAGE_NAMESPACE/$image:$TAG
-            [ "$image" = "api" ] || name=$name-$DEPLOY_ENV
+            case "$image" in api|migrate) ;; *) name=$name-$DEPLOY_ENV ;; esac
             docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
               -v trivy-cache:/root/.cache aquasec/trivy:latest image \
               --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed "$name"
@@ -226,6 +231,7 @@ pipeline {
           sh '''
             echo "$REG_PASS" | docker login "$REGISTRY" -u "$REG_USER" --password-stdin
             docker push $REGISTRY/$IMAGE_NAMESPACE/api:$TAG
+            docker push $REGISTRY/$IMAGE_NAMESPACE/migrate:$TAG
             docker push $REGISTRY/$IMAGE_NAMESPACE/web:$TAG-$DEPLOY_ENV
             docker push $REGISTRY/$IMAGE_NAMESPACE/admin:$TAG-$DEPLOY_ENV
             docker logout "$REGISTRY"

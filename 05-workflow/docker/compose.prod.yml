@@ -27,9 +27,12 @@ services:
   # `migrate deploy` rather than `migrate dev`: it applies committed migrations and never
   # generates one, so it cannot invent a schema change on a production database.
   migrate:
-    image: ${REGISTRY:-registry.local}/theetiptop/api:${IMAGE_TAG:-latest}
+    # Its own image, built from the same Dockerfile and the same build stage as the API
+    # and tagged with the same commit — so it cannot drift from it. The Prisma CLI pulls
+    # in Studio, the dev server and the engines, 375 MB of tooling that has no business
+    # running in every replica of a web API. See the `migrate` stage of Dockerfile.api.
+    image: ${REGISTRY:-registry.local}/theetiptop/migrate:${IMAGE_TAG:-latest}
     restart: 'no'
-    command: ['npx', 'prisma', 'migrate', 'deploy']
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
     depends_on:
