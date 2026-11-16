@@ -151,21 +151,62 @@ Branches GitFlow : `main` pour la production, `develop` pour l'intégration, pui
 | Certificat | Let's Encrypt, renouvelé par Traefik |
 | Conteneurs en production | api, web, admin, postgres, redis, deux exportateurs de métriques |
 
-Ce que le workflow automatise :
+### Ce qui tourne aujourd'hui
+
+- Le site, l'API et le back-office, en production, derrière HTTPS.
+- Grafana, avec son tableau de bord alimenté par les métriques de l'API.
+- Gitea et le registry d'images.
+- Les tests, lancés à la main et tous verts : 69 unitaires, 32 d'intégration, 53
+  fonctionnels, et 3 scénarios de charge k6 qui tiennent leurs six seuils sur 2 492
+  itérations.
+
+### Ce qui est écrit et pas encore exécuté
+
+Les trois pipelines sont dans le dépôt, un par forme de projet : site administrable, site
+vitrine HTML et CSS, application mobile hybride. **Aucun n'a encore tourné.** Jenkins est
+arrêté le temps d'une correction de sécurité, et il n'est pas encore relié à un dépôt.
+
+Le déploiement en production d'aujourd'hui, je l'ai fait à la main avec
+`05-workflow/jenkins/scripts/deploy.sh`, le script que le pipeline appelle. Les images ont
+été construites sur le serveur, pas par la CI.
+
+Ce que les pipelines feront une fois branchés :
 
 - Optimisation des assets pendant le build.
 - Déploiement automatique en dev sur fusion dans `develop`.
-- Stockage des images construites dans un registry auto-hébergé.
+- Stockage des images construites dans le registry.
 - Déploiement automatique en préproduction sur fusion dans `release/*`.
 - Déploiement en production sur étiquette, après validation humaine.
-- 69 tests unitaires, 32 tests d'intégration, 53 tests fonctionnels.
-- 3 scénarios de charge k6, 2 492 itérations, six seuils sur six tenus.
-- Rapports JUnit publiés et archivés par Jenkins.
-- Sauvegardes quotidiennes et mensuelles, chiffrées, envoyées hors site.
-- Test de restauration mensuel, avec quatre contrôles métier.
+- Publication et archivage des rapports JUnit à chaque build.
 
-Trois pipelines, un par forme de projet : site administrable, site vitrine HTML et CSS,
-application mobile hybride.
+### Où lire les rapports de tests
+
+Les rapports sont générés au format JUnit dans `reports/junit/` du dépôt, à chaque
+exécution :
+
+| Fichier | Contenu |
+|---|---|
+| `reports/junit/vitest.xml` | Tests unitaires et d'intégration |
+| `reports/junit/playwright.xml` | Tests fonctionnels, trois navigateurs |
+| `reports/junit/k6.xml` | Tests de charge, un cas par seuil |
+
+Tu peux les régénérer toi-même depuis `06-app/theetiptop-contest` :
+
+```
+npm run test
+npm run test:integration
+npm run test:e2e
+npm run test:perf
+```
+
+Une fois Jenkins branché, ces mêmes fichiers apparaissent dans l'onglet **Tests** de
+chaque build, avec la courbe de tendance.
+
+### Sauvegardes
+
+Les scripts et les minuteries systemd sont dans `05-workflow/backup`. Ils ne sont pas
+encore installés sur le serveur : la sauvegarde part hors site, et il manque l'espace de
+stockage distant.
 
 ### Les services en ligne
 
@@ -191,12 +232,43 @@ charge pas, donc aucun contrôle d'accès ne s'applique, et le contrôleur accep
 monde alors qu'il a le socket Docker. Je l'ai coupé dès le constat. Il revient avec ses
 greffons intégrés à l'image.
 
-## Google Analytics et gestion de projet
+## Analytics et gestion de projet
+
+### Google Analytics
 
 | | |
 |---|---|
-| Google Analytics | *à compléter* |
-| Gestion de projet | Trello, <https://trello.com/b/6ZYwiaW8/projet-the-tiptop> |
+| Console | <https://analytics.google.com> |
+| Compte | Thé Tip Top, ID `416403635` |
+| Propriété | Thé Tip Top, site jeu-concours, ID `564458132` |
+| Fuseau et devise | France, euro |
+| Flux Web | Thé Tip Top, site public |
+| Identifiant de mesure | `G-ZD73MP4G1E` |
+| Compte Google | *à compléter* |
+
+La propriété est créée et rattachée à <https://srv1581779.hstgr.cloud>. Elle ne reçoit pas
+encore de données : la balise n'est pas posée sur le site.
+
+Elle ne le sera pas sans consentement. La CNIL demande que les cookies de mesure ne se
+chargent qu'après un accord explicite, et le site a déjà sa page de gestion des cookies.
+La balise sera donc appelée par le bandeau de consentement, pas par le `<head>`.
+
+Les quatre événements prévus au cahier des charges, partie D :
+
+- Vue de page.
+- Envoi du formulaire d'inscription.
+- Clic sur l'appel à l'action principal.
+- Participation au jeu, avec le lot gagné en paramètre.
+
+Compte 24 à 48 heures entre la pose de la balise et les premières données visibles.
+
+### Gestion de projet
+
+| | |
+|---|---|
+| Outil | Trello |
+| Tableau | <https://trello.com/b/6ZYwiaW8/projet-the-tiptop> |
+| Identifiant | *à compléter* |
 
 Le backlog est versionné dans `01-pilotage/BACKLOG.md`. Le fichier
 `01-pilotage/backlog.csv` s'importe directement dans Trello ou Notion, avec les colonnes
