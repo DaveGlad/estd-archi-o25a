@@ -1,0 +1,323 @@
+# The workflow itself: SCM, CI, registry, metrics, logs, reverse proxy.
+#
+# Requirement n° 2 is "entièrement basé sur Docker, le workflow comme les serveurs qu'il
+# gère", and this file is where that is either true or it is not. Every brick below is a
+# container; nothing is installed on the host except Docker and the systemd timers that
+# drive the backups.
+#
+# Requirement n° 6 — open source, "ou dans le pire des cas libres" — holds for every image
+# here. No SaaS, including for the build cache, which is on a local volume for exactly that
+# reason.
+#
+#   docker compose -f compose.workflow.yml --env-file .env.workflow up -d
+#
+# This is NOT the file that deploys the contest site. That is docker/compose.prod.yml, run
+# once per environment. The separation is deliberate: a mistake while restarting Jenkins
+# must not be able to take production down with it.
+
+name: furious-ducks-workflow
+
+x-logging: &default-logging
+  # Capped, on every service. Docker's default json-file driver has no limit, and the first
+  # time anyone notices is a full disk — which is the DiskFillingUp alert firing for a
+  # reason nobody would guess.
+  driver: json-file
+  options: { max-size: '10m', max-file: '3' }
+
+services:
+
+  # ------------------------------------------------------------------ edge
+  traefik:
+    # MIT. Chosen over nginx for one property that matters here: it discovers containers
+    # through Docker labels, so adding a tool to this file gives it a subdomain and a
+    # certificate without editing a proxy configuration by hand. With seven tools plus
+    # three environments, hand-written vhosts would drift within a week.
+    image: traefik:v3.3
+    restart: unless-stopped
+    command:
+      - --providers.docker=true
+      # Nothing is exposed unless it says so. The opposite default would publish a database
+      # the day someone forgets a label.
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=edge
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # Plain HTTP only ever redirects. The brief requires HTTPS, and a site reachable over
+      # http:// is a site whose session cookie can be read off a café network.
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/acme/acme.json
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      # Prometheus reads this. It is the only place where a request that never reached an
+      # application is visible — a 502 here with silence in the API logs means the container
+      # is down, which is a different night from a slow query.
+      - --metrics.prometheus=true
+      - --entrypoints.metrics.address=:8082
+      - --metrics.prometheus.entrypoint=metrics
+      - --accesslog=true
+      - --accesslog.format=json
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      # Read-only. Traefik needs to watch the Docker API to discover containers; write
+      # access to that socket is root on the host, and this container is the one exposed to
+      # the internet.
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - acme:/acme
+    networks: [edge, metrics]
+    logging: *default-logging
+
+  # ------------------------------------------------------------------- SCM
+  gitea:
+    # MIT. Chosen over GitLab CE on footprint: a few hundred MB against several GB, on a
+    # host that also carries the CI, the metrics and three environments. The argument is
+    # the hosting bill and the RSE commitment the brief asks for, in the same breath.
+    image: gitea/gitea:1.24
+    restart: unless-stopped
+    environment:
+      GITEA__database__DB_TYPE: postgres
+      GITEA__database__HOST: gitea-db:5432
+      GITEA__database__NAME: gitea
+      GITEA__database__USER: gitea
+      GITEA__database__PASSWD: ${GITEA_DB_PASSWORD}
+      GITEA__server__ROOT_URL: https://git.${WORKFLOW_DOMAIN}/
+      GITEA__server__SSH_DOMAIN: git.${WORKFLOW_DOMAIN}
+      # Open registration off. The agency's repositories are its clients' source code, and
+      # an instance anyone can sign up to is one anyone can fork from.
+      GITEA__service__DISABLE_REGISTRATION: 'true'
+      GITEA__metrics__ENABLED: 'true'
+    volumes:
+      - gitea-data:/data
+    ports:
+      # SSH for git, straight through: Traefik routes HTTP, and cloning over SSH is what
+      # developers actually use.
+      - '2222:22'
+    networks: [edge, workflow, metrics]
+    depends_on:
+      gitea-db: { condition: service_healthy }
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.gitea.rule: Host(`git.${WORKFLOW_DOMAIN}`)
+      traefik.http.routers.gitea.tls.certresolver: letsencrypt
+      traefik.http.services.gitea.loadbalancer.server.port: '3000'
+    logging: *default-logging
+
+  gitea-db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gitea
+      POSTGRES_PASSWORD: ${GITEA_DB_PASSWORD}
+      POSTGRES_DB: gitea
+    volumes:
+      - gitea-db-data:/var/lib/postgresql/data
+    networks: [workflow]
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U gitea']
+      interval: 10s
+      retries: 5
+    logging: *default-logging
+
+  # -------------------------------------------------------------------- CI
+  jenkins:
+    image: jenkins/jenkins:2.492-lts-jdk21
+    restart: unless-stopped
+    environment:
+      JENKINS_OPTS: --prefix=
+      # Setup wizard off: this instance is configured as code, and a wizard that waits for
+      # a password in a log file is not something a rebuild should depend on.
+      JAVA_OPTS: -Djenkins.install.runSetupWizard=false -Dhudson.model.DownloadService.noSignatureCheck=true
+      # Configuration as code, mounted read-only from this repository. Inside the volume
+      # it would be invisible to review and lost with the volume — which is the state this
+      # project is trying to get the agency out of.
+      CASC_JENKINS_CONFIG: /var/jenkins_home/casc/jenkins.yaml
+      # Read by jenkins.yaml. The admin password is injected here, never written in the
+      # configuration file — that file is in the repository and in every clone of it.
+      JENKINS_ADMIN_ID: ${JENKINS_ADMIN_ID:-admin}
+      JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD}
+      WORKFLOW_DOMAIN: ${WORKFLOW_DOMAIN}
+    volumes:
+      - jenkins-home:/var/jenkins_home
+      # Jenkins builds Docker images, so it needs the daemon. NOT read-only here, unlike
+      # Traefik, and that is the honest trade: this is effectively root on the host. It is
+      # why Jenkins sits behind authentication, on its own subdomain, and why the agents
+      # that run untrusted project code are separate containers rather than this one.
+      - /var/run/docker.sock:/var/run/docker.sock
+      - nx-cache:/cache
+      - ./jenkins/casc:/var/jenkins_home/casc:ro
+      - ./jenkins/plugins.txt:/usr/share/jenkins/ref/plugins.txt:ro
+    networks: [edge, workflow, metrics]
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.jenkins.rule: Host(`ci.${WORKFLOW_DOMAIN}`)
+      traefik.http.routers.jenkins.tls.certresolver: letsencrypt
+      traefik.http.services.jenkins.loadbalancer.server.port: '8080'
+    logging: *default-logging
+
+  # -------------------------------------------------------------- registry
+  registry:
+    image: registry:2
+    restart: unless-stopped
+    environment:
+      REGISTRY_STORAGE_DELETE_ENABLED: 'true'
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+    volumes:
+      - registry-data:/var/lib/registry
+      # The htpasswd file is a secret, so it comes from the host like the alerting ones and
+      # never from this repository. Generate it once:
+      #   docker run --rm --entrypoint htpasswd httpd:2 -Bbn ci '<password>' \
+      #     > /etc/theetiptop/registry/htpasswd
+      # bcrypt (-B) and not the default: the registry refuses anything else.
+      - /etc/theetiptop/registry:/auth:ro
+    networks: [edge, workflow]
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.registry.rule: Host(`registry.${WORKFLOW_DOMAIN}`)
+      traefik.http.routers.registry.tls.certresolver: letsencrypt
+      traefik.http.services.registry.loadbalancer.server.port: '5000'
+    logging: *default-logging
+
+  # -------------------------------------------------------------- metrics
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      # 90 days. Long enough to compare a slow month against the previous one, short enough
+      # that the series stay on a disk this project can afford.
+      - --storage.tsdb.retention.time=90d
+      - --web.enable-lifecycle
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus-data:/prometheus
+    networks: [metrics]
+    logging: *default-logging
+
+  alertmanager:
+    image: prom/alertmanager:v0.28.0
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      # Alertmanager expands NO environment variables in its config, so the webhook URLs
+      # and the SMTP password are read from files at send time. Mounted from the host,
+      # never in this repository.
+      - /etc/theetiptop/alerting:/etc/alertmanager/secrets:ro
+    networks: [metrics]
+    logging: *default-logging
+
+  grafana:
+    image: grafana/grafana-oss:11.5.1
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      # No anonymous access: the contest dashboard shows participation volumes, which is
+      # the client's commercial data.
+      GF_AUTH_ANONYMOUS_ENABLED: 'false'
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+    volumes:
+      # Provisioned from files in this repository, not clicked together in the UI. A
+      # dashboard that only exists in a volume is lost with the volume, and cannot be
+      # reviewed in a merge request.
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    networks: [edge, metrics]
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.grafana.rule: Host(`metrics.${WORKFLOW_DOMAIN}`)
+      traefik.http.routers.grafana.tls.certresolver: letsencrypt
+      traefik.http.services.grafana.loadbalancer.server.port: '3000'
+    logging: *default-logging
+
+  loki:
+    # Logs. The CST says it plainly: without logs an alert cannot be diagnosed. Grafana
+    # reads both, so a spike on a graph is one click from the lines that produced it.
+    image: grafana/loki:3.3.2
+    restart: unless-stopped
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - loki-data:/loki
+    networks: [metrics]
+    logging: *default-logging
+
+  promtail:
+    image: grafana/promtail:3.3.2
+    restart: unless-stopped
+    command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - ./monitoring/promtail.yml:/etc/promtail/config.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks: [metrics]
+    logging: *default-logging
+
+  # ------------------------------------------------------------- exporters
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    restart: unless-stopped
+    command:
+      - --path.rootfs=/host
+      # The textfile collector is how backup.sh and restore-test.sh report. It is what
+      # turns "the backup job stopped running" from something discovered during a restore
+      # into an alert the same day.
+      - --collector.textfile.directory=/var/lib/node_exporter/textfile
+    volumes:
+      - /:/host:ro,rslave
+      - /var/lib/node_exporter/textfile:/var/lib/node_exporter/textfile:ro
+    networks: [metrics]
+    pid: host
+    logging: *default-logging
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.52.1
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks: [metrics]
+    logging: *default-logging
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter:v0.26.0
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/blackbox.yml:/etc/blackbox_exporter/config.yml:ro
+    networks: [metrics, edge]
+    logging: *default-logging
+
+networks:
+  # Everything Traefik routes. Shared with the three deployment compose files, so one proxy
+  # serves the workflow and the environments.
+  edge:
+    name: edge
+  # The workflow's own services, talking to each other. Internal: Gitea's database has no
+  # reason to be reachable from anywhere else, and the surest way to keep it that way is
+  # for there to be no route at all.
+  workflow:
+    internal: true
+  # Shared with the deployed environments: their postgres-exporter and redis-exporter sit
+  # on it so Prometheus can reach them. Created once by bootstrap-vps.sh rather than by
+  # either compose file — whichever ran second would fail on an existing network.
+  metrics:
+    external: true
+    name: ${METRICS_NETWORK:-metrics}
+
+volumes:
+  acme:
+  gitea-data:
+  gitea-db-data:
+  jenkins-home:
+  registry-data:
+  prometheus-data:
+  grafana-data:
+  loki-data:
+  # Shared with the Jenkins agents. Self-hosted, because a hosted build cache would breach
+  # requirement n° 6 and add the external dependency the agency is trying to get away from.
+  nx-cache:

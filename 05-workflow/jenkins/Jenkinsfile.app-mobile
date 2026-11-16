@@ -1,0 +1,238 @@
+// Pipeline of the `demo-app-mobile` repository — a hybrid application, React Native with
+// Expo.
+//
+// Third of the three project shapes requirement n° 7 names: "Application Mobile Hybride /
+// Java / Swift". It is the shape that breaks the comfortable assumptions of the other two,
+// and saying so is more useful at the oral than pretending it fits.
+//
+// What is genuinely different here:
+//
+//   1. The artefact is NOT a Docker image. An .aab and an .ipa are files that go to a
+//      store, so "store the images the CI builds" (req. 4c) becomes "archive and version
+//      the signed binaries", and the registry plays no part.
+//
+//   2. There is no "deploy to dev". An application is INSTALLED, not deployed. The
+//      equivalent is a distribution channel — an over-the-air update for the JS bundle, a
+//      test track for the native build.
+//
+//   3. iOS cannot be built in a Linux container. Apple's toolchain requires macOS, which
+//      Docker on Linux cannot provide. The honest answer is a macOS agent; without one,
+//      the stage is skipped WITH A MESSAGE rather than quietly passing. A pipeline that
+//      reports success for something it did not do is worse than one that admits the gap.
+//
+// Copy this file to the root of the mobile repository.
+
+pipeline {
+  agent none
+
+  options {
+    timestamps()
+    ansiColor('xterm')
+    // Native builds are slow; this ceiling is for a hung build, not a slow one.
+    timeout(time: 90, unit: 'MINUTES')
+    buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '20'))
+  }
+
+  environment {
+    // Artefacts live here, versioned by commit, because there is no registry for them.
+    ARTIFACT_STORE = '/srv/artifacts/demo-app-mobile'
+    TAG            = "${env.GIT_COMMIT ?: 'dev'}".take(12)
+  }
+
+  stages {
+
+    stage('Install and check') {
+      agent {
+        docker {
+          image 'node:24-alpine'
+          args '-v npm-cache:/root/.npm'
+        }
+      }
+      steps {
+        sh '''
+          npm ci --no-audit --no-fund
+          npx tsc --noEmit
+          npx eslint .
+          # `expo-doctor` catches the failure mode specific to this shape: a native
+          # dependency whose version does not match the Expo SDK. It builds fine and
+          # crashes on a real device, which no unit test would catch.
+          npx expo-doctor
+        '''
+      }
+    }
+
+    stage('Unit tests') {
+      agent {
+        docker {
+          image 'node:24-alpine'
+          args '-v npm-cache:/root/.npm'
+        }
+      }
+      steps {
+        // Requirement 4f. Business logic only — rendering is covered by the end-to-end
+        // run on a real device below, because a mocked React Native renderer proves
+        // nothing about either platform.
+        sh 'npm run test -- --reporter=junit --outputFile=reports/junit/jest.xml'
+      }
+    }
+
+    stage('Build Android') {
+      when { anyOf { branch 'develop'; buildingTag() } }
+      agent {
+        docker {
+          // Carries the Android SDK and the JDK. Pinned, never `latest`: an SDK that moves
+          // under the build changes the artefact without anything in the repository
+          // changing.
+          image 'reactnativecommunity/react-native-android:v13.0'
+          args '-v gradle-cache:/root/.gradle -v npm-cache:/root/.npm'
+        }
+      }
+      steps {
+        sh 'npm ci --no-audit --no-fund'
+        // Prebuild generates the native project from app.json. Committing `android/`
+        // instead would mean maintaining generated code by hand, and it drifts.
+        sh 'npx expo prebuild --platform android --no-install --clean'
+
+        // Signing. The keystore is a Jenkins credential, never in the repository: the
+        // repository is cloned by every developer and every build agent, and a signing key
+        // in it is a key anyone can publish an impostor build with. CST D.2, "Gestion des
+        // secrets".
+        withCredentials([
+          file(credentialsId: 'android-keystore', variable: 'KEYSTORE_FILE'),
+          string(credentialsId: 'android-keystore-password', variable: 'KEYSTORE_PASSWORD'),
+          string(credentialsId: 'android-key-alias', variable: 'KEY_ALIAS')
+        ]) {
+          sh '''
+            cp "$KEYSTORE_FILE" android/app/release.keystore
+            cd android
+            ./gradlew bundleRelease \
+              -Pandroid.injected.signing.store.file=app/release.keystore \
+              -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
+              -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+              -Pandroid.injected.signing.key.password="$KEYSTORE_PASSWORD"
+          '''
+        }
+        // Removed immediately, whether the build worked or not: a keystore left in the
+        // workspace is read by the next job that lands on this agent.
+        sh 'shred -u android/app/release.keystore 2>/dev/null || rm -f android/app/release.keystore'
+
+        sh '''
+          mkdir -p "$ARTIFACT_STORE/$TAG"
+          cp android/app/build/outputs/bundle/release/app-release.aab "$ARTIFACT_STORE/$TAG/"
+          sha256sum "$ARTIFACT_STORE/$TAG/app-release.aab" > "$ARTIFACT_STORE/$TAG/app-release.aab.sha256"
+        '''
+        archiveArtifacts artifacts: 'android/app/build/outputs/bundle/release/*.aab', fingerprint: true
+      }
+    }
+
+    stage('Build iOS') {
+      when { anyOf { branch 'develop'; buildingTag() } }
+      agent { label 'macos' }
+      steps {
+        script {
+          // The gap, stated rather than hidden. Jenkins reports UNSTABLE, which is yellow
+          // in the trend and visibly not a pass.
+          if (!nodesByLabel('macos')) {
+            unstable('No macOS agent: the iOS build is NOT produced. Apple\'s toolchain cannot run in a Linux container — see CST D.3, "Dimensionnement".')
+            return
+          }
+          withCredentials([
+            file(credentialsId: 'ios-certificate', variable: 'IOS_CERT'),
+            string(credentialsId: 'ios-certificate-password', variable: 'IOS_CERT_PASSWORD'),
+            file(credentialsId: 'ios-provisioning-profile', variable: 'IOS_PROFILE')
+          ]) {
+            sh '''
+              npm ci --no-audit --no-fund
+              npx expo prebuild --platform ios --no-install --clean
+
+              # A keychain created for this build and deleted after it, so a certificate is
+              # never left unlocked on a shared agent.
+              security create-keychain -p "$IOS_CERT_PASSWORD" build.keychain
+              security default-keychain -s build.keychain
+              security unlock-keychain -p "$IOS_CERT_PASSWORD" build.keychain
+              security import "$IOS_CERT" -k build.keychain -P "$IOS_CERT_PASSWORD" -T /usr/bin/codesign
+              security set-key-partition-list -S apple-tool:,apple: -s -k "$IOS_CERT_PASSWORD" build.keychain
+
+              mkdir -p ~/Library/MobileDevice/Provisioning\\ Profiles
+              cp "$IOS_PROFILE" ~/Library/MobileDevice/Provisioning\\ Profiles/
+
+              cd ios
+              xcodebuild -workspace *.xcworkspace -scheme app -configuration Release \
+                -archivePath build/app.xcarchive archive
+              xcodebuild -exportArchive -archivePath build/app.xcarchive \
+                -exportOptionsPlist ExportOptions.plist -exportPath build/
+            '''
+          }
+          sh 'security delete-keychain build.keychain || true'
+          archiveArtifacts artifacts: 'ios/build/*.ipa', fingerprint: true
+        }
+      }
+    }
+
+    stage('Functional tests on a device') {
+      when { anyOf { branch 'develop'; buildingTag() } }
+      agent { label 'docker' }
+      steps {
+        // Requirement 4f, functional half. On an emulator running the signed artefact, not
+        // on a mocked renderer: the defects worth catching on mobile — a permission
+        // prompt, a keyboard covering a field, a crash on a cold start — only exist on a
+        // real runtime.
+        sh '''
+          docker run --rm --device /dev/kvm \
+            -v "$PWD:/work" -w /work \
+            -v "$ARTIFACT_STORE/$TAG:/artifacts" \
+            budtmo/docker-android:emulator_13.0 \
+            npx maestro test --format junit --output reports/junit/maestro.xml .maestro/
+        '''
+      }
+    }
+
+    stage('Publish an over-the-air update') {
+      when { branch 'develop' }
+      agent {
+        docker {
+          image 'node:24-alpine'
+          args '-v npm-cache:/root/.npm'
+        }
+      }
+      steps {
+        // The equivalent of "deploy to dev" for this shape. The JS bundle reaches testers
+        // in minutes without a store review — which is the whole reason a hybrid stack was
+        // chosen. It CANNOT ship a change to native code: that needs a new binary, and
+        // pretending otherwise is how a team ships an update that bricks the app.
+        withCredentials([string(credentialsId: 'expo-token', variable: 'EXPO_TOKEN')]) {
+          sh 'npx eas update --branch development --message "CI $TAG" --non-interactive'
+        }
+      }
+    }
+
+    stage('Submit to the store tracks') {
+      when { buildingTag() }
+      agent { label 'docker' }
+      steps {
+        // Never straight to the public track. Store review takes days and is not
+        // reversible on demand, so automation stops at the internal track and a person
+        // promotes from there — the same reasoning as the production gate on the client
+        // project, for a stronger reason: a bad release cannot be rolled back at all once
+        // customers have installed it.
+        timeout(time: 60, unit: 'MINUTES') {
+          input message: "Submit ${env.TAG_NAME} to the internal test tracks?", ok: 'Submit'
+        }
+        withCredentials([
+          file(credentialsId: 'google-play-service-account', variable: 'PLAY_SA'),
+          string(credentialsId: 'expo-token', variable: 'EXPO_TOKEN')
+        ]) {
+          sh 'npx eas submit --platform android --path "$ARTIFACT_STORE/$TAG/app-release.aab" --non-interactive'
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      node('docker') {
+        junit allowEmptyResults: true, testResults: 'reports/junit/*.xml'
+      }
+    }
+  }
+}

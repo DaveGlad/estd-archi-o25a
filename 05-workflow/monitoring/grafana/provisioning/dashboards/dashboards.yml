@@ -1,0 +1,15 @@
+apiVersion: 1
+
+providers:
+  - name: theetiptop
+    folder: Thé Tip Top
+    type: file
+    # Read-only in the UI on purpose. An edit made in the browser would be overwritten on
+    # the next restart, and silently losing somebody's work is worse than refusing it.
+    allowUiUpdates: false
+    options:
+      path: /var/lib/grafana/dashboards
+      # NOT `foldersFromFilesStructure`. It takes precedence over `folder:` above, and the
+      # dashboards sit flat in one directory — so it silently filed them under "General"
+      # instead of the named folder. Caught by starting the stack, not by reading the file.
+      foldersFromFilesStructure: false

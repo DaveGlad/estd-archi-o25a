@@ -16,6 +16,7 @@ import { EmployeeModule } from '../modules/employee/employee.module.js';
 import { ExportModule } from '../modules/export/export.module.js';
 import { HealthModule } from '../modules/health/health.module.js';
 import { MaintenanceModule } from '../modules/maintenance/maintenance.module.js';
+import { MetricsModule } from '../modules/metrics/metrics.module.js';
 import { ParticipationsModule } from '../modules/participations/participations.module.js';
 import { PosModule } from '../modules/pos/pos.module.js';
 import { StatsModule } from '../modules/stats/stats.module.js';
@@ -39,6 +40,7 @@ import { UsersModule } from '../modules/users/users.module.js';
     AuditModule,
     AuthModule,
     HealthModule,
+    MetricsModule, // Prometheus scrape endpoint, and the HTTP timing interceptor
 
     // --- Public site ---
     CatalogueModule, // the contest, the prizes, the 10 stores

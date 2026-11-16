@@ -1,0 +1,189 @@
+{
+  "title": "Jeu-concours — exploitation",
+  "uid": "theetiptop-contest",
+  "tags": ["theetiptop", "production"],
+  "timezone": "Europe/Paris",
+  "refresh": "30s",
+  "time": { "from": "now-24h", "to": "now" },
+  "description": "Le tableau de bord qu'on ouvre en premier pendant les trente jours du jeu. Il répond à trois questions, dans cet ordre : le jeu tourne-t-il, les codes vont-ils tenir, et est-ce nous qui cassons le parcours du joueur. Tout le reste (CPU, mémoire, conteneurs) est dans le tableau de bord infrastructure : ce n'est pas la même urgence, et le mélanger ici ferait rater l'essentiel.",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Codes restants",
+      "description": "Le pool NE PEUT PAS être réapprovisionné : la répartition 60/20/10/6/4 % est figée depuis la génération et déposée chez l'huissier. À zéro, les caisses cessent d'imprimer des codes jusqu'à la fin du jeu. Seuil orange à 50 000, rouge à 10 000 — là où l'alerte se déclenche.",
+      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "theetiptop_codes_available{environment=\"prod\",status=\"AVAILABLE\"}",
+          "legendFormat": "disponibles"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 10000 },
+              { "color": "green", "value": 50000 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Jours de codes restants",
+      "description": "Extrapolation du stock au rythme de distribution des 24 dernières heures. C'est le chiffre qui sert à prévenir le client, pas le stock brut : 80 000 codes sont confortables à 1 000 par jour et critiques à 20 000.",
+      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 0 },
+      "targets": [
+        {
+          "expr": "theetiptop_codes_available{environment=\"prod\",status=\"AVAILABLE\"} / clamp_min(sum(rate(theetiptop_codes_dispensed_total{environment=\"prod\"}[24h])) * 86400, 1)",
+          "legendFormat": "jours"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "d",
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 5 },
+              { "color": "green", "value": 15 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Taux d'échec de la saisie",
+      "description": "Part des soumissions qui finissent en erreur serveur. Un code refusé à tort est perdu pour le joueur : il a déjà son ticket, il ne peut pas recommencer. Ce panneau ne compte ni UNKNOWN_CODE ni ALREADY_USED, qui sont des réponses correctes.",
+      "gridPos": { "h": 5, "w": 6, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum(rate(theetiptop_participations_total{environment=\"prod\",outcome=\"ERROR\"}[15m])) / clamp_min(sum(rate(theetiptop_participations_total{environment=\"prod\"}[15m])), 0.001)",
+          "legendFormat": "erreurs"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 0.005 },
+              { "color": "red", "value": 0.02 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Fraîcheur de la sauvegarde",
+      "description": "Temps écoulé depuis la dernière sauvegarde réussie. Rouge au-delà de 26 h, qui est le seuil de l'alerte : 24 h pile produirait de fausses alertes à cause du décalage aléatoire de la tâche.",
+      "gridPos": { "h": 5, "w": 6, "x": 18, "y": 0 },
+      "targets": [
+        {
+          "expr": "time() - backup_last_success_timestamp_seconds{kind=\"daily\"}",
+          "legendFormat": "âge"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 86400 },
+              { "color": "red", "value": 93600 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Saisies de code, par issue",
+      "description": "Empilé par issue plutôt qu'en total : les six issues veulent dire des choses très différentes. Une montée de ALREADY_USED, ce sont des clients qui rejouent un ticket ; une montée de ERROR, c'est nous. Un total unique masquerait la seconde dans la première.",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 5 },
+      "targets": [
+        {
+          "expr": "sum by (outcome) (rate(theetiptop_participations_total{environment=\"prod\"}[5m]))",
+          "legendFormat": "{{outcome}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": { "stacking": { "mode": "normal" }, "fillOpacity": 30 }
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Latence de l'API, par quantile",
+      "description": "p50, p95 et p99 de POST /v1/participations, le parcours que tout le jeu sert. Trois quantiles et pas une moyenne : une moyenne de 20 ms peut cacher 1 % de joueurs à 3 secondes, et ce 1 % représente des dizaines de personnes par jour. Référence mesurée au k6 : 15,6 ms en p(95).",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 5 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum by (le) (rate(http_request_duration_seconds_bucket{environment=\"prod\",route=\"/v1/participations\"}[5m])))",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{environment=\"prod\",route=\"/v1/participations\"}[5m])))",
+          "legendFormat": "p95"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(http_request_duration_seconds_bucket{environment=\"prod\",route=\"/v1/participations\"}[5m])))",
+          "legendFormat": "p99"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s" } }
+    },
+    {
+      "type": "timeseries",
+      "title": "Codes distribués en caisse, par canal",
+      "description": "Le rythme auquel le pool se vide. La courbe boutique suit les heures d'ouverture des dix magasins ; une courbe plate en pleine journée veut dire qu'une caisse n'appelle plus l'API, ce qu'aucune alerte d'infrastructure ne verrait.",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 13 },
+      "targets": [
+        {
+          "expr": "sum by (channel) (rate(theetiptop_codes_dispensed_total{environment=\"prod\"}[15m])) * 3600",
+          "legendFormat": "{{channel}}"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short", "custom": { "fillOpacity": 20 } } }
+    },
+    {
+      "type": "timeseries",
+      "title": "Lots remis en boutique",
+      "description": "La fin du parcours client, et le seul indicateur qui dit si les lots arrivent vraiment entre les mains des gagnants. Un écart durable entre les gains et les remises se règle avec le client, pas avec un correctif.",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 13 },
+      "targets": [
+        {
+          "expr": "sum(increase(theetiptop_prizes_redeemed_total{environment=\"prod\"}[1h]))",
+          "legendFormat": "lots remis / h"
+        },
+        {
+          "expr": "sum(increase(theetiptop_participations_total{environment=\"prod\",outcome=\"WON\"}[1h]))",
+          "legendFormat": "lots gagnés / h"
+        }
+      ]
+    },
+    {
+      "type": "logs",
+      "title": "Erreurs de l'API en production",
+      "description": "Les lignes derrière les courbes. Avoir les métriques et les journaux dans le même outil est ce qui permet de passer d'un pic à sa cause sans changer d'onglet, ce qui est exactement ce qui manque à l'agence aujourd'hui.",
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 21 },
+      "datasource": { "type": "loki" },
+      "targets": [{ "expr": "{environment=\"theetiptop-prod\", level=~\"error|fatal\"}" }],
+      "options": { "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true }
+    }
+  ]
+}

@@ -22,7 +22,7 @@ const API_VERSION_PREFIX = 'v1';
  *   - `/health` is operational plumbing consumed by Docker, Prometheus and Jenkins;
  *   - `/docs` is the Swagger UI.
  */
-const UNVERSIONED_PATHS = ['api/auth/{*splat}', 'health', 'docs/{*splat}'];
+const UNVERSIONED_PATHS = ['api/auth/{*splat}', 'health', 'metrics', 'docs/{*splat}'];
 
 function configureSwagger(app: NestExpressApplication, config: AppConfig): void {
   const document = SwaggerModule.createDocument(

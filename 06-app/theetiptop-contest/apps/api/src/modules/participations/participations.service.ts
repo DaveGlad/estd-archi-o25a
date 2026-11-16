@@ -4,6 +4,7 @@ import {
   CODE_PATTERN,
   PARTICIPATIONS_DEFAULT_PAGE_SIZE,
   PLAYABLE_CODE_STATUSES,
+  isSubmissionOpen,
   type AdminParticipationDto,
   type AuthProvider,
   type Paginated,
@@ -12,6 +13,7 @@ import {
 } from '@theetiptop-contest/shared';
 
 import type { AuthenticatedUser } from '../../common/auth-context.js';
+import { MetricsService } from '../metrics/metrics.service.js';
 import { ForbiddenException, NotFoundException } from '../../common/exceptions/domain.exception.js';
 import { APP_CONFIG, type AppConfig } from '../../config/env.js';
 import { PrismaService } from '../../infra/prisma/prisma.service.js';
@@ -60,16 +62,20 @@ export class ParticipationsService {
    * automated script from consuming the API, not to be the thing standing between an
    * attacker and the prizes. Locking out a real customer would be the worse failure, which
    * is also why the Redis limiter fails open.
+   *
+   * The four numbers come from the validated environment, with those same values as
+   * defaults. They are configuration rather than constants for two reasons: an
+   * environment may need to tighten them without a release, and the load test has to be
+   * able to raise them — against the production ceiling it would measure the limiter
+   * rejecting, not the indexed lookup it reports on. There is no value that disables the
+   * limiter.
    */
-  private static readonly USER_LIMIT = 10;
-  private static readonly USER_WINDOW_SECONDS = 600;
-  private static readonly IP_LIMIT = 40;
-  private static readonly IP_WINDOW_SECONDS = 3_600;
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
     private readonly catalogue: CatalogueService,
+    private readonly metrics: MetricsService,
     @Inject(APP_CONFIG) private readonly config: AppConfig
   ) {}
 
@@ -97,8 +103,8 @@ export class ParticipationsService {
     const checks = [
       this.redis.consumeRateLimit(
         `rl:participation:user:${userId}`,
-        ParticipationsService.USER_LIMIT,
-        ParticipationsService.USER_WINDOW_SECONDS
+        this.config.security.participationRateLimit.userLimit,
+        this.config.security.participationRateLimit.userWindowSeconds
       ),
     ];
 
@@ -108,8 +114,8 @@ export class ParticipationsService {
       checks.push(
         this.redis.consumeRateLimit(
           `rl:participation:ip:${this.hashIp(ip)}`,
-          ParticipationsService.IP_LIMIT,
-          ParticipationsService.IP_WINDOW_SECONDS
+          this.config.security.participationRateLimit.ipLimit,
+          this.config.security.participationRateLimit.ipWindowSeconds
         )
       );
     }
@@ -159,8 +165,30 @@ export class ParticipationsService {
   /**
    * The six outcomes below are returned with HTTP 200, as a discriminated union. See the
    * rationale on `ParticipationsController.submit`.
+   *
+   * This wrapper exists only to record the outcome for Prometheus. Instrumenting each of
+   * the six `return` statements instead would mean a seventh branch added later silently
+   * stops being counted — and the `ERROR` case, the one an alert actually fires on, has no
+   * `return` to attach to at all.
    */
   async submitCode(
+    user: AuthenticatedUser,
+    rawCode: string,
+    ip: string | undefined
+  ): Promise<SubmitCodeResult> {
+    try {
+      const result = await this.resolveSubmission(user, rawCode, ip);
+      this.metrics.recordParticipation(result.outcome);
+      return result;
+    } catch (error) {
+      // Counted, then rethrown untouched: the exception filter owns the response. A
+      // metric must never change what the caller sees.
+      this.metrics.recordParticipation('ERROR');
+      throw error;
+    }
+  }
+
+  private async resolveSubmission(
     user: AuthenticatedUser,
     rawCode: string,
     ip: string | undefined
@@ -177,12 +205,23 @@ export class ParticipationsService {
       return { outcome: 'RATE_LIMITED', retryInMinutes: Math.max(1, Math.ceil(retryAfterSeconds / 60)) };
     }
 
-    // 3. Is the contest open. A code played after closing is refused even if it is valid:
-    //    the contest rules filed with the bailiff set a 30-day window.
+    // 3. Can a code still be played. The boundary is `claimDeadline`, NOT `endsAt`: the
+    //    rules filed with the bailiff grant "les 30 jours du jeu concours ainsi que 30
+    //    jours supplémentaires à compter de la date de clôture du jeu pour aller sur le
+    //    site internet afin tester le code de leur(s) ticket(s) et réclamer leur lot".
+    //
+    //    Closing submissions at `endsAt` would lock out every customer holding a receipt
+    //    from the last days of the contest — exactly the people the extra 30 days exist
+    //    for. Ticket distribution does close at `endsAt`; that check lives in the till
+    //    service, which is the only thing that creates new codes.
     const contest = await this.catalogue.getCurrentContestEntity();
     const now = new Date();
-    if (now < contest.startsAt || now > contest.endsAt) {
-      return { outcome: 'CONTEST_CLOSED', endsAt: contest.endsAt.toISOString() };
+    if (!isSubmissionOpen(contest, now)) {
+      return {
+        outcome: 'CONTEST_CLOSED',
+        endsAt: contest.endsAt.toISOString(),
+        claimDeadline: contest.claimDeadline.toISOString(),
+      };
     }
 
     // 4. Does the code exist. Rides the unique index — 529 µs over 500,000 rows, measured

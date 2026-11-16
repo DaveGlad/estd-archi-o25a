@@ -55,6 +55,23 @@ const EnvSchema = z.object({
   /// `name:key` pairs, comma separated. One key per non-browser consumer.
   POS_API_KEYS: z.string().default(''),
 
+  /**
+   * Code-submission rate limits. The defaults ARE the production values — the variables
+   * exist so an environment can tighten them, and so the load test can raise them.
+   *
+   * A load test that keeps the production limit measures the limiter, not the query:
+   * every iteration past the tenth returns RATE_LIMITED before the database is touched,
+   * and the resulting "p(95) = 4 ms" would be a number about nothing. Raising the ceiling
+   * for the run is what makes the measurement describe the index lookup it claims to.
+   *
+   * Deliberately not disablable. There is no value that turns the limiter off, so a
+   * misconfigured environment degrades to a loose limit rather than to none.
+   */
+  PARTICIPATION_RATE_LIMIT_USER: z.coerce.number().int().positive().default(10),
+  PARTICIPATION_RATE_LIMIT_USER_WINDOW_SECONDS: z.coerce.number().int().positive().default(600),
+  PARTICIPATION_RATE_LIMIT_IP: z.coerce.number().int().positive().default(40),
+  PARTICIPATION_RATE_LIMIT_IP_WINDOW_SECONDS: z.coerce.number().int().positive().default(3_600),
+
   /// Public URL of the site, printed on receipts next to the code.
   PUBLIC_SITE_URL: z.url().default('http://localhost:3000'),
 });
@@ -85,6 +102,13 @@ export interface AppConfig {
     ipHashSalt: string;
     /** Consumer name, keyed by API key, so a lookup is O(1) and the name lands in the audit log. */
     posApiKeys: ReadonlyMap<string, string>;
+    /** Code-submission brute-force limits. Defaults are the production values. */
+    participationRateLimit: {
+      userLimit: number;
+      userWindowSeconds: number;
+      ipLimit: number;
+      ipWindowSeconds: number;
+    };
   };
   publicSiteUrl: string;
 }
@@ -147,6 +171,12 @@ export function loadConfig(): AppConfig {
     security: {
       ipHashSalt: env.IP_HASH_SALT,
       posApiKeys: parsePosApiKeys(env.POS_API_KEYS),
+      participationRateLimit: {
+        userLimit: env.PARTICIPATION_RATE_LIMIT_USER,
+        userWindowSeconds: env.PARTICIPATION_RATE_LIMIT_USER_WINDOW_SECONDS,
+        ipLimit: env.PARTICIPATION_RATE_LIMIT_IP,
+        ipWindowSeconds: env.PARTICIPATION_RATE_LIMIT_IP_WINDOW_SECONDS,
+      },
     },
     publicSiteUrl: env.PUBLIC_SITE_URL,
   };

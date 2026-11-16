@@ -117,7 +117,10 @@ export function CodeForm({ codeLength, minimumPurchaseCents }: CodeFormProps) {
         header={
           <div className="space-y-1">
             <StubLine label="Thé Tip Top" value="Ticket de caisse" />
-            <StubLine label="Montant minimum" value={formatPrice(minimumPurchaseCents)} />
+            <StubLine
+              label="Montant requis"
+              value={`plus de ${formatPrice(minimumPurchaseCents)}`}
+            />
             <StubLine label="Code à saisir" value={`${codeLength} caractères`} />
           </div>
         }
@@ -212,11 +215,11 @@ export function CodeForm({ codeLength, minimumPurchaseCents }: CodeFormProps) {
         )}
 
         {result?.outcome === 'CONTEST_CLOSED' && (
-          <Alert tone="warning" title="Le jeu est terminé">
+          <Alert tone="warning" title="La saisie est terminée">
             <p>
-              Les participations étaient ouvertes jusqu&apos;au{' '}
-              {formatDate(result.endsAt)}. Les lots déjà gagnés restent réclamables
-              depuis votre espace personnel.
+              Le jeu a fermé le {formatDate(result.endsAt)}, et le délai de trente jours
+              pour saisir un code a expiré le {formatDate(result.claimDeadline)}. Les
+              lots déjà gagnés restent visibles depuis votre espace personnel.
             </p>
           </Alert>
         )}

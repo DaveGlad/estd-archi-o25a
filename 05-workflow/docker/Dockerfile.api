@@ -67,6 +67,59 @@ WORKDIR /app
 # lockfile is inconsistent with its own manifest under Express 5.
 RUN node tools/pin-runtime-deps.mjs apps/api/dist/package.json
 
+# NOTE: stage order is load-bearing. `docker build` with no `--target` builds the LAST
+# stage in the file, so `runtime` must stay at the bottom. Putting `migrate` after it
+# made every plain build produce the migration image under the API tag — same size,
+# same name, wrong contents, and nothing says so.
+
+# ------------------------------------------------------------------------- migrate
+#
+# The image that applies the migrations. A one-shot job, pulled once per deployment and
+# never part of what serves traffic.
+#
+# Why separate at all. The Prisma CLI drags in tooling production has no use for —
+# measured on this project: @prisma/studio-core 43 MB, @prisma/dev 19 MB, @prisma/engines
+# 24 MB, for a total of +375 MB on an image that was 483. Carrying a GUI and a dev server
+# in every replica of a web API, permanently, to run one command at deploy time is the
+# wrong trade.
+#
+# Why it cannot drift from the API, which is the usual objection to a second image. It is
+# built from the SAME Dockerfile, in the SAME build, from the SAME `build` stage, and the
+# pipeline tags both with the same commit. There is no path by which one can be rebuilt
+# without the other.
+#
+#   docker build -f Dockerfile.api --target migrate -t …/theetiptop/migrate:$TAG .
+#
+# It carries the CLI INSTALLED, not fetched at deploy time. `npx prisma` would resolve the
+# package over the network, and the `backend` network is `internal: true` — a container on
+# it has no route to npm, and should not. More fundamentally, an artefact that still needs
+# the internet to finish installing itself is not reproducible: deployed twice, it can
+# resolve two different CLI versions against the same database.
+FROM node:24-alpine AS migrate
+
+RUN apk add --no-cache dumb-init
+
+ENV NODE_ENV=production
+WORKDIR /app
+
+# Versions pinned to the lockfile, not to a range. A CLI ahead of @prisma/client can write
+# a migration the running code cannot read.
+RUN npm install --no-package-lock --no-audit --no-fund \
+      prisma@7.10.1 tsx@4.23.15 dotenv@18.0.10 \
+ && npm cache clean --force
+
+# The schema and the migrations come from the build stage, so they are byte-identical to
+# the ones the API image was generated against.
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/prisma.config.ts ./prisma.config.ts
+
+USER node
+
+ENTRYPOINT ["dumb-init", "--"]
+# The local binary, never `npx`: npx falls back to the network when it cannot resolve
+# locally, which on this network is a confusing timeout instead of a clear failure.
+CMD ["./node_modules/.bin/prisma", "migrate", "deploy"]
+
 # ------------------------------------------------------------------------- runtime
 FROM node:24-alpine AS runtime
 
@@ -92,7 +145,6 @@ COPY --from=prune /app/apps/api/dist/main.js ./main.js
 # is the one that migrates the database. A separate migration image could drift from it.
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/prisma.config.ts ./prisma.config.ts
-
 # Runs as the unprivileged user the base image already provides. A container that does not
 # need root should not have it: a remote code execution then lands on a user that cannot
 # write to the filesystem it runs from.

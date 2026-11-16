@@ -29,6 +29,7 @@
 import { createHash, randomBytes } from 'node:crypto';
 import {
   CODE_ALPHABET,
+  hasDigitsAndLetters,
   CODE_LENGTH,
   PLANNED_CODE_COUNT,
   TICKET_PRIZES,
@@ -100,10 +101,21 @@ function drawDistinctCodes(count: number, random: SeededRandom): string[] {
   const codes: string[] = [];
   let collisions = 0;
 
+  let degenerate = 0;
+
   while (codes.length < count) {
     let code = '';
     for (let position = 0; position < CODE_LENGTH; position += 1) {
       code += CODE_ALPHABET[random.nextBelow(alphabetSize)];
+    }
+
+    // The brief asks for codes "comprenant des chiffres et des lettres". A uniform draw
+    // over 36 symbols produces about 3.8% of all-letter codes, so the rule has to be
+    // enforced here rather than assumed. Redrawn like a collision, which keeps the run
+    // replayable from the seed: the rejected draws are part of the deterministic stream.
+    if (!hasDigitsAndLetters(code)) {
+      degenerate += 1;
+      continue;
     }
 
     if (seen.has(code)) {
@@ -117,6 +129,11 @@ function drawDistinctCodes(count: number, random: SeededRandom): string[] {
 
   if (collisions > 0) {
     console.log(`  ${collisions} collision(s) drawn again — expected, and handled`);
+  }
+
+  if (degenerate > 0) {
+    const share = ((degenerate / (count + degenerate + collisions)) * 100).toFixed(1);
+    console.log(`  ${degenerate} draw(s) redrawn for lacking a digit or a letter (${share}%)`);
   }
 
   return codes;

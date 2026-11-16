@@ -1,0 +1,11 @@
+[Unit]
+Description=Déclenche le test de restauration
+
+[Timer]
+# The 2nd, not the 1st: it has to verify a backup that has already been sent offsite and
+# gone cold, not the one written to the local disk minutes earlier.
+OnCalendar=*-*-02 05:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

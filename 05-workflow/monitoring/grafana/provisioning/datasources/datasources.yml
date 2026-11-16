@@ -1,0 +1,27 @@
+# Datasources as files, not clicks. A datasource configured through the UI lives in a
+# volume, is lost with it, and cannot be reviewed in a merge request.
+
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    jsonData:
+      # Matches the scrape interval, so Grafana does not ask for a resolution finer than
+      # the data actually has and draw gaps that look like outages.
+      timeInterval: 15s
+
+  - name: Loki
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    jsonData:
+      derivedFields:
+        # Turns a trace id in a log line into a link. The point of having metrics and logs
+        # in one tool is going from a spike to its lines in one click.
+        - name: TraceID
+          matcherRegex: 'traceId=(\w+)'
+          url: '$${__value.raw}'

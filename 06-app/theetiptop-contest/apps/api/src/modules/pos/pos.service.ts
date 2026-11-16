@@ -1,7 +1,13 @@
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
-import type { DispenseCodeResult, PosContestInfo } from '@theetiptop-contest/shared';
+import {
+  isDistributionOpen,
+  qualifiesForCode,
+  type DispenseCodeResult,
+  type PosContestInfo,
+} from '@theetiptop-contest/shared';
 
 import { AuditService } from '../../common/audit/audit.service.js';
+import { MetricsService } from '../metrics/metrics.service.js';
 import type { ApiKeyConsumer } from '../../common/auth-context.js';
 import {
   ConflictException,
@@ -35,6 +41,7 @@ export class PosService {
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     private readonly catalogue: CatalogueService,
+    private readonly metrics: MetricsService,
     @Inject(APP_CONFIG) private readonly config: AppConfig
   ) {}
 
@@ -67,7 +74,9 @@ export class PosService {
 
     return {
       name: contest.name,
-      isOpen: now >= contest.startsAt && now <= contest.endsAt,
+      // The till cares only about the distribution window: after `endsAt` no receipt
+      // carries a new code, even though players can still test codes for 30 more days.
+      isOpen: isDistributionOpen(contest, now),
       startsAt: contest.startsAt.toISOString(),
       endsAt: contest.endsAt.toISOString(),
       minimumPurchaseCents: contest.minimumPurchaseCents,
@@ -107,7 +116,7 @@ export class PosService {
     const contest = await this.catalogue.getCurrentContestEntity();
     const now = new Date();
 
-    if (now < contest.startsAt || now > contest.endsAt) {
+    if (!isDistributionOpen(contest, now)) {
       throw new DomainException(
         'CONTEST_CLOSED',
         'Le jeu-concours n’accepte plus de participations : aucun code ne doit être imprimé.',
@@ -116,10 +125,13 @@ export class PosService {
       );
     }
 
-    if (input.purchaseAmountCents < contest.minimumPurchaseCents) {
+    // Strictly greater, and the strictness is the rule rather than a rounding choice: the
+    // filed terms read "une somme supérieure à 49€", so a receipt of exactly 49,00 € gives
+    // no code. The comparison itself lives in `qualifiesForCode`.
+    if (!qualifiesForCode(input.purchaseAmountCents, contest.minimumPurchaseCents)) {
       throw new DomainException(
         'AMOUNT_BELOW_THRESHOLD',
-        `Le montant doit atteindre ${(contest.minimumPurchaseCents / 100).toFixed(2)} € pour donner droit à un code.`,
+        `Le montant doit dépasser ${(contest.minimumPurchaseCents / 100).toFixed(2).replace('.', ',')} € pour donner droit à un code.`,
         HttpStatus.UNPROCESSABLE_ENTITY,
         { minimumPurchaseCents: contest.minimumPurchaseCents }
       );
@@ -196,6 +208,10 @@ export class PosService {
         },
       });
     }
+
+    // Feeds the burn-down behind the CodePoolRunningLow alert: the pool cannot be topped
+    // up, so the rate at which it empties is what says whether it will last the 30 days.
+    this.metrics.recordDispense(input.channel);
 
     return {
       code: row.code,

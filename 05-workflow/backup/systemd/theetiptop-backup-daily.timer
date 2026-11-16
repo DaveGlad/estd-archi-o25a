@@ -1,0 +1,14 @@
+[Unit]
+Description=Déclenche la sauvegarde quotidienne
+
+[Timer]
+OnCalendar=*-*-* 03:15:00
+# Spread by up to 10 minutes. Several machines backing up to the same bucket at the exact
+# same second is a self-inflicted thundering herd.
+RandomizedDelaySec=10m
+# Catch up after a reboot or a maintenance window. Without this, a host that was down at
+# 03:15 simply has no backup for that day and nothing says so.
+Persistent=true
+
+[Install]
+WantedBy=timers.target

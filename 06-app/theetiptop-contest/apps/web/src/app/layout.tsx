@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Fraunces, Inter } from 'next/font/google';
 import './global.css';
 
+import { SITE_URL } from '../lib/site-url';
+
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
@@ -16,7 +18,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://dsp5-archi-o25a-15m-g1.fr'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Le Grand Jeu Thé Tip Top, 100 % des tickets sont gagnants',
     template: '%s | Le Grand Jeu Thé Tip Top',

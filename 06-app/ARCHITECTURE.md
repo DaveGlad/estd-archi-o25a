@@ -135,8 +135,8 @@ sans appeler l'API.
 6. Enregistrer l'empreinte, puis recompter la répartition en base
 ```
 
-**Mesuré** : 45,7 s au total, 11 190 lignes/s à l'insertion, 0 collision. Table de 129 Mo
-dont 62 Mo d'index. Recherche par code : **529 µs**. Détail dans `BENCHMARK.md`.
+**Mesuré** : 51,6 s au total, 9 908 lignes/s à l'insertion, 0 collision. Table de 129 Mo
+dont 62 Mo d'index. Recherche par code : **540 µs**. Détail dans `BENCHMARK.md`.
 
 **Ce qu'il faut savoir défendre** : la répartition est exacte parce que le **vecteur est
 construit puis mélangé**, et non tiré lot par lot contre une probabilité. Un tirage par

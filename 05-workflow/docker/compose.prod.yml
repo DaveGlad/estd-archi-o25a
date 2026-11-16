@@ -27,9 +27,12 @@ services:
   # `migrate deploy` rather than `migrate dev`: it applies committed migrations and never
   # generates one, so it cannot invent a schema change on a production database.
   migrate:
-    image: ${REGISTRY:-registry.local}/theetiptop/api:${IMAGE_TAG:-latest}
+    # Its own image, built from the same Dockerfile and the same build stage as the API
+    # and tagged with the same commit — so it cannot drift from it. The Prisma CLI pulls
+    # in Studio, the dev server and the engines, 375 MB of tooling that has no business
+    # running in every replica of a web API. See the `migrate` stage of Dockerfile.api.
+    image: ${REGISTRY:-registry.local}/theetiptop/migrate:${IMAGE_TAG:-latest}
     restart: 'no'
-    command: ['npx', 'prisma', 'migrate', 'deploy']
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
     depends_on:
@@ -71,6 +74,32 @@ services:
     networks: [backend, edge]
     # No `ports:`. The reverse proxy on the edge network is the only way in, which is what
     # keeps the API off the host's public interface.
+    #
+    # Traefik discovers this container through the labels below. Without them it is on the
+    # edge network and still unreachable: the proxy routes nothing it has not been told
+    # about, because `exposedbydefault` is false — which is the right default, and the
+    # reason every service has to opt in explicitly.
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      traefik.http.routers.theetiptop-api.rule: Host(`${API_HOST}`)
+      traefik.http.routers.theetiptop-api.entrypoints: websecure
+      traefik.http.routers.theetiptop-api.tls.certresolver: letsencrypt
+      traefik.http.services.theetiptop-api.loadbalancer.server.port: '3333'
+      #
+      # ⚠️ Router names are LITERAL, not templated by environment, and that is a Compose
+      # limitation rather than a choice: Compose interpolates variables in label VALUES
+      # and never in label KEYS. `${COMPOSE_PROJECT_NAME}-api` in the key is passed to
+      # Traefik verbatim.
+      #
+      # Consequence: one Traefik cannot carry two environments from this file as it
+      # stands — two routers with the same name silently keep one of the two, and which
+      # one depends on container start order. Running dev or preprod beside production on
+      # the same host therefore needs `compose.preprod-routers.yml` alongside it, which
+      # overrides these three keys with distinct literals.
+      #
+      # On this project it does not bite: the VPS carries the workflow and PRODUCTION, and
+      # CST D.3 already says the environments move to a second host when RAM allows.
     deploy:
       resources:
         limits:
@@ -94,6 +123,19 @@ services:
       api:
         condition: service_healthy
     networks: [backend, edge]
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      # Both the apex and www answer, and www redirects. Serving the same pages on two
+      # hostnames would split the SEO the brief asks for across two addresses.
+      traefik.http.routers.theetiptop-web.rule: Host(`${SITE_HOST}`) || Host(`www.${SITE_HOST}`)
+      traefik.http.routers.theetiptop-web.entrypoints: websecure
+      traefik.http.routers.theetiptop-web.tls.certresolver: letsencrypt
+      traefik.http.routers.theetiptop-web.middlewares: theetiptop-www@docker
+      traefik.http.middlewares.theetiptop-www.redirectregex.regex: ^https://www\\.(.*)
+      traefik.http.middlewares.theetiptop-www.redirectregex.replacement: https://$${1}
+      traefik.http.middlewares.theetiptop-www.redirectregex.permanent: 'true'
+      traefik.http.services.theetiptop-web.loadbalancer.server.port: '3000'
     deploy:
       resources:
         limits:
@@ -112,6 +154,17 @@ services:
       api:
         condition: service_healthy
     networks: [backend, edge]
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      traefik.http.routers.theetiptop-admin.rule: Host(`${ADMIN_HOST}`)
+      traefik.http.routers.theetiptop-admin.entrypoints: websecure
+      traefik.http.routers.theetiptop-admin.tls.certresolver: letsencrypt
+      traefik.http.services.theetiptop-admin.loadbalancer.server.port: '3001'
+      # The back office is on its own subdomain and nothing else. It is not indexed, not
+      # linked from the public site, and a separate hostname is what lets the proxy carry
+      # a different ingress rule for it later — an IP allow-list, say — without touching
+      # the public site.
     deploy:
       resources:
         limits:
@@ -187,6 +240,45 @@ services:
         limits:
           memory: 384M
 
+  # ------------------------------------------------------------------ exporters
+  #
+  # These live HERE and not in the workflow stack, and the reason is the network: they have
+  # to reach `postgres` and `redis` on this environment's internal `backend` network, which
+  # by design has no route from anywhere else. An exporter in the monitoring stack would
+  # have nothing to scrape.
+  #
+  # They sit on `metrics` as well, so Prometheus can reach them. That is the only hole
+  # punched in `backend`, it exposes aggregates and never data, and it is what lets
+  # prometheus.yml declare the `postgres` and `redis` jobs it already declares.
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:v0.16.0
+    restart: unless-stopped
+    environment:
+      DATA_SOURCE_NAME: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [backend, metrics]
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.67.0
+    restart: unless-stopped
+    environment:
+      REDIS_ADDR: redis://redis:6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks: [backend, metrics]
+    deploy:
+      resources:
+        limits:
+          memory: 32M
+
 volumes:
   postgres-data:
   redis-data:
@@ -196,8 +288,19 @@ networks:
   # else — no published port, no route from the host.
   backend:
     internal: true
+  # Shared with the monitoring stack, so Prometheus can scrape the two exporters above.
+  # External and created once by bootstrap-vps.sh, like `edge`: neither compose file owns
+  # it, and whichever ran second would fail trying to create it.
+  metrics:
+    external: true
+    name: ${METRICS_NETWORK:-metrics}
   # Where the reverse proxy lives. Declared external because it is created once per host and
   # shared by the three environments, each behind its own subdomain.
   edge:
     external: true
-    name: ${EDGE_NETWORK:-theetiptop-edge}
+    # Defaults to `edge`, the network Traefik is started with
+    # (`--providers.docker.network=edge`). They MUST be the same network: a container on a
+    # different one is invisible to the proxy however correct its labels are.
+    # Created once per host by bootstrap-vps.sh, never by a compose file — whichever ran
+    # second would fail on an existing network.
+    name: ${EDGE_NETWORK:-edge}

@@ -1,0 +1,13 @@
+# Notifies the on-call rota when one of the units above fails.
+#
+# Templated on the failing unit name (%i), so the message says WHICH job failed. An alert
+# that says "a backup failed" sends someone reading journals; one that names the unit sends
+# them straight to it.
+
+[Unit]
+Description=Alerte sur échec de %i
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/theetiptop/backup.env
+ExecStart=/opt/theetiptop/backup/notify-failure.sh %i

@@ -51,14 +51,29 @@ avant la première insertion.
 
 **Mesure observée** : 0 collision sur l'exécution du 11 novembre 2026, conforme à l'attente.
 
+### Les rejets qui ne sont pas des collisions
+
+Le sujet demande « un code à 10 caractères comprenant des chiffres et des lettres ». Un
+tirage uniforme sur les 36 symboles ne le garantit pas : la probabilité qu'un code ne
+contienne **aucun chiffre** vaut (26/36)^10 ≈ 3,79 %, soit environ 19 000 codes sur
+500 000. Le premier pool généré en contenait **19 282**, mesurés en base.
+
+Le générateur rejette donc et retire ces codes, exactement comme une collision, et
+`npm run codes:verify` recompte la règle en base. Le coût est d'environ 4 % de tirages
+supplémentaires ; l'espace de codes perdu est négligeable devant 36^10.
+
 ## 2. Génération et insertion
 
 | Étape | Durée mesurée | Détail |
 |---|---|---|
-| Construction + mélange du vecteur de lots | **25 ms** | 500 000 entrées, Fisher-Yates descendant, PRNG xoshiro128** seedé |
-| Tirage des 500 000 codes distincts | **1,02 s** | 5 000 000 d'appels au PRNG, échantillonnage par rejet |
-| Insertion en base | **44,68 s** | 100 lots de 5 000 lignes, soit **11 190 lignes/s** |
-| **Total** | **45,73 s** | |
+| Construction + mélange du vecteur de lots | **26 ms** | 500 000 entrées, Fisher-Yates descendant, PRNG xoshiro128** seedé |
+| Tirage des 500 000 codes distincts | **1,09 s** | ≈ 5 200 000 appels au PRNG, échantillonnage par rejet, chiffres et lettres garantis |
+| Insertion en base | **50,47 s** | 100 lots de 5 000 lignes, soit **9 908 lignes/s** |
+| **Total** | **51,58 s** | |
+
+Mesures du 11 novembre 2026, sur le pool définitif. Empreinte enregistrée :
+`4887052c…9c0913`. L'insertion domine toujours le temps total ; le tirage, règle de
+composition comprise, en représente 2 %.
 
 ### Pourquoi 5 000 lignes par lot
 
@@ -108,14 +123,14 @@ fréquente de l'application.
 
 | Mesure | Valeur |
 |---|---|
-| Recherche par `code` (`findUnique`) | **529 µs** en moyenne sur 200 lectures |
+| Recherche par `code` (`findUnique`) | **540 µs** en moyenne sur 200 lectures |
 
 Mesurée sur une table de 500 000 lignes, index unique B-tree, via le pool de l'adaptateur
 `node-postgres`. La valeur inclut l'aller-retour réseau vers le conteneur, la planification
 et l'exécution.
 
-**Conséquence de dimensionnement** : à 529 µs par lecture, un seul conteneur d'API absorbe
-théoriquement environ 1 890 vérifications de code par seconde sur cette seule requête. Le
+**Conséquence de dimensionnement** : à 540 µs par lecture, un seul conteneur d'API absorbe
+théoriquement environ 1 850 vérifications de code par seconde sur cette seule requête. Le
 sujet annonce 500 000 codes distribués sur 30 jours ; même en concentrant la moitié des
 participations sur une seule journée, on reste trois ordres de grandeur sous cette limite.
 La base n'est donc pas le facteur limitant, ce qui justifie de dimensionner les conteneurs
@@ -193,10 +208,10 @@ Exécutions du 11 novembre 2026.
 
 | Famille | Outil | Volume | Durée | Résultat |
 |---|---|---|---|---|
-| Unitaires | Vitest 5 | 54 tests | 0,5 s | ✅ |
-| Intégration | Vitest + PostgreSQL | 32 tests | 2,9 s | ✅ |
-| Fonctionnels | Playwright, 3 projets | 46 tests | 2,5 h ⚠️ | ✅ |
-| Performance | k6 | 3 scénarios | — | 🟡 écrits, k6 non installé |
+| Unitaires | Vitest 5 | 69 tests | 0,5 s | ✅ |
+| Intégration | Vitest + PostgreSQL | 32 tests | 3,1 s | ✅ |
+| Fonctionnels | Playwright, 3 projets | 53 tests | 42 s | ✅ |
+| Performance | k6 v2.3 | 3 scénarios, 2 492 itérations | 1 min | ✅ 6 seuils sur 6 |
 
 ⚠️ **Les 2,5 heures du suite fonctionnelle sont un artefact du serveur de développement** :
 `next dev` compile chaque route à sa première visite, et la suite en parcourt une vingtaine
@@ -204,11 +219,45 @@ sur trois projets de navigateur. En CI, `playwright.config.ts` démarre les **bu
 production** (`next start`), ce qui supprime l'essentiel de ce temps — et teste au passage
 l'artefact qui est réellement déployé.
 
-## 8. Ce qui reste à mesurer
+## 8. Charge, mesurée avec k6
+
+Exécution du 15 novembre 2026, k6 v2.3, trois scénarios simultanés, **2 492 itérations, 0
+interrompue, 0 requête en échec**. Les six seuils déclarés passent ; le rapport part en
+JUnit dans `reports/junit/k6.xml`, que Jenkins lit.
+
+| Scénario | Exécuteur | Charge | p(95) mesuré | Seuil |
+|---|---|---|---|---|
+| Catalogue public | `ramping-vus` | montée à 50 VU sur 60 s | **12,1 ms** | < 200 ms |
+| Soumission de code | `constant-arrival-rate` | **50 soumissions/s** pendant 45 s | **15,6 ms** | < 300 ms |
+| État du jeu, caisse | `constant-arrival-rate` | 5 appels/s pendant 30 s | **35,0 ms** | < 500 ms |
+
+Les 50 soumissions par seconde ont été tenues sans dégradation : l'arrivée est à taux
+constant, donc une API qui ralentit ne verrait pas sa charge baisser, elle accumulerait du
+retard. Rien n'a été accumulé.
+
+### Ce qu'il a fallu corriger pour que ces chiffres veuillent dire quelque chose
+
+Le scénario de soumission tournait **sans session**. L'API répondait 401 au garde, avant
+toute requête en base : la métrique nommée `code_lookup_duration` mesurait un refus
+d'authentification. Le scénario ouvre désormais **une** session dans `setup()` — une
+seule, parce que le hachage du mot de passe est volontairement lent et que 50 connexions
+par seconde mesureraient la fonction de dérivation — et chaque itération atteint
+réellement l'index unique sur `TicketCode.code`.
+
+Deuxième obstacle : la limitation de débit. Au-delà de la dixième tentative, la réponse
+est `RATE_LIMITED` et revient, elle aussi, avant la base. Les quatre seuils sont donc
+devenus des variables d'environnement, **dont les valeurs par défaut sont celles de
+production**, et le test de charge les relève pour sa propre exécution. Aucune valeur ne
+désactive le limiteur.
+
+Les codes soumis sont bien formés mais absents du pool : la réponse est `UNKNOWN_CODE` et
+**rien n'est consommé**. `codes:verify` passé après l'exécution le confirme, empreinte du
+pool comprise. Le chemin mesuré est identique à celui d'un code gagnant, à l'`INSERT`
+près.
+
+## 9. Ce qui reste à mesurer
 
 | Mesure | Outil prévu | Pourquoi ce n'est pas fait | Tâche |
 |---|---|---|---|
-| Débit de participations concurrentes | k6 | Le binaire k6 n'est pas installé. Les scénarios sont écrits dans `tests/performance/participation.k6.ts`, exécutables aussi via l'image `grafana/k6` | A18 |
-| Latence du tableau de bord sous charge | k6 | Idem | A18 |
 | Temps du tirage sur 40 000 participants | script dédié | Demande un jeu de données de 40 000 participants, qui n'existe pas encore | A13 |
 | Insertion avec `synchronous_commit=on` | `codes:generate` en préprod | Demande l'environnement de préprod, qui dépend du workflow | A18 |

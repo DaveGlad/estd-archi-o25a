@@ -1,0 +1,168 @@
+# Jenkins configuration as code.
+#
+# Read at startup through CASC_JENKINS_CONFIG. Everything Jenkins needs to come up ready is
+# here, in the repository, under review — and nothing is clicked into the UI.
+#
+# This is what makes the CI reproducible. A Jenkins configured by hand is a snowflake: it
+# cannot be rebuilt after a disk failure, its history is nobody's memory, and the one person
+# who set it up becomes the only one who can change it. That is dysfunction n° 1 of the état
+# des lieux, applied to the tool meant to fix it.
+#
+# ⚠️ No secret in this file. Values are read from the environment, which Docker injects
+# from the host. A credential committed here is a credential in every clone of the repo.
+
+jenkins:
+  systemMessage: |
+    Furious Ducks — intégration continue.
+    Configuration gérée par code : 05-workflow/jenkins/casc/jenkins.yaml.
+    Toute modification passe par une merge request.
+
+  # Executors on the controller itself: zero. The controller holds the credentials and the
+  # Docker socket; running project code on it would mean any Jenkinsfile could read every
+  # secret. Builds go to agents.
+  numExecutors: 0
+  mode: EXCLUSIVE
+  labelString: controller
+
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "${JENKINS_ADMIN_ID}"
+          password: "${JENKINS_ADMIN_PASSWORD}"
+
+  # Matrix authorization rather than "logged-in users can do anything". Developers need to
+  # read builds and replay them; they do not need to reconfigure the server, which is
+  # precisely the separation requirement n° 5 asks for — the pipeline is theirs, the CI
+  # administration is not.
+  authorizationStrategy:
+    globalMatrix:
+      entries:
+        - user:
+            name: "${JENKINS_ADMIN_ID}"
+            permissions:
+              - "Overall/Administer"
+        - group:
+            name: "developers"
+            permissions:
+              - "Overall/Read"
+              - "Job/Read"
+              - "Job/Build"
+              - "Job/Cancel"
+              - "Job/Workspace"
+              - "View/Read"
+        - group:
+            name: "authenticated"
+            permissions:
+              - "Overall/Read"
+
+  remotingSecurity:
+    enabled: true
+
+  clouds:
+    - docker:
+        name: docker
+        dockerApi:
+          dockerHost:
+            uri: "unix:///var/run/docker.sock"
+        templates:
+          # One agent template, labelled `docker`, matching the `agent { label 'docker' }`
+          # in the three Jenkinsfiles. The per-stage `agent { docker { image … } }` blocks
+          # run their own containers from here.
+          - labelString: "docker"
+            dockerTemplateBase:
+              image: "jenkins/agent:latest-jdk21"
+              mounts:
+                - "type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock"
+                - "type=volume,source=nx-cache,destination=/cache"
+                - "type=volume,source=npm-cache,destination=/root/.npm"
+            remoteFs: "/home/jenkins/agent"
+            connector:
+              attach:
+                user: "root"
+            instanceCapStr: "4"
+            # Removed after each build. A reused agent carries the previous project's
+            # node_modules, its environment and occasionally its secrets — and a build that
+            # only passes on a dirty agent is the hardest kind of failure to reproduce.
+            removeVolumes: true
+
+security:
+  queueItemAuthenticator:
+    authenticators:
+      - global:
+          strategy: triggeringUsersAuthorizationStrategy
+
+unclassified:
+  location:
+    url: "https://ci.${WORKFLOW_DOMAIN}/"
+    # Build notifications link back here. An absolute URL that is wrong sends everyone to a
+    # dead page from every failure email.
+    adminAddress: "ci@${WORKFLOW_DOMAIN}"
+
+  globalLibraries:
+    libraries: []
+
+  # Prometheus scrapes this. Queue length and executor saturation are what tell you a
+  # pipeline got slower because it is waiting, not because it got heavier.
+  prometheusConfiguration:
+    path: "prometheus"
+    defaultNamespace: "jenkins"
+    useAuthenticatedEndpoint: false
+
+tool:
+  git:
+    installations:
+      - name: Default
+        home: "git"
+
+jobs:
+  # Multibranch jobs, one per repository. Multibranch and not a fixed job per branch,
+  # because GitFlow creates and deletes branches constantly: feature/*, release/*, hotfix/*.
+  # A job list maintained by hand drifts within a sprint, and the branch that matters is
+  # always the one nobody added.
+  - script: >
+      multibranchPipelineJob('theetiptop-contest') {
+        branchSources {
+          git {
+            id('theetiptop-contest')
+            remote("https://git.${System.getenv('WORKFLOW_DOMAIN')}/furious-ducks/theetiptop-contest.git")
+            credentialsId('gitea-credentials')
+          }
+        }
+        factory {
+          workflowBranchProjectFactory {
+            scriptPath('06-app/theetiptop-contest/Jenkinsfile')
+          }
+        }
+        orphanedItemStrategy {
+          discardOldItems { numToKeep(10) }
+        }
+      }
+
+  - script: >
+      multibranchPipelineJob('demo-site-vitrine') {
+        branchSources {
+          git {
+            id('demo-site-vitrine')
+            remote("https://git.${System.getenv('WORKFLOW_DOMAIN')}/furious-ducks/demo-site-vitrine.git")
+            credentialsId('gitea-credentials')
+          }
+        }
+        factory {
+          workflowBranchProjectFactory { scriptPath('Jenkinsfile') }
+        }
+      }
+
+  - script: >
+      multibranchPipelineJob('demo-app-mobile') {
+        branchSources {
+          git {
+            id('demo-app-mobile')
+            remote("https://git.${System.getenv('WORKFLOW_DOMAIN')}/furious-ducks/demo-app-mobile.git")
+            credentialsId('gitea-credentials')
+          }
+        }
+        factory {
+          workflowBranchProjectFactory { scriptPath('Jenkinsfile') }
+        }
+      }

@@ -85,7 +85,8 @@ tools/        Outillage de build
 | `npm run test` | Tests unitaires |
 | `npm run test:integration` | Tests d'intégration, contre la vraie base |
 | `npm run test:e2e` | Tests fonctionnels Playwright, sur les trois applications |
-| `npm run test:perf` | Tests de performance k6 |
+| `npm run test:perf` | Tests de performance k6. L'API doit tourner via `dev:api:perf` |
+| `npm run dev:api:perf` | L'API avec les limites de débit relevées, **pour le test de charge uniquement**. Au plafond de production, le scénario mesurerait le limiteur et non la requête |
 | `npm run typecheck` / `lint` / `build` | Sur l'ensemble du monorepo |
 
 ## Les tests
@@ -94,10 +95,10 @@ Les quatre familles exigées par le sujet, avec export des rapports vers Jenkins
 
 | Famille | Outil | Volume | Rapport |
 |---|---|---|---|
-| Unitaires | Vitest | 54 tests | `reports/junit/vitest.xml` |
+| Unitaires | Vitest | 69 tests | `reports/junit/vitest.xml` |
 | Intégration | Vitest + PostgreSQL | 32 tests | `reports/junit/vitest.xml` |
-| Fonctionnels | Playwright, 3 projets | 46 tests | `reports/junit/playwright.xml` |
-| Performance | k6 | 3 scénarios | `reports/junit/k6.xml` |
+| Fonctionnels | Playwright, 3 projets | 53 tests | `reports/junit/playwright.xml` |
+| Performance | k6 | 3 scénarios, 2 492 itérations | `reports/junit/k6.xml` |
 
 Les trois tests qui portent réellement les exigences du sujet :
 

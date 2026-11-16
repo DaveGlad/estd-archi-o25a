@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { CODE_PATTERN, type CustomerSearchResultDto, type ParticipationDto } from '@theetiptop-contest/shared';
 
 import { AuditService } from '../../common/audit/audit.service.js';
+import { MetricsService } from '../metrics/metrics.service.js';
 import type { AuthenticatedUser } from '../../common/auth-context.js';
 import {
   ConflictException,
@@ -31,7 +32,8 @@ export class EmployeeService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
-    private readonly audit: AuditService
+    private readonly audit: AuditService,
+    private readonly metrics: MetricsService
   ) {}
 
   /**
@@ -244,6 +246,10 @@ export class EmployeeService {
         include: PARTICIPATION_INCLUDE,
       });
     });
+
+    // After the transaction committed, never inside it. A counter incremented in a
+    // transaction that then rolls back reports a prize handed over that nobody received.
+    this.metrics.recordRedemption();
 
     await this.audit.record({
       userId: actor.id,

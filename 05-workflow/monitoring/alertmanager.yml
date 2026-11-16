@@ -1,0 +1,78 @@
+# Where alerts go, and how loudly.
+#
+# The routing is the whole point of this file. An alertmanager that sends everything to one
+# channel at the same priority is a channel people mute, and the first thing muted is the
+# page that mattered.
+#
+# ⚠️ Alertmanager does NOT expand environment variables in its configuration. `${VAR}`
+# here would be sent to a literal host named "${VAR}" — the config does not even load,
+# `amtool check-config` reports `unsupported scheme "" for URL`. Hence `url_file` and
+# `auth_password_file`, which read a secret from disk at send time. The files are mounted
+# from /etc/theetiptop/alerting/ on the host and are not in this repository.
+#
+# Validate before deploying:
+#   docker run --rm --entrypoint amtool -v "$PWD:/w" -w /w \
+#     prom/alertmanager:v0.28.0 check-config alertmanager.yml
+
+global:
+  resolve_timeout: 5m
+  # The WORKFLOW domain: these are the agency's own alerts, not the client's site.
+  smtp_from: alertes@wk-archi-o25a-15m-g1.fr
+  smtp_smarthost: smtp.wk-archi-o25a-15m-g1.fr:587
+  smtp_auth_username: alertes@wk-archi-o25a-15m-g1.fr
+  smtp_auth_password_file: /etc/alertmanager/secrets/smtp-password
+
+route:
+  receiver: default
+  # Grouped by alert name and environment: when a host goes down, forty targets fail at
+  # once and the team should receive one message about a host, not forty about targets.
+  group_by: ['alertname', 'environment']
+  group_wait: 30s
+  group_interval: 5m
+  # Four hours between repeats of an unresolved alert. Shorter and it becomes background
+  # noise; longer and a problem acknowledged at 9am is forgotten by lunch.
+  repeat_interval: 4h
+
+  routes:
+    - matchers: [severity = "critical"]
+      receiver: oncall
+      group_wait: 10s
+      repeat_interval: 1h
+
+    # Backup failures are critical but never urgent at 3am: nothing is being lost right
+    # now, and a person woken up cannot fix a storage credential any faster than a person
+    # who slept. They go to the daily channel instead.
+    #
+    # Placed BEFORE nothing and AFTER the critical route on purpose — routes are evaluated
+    # in order and the first match wins, so putting this one first would divert a genuinely
+    # critical backup alert away from the on-call rota. Alertmanager's `continue` is left
+    # false so exactly one receiver fires.
+    - matchers: [alertname =~ "Backup.*|RestoreTest.*"]
+      receiver: platform
+      repeat_interval: 12h
+
+receivers:
+  - name: default
+    webhook_configs:
+      - url_file: /etc/alertmanager/secrets/platform-webhook
+
+  - name: oncall
+    webhook_configs:
+      - url_file: /etc/alertmanager/secrets/oncall-webhook
+        send_resolved: true
+    email_configs:
+      # Two channels for critical alerts, because the first thing an incident takes down is
+      # often the way you find out about incidents.
+      - to: astreinte@wk-archi-o25a-15m-g1.fr
+        send_resolved: true
+
+  - name: platform
+    webhook_configs:
+      - url_file: /etc/alertmanager/secrets/platform-webhook
+
+inhibit_rules:
+  # A host that is down makes every service on it fail. Without this, one power cut pages
+  # the team a dozen times for one event.
+  - source_matchers: [alertname = "SiteDown"]
+    target_matchers: [severity = "warning"]
+    equal: ['environment']

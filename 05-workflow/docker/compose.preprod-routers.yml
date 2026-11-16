@@ -1,0 +1,55 @@
+# Router names for a SECOND environment sharing one Traefik.
+#
+#   docker compose -f compose.prod.yml -f compose.preprod-routers.yml \
+#     --env-file .env.preprod -p theetiptop-preprod up -d
+#
+# Why this file exists at all: Docker Compose interpolates variables in label VALUES and
+# never in label KEYS. `traefik.http.routers.${COMPOSE_PROJECT_NAME}-api.rule` reaches
+# Traefik with the `${…}` intact, so the router name cannot carry the environment.
+#
+# Two routers with the same name are not an error — Traefik keeps one of them, and which
+# one depends on container start order. The symptom is preprod answering on the production
+# hostname after an unrelated restart: intermittent, absent from every log, and found by a
+# customer rather than by us.
+#
+# `!override` and not a plain map. Compose MERGES label maps across files by default, so
+# without it both the production router names and these would be attached to the same
+# container — which is the collision this file exists to prevent, doubled.
+#
+# Only needed when a second environment runs on the SAME host as production. On the
+# project's VPS it does not: CST D.3 puts dev and preprod on a second machine, and the
+# sizing section says why.
+
+services:
+  api:
+    labels: !override
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      traefik.http.routers.theetiptop-preprod-api.rule: Host(`${API_HOST}`)
+      traefik.http.routers.theetiptop-preprod-api.entrypoints: websecure
+      traefik.http.routers.theetiptop-preprod-api.tls.certresolver: letsencrypt
+      traefik.http.services.theetiptop-preprod-api.loadbalancer.server.port: '3333'
+
+  web:
+    labels: !override
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      # No www variant and no redirect: preprod is not indexed and has no SEO to protect.
+      traefik.http.routers.theetiptop-preprod-web.rule: Host(`${SITE_HOST}`)
+      traefik.http.routers.theetiptop-preprod-web.entrypoints: websecure
+      traefik.http.routers.theetiptop-preprod-web.tls.certresolver: letsencrypt
+      traefik.http.routers.theetiptop-preprod-web.middlewares: preprod-noindex@docker
+      traefik.http.services.theetiptop-preprod-web.loadbalancer.server.port: '3000'
+      # A preprod copy of the site indexed by a search engine competes with production for
+      # its own keywords, and shows a jury a half-finished page under a real domain. Set at
+      # the proxy, so no application change can forget it.
+      traefik.http.middlewares.preprod-noindex.headers.customresponseheaders.X-Robots-Tag: 'noindex, nofollow'
+
+  admin:
+    labels: !override
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      traefik.http.routers.theetiptop-preprod-admin.rule: Host(`${ADMIN_HOST}`)
+      traefik.http.routers.theetiptop-preprod-admin.entrypoints: websecure
+      traefik.http.routers.theetiptop-preprod-admin.tls.certresolver: letsencrypt
+      traefik.http.services.theetiptop-preprod-admin.loadbalancer.server.port: '3001'
