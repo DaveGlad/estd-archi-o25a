@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-const BASE = 'https://dsp5-archi-o25a-15m-g1.fr';
+import { SITE_URL as BASE } from '../lib/site-url';
 
 /**
  * Generated from code rather than maintained by hand, so a route added later cannot be

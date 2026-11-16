@@ -5,6 +5,8 @@
  * operation actually is, and makes the frequently-asked questions eligible for a rich
  * result — which is one of the few SEO levers that is entirely under our control.
  */
+
+import { SITE_URL } from '../../lib/site-url';
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script
@@ -17,7 +19,7 @@ export function JsonLd({ data }: { data: Record<string, unknown> }) {
   );
 }
 
-const BASE = 'https://dsp5-archi-o25a-15m-g1.fr';
+const BASE = SITE_URL;
 
 export const organizationJsonLd = {
   '@context': 'https://schema.org',
