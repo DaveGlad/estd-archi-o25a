@@ -1,0 +1,123 @@
+# The workflow tools behind ONE hostname, by path.
+#
+#   docker compose -f compose.workflow.yml -f compose.workflow-singlehost.yml \
+#     --env-file .env.workflow -p furious-ducks-workflow \
+#     up -d --scale traefik=0
+#
+# `--scale traefik=0` because the proxy already runs from
+# docker/compose.edge.yml. Starting a second one would fight over ports 80 and 443, and
+# the loser restarts in a loop.
+#
+# Each tool normally gets its own subdomain, which is what compose.workflow.yml declares
+# and what the brief asks for. This file covers the case where one name is available and
+# the tools still have to be reachable.
+#
+# Three of them take a path prefix. The fourth, the registry, does not: `docker login` and
+# `docker push` talk to `/v2/` at the ROOT of a host, and there is no way to tell the
+# Docker CLI otherwise. It therefore stays internal, reachable by Jenkins on the workflow
+# network and by nothing else. That is not a downgrade: a registry has no business being
+# public, and the pipeline is its only client.
+
+services:
+  jenkins:
+    environment:
+      # Jenkins builds every link and every asset URL from this prefix. Without it the
+      # page loads and every stylesheet 404s, which looks like a broken install.
+      JENKINS_OPTS: --prefix=/ci
+      JAVA_OPTS: >-
+        -Djenkins.install.runSetupWizard=false
+        -Dhudson.model.DownloadService.noSignatureCheck=true
+        -Xmx1g
+      CASC_JENKINS_CONFIG: /var/jenkins_home/casc/jenkins.yaml
+      JENKINS_ADMIN_ID: ${JENKINS_ADMIN_ID:-admin}
+      JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD}
+      WORKFLOW_DOMAIN: ${SINGLE_HOST}
+    labels: !override
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      traefik.http.routers.wf-jenkins.rule: Host(`${SINGLE_HOST}`) && PathPrefix(`/ci`)
+      traefik.http.routers.wf-jenkins.priority: '95'
+      traefik.http.routers.wf-jenkins.entrypoints: websecure
+      traefik.http.routers.wf-jenkins.tls.certresolver: letsencrypt
+      traefik.http.services.wf-jenkins.loadbalancer.server.port: '8080'
+    deploy:
+      resources:
+        limits:
+          # A JVM with no ceiling will take whatever the host offers and leave the
+          # database swapping. 1.5 GB covers the heap plus metaspace and thread stacks.
+          memory: 1536M
+
+  gitea:
+    environment:
+      GITEA__database__DB_TYPE: postgres
+      GITEA__database__HOST: gitea-db:5432
+      GITEA__database__NAME: gitea
+      GITEA__database__USER: gitea
+      GITEA__database__PASSWD: ${GITEA_DB_PASSWORD}
+      # The trailing slash matters. Gitea builds clone URLs from this value, and without
+      # it every `git clone` line it displays is wrong.
+      GITEA__server__ROOT_URL: https://${SINGLE_HOST}/git/
+      GITEA__server__SSH_DOMAIN: ${SINGLE_HOST}
+      GITEA__server__SSH_PORT: '2222'
+      GITEA__service__DISABLE_REGISTRATION: 'true'
+      GITEA__metrics__ENABLED: 'true'
+    labels: !override
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      traefik.http.routers.wf-gitea.rule: Host(`${SINGLE_HOST}`) && PathPrefix(`/git`)
+      traefik.http.routers.wf-gitea.priority: '95'
+      traefik.http.routers.wf-gitea.entrypoints: websecure
+      traefik.http.routers.wf-gitea.tls.certresolver: letsencrypt
+      traefik.http.routers.wf-gitea.middlewares: wf-gitea-strip@docker
+      # Gitea serves from its own root, so the prefix is removed before the request
+      # reaches it. Jenkins and Grafana are told their prefix instead and keep it.
+      traefik.http.middlewares.wf-gitea-strip.stripprefix.prefixes: /git
+      traefik.http.services.wf-gitea.loadbalancer.server.port: '3000'
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+
+  grafana:
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      GF_AUTH_ANONYMOUS_ENABLED: 'false'
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+      GF_SERVER_ROOT_URL: https://${SINGLE_HOST}/grafana/
+      # Without this Grafana knows its public URL but keeps serving from `/`, so every
+      # asset request misses by exactly the prefix.
+      GF_SERVER_SERVE_FROM_SUB_PATH: 'true'
+    labels: !override
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      # NOT `/metrics`: the API already owns that path on this host, and it is the
+      # Prometheus scrape endpoint. Two routers on one path is a coin toss decided by
+      # container start order.
+      traefik.http.routers.wf-grafana.rule: Host(`${SINGLE_HOST}`) && PathPrefix(`/grafana`)
+      traefik.http.routers.wf-grafana.priority: '95'
+      traefik.http.routers.wf-grafana.entrypoints: websecure
+      traefik.http.routers.wf-grafana.tls.certresolver: letsencrypt
+      traefik.http.services.wf-grafana.loadbalancer.server.port: '3000'
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+
+  # Internal only. `docker login` and `docker push` address `/v2/` at a host root, and the
+  # Docker CLI offers no way to prefix that. Jenkins reaches it by service name on the
+  # workflow network, which is the only client it has.
+  registry:
+    labels: !override
+      traefik.enable: 'false'
+
+  prometheus:
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+
+  loki:
+    deploy:
+      resources:
+        limits:
+          memory: 512M

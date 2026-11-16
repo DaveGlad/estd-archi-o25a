@@ -111,6 +111,7 @@ curl -s https://srv1581779.hstgr.cloud/v1/prizes
 |---|---|
 | Cahier des charges | <https://docs.google.com/document/d/1EvdQg0d10Yi70kN47ExMLsjHmC8vhL_RpZHuF9y_Otw/edit?usp=sharing> |
 | Cahier des spécifications techniques | <https://docs.google.com/document/d/1DLrvM9LSZkpNnpW76hh1MlRw12kMtWCKnA8sOFqi4SM/edit> |
+| Maquettes Figma | <https://www.figma.com/design/CkO6KsKKatpJPP2ky53WOO/Design---Site-The-Tip-TOP> |
 
 Le dépôt Git garde les sources de ces dossiers, partie par partie, dans
 `02-cahier-des-charges` et `03-cahier-specifications-techniques`.
@@ -121,8 +122,12 @@ Le dépôt Git garde les sources de ces dossiers, partie par partie, dans
 |---|---|
 | Hébergeur | GitHub |
 | Adresse | <https://github.com/DaveGlad/estd-archi-o25a> |
-| Identifiant | *à compléter* |
-| Mot de passe ou jeton | *à compléter* |
+| Visibilité | **Public** |
+| Identifiant | Aucun. Le dépôt se lit sans compte GitHub |
+| Propriétaire du compte | `DaveGlad` |
+
+Le dépôt est public. Tu cliques sur le lien, tu lis tout : le code, les deux dossiers, le
+workflow, l'historique des commits. Tu n'as besoin ni de compte ni de mot de passe.
 
 Branches GitFlow : `main` pour la production, `develop` pour l'intégration, puis
 `feature/*`, `release/*` et `hotfix/*`.
@@ -160,16 +165,38 @@ Ce que le workflow automatise :
 - Test de restauration mensuel, avec quatre contrôles métier.
 
 Trois pipelines, un par forme de projet : site administrable, site vitrine HTML et CSS,
-application mobile hybride. Jenkins, Gitea, le registry et Grafana se déploient depuis
-`05-workflow/compose.workflow.yml`. Leurs identifiants passent par le canal convenu avec
-le formateur, parce qu'ils ouvrent le serveur et non une démonstration.
+application mobile hybride.
+
+### Les services en ligne
+
+| Service | Adresse | Identifiant | Mot de passe |
+|---|---|---|---|
+| Gitea | <https://srv1581779.hstgr.cloud/git> | `gitea-admin` | `UuvUi5LlYaTEsUF0mZH0` |
+| Grafana | <https://srv1581779.hstgr.cloud/grafana> | `admin` | `V5xC2k2dv1k4emoGYkth` |
+| Registry d'images | interne au serveur | `ci` | `hXdEkEbWvkbToaE2QnXa` |
+| Jenkins | <https://srv1581779.hstgr.cloud/ci> | `admin` | remise en service en cours |
+
+Dans Grafana, ouvre le dossier **Thé Tip Top**, tableau **Jeu-concours**. Il montre les
+codes restants, les saisies par issue, la latence de l'API et les lots remis.
+
+Le registry n'a pas d'adresse publique, et c'est voulu. `docker login` et `docker push`
+s'adressent à `/v2/` à la racine d'un hôte, sans préfixe possible. Jenkins l'atteint par le
+réseau interne, et c'est son seul client.
+
+Gitea finit son installation. Le compte ci-dessus est prêt à être activé.
+
+Jenkins est arrêté le temps d'une correction. L'image officielle n'installe ses greffons
+qu'à la construction, pas au démarrage. Sans greffons, la configuration as code ne se
+charge pas, donc aucun contrôle d'accès ne s'applique, et le contrôleur accepte tout le
+monde alors qu'il a le socket Docker. Je l'ai coupé dès le constat. Il revient avec ses
+greffons intégrés à l'image.
 
 ## Google Analytics et gestion de projet
 
 | | |
 |---|---|
 | Google Analytics | *à compléter* |
-| Outil de gestion de projet | *à compléter* |
+| Gestion de projet | Trello, <https://trello.com/b/6ZYwiaW8/projet-the-tiptop> |
 
 Le backlog est versionné dans `01-pilotage/BACKLOG.md`. Le fichier
 `01-pilotage/backlog.csv` s'importe directement dans Trello ou Notion, avec les colonnes

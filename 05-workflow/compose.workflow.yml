@@ -92,6 +92,11 @@ services:
       # Open registration off. The agency's repositories are its clients' source code, and
       # an instance anyone can sign up to is one anyone can fork from.
       GITEA__service__DISABLE_REGISTRATION: 'true'
+      # Without this Gitea serves its web installer on every page and refuses every CLI
+      # command with "Unable to load config file for a installed Gitea instance" — even
+      # though app.ini exists. The configuration here IS the installation, so the step is
+      # already done and leaving the installer reachable only invites someone to redo it.
+      GITEA__security__INSTALL_LOCK: 'true'
       GITEA__metrics__ENABLED: 'true'
     volumes:
       - gitea-data:/data
@@ -127,7 +132,14 @@ services:
 
   # -------------------------------------------------------------------- CI
   jenkins:
-    image: jenkins/jenkins:2.492-lts-jdk21
+    # Built locally, not pulled. The official image installs plugins from plugins.txt at
+    # BUILD time only; mounting that file into a running container does nothing, and
+    # Jenkins then starts with no plugins, therefore no configuration-as-code, therefore
+    # NO SECURITY REALM — while answering happily on its route. See Dockerfile.jenkins.
+    image: furious-ducks/jenkins:1
+    build:
+      context: ./jenkins
+      dockerfile: ../docker/Dockerfile.jenkins
     restart: unless-stopped
     environment:
       JENKINS_OPTS: --prefix=
@@ -151,8 +163,6 @@ services:
       # that run untrusted project code are separate containers rather than this one.
       - /var/run/docker.sock:/var/run/docker.sock
       - nx-cache:/cache
-      - ./jenkins/casc:/var/jenkins_home/casc:ro
-      - ./jenkins/plugins.txt:/usr/share/jenkins/ref/plugins.txt:ro
     networks: [edge, workflow, metrics]
     labels:
       traefik.enable: 'true'
@@ -298,10 +308,16 @@ services:
     logging: *default-logging
 
 networks:
-  # Everything Traefik routes. Shared with the three deployment compose files, so one proxy
+  # Everything Traefik routes. Shared with the deployment compose files, so one proxy
   # serves the workflow and the environments.
+  #
+  # External, like `metrics`: it is created once per host by bootstrap-vps.sh. Declared
+  # without it, Compose expects to own the network and refuses an existing one with
+  # "network edge was found but has incorrect label" — which reads like corruption and is
+  # only a question of who created it.
   edge:
-    name: edge
+    external: true
+    name: ${EDGE_NETWORK:-edge}
   # The workflow's own services, talking to each other. Internal: Gitea's database has no
   # reason to be reachable from anywhere else, and the surest way to keep it that way is
   # for there to be no route at all.

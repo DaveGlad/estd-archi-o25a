@@ -1,0 +1,54 @@
+# Jenkins controller, with its plugins baked in.
+#
+#   docker build -f Dockerfile.jenkins -t furious-ducks/jenkins:1 ../jenkins
+#
+# Why this file exists rather than the official image straight from the registry.
+#
+# The official image installs plugins from `/usr/share/jenkins/ref/plugins.txt` at BUILD
+# time, through `jenkins-plugin-cli`. Mounting that file into a running container does
+# nothing at all: the directory is a reference tree copied on first start, and the CLI
+# never runs.
+#
+# The consequence is worth stating plainly, because it is how this was found. With
+# `runSetupWizard=false` and no plugins, Jenkins starts with NO security realm and NO
+# configuration-as-code plugin to install one. The controller comes up, answers on its
+# route, accepts any credentials, and nothing in the logs says the configuration was
+# ignored. A controller with the Docker socket mounted is root on the host, so an
+# unauthenticated Jenkins on a public route is the most expensive mistake in this stack.
+#
+# Installing the plugins into the image makes the configuration-as-code file load at
+# startup, which is what applies the security realm and the authorization matrix.
+
+FROM jenkins/jenkins:2.580.2-lts-jdk21
+
+USER root
+
+# The Docker CLI, so pipelines can build and push images. The daemon itself is the host's,
+# reached through the mounted socket; only the client lives here.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates curl gnupg \
+ && install -m 0755 -d /etc/apt/keyrings \
+ && curl -fsSL https://download.docker.com/linux/debian/gpg \
+      | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
+ && chmod a+r /etc/apt/keyrings/docker.gpg \
+ && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+      > /etc/apt/sources.list.d/docker.list \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends docker-ce-cli docker-compose-plugin \
+ && rm -rf /var/lib/apt/lists/*
+
+USER jenkins
+
+# Installed at build time, which is the only moment this works. `--latest false` honours
+# the pinned versions in plugins.txt instead of quietly resolving newer ones, so two
+# builds of this image a month apart produce the same controller.
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt --latest false
+
+# The configuration itself. Read at every start, so a change is a rebuild of this image or
+# a restart with the file mounted, never a session of clicking in the UI.
+COPY casc /var/jenkins_home/casc
+
+ENV CASC_JENKINS_CONFIG=/var/jenkins_home/casc/jenkins.yaml
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false -Xmx1g"
