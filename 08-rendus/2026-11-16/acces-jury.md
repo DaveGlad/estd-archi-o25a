@@ -105,6 +105,16 @@ curl -s https://srv1581779.hstgr.cloud/v1/contest
 curl -s https://srv1581779.hstgr.cloud/v1/prizes
 ```
 
+## Les dossiers
+
+| Document | Où le lire |
+|---|---|
+| Cahier des charges | <https://docs.google.com/document/d/1EvdQg0d10Yi70kN47ExMLsjHmC8vhL_RpZHuF9y_Otw/edit?usp=sharing> |
+| Cahier des spécifications techniques | <https://docs.google.com/document/d/1DLrvM9LSZkpNnpW76hh1MlRw12kMtWCKnA8sOFqi4SM/edit> |
+
+Le dépôt Git garde les sources de ces dossiers, partie par partie, dans
+`02-cahier-des-charges` et `03-cahier-specifications-techniques`.
+
 ## Le dépôt de code
 
 | | |
