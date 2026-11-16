@@ -32,8 +32,13 @@ services:
     # through Docker labels, so adding a tool to this file gives it a subdomain and a
     # certificate without editing a proxy configuration by hand. With seven tools plus
     # three environments, hand-written vhosts would drift within a week.
-    image: traefik:v3.3
+    image: traefik:v3.6
     restart: unless-stopped
+    environment:
+      # Docker 29 refuses the API version 1.24 that Traefik's provider negotiates by
+      # default. Without this the provider never loads, no router exists, and every route
+      # answers with the self-signed default certificate.
+      DOCKER_API_VERSION: '1.44'
     command:
       - --providers.docker=true
       # Nothing is exposed unless it says so. The opposite default would publish a database

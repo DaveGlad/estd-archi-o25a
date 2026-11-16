@@ -31,6 +31,10 @@ WORKDIR /app
 
 ARG NEXT_PUBLIC_API_URL=http://localhost:3333
 ARG NEXT_PUBLIC_SITE_URL=http://localhost:3000
+# Path prefix, empty by default. The back office normally has its own subdomain; this is
+# for the case where a single hostname has to carry all three applications.
+ARG NEXT_BASE_PATH=
+ENV NEXT_BASE_PATH=$NEXT_BASE_PATH
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 ENV NEXT_TELEMETRY_DISABLED=1

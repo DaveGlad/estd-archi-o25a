@@ -1,0 +1,62 @@
+# Serving the three applications from ONE hostname.
+#
+#   docker compose -f compose.prod.yml -f compose.singlehost.yml \
+#     --env-file .env.prod -p theetiptop-prod up -d
+#
+# The normal arrangement is three subdomains — `example.fr`, `api.example.fr`,
+# `admin.example.fr` — and that is what compose.prod.yml declares. This file exists for
+# the case where only one name is available: a provider's default host, a review
+# environment, or a demonstration server waiting on a domain purchase.
+#
+# Routing is by path, with explicit priorities. Traefik evaluates routers from the highest
+# priority down, and the catch-all for the public site would otherwise swallow `/v1` and
+# `/backoffice` — the site would answer, with a 404 of its own, and nothing would say why.
+#
+# The back office needs its image rebuilt with `NEXT_BASE_PATH=/backoffice`: Next.js
+# rewrites every internal link and asset URL at compile time, so the prefix cannot be
+# added by the proxy alone.
+#
+# ⚠️ Not the target state. One hostname means one TLS certificate, one cookie scope and a
+# back office that shares an origin with the public site — which is precisely the
+# separation DECISIONS.md § 3 argues for. Switch back to compose.prod.yml alone once the
+# real domains resolve.
+
+services:
+  api:
+    labels: !override
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      # Every path the API owns, and no more. `/health` and `/metrics` sit outside the
+      # version prefix on purpose — they are operational plumbing, not part of the
+      # contract the tills are written against — so they are matched explicitly.
+      # One line, no folded scalar. YAML's `>-` keeps the newlines inside the value, and
+      # Traefik's rule parser rejects them with "expected ')', found newline". The rule is
+      # then invalid, the router never loads, and the only visible symptom is the default
+      # self-signed certificate on a site that answers nothing.
+      traefik.http.routers.ttt-api.rule: Host(`${SINGLE_HOST}`) && (PathPrefix(`/v1`) || PathPrefix(`/api/auth`) || PathPrefix(`/docs`) || Path(`/health`) || Path(`/metrics`))
+      traefik.http.routers.ttt-api.priority: '100'
+      traefik.http.routers.ttt-api.entrypoints: websecure
+      traefik.http.routers.ttt-api.tls.certresolver: letsencrypt
+      traefik.http.services.ttt-api.loadbalancer.server.port: '3333'
+
+  admin:
+    labels: !override
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      traefik.http.routers.ttt-admin.rule: Host(`${SINGLE_HOST}`) && PathPrefix(`/backoffice`)
+      traefik.http.routers.ttt-admin.priority: '90'
+      traefik.http.routers.ttt-admin.entrypoints: websecure
+      traefik.http.routers.ttt-admin.tls.certresolver: letsencrypt
+      traefik.http.services.ttt-admin.loadbalancer.server.port: '3001'
+
+  web:
+    labels: !override
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      # The catch-all, deliberately last. Priority 1 so that adding a route above it later
+      # cannot be shadowed by accident.
+      traefik.http.routers.ttt-web.rule: Host(`${SINGLE_HOST}`)
+      traefik.http.routers.ttt-web.priority: '1'
+      traefik.http.routers.ttt-web.entrypoints: websecure
+      traefik.http.routers.ttt-web.tls.certresolver: letsencrypt
+      traefik.http.services.ttt-web.loadbalancer.server.port: '3000'
