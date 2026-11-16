@@ -237,6 +237,45 @@ services:
         limits:
           memory: 384M
 
+  # ------------------------------------------------------------------ exporters
+  #
+  # These live HERE and not in the workflow stack, and the reason is the network: they have
+  # to reach `postgres` and `redis` on this environment's internal `backend` network, which
+  # by design has no route from anywhere else. An exporter in the monitoring stack would
+  # have nothing to scrape.
+  #
+  # They sit on `metrics` as well, so Prometheus can reach them. That is the only hole
+  # punched in `backend`, it exposes aggregates and never data, and it is what lets
+  # prometheus.yml declare the `postgres` and `redis` jobs it already declares.
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:v0.16.0
+    restart: unless-stopped
+    environment:
+      DATA_SOURCE_NAME: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [backend, metrics]
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.67.0
+    restart: unless-stopped
+    environment:
+      REDIS_ADDR: redis://redis:6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks: [backend, metrics]
+    deploy:
+      resources:
+        limits:
+          memory: 32M
+
 volumes:
   postgres-data:
   redis-data:
@@ -246,6 +285,12 @@ networks:
   # else — no published port, no route from the host.
   backend:
     internal: true
+  # Shared with the monitoring stack, so Prometheus can scrape the two exporters above.
+  # External and created once by bootstrap-vps.sh, like `edge`: neither compose file owns
+  # it, and whichever ran second would fail trying to create it.
+  metrics:
+    external: true
+    name: ${METRICS_NETWORK:-metrics}
   # Where the reverse proxy lives. Declared external because it is created once per host and
   # shared by the three environments, each behind its own subdomain.
   edge:

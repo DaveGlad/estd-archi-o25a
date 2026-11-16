@@ -1,0 +1,28 @@
+# Plugins installed at image build / first start, pinned to a version.
+#
+# Pinned and not `:latest`, for the same reason images are tagged by commit: a plugin that
+# moves under the controller changes how every pipeline behaves without anything in this
+# repository changing. Upgrading is a merge request, like everything else.
+#
+# Only what the three Jenkinsfiles actually use. A controller carrying eighty plugins is a
+# controller whose upgrades break something every time, and most of them were installed
+# "just in case" by someone who has since left.
+
+configuration-as-code:1932.v75cb_b_f1b_698d
+workflow-aggregator:608.v67378e9d3db_1
+pipeline-stage-view:2.34
+git:5.7.0
+gitea:1.4.5
+docker-workflow:580.vc0c340686b_54
+docker-plugin:1.5
+matrix-auth:3.2.6
+job-dsl:1.90
+timestamper:1.28
+ansicolor:1.0.6
+junit:1309.v8356c1a_59d44
+htmlpublisher:1.37
+email-ext:1876.v28d8d38315c3
+prometheus:800.v8f09e8b_b_9ad2
+credentials-binding:687.v619cb_15e923f
+ws-cleanup:0.48
+build-timeout:1.37

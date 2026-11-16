@@ -129,7 +129,15 @@ services:
       # Setup wizard off: this instance is configured as code, and a wizard that waits for
       # a password in a log file is not something a rebuild should depend on.
       JAVA_OPTS: -Djenkins.install.runSetupWizard=false -Dhudson.model.DownloadService.noSignatureCheck=true
-      CASC_JENKINS_CONFIG: /var/jenkins_home/casc.yaml
+      # Configuration as code, mounted read-only from this repository. Inside the volume
+      # it would be invisible to review and lost with the volume — which is the state this
+      # project is trying to get the agency out of.
+      CASC_JENKINS_CONFIG: /var/jenkins_home/casc/jenkins.yaml
+      # Read by jenkins.yaml. The admin password is injected here, never written in the
+      # configuration file — that file is in the repository and in every clone of it.
+      JENKINS_ADMIN_ID: ${JENKINS_ADMIN_ID:-admin}
+      JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD}
+      WORKFLOW_DOMAIN: ${WORKFLOW_DOMAIN}
     volumes:
       - jenkins-home:/var/jenkins_home
       # Jenkins builds Docker images, so it needs the daemon. NOT read-only here, unlike
@@ -138,6 +146,8 @@ services:
       # that run untrusted project code are separate containers rather than this one.
       - /var/run/docker.sock:/var/run/docker.sock
       - nx-cache:/cache
+      - ./jenkins/casc:/var/jenkins_home/casc:ro
+      - ./jenkins/plugins.txt:/usr/share/jenkins/ref/plugins.txt:ro
     networks: [edge, workflow, metrics]
     labels:
       traefik.enable: 'true'
@@ -157,7 +167,12 @@ services:
       REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
     volumes:
       - registry-data:/var/lib/registry
-      - ./registry/auth:/auth:ro
+      # The htpasswd file is a secret, so it comes from the host like the alerting ones and
+      # never from this repository. Generate it once:
+      #   docker run --rm --entrypoint htpasswd httpd:2 -Bbn ci '<password>' \
+      #     > /etc/theetiptop/registry/htpasswd
+      # bcrypt (-B) and not the default: the registry refuses anything else.
+      - /etc/theetiptop/registry:/auth:ro
     networks: [edge, workflow]
     labels:
       traefik.enable: 'true'
@@ -287,8 +302,12 @@ networks:
   # for there to be no route at all.
   workflow:
     internal: true
+  # Shared with the deployed environments: their postgres-exporter and redis-exporter sit
+  # on it so Prometheus can reach them. Created once by bootstrap-vps.sh rather than by
+  # either compose file — whichever ran second would fail on an existing network.
   metrics:
-    internal: true
+    external: true
+    name: ${METRICS_NETWORK:-metrics}
 
 volumes:
   acme:

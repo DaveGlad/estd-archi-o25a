@@ -139,7 +139,10 @@ log "Docker networks"
 # `edge` is shared: Traefik lives in the workflow stack, the environments attach to it.
 # Created here, once, so neither compose file owns it — whichever ran second would fail.
 docker network inspect edge >/dev/null 2>&1 || docker network create edge
-docker network inspect theetiptop-edge >/dev/null 2>&1 || docker network create theetiptop-edge
+# `metrics` is shared the same way: Prometheus lives in the workflow stack, the database
+# and Redis exporters live with the environment they observe. Internal, so nothing on it
+# is reachable from the host.
+docker network inspect metrics >/dev/null 2>&1 || docker network create --internal metrics
 
 log "Directories"
 install -d -m 755 /opt/theetiptop
@@ -177,7 +180,7 @@ cat <<EOF
   Compose     $(docker compose version --short)
   User        ${ADMIN_USER} (docker, sudo)
   Firewall    22, 80, 443, 2222 — everything else closed
-  Networks    edge, theetiptop-edge
+  Networks    edge (public-facing), metrics (internal)
   SSH         keys only, root password login disabled
 
   Next, and in this order:

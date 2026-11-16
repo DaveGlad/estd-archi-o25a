@@ -72,6 +72,35 @@ sur des tickets dans la poche des clients**. Un déploiement défaillant ne se r
 par un correctif : les codes sont dehors, et un joueur dont le code a été consommé à tort
 ne peut pas recommencer.
 
+## Jenkins est configuré par code, pas à la souris
+
+`casc/jenkins.yaml` est lu au démarrage par le greffon Configuration as Code. Tout ce dont
+Jenkins a besoin pour être opérationnel y est, dans le dépôt, relu en merge request — et
+rien n'est cliqué dans l'interface.
+
+C'est ce qui rend la CI reproductible. **Un Jenkins configuré à la main est un flocon de
+neige** : il ne se reconstruit pas après une panne de disque, son historique n'existe que
+dans la mémoire de quelqu'un, et la personne qui l'a monté devient la seule à pouvoir le
+modifier. C'est le dysfonctionnement n° 1 de l'état des lieux, appliqué à l'outil censé le
+corriger.
+
+Trois décisions qui s'y lisent :
+
+| Réglage | Pourquoi |
+|---|---|
+| `numExecutors: 0` sur le contrôleur | Le contrôleur détient les identifiants et le socket Docker. Y exécuter du code de projet, c'est permettre à n'importe quel `Jenkinsfile` de lire tous les secrets |
+| Autorisation par matrice | Les développeurs lisent et relancent des builds ; ils ne reconfigurent pas le serveur. C'est exactement la séparation que demande l'exigence n° 5 |
+| Jobs **multibranches** | GitFlow crée et supprime des branches en permanence. Une liste de jobs tenue à la main dérive en un sprint, et la branche qui manque est toujours celle qui comptait |
+
+`plugins.txt` épingle les versions. Un greffon qui bouge sous le contrôleur change le
+comportement de tous les pipelines sans que rien ne change dans ce dépôt — et une mise à
+jour doit être une merge request, comme le reste. La liste ne contient que ce que les
+trois `Jenkinsfile` utilisent réellement : un contrôleur à quatre-vingts greffons est un
+contrôleur dont chaque montée de version casse quelque chose.
+
+**Aucun secret dans `casc/jenkins.yaml`.** Le mot de passe administrateur est injecté par
+variable d'environnement : ce fichier est dans le dépôt, donc dans tous ses clones.
+
 ## Les agents
 
 | Label | Image | Pour |

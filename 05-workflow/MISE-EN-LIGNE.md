@@ -76,9 +76,22 @@ Sur l'hôte, jamais dans le dépôt :
 /etc/theetiptop/alerting/oncall-webhook      URL du canal d'astreinte
 /etc/theetiptop/alerting/platform-webhook    URL du canal plateforme
 /etc/theetiptop/alerting/smtp-password       mot de passe SMTP
+/etc/theetiptop/registry/htpasswd            identifiants du registry
 05-workflow/.env.workflow                    depuis .env.workflow.example
 05-workflow/docker/.env.prod                 depuis .env.deploy.example
 ```
+
+Le fichier du registry se génère une fois, en **bcrypt** — le registry refuse tout autre
+algorithme :
+
+```bash
+sudo install -d -m 700 /etc/theetiptop/registry
+docker run --rm --entrypoint htpasswd httpd:2 -Bbn ci '<mot-de-passe>' \
+  | sudo tee /etc/theetiptop/registry/htpasswd > /dev/null
+```
+
+Le même couple identifiant / mot de passe est ensuite déposé dans Jenkins sous
+l'identifiant `registry-credentials`, que les trois pipelines réclament.
 
 ```bash
 openssl rand -base64 32   # BETTER_AUTH_SECRET, mots de passe PostgreSQL et Redis, Grafana
