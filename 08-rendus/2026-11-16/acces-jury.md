@@ -31,24 +31,39 @@ mauvais mot de passe refusé, accès anonyme refusé.
 
 ## Te connecter
 
-Tout tient sur une seule adresse, en HTTPS.
+Tout tient sur une seule adresse, en HTTPS. Le mot de passe est le même pour les quatre
+comptes : **MotDePasse2026!**
 
-| | |
+### Pour les deux comptes clients
+
+Va sur <https://srv1581779.hstgr.cloud/connexion> et saisis l'un des deux :
+
+| Identifiant | Profil |
 |---|---|
-| Site public | <https://srv1581779.hstgr.cloud> |
-| Back-office | <https://srv1581779.hstgr.cloud/backoffice> |
-| Documentation de l'API | <https://srv1581779.hstgr.cloud/docs> |
+| `camille.rousseau@example.fr` | Cliente, a déjà joué des codes, acceptait les offres commerciales |
+| `theo.marchand@example.fr` | Client, a refusé les offres commerciales |
 
-Le mot de passe est le même pour les quatre comptes : **MotDePasse2026!**
+Après connexion tu arrives sur l'accueil. Les pages **Participer** et **Mon compte**
+deviennent accessibles depuis le menu.
 
-| Rôle | Identifiant | Tu vas où | Tu vois quoi |
-|---|---|---|---|
-| Administrateur | `admin@theetiptop.fr` | `/backoffice` | Statistiques, export emailing, tirage au sort |
-| Employé boutique | `sofia.legrand@theetiptop.fr` | `/backoffice` | Recherche client, remise d'un lot |
-| Cliente | `camille.rousseau@example.fr` | Site public | Ses gains, saisie de code, droits RGPD |
-| Client | `theo.marchand@example.fr` | Site public | Second compte, pour voir le cloisonnement |
+Tu peux aussi créer ton propre compte sur
+<https://srv1581779.hstgr.cloud/inscription>, par formulaire ou avec Google ou Facebook.
 
-Ces comptes servent à la démonstration. Les données derrière sont fabriquées.
+### Pour l'administrateur et l'employé
+
+Va sur <https://srv1581779.hstgr.cloud/backoffice>. Tu es renvoyé vers la page de
+connexion du back-office, qui est une page distincte de celle du site public.
+
+| Identifiant | Tu atterris sur | Tu y fais quoi |
+|---|---|---|
+| `admin@theetiptop.fr` | `/backoffice/admin` | Statistiques, export emailing, tirage au sort, paramétrage |
+| `sofia.legrand@theetiptop.fr` | `/backoffice/employe` | Recherche client, consultation des gains, remise d'un lot |
+
+Chaque rôle est envoyé à son espace automatiquement. Essaie d'ouvrir `/backoffice/admin`
+avec le compte employé : tu es renvoyé vers l'espace boutique. C'est le cloisonnement des
+rôles, et il tient côté serveur, pas dans l'affichage.
+
+Ces quatre comptes servent à la démonstration. Les données derrière sont fabriquées.
 
 ## Un parcours en cinq minutes
 
@@ -133,11 +148,14 @@ la comparaison est stricte :
 curl -X POST https://srv1581779.hstgr.cloud/v1/pos/codes/dispense \
   -H "X-Api-Key: ddc920d92fae8c0c173805950c54bea9bf81a1250188e35a" \
   -H "Content-Type: application/json" \
-  -d '{"channel":"IN_STORE","storeId":"<id>","purchaseAmountCents":4900}'
+  -d '{"channel":"IN_STORE","storeId":"cmwiyethi000g0uoblwjuhoj6","purchaseAmountCents":4900}'
 ```
 
-Le même appel à 4901 délivre un code. Les identifiants de boutique viennent de
-`/v1/stores`.
+L'identifiant ci-dessus est celui de la boutique de Nice. La liste complète est sur
+<https://srv1581779.hstgr.cloud/v1/stores>, sans authentification.
+
+Le même appel à `4901` délivre un code. C'est la démonstration que « une somme supérieure
+à 49 € » se lit au sens strict.
 
 Sans clé, tout endpoint caisse répond 401.
 
@@ -278,8 +296,16 @@ stockage distant.
 | Registry d'images | interne au serveur | `ci` | `hXdEkEbWvkbToaE2QnXa` |
 | Jenkins | <https://srv1581779.hstgr.cloud/ci> | `admin` | `rTRMwmsrry6HLByK68I1` |
 
-Dans Grafana, ouvre le dossier **Thé Tip Top**, tableau **Jeu-concours**. Il montre les
-codes restants, les saisies par issue, la latence de l'API et les lots remis.
+Comment entrer dans chacun :
+
+- **Grafana** : la page s'ouvre sur un écran de connexion. Une fois dedans, menu
+  **Dashboards**, dossier **Thé Tip Top**, tableau **Jeu-concours**. Il montre les codes
+  restants, les saisies par issue, la latence de l'API et les lots remis.
+- **Jenkins** : la page s'ouvre sur **Sign in**. Une fois dedans, tu vois les trois
+  pipelines déclarés. Ils n'ont pas encore de build, leurs dépôts ne sont pas branchés.
+- **Gitea** : la page s'ouvre sur **Sign In**, en haut à droite. L'instance est vide, elle
+  attend la migration des dépôts depuis GitHub.
+- **Registry** : pas d'interface web et pas d'adresse publique, voir ci-dessous.
 
 Le registry n'a pas d'adresse publique, et c'est voulu. `docker login` et `docker push`
 s'adressent à `/v2/` à la racine d'un hôte, sans préfixe possible. Jenkins l'atteint par le
