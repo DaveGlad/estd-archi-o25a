@@ -71,7 +71,11 @@ jenkins:
           # run their own containers from here.
           - labelString: "docker"
             dockerTemplateBase:
-              image: "jenkins/agent:latest-jdk21"
+              # Built locally, see docker/Dockerfile.jenkins-agent. The stock agent has no
+              # Docker CLI, and every quality gate runs inside `agent { docker { image … } }`,
+              # which makes the agent itself call `docker run`. Without the client the build
+              # fails with "docker: not found", and the trace blames the step, not the image.
+              image: "furious-ducks/jenkins-agent:1"
               mounts:
                 - "type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock"
                 - "type=volume,source=nx-cache,destination=/cache"

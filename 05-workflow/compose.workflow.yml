@@ -163,6 +163,16 @@ services:
       # that run untrusted project code are separate containers rather than this one.
       - /var/run/docker.sock:/var/run/docker.sock
       - nx-cache:/cache
+    # The gid that owns /var/run/docker.sock on the HOST. Jenkins runs as the unprivileged
+    # `jenkins` user, which is not in that group, and the socket is mode 660 -- so every
+    # attempt to provision a build agent failed with "java.net.BindException: Permission
+    # denied" while the container itself looked perfectly healthy and the logs said
+    # nothing about permissions.
+    #
+    # Adding the group rather than running the container as root: it gains the one
+    # permission it needs and nothing else.
+    group_add:
+      - '${DOCKER_GID:-989}'
     networks: [edge, workflow, metrics]
     labels:
       traefik.enable: 'true'

@@ -16,10 +16,18 @@
 // Read `05-workflow/jenkins/README.md` for the agent images and credential ids.
 
 pipeline {
-  // No global agent: each stage picks the image it needs. A stage that only runs `docker`
-  // has no business carrying a 400 MB Node toolchain, and the Docker-in-Docker socket is
-  // mounted only where it is actually used.
-  agent none
+  // One agent for the whole pipeline, and one workspace with it.
+  //
+  // `agent none` was the first shape, on the reasoning that a stage running only `docker`
+  // need not carry a Node toolchain. It does not work here: with no global agent each
+  // stage allocates its own node and its own EMPTY workspace, and `skipDefaultCheckout`
+  // means nothing checks the code out again. The build failed on `npm ci` complaining
+  // about a missing package-lock.json that is, in fact, committed.
+  //
+  // `reuseNode true` on the per-stage Docker agents is what makes this efficient: each
+  // stage still runs in the image it needs, inside this workspace, without a second
+  // checkout.
+  agent { label 'docker' }
 
   options {
     timestamps()
@@ -49,7 +57,6 @@ pipeline {
   stages {
 
     stage('Checkout') {
-      agent { label 'docker' }
       steps {
         // Full history, not the shallow default: `nx affected` needs the merge base, and a
         // shallow clone makes it fall back to rebuilding everything.
@@ -58,7 +65,6 @@ pipeline {
           extensions: [[$class: 'CloneOption', shallow: false, noTags: false]],
           userRemoteConfigs: scm.userRemoteConfigs
         )
-        stash name: 'source', useDefaultExcludes: false
       }
     }
 
@@ -160,7 +166,6 @@ pipeline {
     }
 
     stage('Integration tests') {
-      agent { label 'docker' }
       steps {
         dir('06-app/theetiptop-contest') {
           // Against a real PostgreSQL and a real Redis, thrown away afterwards. The
@@ -187,7 +192,6 @@ pipeline {
       // Nothing is published from a feature branch: an image nobody will deploy still costs
       // registry storage and a vulnerability scan.
       when { anyOf { branch 'develop'; branch pattern: 'release/.*', comparator: 'REGEXP'; buildingTag() } }
-      agent { label 'docker' }
       steps {
         dir('06-app/theetiptop-contest') {
           script {
@@ -229,7 +233,6 @@ pipeline {
 
     stage('Scan images') {
       when { anyOf { branch 'develop'; branch pattern: 'release/.*', comparator: 'REGEXP'; buildingTag() } }
-      agent { label 'docker' }
       steps {
         // Before publication, not after: an image in the registry is an image somebody can
         // deploy. HIGH and CRITICAL fail the build; everything else is reported.
@@ -247,7 +250,6 @@ pipeline {
 
     stage('Push to registry') {
       when { anyOf { branch 'develop'; branch pattern: 'release/.*', comparator: 'REGEXP'; buildingTag() } }
-      agent { label 'docker' }
       steps {
         // Requirement 4c: the CI stores the images it builds. Self-hosted registry, so the
         // artefacts stay under the agency's control.
@@ -268,7 +270,6 @@ pipeline {
 
     stage('Deploy to dev') {
       when { branch 'develop' }
-      agent { label 'docker' }
       steps {
         // Requirement 4b, fully automatic. A merge into develop is in dev minutes later,
         // which is what makes the environment worth looking at.
@@ -297,7 +298,6 @@ pipeline {
 
     stage('Deploy to preprod') {
       when { branch pattern: 'release/.*', comparator: 'REGEXP' }
-      agent { label 'docker' }
       steps {
         // Requirement 4d. Automatic, because preprod exists to be looked at by the client
         // during the sprint review, and a manual step would make it stale.
@@ -323,7 +323,6 @@ pipeline {
 
     stage('Deploy to production') {
       when { buildingTag() }
-      agent { label 'docker' }
       steps {
         sh './05-workflow/jenkins/scripts/deploy.sh prod "$TAG"'
       }
@@ -332,19 +331,16 @@ pipeline {
 
   post {
     always {
-      node('docker') {
-        unstash 'source'
-        dir('06-app/theetiptop-contest') {
-          // Requirement 4g: send and store the test reports. JUnit for the trend graph
-          // Jenkins builds over time, archive for the run-by-run evidence the brief asks
-          // the agency to keep.
-          junit allowEmptyResults: true, testResults: 'reports/junit/*.xml'
-          archiveArtifacts artifacts: 'reports/**/*', allowEmptyArchive: true, fingerprint: true
-          publishHTML(target: [
-            reportDir: 'playwright-report', reportFiles: 'index.html',
-            reportName: 'Playwright', allowMissing: true, keepAll: true, alwaysLinkToLastBuild: true
-          ])
-        }
+      dir('06-app/theetiptop-contest') {
+        // Requirement 4g: send and store the test reports. JUnit for the trend graph
+        // Jenkins builds over time, archive for the run-by-run evidence the brief asks
+        // the agency to keep.
+        junit allowEmptyResults: true, testResults: 'reports/junit/*.xml'
+        archiveArtifacts artifacts: 'reports/**/*', allowEmptyArchive: true, fingerprint: true
+        publishHTML(target: [
+          reportDir: 'playwright-report', reportFiles: 'index.html',
+          reportName: 'Playwright', allowMissing: true, keepAll: true, alwaysLinkToLastBuild: true
+        ])
       }
     }
     failure {
