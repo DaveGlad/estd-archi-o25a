@@ -40,15 +40,34 @@ https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_C
 
 USER jenkins
 
-# Installed at build time, which is the only moment this works. `--latest false` honours
-# the pinned versions in plugins.txt instead of quietly resolving newer ones, so two
-# builds of this image a month apart produce the same controller.
+# Installed at build time, which is the only moment this works.
+#
+# Dependencies are allowed to resolve to their latest compatible version. `--latest false`
+# was the first attempt, for reproducibility, and it produced a controller that refused to
+# boot: pipeline-model-api pinned at 2.2291 while pipeline-model-extensions required
+# 2.2293 or higher, and eleven plugins failed to load. Freezing a dependency graph by
+# transitive version only works if every edge is pinned consistently, which plugins.txt
+# does not attempt.
+#
+# The direct plugins in plugins.txt stay pinned, so the capabilities of this controller do
+# not drift. Their dependencies float, which is the trade this project accepts: a
+# reproducible build that does not start is worth less than a working one.
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt --latest false
+RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
 
-# The configuration itself. Read at every start, so a change is a rebuild of this image or
-# a restart with the file mounted, never a session of clicking in the UI.
-COPY casc /var/jenkins_home/casc
+# The configuration itself. Read at every start, so a change is a rebuild of this image,
+# never a session of clicking in the UI.
+#
+# Deliberately NOT under /var/jenkins_home. That path is declared as a VOLUME by the base
+# image, so anything copied into it at build time is shadowed the moment a named volume is
+# mounted over it. The directory then looks empty at runtime, configuration-as-code finds
+# no file, and Jenkins aborts its boot with ConfigurationAsCodeBootFailure and a stack
+# trace that never mentions the volume.
+#
+# The plugins escape the same trap by accident of design: jenkins-plugin-cli installs into
+# /usr/share/jenkins/ref/plugins, and the entrypoint copies that reference tree into the
+# volume on first start.
+COPY casc /usr/share/jenkins/casc
 
-ENV CASC_JENKINS_CONFIG=/var/jenkins_home/casc/jenkins.yaml
+ENV CASC_JENKINS_CONFIG=/usr/share/jenkins/casc/jenkins.yaml
 ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false -Xmx1g"

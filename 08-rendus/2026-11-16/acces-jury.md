@@ -215,7 +215,7 @@ stockage distant.
 | Gitea | <https://srv1581779.hstgr.cloud/git> | `gitea-admin` | `UuvUi5LlYaTEsUF0mZH0` |
 | Grafana | <https://srv1581779.hstgr.cloud/grafana> | `admin` | `V5xC2k2dv1k4emoGYkth` |
 | Registry d'images | interne au serveur | `ci` | `hXdEkEbWvkbToaE2QnXa` |
-| Jenkins | <https://srv1581779.hstgr.cloud/ci> | `admin` | remise en service en cours |
+| Jenkins | <https://srv1581779.hstgr.cloud/ci> | `admin` | `rTRMwmsrry6HLByK68I1` |
 
 Dans Grafana, ouvre le dossier **Thé Tip Top**, tableau **Jeu-concours**. Il montre les
 codes restants, les saisies par issue, la latence de l'API et les lots remis.
@@ -224,13 +224,15 @@ Le registry n'a pas d'adresse publique, et c'est voulu. `docker login` et `docke
 s'adressent à `/v2/` à la racine d'un hôte, sans préfixe possible. Jenkins l'atteint par le
 réseau interne, et c'est son seul client.
 
-Gitea finit son installation. Le compte ci-dessus est prêt à être activé.
+Dans Jenkins, les trois pipelines sont déjà déclarés : `theetiptop-contest`,
+`demo-site-vitrine` et `demo-app-mobile`. Ils attendent leurs dépôts dans Gitea.
 
-Jenkins est arrêté le temps d'une correction. L'image officielle n'installe ses greffons
-qu'à la construction, pas au démarrage. Sans greffons, la configuration as code ne se
-charge pas, donc aucun contrôle d'accès ne s'applique, et le contrôleur accepte tout le
-monde alors qu'il a le socket Docker. Je l'ai coupé dès le constat. Il revient avec ses
-greffons intégrés à l'image.
+Le contrôleur ne porte aucun exécuteur. Les builds partent sur des agents jetables. Il
+détient les identifiants et le socket Docker, donc y exécuter du code de projet
+reviendrait à donner le serveur à n'importe quel `Jenkinsfile`.
+
+Ces quatre comptes ont été testés un par un : bon mot de passe accepté, mauvais mot de
+passe refusé, accès anonyme refusé.
 
 ## Analytics et gestion de projet
 
