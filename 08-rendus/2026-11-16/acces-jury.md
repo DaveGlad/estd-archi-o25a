@@ -148,7 +148,9 @@ la comparaison est stricte :
 curl -X POST https://srv1581779.hstgr.cloud/v1/pos/codes/dispense \
   -H "X-Api-Key: ddc920d92fae8c0c173805950c54bea9bf81a1250188e35a" \
   -H "Content-Type: application/json" \
-  -d '{"channel":"IN_STORE","storeId":"cmwiyethi000g0uoblwjuhoj6","purchaseAmountCents":4900}'
+  -d '{"channel":"IN_STORE",
+       "storeId":"cmwiyethi000g0uoblwjuhoj6",
+       "purchaseAmountCents":4900}'
 ```
 
 L'identifiant ci-dessus est celui de la boutique de Nice. La liste complète est sur
