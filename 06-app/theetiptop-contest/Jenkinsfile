@@ -84,14 +84,6 @@ pipeline {
           // `ci`, not `install`: it installs exactly the lockfile and fails if the manifest
           // and the lockfile disagree. `install` would quietly resolve a new version and
           // the build would stop matching what was reviewed.
-          sh '''
-            echo "--- taille vue par node ---"
-            node -e "console.log(require('fs').statSync('package-lock.json').size)"
-            echo "--- config npm qui parle de lock ---"
-            npm config ls -l 2>/dev/null | grep -iE "lock|prefix|workspace|global" | head -10
-            echo "--- variables npm_config dans l environnement ---"
-            env | grep -i "^npm_config" | head -10 || echo "aucune"
-          '''
           sh 'npm ci --no-audit --no-fund'
           sh 'npx prisma generate'
         }

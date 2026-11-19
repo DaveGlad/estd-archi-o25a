@@ -114,7 +114,6 @@
     "packages/*"
   ],
   "overrides": {
-    "_comment": "sharp is pulled in by Next for image optimisation, and Next pins ^0.34.5. Trivy flags three HIGH vulnerabilities in that line, fixed in 0.35.5. An override is the only way to raise a transitive dependency without waiting for the parent to move.",
     "sharp": "^0.35.5"
   }
 }

@@ -126,6 +126,22 @@ Les trois tests qui portent réellement les exigences du sujet :
 | Comment l'image de l'API est passée de 1,46 Go à 471 Mo | `05-workflow/docker/README.md` et `tools/pin-runtime-deps.mjs` |
 | Pourquoi `COOKIE_DOMAIN` est vide en local et obligatoire en production | `apps/api/src/config/env.ts` |
 
+## Une dépendance forcée
+
+`package.json` contient un `overrides` sur **sharp**, et il mérite une explication parce
+qu'un `overrides` sans justification est une dette silencieuse.
+
+Next tire `sharp` pour l'optimisation d'images et l'épingle en `^0.34.5`. Trivy signale
+trois vulnérabilités **HIGH** sur cette ligne, corrigées en 0.35.5. Un `overrides` est le
+seul moyen de relever une dépendance transitive sans attendre que le parent bouge. À
+retirer le jour où Next remonte de lui-même.
+
+> ⚠️ **Aucun pseudo-commentaire dans ce bloc.** npm valide chaque clé de `overrides`
+> comme un nom de paquet. Une clé `_comment` fait échouer le chargement de l'arbre
+> virtuel, et npm rapporte alors « can only install with an existing package-lock.json »,
+> un message qui désigne le verrou alors que le verrou est intact. Un build a été perdu
+> là-dessus.
+
 ## Conventions
 
 - **Commentaires de code en anglais.** La prose du projet — dossiers, README, textes
