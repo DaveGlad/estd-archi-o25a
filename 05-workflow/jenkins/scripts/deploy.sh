@@ -80,6 +80,20 @@ echo "    currently running: ${PREVIOUS_TAG:-nothing}"
 # is running is answered by `docker compose ps`, which cannot drift from reality.
 export IMAGE_TAG="$TAG"
 
+# The registry requires authentication, and the push stage logs out when it is done --
+# deliberately, so a build does not leave a credential lying on a shared agent. The pull
+# therefore needs its own login, or compose stops on "no basic auth credentials" with the
+# images sitting right there in the registry.
+#
+# Optional: an operator running this by hand against a local registry needs no login, and
+# `docker pull` will say so clearly if one was required.
+if [[ -n "${REGISTRY_USER:-}" && -n "${REGISTRY_PASSWORD:-}" && -n "${REGISTRY:-}" ]]; then
+  echo "==> authenticating to ${REGISTRY}"
+  printf '%s' "$REGISTRY_PASSWORD" | docker login "$REGISTRY" -u "$REGISTRY_USER" --password-stdin
+  # Logged out on every exit path, success or failure.
+  trap 'docker logout "$REGISTRY" >/dev/null 2>&1 || true' EXIT
+fi
+
 echo "==> pulling images"
 docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" pull --quiet
 

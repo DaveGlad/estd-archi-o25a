@@ -326,7 +326,12 @@ pipeline {
       steps {
         // Requirement 4b, fully automatic. A merge into develop is in dev minutes later,
         // which is what makes the environment worth looking at.
-        sh './05-workflow/jenkins/scripts/deploy.sh dev "$TAG"'
+        // The registry needs credentials to pull, and the push stage logged out.
+        withCredentials([usernamePassword(credentialsId: 'registry-credentials',
+                                          usernameVariable: 'REGISTRY_USER',
+                                          passwordVariable: 'REGISTRY_PASSWORD')]) {
+          sh './05-workflow/jenkins/scripts/deploy.sh dev "$TAG"'
+        }
       }
     }
 
@@ -354,7 +359,12 @@ pipeline {
       steps {
         // Requirement 4d. Automatic, because preprod exists to be looked at by the client
         // during the sprint review, and a manual step would make it stale.
-        sh './05-workflow/jenkins/scripts/deploy.sh preprod "$TAG"'
+        // The registry needs credentials to pull, and the push stage logged out.
+        withCredentials([usernamePassword(credentialsId: 'registry-credentials',
+                                          usernameVariable: 'REGISTRY_USER',
+                                          passwordVariable: 'REGISTRY_PASSWORD')]) {
+          sh './05-workflow/jenkins/scripts/deploy.sh preprod "$TAG"'
+        }
       }
     }
 
@@ -377,7 +387,12 @@ pipeline {
     stage('Deploy to production') {
       when { buildingTag() }
       steps {
-        sh './05-workflow/jenkins/scripts/deploy.sh prod "$TAG"'
+        // The registry needs credentials to pull, and the push stage logged out.
+        withCredentials([usernamePassword(credentialsId: 'registry-credentials',
+                                          usernameVariable: 'REGISTRY_USER',
+                                          passwordVariable: 'REGISTRY_PASSWORD')]) {
+          sh './05-workflow/jenkins/scripts/deploy.sh prod "$TAG"'
+        }
       }
     }
   }
