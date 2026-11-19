@@ -193,6 +193,12 @@ pipeline {
           // Against a real PostgreSQL and a real Redis, thrown away afterwards. The
           // concurrency guarantee on playing a code lives in an `UPDATE ... WHERE` and in a
           // unique index — a mocked client would prove nothing about either.
+          //
+          // The 500 000 codes are generated here, on every build, and that is the point
+          // rather than an expense: `code-distribution.integration.spec.ts` recounts the
+          // 60/20/10/6/4 % split IN THE DATABASE. Seeding a handful of codes instead
+          // would leave the one guarantee the filed rules rest on untested. It costs
+          // about 90 seconds on this machine.
           // Written as explicit `docker run` rather than a stage-level Docker agent,
           // because this stage needs two things at once: the Docker CLI to bring the
           // throw-away database up, and Node to run the migrations and the suite. The
@@ -219,7 +225,7 @@ pipeline {
               -e DATABASE_URL="postgresql://theetiptop:theetiptop@postgres:5432/theetiptop_ci?schema=public" \
               -e REDIS_URL="redis://redis:6379" \
               furious-ducks/node-ci:1 \
-              sh -c 'npm run db:deploy && npm run db:seed && npm run test:integration'
+              sh -c 'npm run db:deploy && npm run db:seed && npm run codes:generate && npm run test:integration'
           '''
         }
       }
