@@ -201,12 +201,20 @@ pipeline {
           // The Node container joins the compose project's own network, so it reaches
           // PostgreSQL and Redis by service name. The alternative, publishing ports to
           // the host, would make two concurrent builds fight over them.
+          //
+          // `--volumes-from "$(hostname)"` and NOT `-v "$PWD:/w"`. The agent is itself a
+          // container, and the daemon it talks to is the host's: a bind mount resolves
+          // its source on the HOST, where the agent's workspace path does not exist. The
+          // mount silently succeeds and the container finds an empty directory, so the
+          // first command fails on a missing package.json that is plainly there.
+          // Inheriting the agent's volumes is how the Docker Pipeline plugin does it for
+          // the stages above.
           sh '''
             docker compose -f ../../05-workflow/docker/compose.ci.yml -p ci-$BUILD_NUMBER up -d --wait
 
             docker run --rm \
               --network ci-${BUILD_NUMBER}_default \
-              -v "$PWD:/w" -w /w \
+              --volumes-from "$(hostname)" -w "$PWD" \
               -v nx-cache:/cache -v npm-cache:/root/.npm \
               -e DATABASE_URL="postgresql://theetiptop:theetiptop@postgres:5432/theetiptop_ci?schema=public" \
               -e REDIS_URL="redis://redis:6379" \
