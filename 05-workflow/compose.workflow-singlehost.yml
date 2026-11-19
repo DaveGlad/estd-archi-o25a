@@ -32,6 +32,15 @@ services:
       JENKINS_ADMIN_ID: ${JENKINS_ADMIN_ID:-admin}
       JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD}
       WORKFLOW_DOMAIN: ${SINGLE_HOST}
+      # Read by the `credentials` block of casc/jenkins.yaml, which declares
+      # `registry-credentials` for the three pipelines. Kept in the environment and never
+      # in the configuration file: that file lives in the repository.
+      #
+      # Added here once already, by editing the file on the server, and lost on the next
+      # deploy from the repository. The symptom was `docker login … -u` with an empty
+      # username, three stages after the images were built and scanned.
+      REGISTRY_USER: ${REGISTRY_USER}
+      REGISTRY_PASSWORD: ${REGISTRY_PASSWORD}
     labels: !override
       traefik.enable: 'true'
       traefik.docker.network: ${EDGE_NETWORK:-edge}
