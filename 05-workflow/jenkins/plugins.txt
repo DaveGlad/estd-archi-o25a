@@ -9,20 +9,27 @@
 # "just in case" by someone who has since left.
 
 configuration-as-code:1932.v75cb_b_f1b_698d
+configuration-as-code:2147.v8a_8d38668c72
 workflow-aggregator:608.v67378e9d3db_1
-pipeline-stage-view:2.34
-git:5.7.0
-gitea:1.4.5
-docker-workflow:580.vc0c340686b_54
-docker-plugin:1.5
-matrix-auth:3.2.6
-job-dsl:1.90
-timestamper:1.28
-ansicolor:1.0.6
-junit:1309.v8356c1a_59d44
-htmlpublisher:1.37
-email-ext:1876.v28d8d38315c3
-prometheus:800.v8f09e8b_b_9ad2
-credentials-binding:687.v619cb_15e923f
-ws-cleanup:0.48
-build-timeout:1.37
+pipeline-stage-view:2.41
+git:5.11.0
+gitea:286.v0740a_413c1eb_
+docker-workflow:653.v2f2c08eff0ec
+docker-plugin:1337.v3ca_fd1b_b_25ef
+matrix-auth:3.3
+# Makes `security.queueItemAuthenticator` in jenkins.yaml mean something. Without it the
+# configuration file names a setting no plugin implements, and Jenkins aborts its boot
+# with "No jenkins.security.QueueItemAuthenticator implementation found for global".
+# Its purpose: a build runs as the user who triggered it, so a pipeline cannot reach
+# credentials its author has no rights to.
+authorize-project
+job-dsl:3732.v9a_c49a_61a_313
+timestamper:1.30
+ansicolor:542.v03d235fee02d
+junit:1458.1460.vd53b_087eeb_2c
+htmlpublisher:429
+email-ext:2038.v7b_8817a_499d9
+prometheus:873.v054598e6e84d
+credentials-binding:728.v902a_273b_8947
+ws-cleanup:0.49
+build-timeout:1.41

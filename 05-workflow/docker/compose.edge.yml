@@ -1,0 +1,73 @@
+# Reverse proxy and TLS, on its own.
+#
+#   docker compose -f compose.edge.yml --env-file .env.prod -p theetiptop-edge up -d
+#
+# Traefik normally lives in the workflow stack (../compose.workflow.yml), which also
+# carries Jenkins, Gitea, the registry and the metrics. On a 8 GB machine that whole stack
+# does not fit beside production, and the CST sizing section says so.
+#
+# So the proxy is extracted: it is the one piece the site cannot be reached without, and
+# it costs about a hundred megabytes. The rest of the workflow follows when the machine
+# or the second host does.
+#
+# Separate project name from the applications on purpose. Restarting the proxy must not
+# touch the containers serving traffic, and restarting the applications must not drop the
+# certificates.
+
+name: theetiptop-edge
+
+services:
+  traefik:
+    image: traefik:v3.6
+    restart: unless-stopped
+    environment:
+      # Traefik's Docker provider negotiates API version 1.24 by default. Docker 29 refuses
+      # anything below 1.40 and answers "client version 1.24 is too old", so the provider
+      # never loads and Traefik serves its self-signed default certificate on every route.
+      # The symptom is a site that does not answer at all, with nothing wrong in the
+      # application logs: the proxy simply never learned the containers exist.
+      DOCKER_API_VERSION: '1.44'
+    command:
+      - --providers.docker=true
+      # Nothing is routed unless it asks to be. The opposite default publishes a database
+      # the day somebody forgets a label.
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=${EDGE_NETWORK:-edge}
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # Plain HTTP only ever redirects. A site reachable over http:// is a site whose
+      # session cookie can be read off a café network.
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/acme/acme.json
+      # TLS-ALPN on 443 rather than the HTTP challenge: it needs no route through the
+      # application, so a certificate can be issued before anything is deployed behind it.
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      - --metrics.prometheus=true
+      - --entrypoints.metrics.address=:8082
+      - --metrics.prometheus.entrypoint=metrics
+      - --accesslog=true
+      - --accesslog.format=json
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      # Read-only. Traefik watches the Docker API to discover containers; write access to
+      # that socket is root on the host, and this is the container facing the internet.
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Named volume, not a bind mount. The certificates survive a redeploy, and losing
+      # them means asking Let's Encrypt for new ones against a weekly rate limit.
+      - acme:/acme
+    networks: [edge]
+    logging:
+      driver: json-file
+      options: { max-size: '10m', max-file: '3' }
+
+networks:
+  edge:
+    external: true
+    name: ${EDGE_NETWORK:-edge}
+
+volumes:
+  acme:

@@ -14,6 +14,19 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   poweredByHeader: false,
 
+  /**
+   * Serve the back office under a path prefix when one is given.
+   *
+   * Normally it has its own subdomain and this stays empty, which is the arrangement the
+   * comment above describes. The prefix exists for the case where only ONE hostname is
+   * available — a provider's default host, a demonstration server, a review environment —
+   * and the three applications still have to be reachable.
+   *
+   * A build argument, not runtime configuration: Next.js rewrites every internal link and
+   * asset URL at compile time, so the value has to be known when the bundle is produced.
+   */
+  basePath: process.env['NEXT_BASE_PATH'] || undefined,
+
   // Linting runs as its own pipeline stage (`nx run-many -t lint`), not inside the build.
 
   /**
