@@ -68,11 +68,17 @@ PREVIOUS_TAG="$(docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "
   ps --format '{{.Image}}' 2>/dev/null | grep -o '/api:[^ ]*' | head -1 | cut -d: -f2 || true)"
 echo "    currently running: ${PREVIOUS_TAG:-nothing}"
 
-# IMAGE_TAG is read by compose.prod.yml. Appended rather than exported so the value is
-# visible to an operator reading the env file afterwards, and so a rollback can reuse it.
-sed -i.bak '/^IMAGE_TAG=/d' "$ENV_FILE"
-echo "IMAGE_TAG=${TAG}" >> "$ENV_FILE"
-rm -f "${ENV_FILE}.bak"
+# IMAGE_TAG is exported, not written into the env file.
+#
+# Writing it there was the first shape, so an operator could read which tag was deployed.
+# It is wrong twice over: the file holds secrets and is mounted READ-ONLY into the build
+# agents -- the deployment failed with a bare `exit 4` from sed, three stages after the
+# images were pushed -- and a deployment tag is an input, not state that belongs in a
+# credentials file.
+#
+# Compose gives shell variables precedence over --env-file, so this simply wins. Which tag
+# is running is answered by `docker compose ps`, which cannot drift from reality.
+export IMAGE_TAG="$TAG"
 
 echo "==> pulling images"
 docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" pull --quiet
@@ -96,9 +102,7 @@ if ! docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" u
     # migration on live data is how you turn an outage into data loss. Recovering a schema
     # is a restore from backup, a human decision, not something a deploy script takes.
     echo "deploy: rolling images back to ${PREVIOUS_TAG}" >&2
-    sed -i.bak '/^IMAGE_TAG=/d' "$ENV_FILE"
-    echo "IMAGE_TAG=${PREVIOUS_TAG}" >> "$ENV_FILE"
-    rm -f "${ENV_FILE}.bak"
+    export IMAGE_TAG="$PREVIOUS_TAG"
     docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" up -d --wait --remove-orphans
     echo "deploy: rolled back. The schema was NOT reverted — check it against ${PREVIOUS_TAG}." >&2
   fi
