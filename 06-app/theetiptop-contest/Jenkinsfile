@@ -193,11 +193,25 @@ pipeline {
           // Against a real PostgreSQL and a real Redis, thrown away afterwards. The
           // concurrency guarantee on playing a code lives in an `UPDATE ... WHERE` and in a
           // unique index — a mocked client would prove nothing about either.
+          // Written as explicit `docker run` rather than a stage-level Docker agent,
+          // because this stage needs two things at once: the Docker CLI to bring the
+          // throw-away database up, and Node to run the migrations and the suite. The
+          // agent has the first, the node image has the second.
+          //
+          // The Node container joins the compose project's own network, so it reaches
+          // PostgreSQL and Redis by service name. The alternative, publishing ports to
+          // the host, would make two concurrent builds fight over them.
           sh '''
             docker compose -f ../../05-workflow/docker/compose.ci.yml -p ci-$BUILD_NUMBER up -d --wait
-            npm run db:deploy
-            npm run db:seed
-            npm run test:integration
+
+            docker run --rm \
+              --network ci-${BUILD_NUMBER}_default \
+              -v "$PWD:/w" -w /w \
+              -v nx-cache:/cache -v npm-cache:/root/.npm \
+              -e DATABASE_URL="postgresql://theetiptop:theetiptop@postgres:5432/theetiptop_ci?schema=public" \
+              -e REDIS_URL="redis://redis:6379" \
+              furious-ducks/node-ci:1 \
+              sh -c 'npm run db:deploy && npm run db:seed && npm run test:integration'
           '''
         }
       }
