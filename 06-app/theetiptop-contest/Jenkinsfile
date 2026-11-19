@@ -84,6 +84,7 @@ pipeline {
           // `ci`, not `install`: it installs exactly the lockfile and fails if the manifest
           // and the lockfile disagree. `install` would quietly resolve a new version and
           // the build would stop matching what was reviewed.
+          sh 'pwd && ls -la package.json package-lock.json 2>&1 | head -5 && ls | head -20'
           sh 'npm ci --no-audit --no-fund'
           sh 'npx prisma generate'
         }
