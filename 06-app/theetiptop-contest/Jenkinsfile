@@ -143,13 +143,10 @@ pipeline {
           }
         }
         stage('Secret scan') {
-        agent {
-          docker {
-            image 'node:24-alpine'
-            args '-v nx-cache:/cache -v npm-cache:/root/.npm'
-            reuseNode true
-          }
-        }
+          // No Docker agent on this one, deliberately. It runs gitleaks IN a container,
+          // so it needs the Docker CLI of the host agent. Nested inside `node:24-alpine`
+          // it failed with "docker: not found" -- the tool was being asked to launch a
+          // container from inside a container that has no client.
           steps {
             dir('06-app/theetiptop-contest') {
               // DevSecOps gate from CST C.2. A leaked secret is not caught by any test:
