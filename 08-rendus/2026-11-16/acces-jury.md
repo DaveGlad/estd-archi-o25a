@@ -9,6 +9,26 @@ Projet étudiant fictif. La société Thé Tip Top et l'agence Furious Ducks son
 de formation. Aucun achat, aucune réservation et aucune participation réelle ne peut être
 effectué sur ce site.
 
+## Tous les accès en un coup d'oeil
+
+| Quoi | Adresse | Identifiant | Mot de passe |
+|---|---|---|---|
+| Site public | <https://srv1581779.hstgr.cloud> | 4 comptes ci-dessous | `MotDePasse2026!` |
+| Back-office | <https://srv1581779.hstgr.cloud/backoffice> | `admin@theetiptop.fr` | `MotDePasse2026!` |
+| API, documentation | <https://srv1581779.hstgr.cloud/docs> | clé `X-Api-Key` | voir § Tester l'API |
+| Jenkins | <https://srv1581779.hstgr.cloud/ci> | `admin` | `rTRMwmsrry6HLByK68I1` |
+| Gitea | <https://srv1581779.hstgr.cloud/git> | `gitea-admin` | `UuvUi5LlYaTEsUF0mZH0` |
+| Grafana | <https://srv1581779.hstgr.cloud/grafana> | `admin` | `V5xC2k2dv1k4emoGYkth` |
+| Code source | <https://github.com/DaveGlad/estd-archi-o25a> | aucun, dépôt public | aucun |
+| Trello | <https://trello.com/b/6ZYwiaW8/projet-the-tiptop> | aucun, tableau public | aucun |
+| Cahier des charges | <https://docs.google.com/document/d/1EvdQg0d10Yi70kN47ExMLsjHmC8vhL_RpZHuF9y_Otw/edit> | compte Google | lecture partagée |
+| Spécifications techniques | <https://docs.google.com/document/d/1DLrvM9LSZkpNnpW76hh1MlRw12kMtWCKnA8sOFqi4SM/edit> | compte Google | lecture partagée |
+| Maquettes Figma | <https://www.figma.com/design/CkO6KsKKatpJPP2ky53WOO/Design---Site-The-Tip-TOP> | compte Figma | lecture partagée |
+| Google Analytics | <https://analytics.google.com> | voir § Analytics | voir § Analytics |
+
+Chaque identifiant de ce tableau a été testé le 19 novembre : bon mot de passe accepté,
+mauvais mot de passe refusé, accès anonyme refusé.
+
 ## Te connecter
 
 Tout tient sur une seule adresse, en HTTPS.
@@ -79,6 +99,47 @@ Dans le back-office :
   que soit son nombre de codes joués.
 - L'espace boutique laisse l'employé chercher un client et marquer un lot remis. Il ne voit
   ni sa date de naissance ni ses préférences commerciales.
+
+## Tester l'API
+
+L'API sert trois consommateurs : le site, le back-office, et les caisses des dix boutiques.
+Les endpoints caisse préparent aussi le futur site de vente en ligne.
+
+Documentation interactive : <https://srv1581779.hstgr.cloud/docs>. Tu y lis chaque
+endpoint, ses paramètres et ses réponses, et tu les appelles depuis la page.
+
+### Les clés des consommateurs
+
+| Consommateur | En-tête | Clé |
+|---|---|---|
+| Caisses magasin | `X-Api-Key` | `ddc920d92fae8c0c173805950c54bea9bf81a1250188e35a` |
+| Futur e-commerce | `X-Api-Key` | `19af2ca5ba6680762ccb0d56d7f39af0cb2040e0a3054b46` |
+
+Deux clés et pas une seule, pour que l'une puisse être révoquée sans couper l'autre.
+
+### Trois appels qui montrent le métier
+
+Ce que voit une caisse, sans jamais apprendre le lot qu'elle imprime :
+
+```
+curl -H "X-Api-Key: ddc920d92fae8c0c173805950c54bea9bf81a1250188e35a" \
+  https://srv1581779.hstgr.cloud/v1/pos/contest
+```
+
+Un ticket à 49,00 € pile, refusé. Le règlement dit « une somme supérieure à 49 € », donc
+la comparaison est stricte :
+
+```
+curl -X POST https://srv1581779.hstgr.cloud/v1/pos/codes/dispense \
+  -H "X-Api-Key: ddc920d92fae8c0c173805950c54bea9bf81a1250188e35a" \
+  -H "Content-Type: application/json" \
+  -d '{"channel":"IN_STORE","storeId":"<id>","purchaseAmountCents":4900}'
+```
+
+Le même appel à 4901 délivre un code. Les identifiants de boutique viennent de
+`/v1/stores`.
+
+Sans clé, tout endpoint caisse répond 401.
 
 ## Ce que tu peux vérifier en base
 
