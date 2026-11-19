@@ -71,7 +71,7 @@ pipeline {
     stage('Install') {
       agent {
         docker {
-          image 'node:24-alpine'
+          image 'furious-ducks/node-ci:1'
           // The npm and Nx caches survive between builds. Without them every build
           // re-downloads the whole dependency tree, which is slow and, for a workflow sold
           // on an eco-responsible footprint, wasteful of bandwidth that costs real energy.
@@ -103,7 +103,10 @@ pipeline {
         stage('Lint') {
         agent {
           docker {
-            image 'node:24-alpine'
+            image 'furious-ducks/node-ci:1'
+            // Built on the host, never pushed: `alwaysPull false` stops Docker looking
+            // for it on Docker Hub, where it does not exist.
+            alwaysPull false
             args '-v nx-cache:/cache -v npm-cache:/root/.npm'
             reuseNode true
           }
@@ -117,7 +120,10 @@ pipeline {
         stage('Types') {
         agent {
           docker {
-            image 'node:24-alpine'
+            image 'furious-ducks/node-ci:1'
+            // Built on the host, never pushed: `alwaysPull false` stops Docker looking
+            // for it on Docker Hub, where it does not exist.
+            alwaysPull false
             args '-v nx-cache:/cache -v npm-cache:/root/.npm'
             reuseNode true
           }
@@ -131,7 +137,10 @@ pipeline {
         stage('Unit tests') {
         agent {
           docker {
-            image 'node:24-alpine'
+            image 'furious-ducks/node-ci:1'
+            // Built on the host, never pushed: `alwaysPull false` stops Docker looking
+            // for it on Docker Hub, where it does not exist.
+            alwaysPull false
             args '-v nx-cache:/cache -v npm-cache:/root/.npm'
             reuseNode true
           }
@@ -151,6 +160,10 @@ pipeline {
             dir('06-app/theetiptop-contest') {
               // DevSecOps gate from CST C.2. A leaked secret is not caught by any test:
               // the build is green and the credential is public.
+              // The report directory is generated, not committed, so it does not exist in a
+              // fresh clone. gitleaks fails with "Report path is not writable" rather than
+              // creating it.
+              sh 'mkdir -p reports/junit'
               sh '''
                 docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest \
                   detect --source=/repo --no-banner --redact \
