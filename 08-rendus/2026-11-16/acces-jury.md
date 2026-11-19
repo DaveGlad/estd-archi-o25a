@@ -1,7 +1,7 @@
 ---
 title: "Accès site internet et comptes divers"
 subtitle: "ESTD ARCHI O25A, Groupe 1. Thé Tip Top, par Furious Ducks"
-date: "16 novembre 2026"
+date: "19 novembre 2026"
 lang: fr
 ---
 
