@@ -86,6 +86,19 @@ jenkins:
             # only passes on a dirty agent is the hardest kind of failure to reproduce.
             removeVolumes: true
 
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          # The registry the pipelines push to. Read from the environment, never written
+          # in this file: it is in the repository and in every clone of it.
+          - usernamePassword:
+              scope: GLOBAL
+              id: registry-credentials
+              username: "${REGISTRY_USER}"
+              password: "${REGISTRY_PASSWORD}"
+              description: "Registry d'images auto-hébergé"
+
 security:
   queueItemAuthenticator:
     authenticators:
@@ -125,8 +138,10 @@ jobs:
         branchSources {
           git {
             id('theetiptop-contest')
-            remote("https://git.${System.getenv('WORKFLOW_DOMAIN')}/furious-ducks/theetiptop-contest.git")
-            credentialsId('gitea-credentials')
+            // The public GitHub repository, which needs no credentials to clone. Gitea
+            // is deployed and waiting for the migration; pointing the job at an empty
+            // instance would give a pipeline with nothing to build.
+            remote('https://github.com/DaveGlad/estd-archi-o25a.git')
           }
         }
         factory {
