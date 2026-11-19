@@ -30,7 +30,11 @@ RUN apt-get update \
 https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
       > /etc/apt/sources.list.d/docker.list \
  && apt-get update \
- && apt-get install -y --no-install-recommends docker-ce-cli docker-compose-plugin git \
+ # buildx too, not just the client. The pipeline sets DOCKER_BUILDKIT=1, and without
+ # the plugin every `docker build` stops on "BuildKit is enabled but the buildx
+ # component is missing or broken" -- which sounds like a broken daemon and is a
+ # missing package in this image.
+ && apt-get install -y --no-install-recommends docker-ce-cli docker-buildx-plugin docker-compose-plugin git \
  && rm -rf /var/lib/apt/lists/*
 
 # Stays root. The agent has to read the mounted Docker socket, and the group that owns it
