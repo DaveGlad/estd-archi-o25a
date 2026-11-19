@@ -160,14 +160,26 @@ pipeline {
             dir('06-app/theetiptop-contest') {
               // DevSecOps gate from CST C.2. A leaked secret is not caught by any test:
               // the build is green and the credential is public.
-              // The report directory is generated, not committed, so it does not exist in a
-              // fresh clone. gitleaks fails with "Report path is not writable" rather than
-              // creating it.
-              sh 'mkdir -p reports/junit'
+              // The report is written to the repository ROOT, then moved. `reports/` is
+              // generated and absent from a fresh clone, and gitleaks refuses to create
+              // the directory: it fails with "Report path is not writable", which reads
+              // like a permission problem and is a missing folder.
+              //
+              // `|| true` on the scan itself, then an explicit check: gitleaks exits
+              // non-zero both when it finds a secret and when it cannot write its report,
+              // and those two deserve different reactions.
               sh '''
                 docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest \
                   detect --source=/repo --no-banner --redact \
-                  --report-format=sarif --report-path=/repo/reports/gitleaks.sarif
+                  --report-format=sarif --report-path=/repo/gitleaks.sarif || SCAN_FAILED=1
+
+                mkdir -p reports
+                [ -f gitleaks.sarif ] && mv gitleaks.sarif reports/gitleaks.sarif
+
+                if [ "${SCAN_FAILED:-0}" = "1" ]; then
+                  echo "gitleaks a signalé au moins un secret. Rapport : reports/gitleaks.sarif"
+                  exit 1
+                fi
               '''
             }
           }
