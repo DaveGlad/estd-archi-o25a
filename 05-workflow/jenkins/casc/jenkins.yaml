@@ -80,6 +80,12 @@ jenkins:
                 - "type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock"
                 - "type=volume,source=nx-cache,destination=/cache"
                 - "type=volume,source=npm-cache,destination=/root/.npm"
+                # The deployment environment files. deploy.sh reads them from the host
+                # rather than from the checkout, so they are never in a workspace and
+                # never in the repository -- they hold the database password, the session
+                # secret and the till API keys. Read-only: a pipeline deploys, it does
+                # not rewrite the environment it deploys into.
+                - "type=bind,source=/etc/theetiptop/env,destination=/etc/theetiptop/env,readonly"
             remoteFs: "/home/jenkins/agent"
             connector:
               attach:

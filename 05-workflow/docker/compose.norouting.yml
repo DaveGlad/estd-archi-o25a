@@ -1,0 +1,28 @@
+# Deploy an environment WITHOUT publishing it.
+#
+#   docker compose -f compose.prod.yml -f compose.norouting.yml \
+#     --env-file .env.dev -p theetiptop-dev up -d
+#
+# Used by deploy.sh for every environment except production. Two reasons, and both are
+# about this host rather than about dev deployments in general:
+#
+#   1. One hostname resolves today. There is no dev.… to route to.
+#   2. compose.prod.yml names its Traefik routers literally, because Compose interpolates
+#      label values and never label keys. A second environment from the same file would
+#      declare `theetiptop-web` twice, and Traefik would keep whichever container started
+#      last -- production answering on dev's code, intermittently, with nothing in any log.
+#
+# The containers still run, still migrate, still pass their healthchecks. The pipeline's
+# "deploy to dev" stage therefore proves what it claims: an artefact built minutes ago is
+# running. It is reachable from the host, which is where the functional tests run.
+
+services:
+  api:
+    labels: !override
+      traefik.enable: 'false'
+  web:
+    labels: !override
+      traefik.enable: 'false'
+  admin:
+    labels: !override
+      traefik.enable: 'false'

@@ -30,16 +30,41 @@ esac
 [[ -n "$TAG" ]] || die "a tag is required — 'latest' is not deployable, see CST D.2"
 [[ "$TAG" != "latest" ]] || die "refusing to deploy 'latest': a deployed artefact must be identifiable and reversible"
 
-readonly ENV_FILE="${COMPOSE_DIR}/.env.${ENVIRONMENT}"
-[[ -f "$ENV_FILE" ]] || die "missing ${ENV_FILE} — copy .env.deploy.example and fill it in"
+# Environment files live on the HOST, not in the checkout.
+#
+# The pipeline runs this script from a build workspace, which is a fresh clone on a
+# throw-away agent: an env file there would either be absent -- the failure this
+# replaces -- or, far worse, committed. These files hold the database password, the
+# session secret and the till API keys.
+#
+# /etc/theetiptop/env is root-owned and 0700. The fallback to the compose directory keeps
+# a developer's local `docker compose --env-file` habit working unchanged.
+readonly HOST_ENV_DIR="${THEETIPTOP_ENV_DIR:-/etc/theetiptop/env}"
+if [[ -f "${HOST_ENV_DIR}/.env.${ENVIRONMENT}" ]]; then
+  readonly ENV_FILE="${HOST_ENV_DIR}/.env.${ENVIRONMENT}"
+else
+  readonly ENV_FILE="${COMPOSE_DIR}/.env.${ENVIRONMENT}"
+fi
+[[ -f "$ENV_FILE" ]] || die "no env file for '${ENVIRONMENT}': looked in ${HOST_ENV_DIR} then ${COMPOSE_DIR}"
 
 readonly PROJECT="theetiptop-${ENVIRONMENT}"
+
+# Only production is published. One hostname resolves today, and compose.prod.yml names
+# its Traefik routers literally -- two environments from the same file would declare the
+# same router twice, and Traefik keeps whichever container started last. dev and preprod
+# therefore run unrouted, reachable from the host and from nothing else.
+COMPOSE_FILES=(-f "$COMPOSE_FILE")
+if [[ "$ENVIRONMENT" == "prod" ]]; then
+  COMPOSE_FILES+=(-f "${COMPOSE_DIR}/compose.singlehost.yml")
+else
+  COMPOSE_FILES+=(-f "${COMPOSE_DIR}/compose.norouting.yml")
+fi
 
 echo "==> ${ENVIRONMENT}: deploying ${TAG}"
 
 # What is running right now, so a failure has something to roll back to. Read before
 # anything is touched: once `up` has started, the previous tag is no longer observable.
-PREVIOUS_TAG="$(docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" -p "$PROJECT" \
+PREVIOUS_TAG="$(docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" \
   ps --format '{{.Image}}' 2>/dev/null | grep -o '/api:[^ ]*' | head -1 | cut -d: -f2 || true)"
 echo "    currently running: ${PREVIOUS_TAG:-nothing}"
 
@@ -50,19 +75,19 @@ echo "IMAGE_TAG=${TAG}" >> "$ENV_FILE"
 rm -f "${ENV_FILE}.bak"
 
 echo "==> pulling images"
-docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" -p "$PROJECT" pull --quiet
+docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" pull --quiet
 
 # The migration job runs on its own, before the applications, and the compose file makes
 # the three services wait on `service_completed_successfully`. A container that comes up
 # against a schema it does not match is a far worse failure than a deployment that stops
 # here: it serves wrong answers instead of refusing to start.
 echo "==> migrating the database"
-docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" -p "$PROJECT" run --rm migrate
+docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" run --rm migrate
 
 echo "==> starting the applications"
 # `--wait` blocks on the healthchecks declared in each image, so this script does not
 # report success while a container is still crash-looping.
-if ! docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" -p "$PROJECT" up -d --wait --remove-orphans; then
+if ! docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" up -d --wait --remove-orphans; then
   echo "deploy: ${TAG} did not become healthy" >&2
 
   if [[ -n "$PREVIOUS_TAG" ]]; then
@@ -74,7 +99,7 @@ if ! docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" -p "$PROJECT" up -
     sed -i.bak '/^IMAGE_TAG=/d' "$ENV_FILE"
     echo "IMAGE_TAG=${PREVIOUS_TAG}" >> "$ENV_FILE"
     rm -f "${ENV_FILE}.bak"
-    docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" -p "$PROJECT" up -d --wait --remove-orphans
+    docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" up -d --wait --remove-orphans
     echo "deploy: rolled back. The schema was NOT reverted — check it against ${PREVIOUS_TAG}." >&2
   fi
 
@@ -82,7 +107,7 @@ if ! docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" -p "$PROJECT" up -
 fi
 
 echo "==> ${ENVIRONMENT} is running ${TAG}"
-docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" -p "$PROJECT" ps
+docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" ps
 
 # Images pile up fast at three deployments a day. Pruning only what is dangling leaves the
 # previous tags in place, which is what makes the rollback above possible.
