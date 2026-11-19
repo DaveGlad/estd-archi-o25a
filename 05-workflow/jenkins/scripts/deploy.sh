@@ -80,6 +80,10 @@ echo "    currently running: ${PREVIOUS_TAG:-nothing}"
 # is running is answered by `docker compose ps`, which cannot drift from reality.
 export IMAGE_TAG="$TAG"
 
+# The front images are built per environment, so their tag carries it. See the comment on
+# the `web` service in compose.prod.yml.
+export FRONT_IMAGE_TAG="${TAG}-${ENVIRONMENT}"
+
 # The registry requires authentication, and the push stage logs out when it is done --
 # deliberately, so a build does not leave a credential lying on a shared agent. The pull
 # therefore needs its own login, or compose stops on "no basic auth credentials" with the

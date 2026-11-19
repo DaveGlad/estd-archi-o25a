@@ -109,8 +109,17 @@ services:
           memory: 512M
 
   # ------------------------------------------------------------------------- web
+  #
+  # `FRONT_IMAGE_TAG`, not `IMAGE_TAG`. NEXT_PUBLIC_* are build arguments baked into the
+  # browser bundle, so there is one web image and one admin image PER ENVIRONMENT, tagged
+  # `<commit>-<environment>`. The API has a single image for all three, because all of its
+  # configuration is read at runtime.
+  #
+  # Using one variable for both produced a deployment that pulled `admin:dev` while the
+  # pipeline had pushed `admin:dev-dev`, and failed on "not found" with the image sitting
+  # in the registry under its real name.
   web:
-    image: ${REGISTRY:-registry.local}/theetiptop/web:${IMAGE_TAG:-latest}
+    image: ${REGISTRY:-registry.local}/theetiptop/web:${FRONT_IMAGE_TAG:-${IMAGE_TAG:-latest}}
     restart: unless-stopped
     environment:
       NODE_ENV: production
@@ -143,7 +152,7 @@ services:
 
   # ----------------------------------------------------------------------- admin
   admin:
-    image: ${REGISTRY:-registry.local}/theetiptop/admin:${IMAGE_TAG:-latest}
+    image: ${REGISTRY:-registry.local}/theetiptop/admin:${FRONT_IMAGE_TAG:-${IMAGE_TAG:-latest}}
     restart: unless-stopped
     environment:
       NODE_ENV: production

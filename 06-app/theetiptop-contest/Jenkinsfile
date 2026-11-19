@@ -49,7 +49,12 @@ pipeline {
     IMAGE_NAMESPACE   = 'theetiptop'
     // The commit, never `latest`. A deployed artefact has to be identifiable and
     // reversible — CST D.2, "Versionnement des images".
-    TAG               = "${env.GIT_COMMIT ?: 'dev'}".take(12)
+    //
+    // `env.GIT_COMMIT` is not populated at this point in a multibranch job, so the
+    // fallback was silently winning and every build pushed the same `dev` tag — exactly
+    // the moving tag this is meant to avoid. The checkout step records the real commit in
+    // `COMMIT_SHA`, and the build number keeps the two apart if a commit is rebuilt.
+    TAG               = "${env.GIT_COMMIT ?: 'b' + env.BUILD_NUMBER}".take(12)
     NX_BASE           = 'origin/develop'
     // Self-hosted build cache on a persistent volume. No hosted cache service: that would
     // breach requirement n° 6 (open source only) and add an external dependency.
@@ -63,11 +68,17 @@ pipeline {
       steps {
         // Full history, not the shallow default: `nx affected` needs the merge base, and a
         // shallow clone makes it fall back to rebuilding everything.
-        checkout scmGit(
-          branches: scm.branches,
-          extensions: [[$class: 'CloneOption', shallow: false, noTags: false]],
-          userRemoteConfigs: scm.userRemoteConfigs
-        )
+        script {
+          // The real commit, recorded from the checkout itself rather than guessed from
+          // an environment variable that is empty here.
+          def scmVars = checkout scmGit(
+            branches: scm.branches,
+            extensions: [[$class: 'CloneOption', shallow: false, noTags: false]],
+            userRemoteConfigs: scm.userRemoteConfigs
+          )
+          env.TAG = scmVars.GIT_COMMIT.take(12)
+          echo "Artefacts tagged ${env.TAG}"
+        }
       }
     }
 
