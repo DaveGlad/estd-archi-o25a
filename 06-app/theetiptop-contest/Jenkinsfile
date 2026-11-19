@@ -42,7 +42,10 @@ pipeline {
   }
 
   environment {
-    REGISTRY          = 'registry.wk-archi-o25a-15m-g1.fr'
+    // The single host, because that is the only name that resolves today. The registry
+    // answers on its `/v2` path -- see 05-workflow/compose.workflow-singlehost.yml. It
+    // moves back to registry.wk-archi-… the day that domain is bought.
+    REGISTRY          = 'srv1581779.hstgr.cloud'
     IMAGE_NAMESPACE   = 'theetiptop'
     // The commit, never `latest`. A deployed artefact has to be identifiable and
     // reversible — CST D.2, "Versionnement des images".
