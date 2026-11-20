@@ -1,7 +1,7 @@
 ---
 title: "Accès site internet et comptes divers"
 subtitle: "ESTD ARCHI O25A, Groupe 1. Thé Tip Top, par Furious Ducks"
-date: "19 novembre 2026"
+date: "20 novembre 2026"
 lang: fr
 ---
 
@@ -29,52 +29,52 @@ effectué sur ce site.
 Chaque identifiant de ce tableau a été testé le 19 novembre : bon mot de passe accepté,
 mauvais mot de passe refusé, accès anonyme refusé.
 
-## Te connecter
+## Se connecter
 
 Tout tient sur une seule adresse, en HTTPS. Le mot de passe est le même pour les quatre
 comptes : **MotDePasse2026!**
 
 ### Pour les deux comptes clients
 
-Va sur <https://srv1581779.hstgr.cloud/connexion> et saisis l'un des deux :
+Rendez-vous sur <https://srv1581779.hstgr.cloud/connexion> et saisissez l'un des deux :
 
 | Identifiant | Profil |
 |---|---|
 | `camille.rousseau@example.fr` | Cliente, a déjà joué des codes, acceptait les offres commerciales |
 | `theo.marchand@example.fr` | Client, a refusé les offres commerciales |
 
-Après connexion tu arrives sur l'accueil. Les pages **Participer** et **Mon compte**
+Après connexion, vous arrivez sur l'accueil. Les pages **Participer** et **Mon compte**
 deviennent accessibles depuis le menu.
 
-Tu peux aussi créer ton propre compte sur
+Vous pouvez aussi créer votre propre compte sur
 <https://srv1581779.hstgr.cloud/inscription>, par formulaire ou avec Google ou Facebook.
 
 ### Pour l'administrateur et l'employé
 
-Va sur <https://srv1581779.hstgr.cloud/backoffice>. Tu es renvoyé vers la page de
-connexion du back-office, qui est une page distincte de celle du site public.
+Rendez-vous sur <https://srv1581779.hstgr.cloud/backoffice>. Vous êtes renvoyé vers la
+page de connexion du back-office, distincte de celle du site public.
 
-| Identifiant | Tu atterris sur | Tu y fais quoi |
+| Identifiant | Destination | Contenu |
 |---|---|---|
 | `admin@theetiptop.fr` | `/backoffice/admin` | Statistiques, export emailing, tirage au sort, paramétrage |
 | `sofia.legrand@theetiptop.fr` | `/backoffice/employe` | Recherche client, consultation des gains, remise d'un lot |
 
-Chaque rôle est envoyé à son espace automatiquement. Essaie d'ouvrir `/backoffice/admin`
-avec le compte employé : tu es renvoyé vers l'espace boutique. C'est le cloisonnement des
+Chaque rôle est envoyé à son espace automatiquement. Ouvrez `/backoffice/admin` avec le
+compte employé : vous êtes renvoyé vers l'espace boutique. C'est le cloisonnement des
 rôles, et il tient côté serveur, pas dans l'affichage.
 
 Ces quatre comptes servent à la démonstration. Les données derrière sont fabriquées.
 
 ## Un parcours en cinq minutes
 
-1. Ouvre <https://srv1581779.hstgr.cloud>. Tu vois le jeu, les cinq lots, les dix boutiques.
-2. Connecte-toi en `camille.rousseau@example.fr`, puis va sur **Participer**.
-3. Saisis un des codes du paragraphe suivant. Ton lot s'affiche tout de suite.
-4. Va dans **Mon compte**, onglet **Mes gains**. Le lot y est, avec sa date limite.
-5. Déconnecte-toi, connecte-toi en `admin@theetiptop.fr` sur `/backoffice`. Ta participation
-   compte dans les statistiques.
-6. Connecte-toi en `sofia.legrand@theetiptop.fr`. Cherche « rousseau », ouvre la fiche,
-   marque le lot comme remis.
+1. Ouvrez <https://srv1581779.hstgr.cloud>. Le jeu, les cinq lots et les dix boutiques s'affichent.
+2. Connectez-vous en `camille.rousseau@example.fr`, puis allez sur **Participer**.
+3. Saisissez un des codes du paragraphe suivant. Le lot s'affiche immédiatement.
+4. Allez dans **Mon compte**, onglet **Mes gains**. Le lot y figure, avec sa date limite.
+5. Déconnectez-vous, puis connectez-vous en `admin@theetiptop.fr` sur `/backoffice`. La
+   participation compte dans les statistiques.
+6. Connectez-vous en `sofia.legrand@theetiptop.fr`. Cherchez « rousseau », ouvrez la fiche,
+   marquez le lot comme remis.
 
 ## Codes de démonstration
 
@@ -89,8 +89,8 @@ Des codes réels, pris dans le pool de 500 000. Chacun donne un coffret découve
 | `KZ17UKAGP7` | Coffret découverte à 69 € |
 | `W15BJ2PVQJ` | Coffret découverte à 69 € |
 
-Un code ne se joue qu'une fois. Rejoue-le, le site te dit quand il a été utilisé et par
-qui. C'est la garantie centrale du jeu, tenue par la base de données et non par le code
+Un code ne se joue qu'une fois. Rejoué, il indique quand il a été utilisé et par qui.
+C'est la garantie centrale du jeu, tenue par la base de données et non par le code
 applicatif.
 
 ## Ce que le site fait
@@ -120,8 +120,8 @@ Dans le back-office :
 L'API sert trois consommateurs : le site, le back-office, et les caisses des dix boutiques.
 Les endpoints caisse préparent aussi le futur site de vente en ligne.
 
-Documentation interactive : <https://srv1581779.hstgr.cloud/docs>. Tu y lis chaque
-endpoint, ses paramètres et ses réponses, et tu les appelles depuis la page.
+Documentation interactive : <https://srv1581779.hstgr.cloud/docs>. Chaque endpoint y est
+décrit avec ses paramètres et ses réponses, et s'appelle directement depuis la page.
 
 ### Les clés des consommateurs
 
@@ -161,7 +161,7 @@ Le même appel à `4901` délivre un code. C'est la démonstration que « une so
 
 Sans clé, tout endpoint caisse répond 401.
 
-## Ce que tu peux vérifier en base
+## Ce qui est vérifiable en base
 
 | Mesure | Valeur |
 |---|---|
@@ -207,8 +207,8 @@ Le dépôt Git garde les sources de ces dossiers, partie par partie, dans
 | Identifiant | Aucun. Le dépôt se lit sans compte GitHub |
 | Propriétaire du compte | `DaveGlad` |
 
-Le dépôt est public. Tu cliques sur le lien, tu lis tout : le code, les deux dossiers, le
-workflow, l'historique des commits. Tu n'as besoin ni de compte ni de mot de passe.
+Le dépôt est public. Le lien donne accès à tout : le code, les deux dossiers, le workflow,
+l'historique des commits. Ni compte ni mot de passe ne sont nécessaires.
 
 Branches GitFlow : `main` pour la production, `develop` pour l'intégration, puis
 `feature/*`, `release/*` et `hotfix/*`.
@@ -271,7 +271,7 @@ exécution :
 | `reports/junit/playwright.xml` | Tests fonctionnels, trois navigateurs |
 | `reports/junit/k6.xml` | Tests de charge, un cas par seuil |
 
-Tu peux les régénérer toi-même depuis `06-app/theetiptop-contest` :
+Ils se régénèrent depuis `06-app/theetiptop-contest` :
 
 ```
 npm run test
@@ -280,8 +280,8 @@ npm run test:e2e
 npm run test:perf
 ```
 
-Une fois Jenkins branché, ces mêmes fichiers apparaissent dans l'onglet **Tests** de
-chaque build, avec la courbe de tendance.
+Dans Jenkins, ces mêmes fichiers apparaissent dans l'onglet **Tests** de chaque build,
+avec la courbe de tendance.
 
 ### Sauvegardes
 
@@ -300,11 +300,11 @@ stockage distant.
 
 Comment entrer dans chacun :
 
-- **Grafana** : la page s'ouvre sur un écran de connexion. Une fois dedans, menu
-  **Dashboards**, dossier **Thé Tip Top**, tableau **Jeu-concours**. Il montre les codes
-  restants, les saisies par issue, la latence de l'API et les lots remis.
-- **Jenkins** : la page s'ouvre sur **Sign in**. Une fois dedans, tu vois les trois
-  pipelines déclarés. Ils n'ont pas encore de build, leurs dépôts ne sont pas branchés.
+- **Grafana** : la page s'ouvre sur un écran de connexion. Ensuite, menu **Dashboards**,
+  dossier **Thé Tip Top**, tableau **Jeu-concours**. Il montre les codes restants, les
+  saisies par issue, la latence de l'API et les lots remis.
+- **Jenkins** : la page s'ouvre sur **Sign in**. Les trois pipelines y sont déclarés, et
+  celui du site client a des builds exécutés, avec leurs rapports de tests.
 - **Gitea** : la page s'ouvre sur **Sign In**, en haut à droite. L'instance est vide, elle
   attend la migration des dépôts depuis GitHub.
 - **Registry** : pas d'interface web et pas d'adresse publique, voir ci-dessous.
