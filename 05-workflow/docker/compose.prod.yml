@@ -71,7 +71,21 @@ services:
         condition: service_completed_successfully
       redis:
         condition: service_healthy
-    networks: [backend, edge]
+    networks:
+      backend:
+        # A project-scoped alias, and the reason it exists is worth stating.
+        #
+        # Compose gives every service its own name as a network alias on EVERY network it
+        # joins, including the shared `edge`. Deploy two environments and `edge` then has
+        # two containers answering to `api`. Docker resolves it to either one.
+        #
+        # The symptom was production serving "Contest not found": the production site had
+        # reached the DEV api, whose database is migrated and empty. Nothing was down,
+        # nothing was logged as an error, and the data was simply the wrong data.
+        #
+        # `backend` is internal and per-project, so this alias cannot collide.
+        aliases: [api-internal]
+      edge:
     # No `ports:`. The reverse proxy on the edge network is the only way in, which is what
     # keeps the API off the host's public interface.
     #
@@ -126,7 +140,7 @@ services:
       PORT: 3000
       # Server-side only. The browser uses NEXT_PUBLIC_API_URL, which was baked into the
       # bundle at build time — hence one image per environment.
-      API_URL: http://api:3333
+      API_URL: http://api-internal:3333
       NEXT_PUBLIC_SITE_URL: ${SITE_URL}
     depends_on:
       api:
@@ -157,7 +171,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3001
-      API_URL: http://api:3333
+      API_URL: http://api-internal:3333
       NEXT_PUBLIC_SITE_URL: ${SITE_URL}
     depends_on:
       api:
