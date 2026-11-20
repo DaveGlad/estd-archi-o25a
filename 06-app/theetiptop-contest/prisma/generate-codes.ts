@@ -3,6 +3,7 @@
  *
  * Run with:  npm run codes:generate
  *            npm run codes:generate -- --seed=<seed>   (to replay a previous run)
+ *            npm run codes:generate -- --if-empty      (provisioning: skip a filled pool)
  *
  * The constraint from the brief, highlighted in red in the source document:
  *
@@ -56,6 +57,20 @@ const BATCH_SIZE = 5_000;
 function readSeedArgument(): string | null {
   const argument = process.argv.find((value) => value.startsWith('--seed='));
   return argument ? argument.slice('--seed='.length) : null;
+}
+
+/**
+ * `--if-empty`: leave an existing pool alone and exit 0 instead of failing.
+ *
+ * For provisioning a non-production environment, where the same command runs on every
+ * deployment and the pool only has to be generated once. Without it the pipeline would have
+ * to swallow the exit code of this script, which would also swallow a real failure.
+ *
+ * The refusal below stays the default on purpose. A person running this by hand against a
+ * populated contest has almost certainly made a mistake, and silence is the wrong answer.
+ */
+function shouldSkipWhenPopulated(): boolean {
+  return process.argv.includes('--if-empty');
 }
 
 /**
@@ -159,6 +174,12 @@ async function main(): Promise<void> {
   if (!contest) throw new Error(`Contest "${CONTEST.slug}" not found. Run: npm run db:seed`);
 
   const existing = await prisma.ticketCode.count({ where: { contestId: contest.id } });
+  if (existing > 0 && shouldSkipWhenPopulated()) {
+    console.log(
+      `${existing.toLocaleString('fr-FR')} codes already in the pool, nothing to generate.`
+    );
+    return;
+  }
   if (existing > 0) {
     throw new Error(
       `${existing.toLocaleString('fr-FR')} codes already exist for this contest.\n` +

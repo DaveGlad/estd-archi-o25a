@@ -89,8 +89,14 @@ export default defineConfig({
    *
    * The pipeline therefore runs `nx run-many -t build` before this stage, and that build
    * is a cached Nx target the earlier stages already produced.
+   *
+   * None of this applies when `E2E_SITE_URL` is set, which is the case in the pipeline's
+   * "Functional tests on dev" stage: the variable means "test this already deployed
+   * environment", so there is nothing to start. Starting the three servers anyway would run
+   * the suite against a build made here instead of the images that were just deployed,
+   * which is the one thing that stage exists to check.
    */
-  webServer: [
+  webServer: process.env['E2E_SITE_URL'] ? undefined : [
     {
       command: 'npx nx serve @theetiptop-contest/api',
       url: `${API_URL}/health`,
