@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 812" width="720" height="812" role="img" aria-label="Zoning connexion-inscription, desktop">
+  <title>Zoning connexion-inscription, desktop</title>
+  <rect width="720" height="812" fill="#FFFFFF"/>
+  <text x="0" y="14" font-family="Helvetica,sans-serif" font-size="13" font-weight="bold" fill="#185B37">Zoning connexion-inscription, desktop</text>
+  <text x="0" y="29" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">Mesuré sur le site déployé. Largeur 1440 px, hauteur totale 1552 px.</text>
+  <g transform="translate(0,36)">
+  <rect x="0" y="0" width="720" height="37" fill="#D7E3DA" stroke="#18221B"/>
+  <text x="10" y="18" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">En-tête</text>
+  <text x="10" y="32" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">1440 x 73 px</text>
+  <rect x="81" y="77" width="224" height="355" fill="#EFEFE8" stroke="#18221B"/>
+  <text x="91" y="95" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Se connecter</text>
+  <text x="91" y="109" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">448 x 709 px</text>
+  <rect x="395" y="199" width="244" height="110" fill="#E6EAE3" stroke="#18221B"/>
+  <text x="405" y="217" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Pourquoi un compte ?</text>
+  <text x="405" y="231" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">487 x 220 px</text>
+  <rect x="0" y="511" width="720" height="265" fill="#D5D5CC" stroke="#18221B"/>
+  <text x="10" y="529" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Pied de page</text>
+  <text x="10" y="543" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">1440 x 529 px</text>
+  </g>
+</svg>

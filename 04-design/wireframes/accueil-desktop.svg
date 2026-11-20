@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1695" width="720" height="1695" role="img" aria-label="Wireframe accueil, desktop">
+  <title>Wireframe accueil, desktop</title>
+  <rect width="720" height="1695" fill="#FFFFFF"/>
+  <text x="0" y="14" font-family="Helvetica,sans-serif" font-size="13" font-weight="bold" fill="#185B37">Wireframe accueil, desktop</text>
+  <text x="0" y="29" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">Mesuré sur le site déployé. Largeur 1440 px, hauteur totale 3317 px.</text>
+  <g transform="translate(0,36)">
+  <rect x="0" y="0" width="720" height="37" fill="none" stroke="#18221B"/>
+  <text x="12" y="20" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">En-tête</text>
+
+
+  <rect x="0" y="37" width="720" height="414" fill="none" stroke="#18221B"/>
+  <text x="12" y="57" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Contenu</text>
+
+
+  <rect x="566" y="-3" width="210" height="260" fill="none" stroke="#18221B"/>
+  <text x="578" y="17" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Contenu</text>
+
+
+  <rect x="144" y="-51" width="432" height="192" fill="none" stroke="#18221B"/>
+  <text x="156" y="-31" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Contenu</text>
+
+
+  <rect x="65" y="37" width="590" height="414" fill="none" stroke="#18221B"/>
+  <text x="77" y="57" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">100 % des ticketssont gagnants.Le vôtre auss</text>
+  <rect x="77" y="69" width="190" height="7" fill="#CFCFC8"/>
+  <rect x="77" y="82" width="25" height="7" fill="#CFCFC8"/>
+  <rect x="77" y="95" width="37" height="7" fill="#CFCFC8"/>
+  <rect x="77" y="108" width="48" height="7" fill="#CFCFC8"/>
+  <rect x="77" y="121" width="190" height="7" fill="#CFCFC8"/>
+  <rect x="77" y="134" width="170" height="7" fill="#CFCFC8"/>
+
+  <rect x="0" y="451" width="720" height="282" fill="none" stroke="#18221B"/>
+  <text x="12" y="471" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Comment participer</text>
+  <rect x="12" y="483" width="30" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="496" width="133" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="509" width="190" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="522" width="190" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="535" width="190" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="548" width="190" height="7" fill="#CFCFC8"/>
+
+  <rect x="0" y="733" width="720" height="377" fill="none" stroke="#18221B"/>
+  <text x="12" y="753" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Les lots à gagner</text>
+  <rect x="12" y="765" width="25" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="778" width="113" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="791" width="190" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="804" width="166" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="817" width="190" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="830" width="161" height="7" fill="#CFCFC8"/>
+
+  <rect x="0" y="1110" width="720" height="244" fill="none" stroke="#18221B"/>
+  <text x="12" y="1130" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Dix boutiques,une même exigence</text>
+  <rect x="12" y="1142" width="21" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="1155" width="190" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="1168" width="83" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="1181" width="41" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="1194" width="23" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="1207" width="69" height="7" fill="#CFCFC8"/>
+
+  <rect x="0" y="1394" width="720" height="265" fill="none" stroke="#18221B"/>
+  <text x="12" y="1414" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Pied de page</text>
+  <rect x="12" y="1426" width="150" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="1439" width="41" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="1452" width="39" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="1465" width="37" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="1478" width="32" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="1491" width="28" height="7" fill="#CFCFC8"/>
+
+  </g>
+</svg>

@@ -1,22 +1,40 @@
 # Wireframes
 
-**Responsable** : R4, relu par R1.
-**Échéance** : 22 août.
+Les trois pages demandées par le cahier des charges, dans les trois formats : accueil,
+connexion et inscription, profil. Neuf fichiers SVG.
 
-## Ce que le sujet exige
+| | desktop 1440 px | tablette 820 px | mobile 390 px |
+|---|---|---|---|
+| Accueil | `accueil-desktop.svg` | `accueil-tablette.svg` | `accueil-mobile.svg` |
+| Connexion et inscription | `connexion-inscription-desktop.svg` | `connexion-inscription-tablette.svg` | `connexion-inscription-mobile.svg` |
+| Profil | `profil-desktop.svg` | `profil-tablette.svg` | `profil-mobile.svg` |
 
-Les mêmes trois pages que le zoning, dans les mêmes trois formats, soit neuf vues : accueil, connexion et inscription, profil client.
+## Mesurés, pas dessinés
 
-## La différence avec le zoning
+Chaque zone est relevée sur le site déployé, avec ses dimensions réelles en pixels. Un
+wireframe dessiné à côté du produit diverge au premier changement de maquette, et devient
+alors un document qui décrit une page qui n'existe plus.
 
-Le zoning pose les blocs. Le wireframe pose le contenu à l'intérieur des blocs : titres, paragraphes, champs de formulaire, boutons, images figurées par un cadre barré. Toujours en niveaux de gris, sans identité visuelle.
+Les zones portent leur propre titre, pas une étiquette générique. Une page dont le wireframe
+annonce trois fois « Contenu » ne dit rien de sa structure.
 
-C'est le document qui se valide avec le client avant d'engager le travail graphique, parce qu'il permet de discuter de la structure sans que la conversation dérive sur les couleurs.
+## Ce qu'ils ajoutent au wireframe
 
-## Nommage
+Le wireframe garde les mêmes zones et descend d'un niveau. Les titres restent lisibles,
+les paragraphes deviennent des barres proportionnelles à leur longueur, les boutons
+gardent leur libellé. On lit la hiérarchie de l'information sans être distrait par la
+couleur ni par la typographie.
 
-`wireframe-{page}-{format}.png`.
+## Ce que montre la comparaison des trois formats
 
-## Point de vigilance
+Le même contenu se réorganise sans rien perdre. En desktop, la saisie de code et l'encart
+explicatif tiennent côte à côte. En tablette, l'encart passe sous le formulaire. En mobile,
+tout s'empile et la navigation se replie derrière un bouton.
 
-Le wireframe doit correspondre à l'arborescence validée en partie E.2 du cahier des charges. Si les deux divergent, c'est l'arborescence qui fait foi, ou alors il faut corriger les deux.
+La hauteur totale figure en tête de chaque fichier. L'accueil passe de 3 317 px en desktop
+à près du double en mobile, ce qui est la conséquence directe de l'empilement.
+
+## Régénérer
+
+Le générateur ouvre les pages dans un navigateur, relève les boîtes englobantes et écrit
+les SVG. Il produit aussi les wireframes du dossier voisin, à partir du même relevé.

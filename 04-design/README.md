@@ -5,8 +5,8 @@
 | `logo/` | 3 concepts, 1 retenu, 5 déclinaisons SVG |
 | `charte/` | Couleurs, contrastes **mesurés**, typographie, images, mise en page |
 | `maquettes/` | 15 captures du site réel : 5 pages × 3 formats |
-| `zoning/` | En attente de la direction artistique |
-| `wireframes/` | En attente de la direction artistique |
+| `zoning/` | 9 zonings, 3 pages par 3 formats |
+| `wireframes/` | 9 wireframes, mêmes pages et mêmes formats |
 
 ## Les maquettes sont des captures, pas des dessins
 
