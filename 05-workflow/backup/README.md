@@ -35,7 +35,7 @@ hébergeur de stockage serait une violation RGPD en attente d'un bucket mal conf
 `age` plutôt que GPG : une clé, pas de trousseau, pas d'agent, et une procédure de
 restauration qu'une personne fatiguée peut suivre correctement.
 
-> ⚠️ **La clé privée doit exister ailleurs que sur cette machine.** Une clé qui n'existe
+> **La clé privée doit exister ailleurs que sur cette machine.** Une clé qui n'existe
 > que sur le serveur détruit rend la sauvegarde parfaitement inutile. C'est l'erreur
 > classique du chiffrement de sauvegardes, et elle ne se découvre qu'au sinistre.
 

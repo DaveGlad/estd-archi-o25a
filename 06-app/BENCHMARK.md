@@ -15,7 +15,7 @@
 | Prisma | 7.10.1, adaptateur `@prisma/adapter-pg` |
 | Date de la mesure | 11 novembre 2026 |
 
-⚠️ `synchronous_commit=off` est un réglage de **développement**. Il accélère l'insertion en
+`synchronous_commit=off` est un réglage de **développement**. Il accélère l'insertion en
 masse en n'attendant pas le `fsync` du journal, au prix de la perte des dernières
 transactions en cas de coupure brutale. En production la valeur reste `on` : il faudra
 donc compter une insertion plus lente que les 45 s mesurées ici, ce qui reste sans
@@ -144,16 +144,16 @@ déployer un jeu dont la répartition ne correspond pas au règlement déposé.
 
 | Contrôle | Attendu | Mesuré |
 |---|---|---|
-| Nombre total de codes | 500 000 | ✅ 500 000 |
-| Infuseur à thé | 300 000 — 60,00 % | ✅ 300 000 — 60,00 % |
-| Thé détox ou infusion | 100 000 — 20,00 % | ✅ 100 000 — 20,00 % |
-| Thé signature | 50 000 — 10,00 % | ✅ 50 000 — 10,00 % |
-| Coffret 39 € | 30 000 — 6,00 % | ✅ 30 000 — 6,00 % |
-| Coffret 69 € | 20 000 — 4,00 % | ✅ 20 000 — 4,00 % |
-| Codes attachés au gros lot | 0 | ✅ 0 |
-| Codes distincts | 500 000 | ✅ 500 000 |
-| Codes malformés | 0 | ✅ 0 |
-| Empreinte du pool | celle du tirage | ✅ identique |
+| Nombre total de codes | 500 000 | 500 000 |
+| Infuseur à thé | 300 000 — 60,00 % | 300 000 — 60,00 % |
+| Thé détox ou infusion | 100 000 — 20,00 % | 100 000 — 20,00 % |
+| Thé signature | 50 000 — 10,00 % | 50 000 — 10,00 % |
+| Coffret 39 € | 30 000 — 6,00 % | 30 000 — 6,00 % |
+| Coffret 69 € | 20 000 — 4,00 % | 20 000 — 4,00 % |
+| Codes attachés au gros lot | 0 | 0 |
+| Codes distincts | 500 000 | 500 000 |
+| Codes malformés | 0 | 0 |
+| Empreinte du pool | celle du tirage | identique |
 
 Empreinte SHA-256 du pool au 11 novembre 2026 :
 `feb09752b1393583bfa6ae7fe66c5b58e0ef32aba09d9f15248325d382679586`
@@ -193,10 +193,10 @@ pas trivial. Trois approches mesurées avant d'arriver à la bonne.
 
 | Approche | `node_modules` mesuré | Verdict |
 |---|---|---|
-| `npm ci --omit=dev -w @theetiptop-contest/api --include-workspace-root` | **936 Mo** | ❌ Le filtre de workspace ne restreint pas `ci` : TypeScript, Next et Playwright sont installés |
-| `npm prune --omit=dev --include-workspace-root` | **936 Mo** | ❌ Même résultat, même raison |
-| `nx prune`, qui produit un manifeste **et** un lockfile élagués | — | ❌ Lockfile incohérent avec son propre manifeste : `npm ci` s'arrête sur `Missing: content-type@1.0.5`. Express 5 atteint `content-type` par deux chemins, le pruner n'en enregistre qu'un |
-| ✅ **`generatePackageJson` + épinglage aux versions exactes** | **~380 Mo** | Webpack émet la liste exacte de ses externes ; `tools/pin-runtime-deps.mjs` remplace chaque intervalle par la version résolue par l'étage de build |
+| `npm ci --omit=dev -w @theetiptop-contest/api --include-workspace-root` | **936 Mo** | Le filtre de workspace ne restreint pas `ci` : TypeScript, Next et Playwright sont installés |
+| `npm prune --omit=dev --include-workspace-root` | **936 Mo** | Même résultat, même raison |
+| `nx prune`, qui produit un manifeste **et** un lockfile élagués | — | Lockfile incohérent avec son propre manifeste : `npm ci` s'arrête sur `Missing: content-type@1.0.5`. Express 5 atteint `content-type` par deux chemins, le pruner n'en enregistre qu'un |
+| **`generatePackageJson` + épinglage aux versions exactes** | **~380 Mo** | Webpack émet la liste exacte de ses externes ; `tools/pin-runtime-deps.mjs` remplace chaque intervalle par la version résolue par l'étage de build |
 
 La chaîne reste reproductible : lockfile versionné → étage de build → manifeste épinglé →
 installation d'exécution. **Limite assumée** : seules les dépendances directes sont
@@ -208,12 +208,12 @@ Exécutions du 11 novembre 2026.
 
 | Famille | Outil | Volume | Durée | Résultat |
 |---|---|---|---|---|
-| Unitaires | Vitest 5 | 69 tests | 0,5 s | ✅ |
-| Intégration | Vitest + PostgreSQL | 32 tests | 3,1 s | ✅ |
-| Fonctionnels | Playwright, 3 projets | 53 tests | 42 s | ✅ |
-| Performance | k6 v2.3 | 3 scénarios, 2 492 itérations | 1 min | ✅ 6 seuils sur 6 |
+| Unitaires | Vitest 5 | 69 tests | 0,5 s | Fait |
+| Intégration | Vitest + PostgreSQL | 32 tests | 3,1 s | Fait |
+| Fonctionnels | Playwright, 3 projets | 53 tests | 42 s | Fait |
+| Performance | k6 v2.3 | 3 scénarios, 2 492 itérations | 1 min | 6 seuils sur 6 |
 
-⚠️ **Les 2,5 heures du suite fonctionnelle sont un artefact du serveur de développement** :
+**Les 2,5 heures du suite fonctionnelle sont un artefact du serveur de développement** :
 `next dev` compile chaque route à sa première visite, et la suite en parcourt une vingtaine
 sur trois projets de navigateur. En CI, `playwright.config.ts` démarre les **builds de
 production** (`next start`), ce qui supprime l'essentiel de ce temps — et teste au passage

@@ -136,7 +136,7 @@ trois vulnérabilités **HIGH** sur cette ligne, corrigées en 0.35.5. Un `overr
 seul moyen de relever une dépendance transitive sans attendre que le parent bouge. À
 retirer le jour où Next remonte de lui-même.
 
-> ⚠️ **Aucun pseudo-commentaire dans ce bloc.** npm valide chaque clé de `overrides`
+> **Aucun pseudo-commentaire dans ce bloc.** npm valide chaque clé de `overrides`
 > comme un nom de paquet. Une clé `_comment` fait échouer le chargement de l'arbre
 > virtuel, et npm rapporte alors « can only install with an existing package-lock.json »,
 > un message qui désigne le verrou alors que le verrou est intact. Un build a été perdu

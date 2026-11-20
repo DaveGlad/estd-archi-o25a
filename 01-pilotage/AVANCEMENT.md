@@ -6,41 +6,41 @@
 
 | Partie | Statut | Responsable | Volume |
 |---|---|---|---|
-| A. État des lieux | ✅ Rédigée | R3 | 1 400 mots |
-| B. Méthodologie à venir | ✅ Rédigée | R3 | 1 190 mots |
-| C. DevOps et DevSecOps | ✅ Rédigée | R3 | 1 265 mots |
-| D. Analyse du workflow CI/CD | ✅ Rédigée | R3 | 2 550 mots |
-| E. Diagramme d'infrastructure | ✅ Rédigée | R3 | 1 640 mots |
-| F. Ressources humaines | ✅ Rédigée | R3 | 1 820 mots |
-| G. Procédures BPMN | ✅ Rédigée | R3 | 2 380 mots |
-| H. Diagramme de Gantt | ✅ Structure rédigée, à saisir sous GanttProject | R1 | 1 400 mots |
-| I. Coûts et rentabilité | ✅ Rédigée | R1 et R3 | 1 430 mots |
-| Couverture et sommaire | ✅ Rédigés | R1 | 550 mots |
-| Annexe questionnaire et interviews | 🟡 Questionnaire prêt, entretiens à mener | R2 | 1 290 mots |
+| A. État des lieux | Rédigée | R3 | 1 400 mots |
+| B. Méthodologie à venir | Rédigée | R3 | 1 190 mots |
+| C. DevOps et DevSecOps | Rédigée | R3 | 1 265 mots |
+| D. Analyse du workflow CI/CD | Rédigée | R3 | 2 550 mots |
+| E. Diagramme d'infrastructure | Rédigée | R3 | 1 640 mots |
+| F. Ressources humaines | Rédigée | R3 | 1 820 mots |
+| G. Procédures BPMN | Rédigée | R3 | 2 380 mots |
+| H. Diagramme de Gantt | Structure rédigée, à saisir sous GanttProject | R1 | 1 400 mots |
+| I. Coûts et rentabilité | Rédigée | R1 et R3 | 1 430 mots |
+| Couverture et sommaire | Rédigés | R1 | 550 mots |
+| Annexe questionnaire et interviews | Questionnaire prêt, entretiens à mener | R2 | 1 290 mots |
 
 ## Cahier des charges, Thé Tip Top
 
 | Partie | Statut | Responsable | Volume |
 |---|---|---|---|
-| A. Descriptifs | 🟡 Rédigée, données à compléter | R1 | 2 884 mots |
-| B. Plan de veille | ✅ Rédigée | R2 | 1 812 mots |
-| C.1 Étude de marché | ✅ Rédigée, sources réelles | R2 | 1 120 mots |
-| C.2 Benchmark, 3 concurrents | ✅ Rédigée, audits mesurés | R2 | 2 439 mots |
-| C.3 Analyse de stratégie | ✅ Rédigée | R2 | 1 914 mots |
-| D.0 Mix marketing | ✅ Rédigée | R2 | 700 mots |
-| D. Objectifs, SMART, ROI, RSE, éditorial, e-réputation | ✅ Rédigée | R2 | 1 978 mots |
-| D.3 Référencement, avec les 2 contenus rédigés | ✅ Rédigée | R2 | 1 654 mots |
-| D.4 Réseaux sociaux et influence | ✅ Rédigée | R2 | 1 763 mots |
-| D.5 Emailing | ✅ Rédigée | R2 | 1 351 mots |
-| D.6 Analyse de performance | ✅ Rédigée | R2 | 1 131 mots |
-| E. Cahier des charges fonctionnel | ✅ Rédigée | R3 | 4 275 mots |
-| F. Clauses techniques | ✅ Rédigée | R3 | 2 120 mots |
-| G. Identité visuelle et charte | 🟡 Rédigée, planches visuelles à produire | R4 | 2 779 mots |
-| H. Cahier de légalité | ✅ Rédigée | R4 | 2 400 mots |
-| I. Matrices et Gantt | ✅ Rédigée, Gantt à saisir sous GanttProject | R1 | 3 000 mots |
-| J. Devis | ✅ Rédigée | R1 | 1 570 mots |
-| Couverture et sommaire | ✅ Rédigés | R1 | 550 mots |
-| Annexe questionnaire et interviews | 🟡 Questionnaire prêt, entretiens à mener | R2 | 1 290 mots |
+| A. Descriptifs | Rédigée, données à compléter | R1 | 2 884 mots |
+| B. Plan de veille | Rédigée | R2 | 1 812 mots |
+| C.1 Étude de marché | Rédigée, sources réelles | R2 | 1 120 mots |
+| C.2 Benchmark, 3 concurrents | Rédigée, audits mesurés | R2 | 2 439 mots |
+| C.3 Analyse de stratégie | Rédigée | R2 | 1 914 mots |
+| D.0 Mix marketing | Rédigée | R2 | 700 mots |
+| D. Objectifs, SMART, ROI, RSE, éditorial, e-réputation | Rédigée | R2 | 1 978 mots |
+| D.3 Référencement, avec les 2 contenus rédigés | Rédigée | R2 | 1 654 mots |
+| D.4 Réseaux sociaux et influence | Rédigée | R2 | 1 763 mots |
+| D.5 Emailing | Rédigée | R2 | 1 351 mots |
+| D.6 Analyse de performance | Rédigée | R2 | 1 131 mots |
+| E. Cahier des charges fonctionnel | Rédigée | R3 | 4 275 mots |
+| F. Clauses techniques | Rédigée | R3 | 2 120 mots |
+| G. Identité visuelle et charte | Rédigée, planches visuelles à produire | R4 | 2 779 mots |
+| H. Cahier de légalité | Rédigée | R4 | 2 400 mots |
+| I. Matrices et Gantt | Rédigée, Gantt à saisir sous GanttProject | R1 | 3 000 mots |
+| J. Devis | Rédigée | R1 | 1 570 mots |
+| Couverture et sommaire | Rédigés | R1 | 550 mots |
+| Annexe questionnaire et interviews | Questionnaire prêt, entretiens à mener | R2 | 1 290 mots |
 
 ## Développement applicatif, site jeu-concours
 
@@ -50,33 +50,33 @@
 
 | Tâche | Intitulé | Statut | Preuve |
 |---|---|---|---|
-| A1 | Schéma BDD + migrations | ✅ | 4 migrations appliquées, 12 tables |
-| A2 | Squelette API + squelette webApp | ✅ | 25 routes API, Swagger sur `/docs` |
-| A3 | **Génération des 500 000 codes** | ✅ | 51,6 s, 9 908 lignes/s, 0 collision, chiffres et lettres garantis dans chaque code |
-| A4 | Test automatisé de la répartition | ✅ | `codes:verify` + 13 tests d'intégration |
-| A5 | Auth formulaire + Google + Facebook | ✅ | Better Auth ; OAuth câblé, identifiants à fournir |
-| A6 | Rôles et permissions | ✅ | 3 gardes globales, cloisonnement testé en E2E |
-| A7 | Page de présentation du jeu et des lots | ✅ | `/jeu-concours`, `/jeu-concours/lots` |
-| A8 | Participation par numéro de ticket | ✅ | 6 issues UC-01, compare-and-swap concurrent |
-| A9 | Historique des gains côté client | ✅ | `/mon-compte`, `/mon-compte/gains/[id]` |
-| A10 | Back-office statistiques | ✅ | 12 agrégats, cache Redis 2 min |
-| A11 | Export des données pour l'emailing | ✅ | CSV et JSON, opt-in seul, injection de formule neutralisée |
-| A12 | Vue employé boutique | ✅ | Recherche `pg_trgm`, remise tracée au journal d'audit |
-| A13 | **Tirage du gros lot côté serveur** | ✅ | 1 chance par participant, rejouable et vérifiable |
-| A14 | Endpoints API pour les caisses | ✅ | 3 routes, clé d'API, `FOR UPDATE SKIP LOCKED` |
-| A15 | RGPD | ✅ | Consentements horodatés serveur, export art. 20, anonymisation art. 17 |
-| A16 | Accessibilité + responsive | ✅ | `jsx-a11y` au lint, projet Playwright mobile |
-| A17 | SEO on-page | ✅ | SSR, métadonnées, sitemap généré, Schema.org |
-| A18 | Tests de performance | ✅ | k6 v2.3, 2 492 itérations, 6 seuils sur 6. 50 soumissions/s tenues à 15,6 ms p(95) |
+| A1 | Schéma BDD + migrations | Fait | 4 migrations appliquées, 12 tables |
+| A2 | Squelette API + squelette webApp | Fait | 25 routes API, Swagger sur `/docs` |
+| A3 | **Génération des 500 000 codes** | Fait | 51,6 s, 9 908 lignes/s, 0 collision, chiffres et lettres garantis dans chaque code |
+| A4 | Test automatisé de la répartition | Fait | `codes:verify` + 13 tests d'intégration |
+| A5 | Auth formulaire + Google + Facebook | Fait | Better Auth ; OAuth câblé, identifiants à fournir |
+| A6 | Rôles et permissions | Fait | 3 gardes globales, cloisonnement testé en E2E |
+| A7 | Page de présentation du jeu et des lots | Fait | `/jeu-concours`, `/jeu-concours/lots` |
+| A8 | Participation par numéro de ticket | Fait | 6 issues UC-01, compare-and-swap concurrent |
+| A9 | Historique des gains côté client | Fait | `/mon-compte`, `/mon-compte/gains/[id]` |
+| A10 | Back-office statistiques | Fait | 12 agrégats, cache Redis 2 min |
+| A11 | Export des données pour l'emailing | Fait | CSV et JSON, opt-in seul, injection de formule neutralisée |
+| A12 | Vue employé boutique | Fait | Recherche `pg_trgm`, remise tracée au journal d'audit |
+| A13 | **Tirage du gros lot côté serveur** | Fait | 1 chance par participant, rejouable et vérifiable |
+| A14 | Endpoints API pour les caisses | Fait | 3 routes, clé d'API, `FOR UPDATE SKIP LOCKED` |
+| A15 | RGPD | Fait | Consentements horodatés serveur, export art. 20, anonymisation art. 17 |
+| A16 | Accessibilité + responsive | Fait | `jsx-a11y` au lint, projet Playwright mobile |
+| A17 | SEO on-page | Fait | SSR, métadonnées, sitemap généré, Schema.org |
+| A18 | Tests de performance | Fait | k6 v2.3, 2 492 itérations, 6 seuils sur 6. 50 soumissions/s tenues à 15,6 ms p(95) |
 
 ### Tests livrés
 
 | Famille | Outil | Volume | Statut |
 |---|---|---|---|
-| Unitaires | Vitest | 54 | ✅ passent |
-| Intégration | Vitest + PostgreSQL | 32 | ✅ passent |
-| Fonctionnels | Playwright, 3 projets | 46 | ✅ passent |
-| Performance | k6 | 3 scénarios, 2 492 itérations | ✅ 6 seuils sur 6 |
+| Unitaires | Vitest | 54 | passent |
+| Intégration | Vitest + PostgreSQL | 32 | passent |
+| Fonctionnels | Playwright, 3 projets | 46 | passent |
+| Performance | k6 | 3 scénarios, 2 492 itérations | 6 seuils sur 6 |
 
 Rapports JUnit écrits dans `reports/junit/`, prêts pour l'étape `junit` de Jenkins.
 
@@ -106,22 +106,22 @@ garantie de la génération qui se vérifie d'elle-même.
 
 | Image | Taille mesurée | Vérifiée à l'exécution |
 |---|---|---|
-| `theetiptop/api` | 471 Mo | ✅ healthy, sert le catalogue et les routes caisse |
-| `theetiptop/web` | 322 Mo | ✅ healthy, rend les pages avec les données réelles |
-| `theetiptop/admin` | 319 Mo | ✅ healthy |
+| `theetiptop/api` | 471 Mo | healthy, sert le catalogue et les routes caisse |
+| `theetiptop/web` | 322 Mo | healthy, rend les pages avec les données réelles |
+| `theetiptop/admin` | 319 Mo | healthy |
 
 ### Workflow CI/CD
 
 | Élément | État | Vérifié |
 |---|---|---|
-| `Jenkinsfile` du dépôt client | ✅ | Dans le dépôt du projet, exigence n° 5 |
-| `Jenkinsfile` site vitrine et application mobile | ✅ | Les trois formes de projet du point 7 |
-| `compose.workflow.yml` : Traefik, Gitea, Jenkins, registry | ✅ | `docker compose config` valide |
-| Prometheus, Alertmanager, Grafana, Loki | ✅ | `promtool` et `amtool` passent sur les 4 fichiers |
-| Métriques métier exposées par l'API | ✅ | `/metrics` relevé à chaud, compteurs incrémentés |
-| Sauvegardes chiffrées et externalisées | ✅ | Unités systemd, `OnFailure=` branché sur l'alerte |
-| Test de restauration réel, 4 contrôles métier | ✅ | Script écrit, syntaxe vérifiée |
-| Reverse proxy et TLS automatique | ✅ | Traefik, résolveur ACME, redirection HTTP → HTTPS |
+| `Jenkinsfile` du dépôt client | Fait | Dans le dépôt du projet, exigence n° 5 |
+| `Jenkinsfile` site vitrine et application mobile | Fait | Les trois formes de projet du point 7 |
+| `compose.workflow.yml` : Traefik, Gitea, Jenkins, registry | Fait | `docker compose config` valide |
+| Prometheus, Alertmanager, Grafana, Loki | Fait | `promtool` et `amtool` passent sur les 4 fichiers |
+| Métriques métier exposées par l'API | Fait | `/metrics` relevé à chaud, compteurs incrémentés |
+| Sauvegardes chiffrées et externalisées | Fait | Unités systemd, `OnFailure=` branché sur l'alerte |
+| Test de restauration réel, 4 contrôles métier | Fait | Script écrit, syntaxe vérifiée |
+| Reverse proxy et TLS automatique | Fait | Traefik, résolveur ACME, redirection HTTP → HTTPS |
 
 Reste à exécuter sur un hôte réel, ce qui dépend du VPS (W1) : la commande des
 machines et des domaines n'est pas faite.
@@ -130,10 +130,10 @@ machines et des domaines n'est pas faite.
 
 | Élément | État |
 |---|---|
-| Logo : 3 concepts, 1 retenu, 5 déclinaisons | ✅ |
-| Charte graphique, contrastes **mesurés** | ✅ |
-| Maquettes, 5 pages × 3 formats | ✅ captures du site réel, régénérables |
-| Zoning et wireframes | ⏳ En attente de la direction artistique |
+| Logo : 3 concepts, 1 retenu, 5 déclinaisons | Fait |
+| Charte graphique, contrastes **mesurés** | Fait |
+| Maquettes, 5 pages × 3 formats | captures du site réel, régénérables |
+| Zoning et wireframes | En attente de la direction artistique |
 
 ### Ce qui bloque encore, côté applicatif
 
@@ -147,7 +147,7 @@ machines et des domaines n'est pas faite.
 | Blocage | Ce qu'il empêche | Qui doit trancher |
 |---|---|---|
 | Numéro de classe et numéro de groupe | Nommage des fichiers de rendu, noms de domaine | Le groupe |
-| Grille de salaires, charges, marge, TJM | ✅ Hypothèses posées dans l'annexe TJM, à valider par le groupe | R1 |
+| Grille de salaires, charges, marge, TJM | Hypothèses posées dans l'annexe TJM, à valider par le groupe | R1 |
 | Identité juridique de Furious Ducks | CST partie A.1, CDC partie A.3, couvertures, mentions de bas de page | Le groupe |
 | Identité juridique de Thé Tip Top, fictive | CDC partie A.1 et mentions légales | R1 |
 | Noms et coordonnées des 4 membres | Comité de pilotage du CDC, rédacteurs sur les couvertures | Le groupe |

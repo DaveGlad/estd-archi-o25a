@@ -1,7 +1,7 @@
 # E.5 MCD et MLD
 
 > Section du cahier des charges. Le modèle physique de référence est le schéma Prisma
-> versionné dans `06-app/db/schema/` (validé : `prisma validate` ✅).
+> versionné dans `06-app/db/schema/` (validé : `prisma validate` ).
 > **Convention : le code est intégralement en anglais**, le dossier reste en français.
 > Le tableau de correspondance ci-dessous fait le pont pour le jury.
 
@@ -47,7 +47,7 @@ erDiagram
 | Association | Cardinalités | Règle de gestion (justification) |
 |---|---|---|
 | Jeu-concours **émet** Code | 1,N ↔ 1,1 | Les **500 000 codes** sont émis dès l'ouverture du jeu |
-| Lot **est affecté à** Code | 1,N ↔ 1,1 | ⚠️ Le lot est figé **à la génération**, jamais tiré à la saisie, c'est ce qui garantit la répartition 60/20/10/6/4 % |
+| Lot **est affecté à** Code | 1,N ↔ 1,1 | Le lot est figé **à la génération**, jamais tiré à la saisie, c'est ce qui garantit la répartition 60/20/10/6/4 % |
 | Code **est joué par** Participation | 0,1 ↔ 1,1 | Un code n'est jouable **qu'une seule fois** (contrainte d'unicité en base) |
 | Utilisateur **effectue** Participation | 0,N ↔ 1,1 | Un client peut jouer autant de codes qu'il possède de tickets |
 | Participation **donne lieu à** Remise | 0,1 ↔ 1,1 | Un lot ne peut être remis qu'une fois, ce qui interdit le double retrait |

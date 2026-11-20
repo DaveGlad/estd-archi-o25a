@@ -36,13 +36,13 @@
 
 | App / package | Rôle | Public | État |
 |---|---|---|---|
-| `apps/api` | **API REST v1** NestJS 11 documentée Swagger, seule à parler à la base. 25 routes | web, admin, **caisses**, **futur e-commerce** | ✅ |
-| `apps/web` | Site public : présentation, lots, règlement, boutiques, inscription, saisie de code, mes gains, droits RGPD. 24 routes | Visiteurs et clients | ✅ |
-| `apps/admin` | Back-office : tableau de bord, statistiques, participants, export emailing, paramétrage, tirage, **espace boutique employé**. 12 routes | Admin, employés | ✅ |
-| `packages/shared` | Types, contrats et constantes métier. **Aucune dépendance d'exécution**, donc importable par l'API, un composant serveur et un composant client | interne | ✅ |
-| `packages/ui` | Design system : tokens, 12 primitives, 5 graphiques, logo et ornements. Partagé web ↔ admin | interne | ✅ |
-| `packages/api-client` | Client typé de l'API v1, avec une frontière serveur / navigateur stricte | interne | ✅ |
-| `prisma/schema/*.prisma` | Schéma splitté par domaine → base du **MLD** du cahier des charges | interne | ✅ |
+| `apps/api` | **API REST v1** NestJS 11 documentée Swagger, seule à parler à la base. 25 routes | web, admin, **caisses**, **futur e-commerce** | Fait |
+| `apps/web` | Site public : présentation, lots, règlement, boutiques, inscription, saisie de code, mes gains, droits RGPD. 24 routes | Visiteurs et clients | Fait |
+| `apps/admin` | Back-office : tableau de bord, statistiques, participants, export emailing, paramétrage, tirage, **espace boutique employé**. 12 routes | Admin, employés | Fait |
+| `packages/shared` | Types, contrats et constantes métier. **Aucune dépendance d'exécution**, donc importable par l'API, un composant serveur et un composant client | interne | Fait |
+| `packages/ui` | Design system : tokens, 12 primitives, 5 graphiques, logo et ornements. Partagé web ↔ admin | interne | Fait |
+| `packages/api-client` | Client typé de l'API v1, avec une frontière serveur / navigateur stricte | interne | Fait |
+| `prisma/schema/*.prisma` | Schéma splitté par domaine → base du **MLD** du cahier des charges | interne | Fait |
 
 > `apps/mobile` (Expo) n'est **pas** un livrable : il sert de **projet de démonstration
 > n° 3** du workflow CI/CD (« app mobile hybride » exigée par le sujet), dans un dépôt
@@ -99,7 +99,7 @@ anglais, correspondance avec le MCD français dans
 | `store.prisma` | `Store`, `PrizeRedemption` | les 10 points de vente dont **Nice**, et la remise des lots |
 | `draw.prisma` | `Draw` | tirage du gros lot, `seed` et empreinte des participants |
 
-### ⚠️ Deux corrections de schéma apportées en cours de développement
+### Deux corrections de schéma apportées en cours de développement
 
 Le schéma initial ne permettait pas de tenir deux exigences du sujet. Les deux corrections
 sont à connaître, parce qu'elles sont visibles dans le MLD du cahier des charges.

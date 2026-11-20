@@ -2,11 +2,11 @@
 
 | Dossier | État |
 |---|---|
-| `logo/` | ✅ 3 concepts, 1 retenu, 5 déclinaisons SVG |
-| `charte/` | ✅ Couleurs, contrastes **mesurés**, typographie, images, mise en page |
-| `maquettes/` | ✅ 15 captures du site réel : 5 pages × 3 formats |
-| `zoning/` | ⏳ En attente de la direction artistique |
-| `wireframes/` | ⏳ En attente de la direction artistique |
+| `logo/` | 3 concepts, 1 retenu, 5 déclinaisons SVG |
+| `charte/` | Couleurs, contrastes **mesurés**, typographie, images, mise en page |
+| `maquettes/` | 15 captures du site réel : 5 pages × 3 formats |
+| `zoning/` | En attente de la direction artistique |
+| `wireframes/` | En attente de la direction artistique |
 
 ## Les maquettes sont des captures, pas des dessins
 

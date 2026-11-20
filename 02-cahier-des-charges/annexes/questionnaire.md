@@ -127,9 +127,9 @@ Le dernier point est le plus utile pour la suite : les mots que les gens emploie
 
 | Entretien | Profil | Date | État |
 |---|---|---|---|
-| 1 | Client régulier en boutique spécialisée | *(à planifier)* | ⬜ |
-| 2 | Acheteur cadeau | *(à planifier)* | ⬜ |
-| 3 | Professionnel du commerce de détail | *(à planifier)* | ⬜ |
+| 1 | Client régulier en boutique spécialisée | *(à planifier)* |  À faire  |
+| 2 | Acheteur cadeau | *(à planifier)* |  À faire  |
+| 3 | Professionnel du commerce de détail | *(à planifier)* |  À faire  |
 
 ## Synthèse des résultats
 

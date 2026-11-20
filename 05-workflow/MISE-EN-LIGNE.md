@@ -14,7 +14,7 @@ numéro de groupe :
 | Workflow et ses outils | `wk-archi-<classe>-G<groupe>.fr` | `wk-archi-o25a-15m-g1.fr` |
 | Site du jeu-concours | `dsp5-archi-<classe>-G<groupe>.fr` | `dsp5-archi-o25a-15m-g1.fr` |
 
-> ⚠️ **Ces deux valeurs sont encore des hypothèses.** Au 15 novembre 2026, ni l'un ni
+> **Ces deux valeurs sont encore des hypothèses.** Au 15 novembre 2026, ni l'un ni
 > l'autre n'est déposé — `dig` ne renvoie ni enregistrement A ni serveur de noms. Le
 > numéro de groupe et le format de classe doivent être confirmés avant achat, puis
 > substitués partout (voir « Changer les domaines » plus bas).
@@ -144,7 +144,7 @@ La graine de génération s'affiche **une fois** et n'est pas stockée. La remet
 l'huissier et au gestionnaire de secrets immédiatement — elle est ce qui permet de rejouer
 la génération, et quiconque la détient peut dériver tous les codes et leurs lots.
 
-> ⚠️ `db:seed:demo` ne doit **pas** être joué en production. Il refuse déjà
+> `db:seed:demo` ne doit **pas** être joué en production. Il refuse déjà
 > `NODE_ENV=production`, mais la règle vaut d'être dite : 1 200 faux clients dans la base
 > d'un jeu réel fausseraient les statistiques et l'export emailing.
 
@@ -198,7 +198,7 @@ Relire le diff avant de valider : `prometheus.yml` doit garder le domaine **du s
 ses cibles applicatives et le domaine **du workflow** pour ses outils. Les mélanger ferait
 atterrir Jenkins et Grafana sur l'adresse publique du client.
 
-⚠️ Les images `web` et `admin` doivent être **reconstruites** après ce changement. Les
+Les images `web` et `admin` doivent être **reconstruites** après ce changement. Les
 variables `NEXT_PUBLIC_*` sont des arguments de build inscrits dans le bundle navigateur :
 une image construite avec l'ancien domaine appellera l'ancien domaine, quoi que dise le
 `compose` de production.
@@ -210,4 +210,4 @@ une image construite avec l'ancien domaine appellera l'ancien domaine, quoi que 
 | Identifiants OAuth Google et Facebook | Le code se désactive proprement sans eux. Les connexions sociales resteront absentes tant qu'ils ne sont pas créés |
 | Clés d'API des caisses | `POS_API_KEYS` doit être rempli, sinon les endpoints caisse refusent tout |
 | Sauvegarde externalisée | Demande un espace de stockage et un `rclone config` sur l'hôte |
-| Mention « projet étudiant fictif » | ✅ Déjà présente dans le pied de page et les mentions légales, comme le sujet l'exige |
+| Mention « projet étudiant fictif » | Déjà présente dans le pied de page et les mentions légales, comme le sujet l'exige |

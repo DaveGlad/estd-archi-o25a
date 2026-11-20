@@ -4,14 +4,14 @@
 
 | Échéance | Date | Statut au 16/08/2026 |
 |---|---|---|
-| Compréhension projet | 26 mai 2026 | ⚠️ **Dépassée**. À vérifier avec le formateur, des pénalités ont peut-être déjà été appliquées |
-| Vérification avancée projet | 29 juin 2026 | ⚠️ **Dépassée**, même remarque |
-| CDC et CST définitifs | **31 août 2026, 9h** | 🔴 **J-15**. Non rendu, pas de soutenance |
-| Évaluation des dossiers et entretien | semaine du 19 oct. 2026 | ⏳ |
-| Site et workflow en ligne | **16 nov. 2026, 9h** | 🔴 Non rendu, pas de soutenance |
-| Évaluation du site et du workflow | semaine du 16 nov. 2026 | ⏳ |
-| Archive projet | **14 déc. 2026, 9h** | ⏳ |
-| Soutenance | semaine du 14 déc. 2026 | ⏳ 15 à 20 min en groupe, puis environ 15 min individuelles |
+| Compréhension projet | 26 mai 2026 | **Dépassée**. À vérifier avec le formateur, des pénalités ont peut-être déjà été appliquées |
+| Vérification avancée projet | 29 juin 2026 | **Dépassée**, même remarque |
+| CDC et CST définitifs | **31 août 2026, 9h** | **J-15**. Non rendu, pas de soutenance |
+| Évaluation des dossiers et entretien | semaine du 19 oct. 2026 | En attente |
+| Site et workflow en ligne | **16 nov. 2026, 9h** | Non rendu, pas de soutenance |
+| Évaluation du site et du workflow | semaine du 16 nov. 2026 | En attente |
+| Archive projet | **14 déc. 2026, 9h** | En attente |
+| Soutenance | semaine du 14 déc. 2026 | 15 à 20 min en groupe, puis environ 15 min individuelles |
 
 Première action, sans délai : contacter le formateur au sujet des deux rendus dépassés, et les déposer quand même. Des pénalités valent toujours mieux qu'un zéro, et ça montre que le groupe reprend la main. Le détail est en tête de `SPRINT-01-DOSSIERS.md`.
 
@@ -128,10 +128,10 @@ L'archive doit contenir les deux dossiers en v1, les deux en V2, le support de p
 
 | Risque | Impact | Parade |
 |---|---|---|
-| 16 jours pour deux dossiers | 🔴 Critique | Sprint jour par jour, travail parallélisé, aucune section laissée vide. Court vaut mieux que manquant |
-| Retards déjà accumulés en mai et juin | 🟠 Note | Contacter le formateur aujourd'hui, rendre quand même les documents |
-| Le Gantt doit être fait sous un outil imposé | 🟠 Blocage | Installer GanttProject dès le 16 août. MS Project ne tourne pas nativement sur macOS |
-| Performances sur 500 000 codes | 🟠 Technique | Index en base, génération par batch, tests de charge dès septembre |
-| Site et workflow à maintenir en ligne jusqu'au jury | 🟠 Budget | Prendre le VPS et les domaines avec une échéance postérieure à mars 2027 |
-| Entretien individuel | 🟠 Note | Chacun relit l'intégralité des dossiers, pas seulement sa partie. Session de questions croisées en décembre |
-| Perte de données | 🔴 Critique | Tout dans Git dès aujourd'hui, dossiers compris, et backups testés |
+| 16 jours pour deux dossiers | Critique | Sprint jour par jour, travail parallélisé, aucune section laissée vide. Court vaut mieux que manquant |
+| Retards déjà accumulés en mai et juin | Note | Contacter le formateur aujourd'hui, rendre quand même les documents |
+| Le Gantt doit être fait sous un outil imposé | Blocage | Installer GanttProject dès le 16 août. MS Project ne tourne pas nativement sur macOS |
+| Performances sur 500 000 codes | Technique | Index en base, génération par batch, tests de charge dès septembre |
+| Site et workflow à maintenir en ligne jusqu'au jury | Budget | Prendre le VPS et les domaines avec une échéance postérieure à mars 2027 |
+| Entretien individuel | Note | Chacun relit l'intégralité des dossiers, pas seulement sa partie. Session de questions croisées en décembre |
+| Perte de données | Critique | Tout dans Git dès aujourd'hui, dossiers compris, et backups testés |

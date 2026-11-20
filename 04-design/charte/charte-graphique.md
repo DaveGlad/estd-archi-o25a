@@ -16,9 +16,9 @@
 
 | Concept | Fichier | Décision |
 |---|---|---|
-| **A — la feuille inscrite** | `logo/concepts/concept-a-feuille.svg` | ✅ **Retenu** |
-| B — la vapeur | `logo/concepts/concept-b-vapeur.svg` | ❌ Écarté |
-| C — le monogramme TTT | `logo/concepts/concept-c-monogramme.svg` | ❌ Écarté |
+| **A — la feuille inscrite** | `logo/concepts/concept-a-feuille.svg` | **Retenu** |
+| B — la vapeur | `logo/concepts/concept-b-vapeur.svg` | Écarté |
+| C — le monogramme TTT | `logo/concepts/concept-c-monogramme.svg` | Écarté |
 
 **Pourquoi A.** La feuille est construite géométriquement et non dessinée à main levée :
 le contour est une vesica symétrique, la nervure centrale suit l'axe, les nervures

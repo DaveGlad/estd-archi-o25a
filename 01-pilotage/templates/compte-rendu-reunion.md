@@ -13,8 +13,8 @@
 ## Participants
 | Nom | Rôle | Invité | Présent |
 |---|---|---|---|
-| | | ✅ | ✅ |
-| | | ✅ | ❌ |
+| | | Fait | Fait |
+| | | Fait | Non |
 
 ## Ordre du jour
 1.

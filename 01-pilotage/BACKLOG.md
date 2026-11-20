@@ -50,8 +50,8 @@ Légende étiquettes : `PILOTAGE` · `CDC` · `CST` · `DESIGN` · `WORKFLOW` ·
 | S9 | Stratégie éditoriale | CDC | 20 août |
 | S10 | E-réputation et gestion de crise | CDC | 20 août |
 | S11 | SEO : audit de mots-clés + bonnes pratiques avec exemples | CDC | 20 août |
-| S12 | ✍️ Rédiger le contenu SEO de la page d'accueil | CDC | 20 août |
-| S13 | ✍️ Rédiger le contenu SEO de la page « concept » | CDC | 20 août |
+| S12 | Rédiger le contenu SEO de la page d'accueil | CDC | 20 août |
+| S13 | Rédiger le contenu SEO de la page « concept » | CDC | 20 août |
 | S14 | SMO : plateformes, calendrier éditorial, influenceurs, publicités | CDC | 20 août |
 | S15 | Emailing : types, base, fréquence, RGPD, prestataire + coût | CDC | 20 août |
 | S16 | Analyse de performance : KPI par action + outils + contraintes légales | CDC | 20 août |

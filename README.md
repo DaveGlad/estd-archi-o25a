@@ -3,16 +3,16 @@
 > Agence **Furious Ducks** (workflow CI/CD) + client **Thé Tip Top** (site jeu-concours)
 > Diplôme : Expert en Stratégie et Transformation Digitale, DSP5 Archi O25A
 
-## ⏱️ Où on en est
+## Où on en est
 
 | | |
 |---|---|
 | **Date du jour** | 16 août 2026 |
 | **Prochaine échéance** | **31 août 2026 à 9h**, CDC et CST définitifs en PDF |
 | **Jours restants** | **15** |
-| **Statut** | 🔴 Rendus du 26 mai et du 29 juin dépassés, voir `01-pilotage/PLANNING.md` |
+| **Statut** | Rendus du 26 mai et du 29 juin dépassés, voir `01-pilotage/PLANNING.md` |
 
-## 📁 Structure
+## Structure
 
 ```
 00-sujet/                        Les 6 PDF du sujet (source de vérité, ne pas modifier)
@@ -27,7 +27,7 @@
 09-recherche/                    Benchmark concurrents, veille, étude de marché
 ```
 
-## 📌 Les documents de pilotage
+## Les documents de pilotage
 
 1. **`01-pilotage/PLANNING.md`** : le planning macro jusqu'à la soutenance
 2. **`01-pilotage/SPRINT-01-DOSSIERS.md`** : le plan jour par jour jusqu'au 31 août
@@ -35,7 +35,7 @@
 4. **`01-pilotage/REPARTITION.md`** : qui fait quoi, rendu par rendu, avec les relecteurs
 5. **`01-pilotage/AVANCEMENT.md`** : l'état d'avancement des deux dossiers
 
-## ⚠️ Règles non négociables
+## Règles non négociables
 
 - **Nommage** : `ESTD ARCHI {n° classe} – G{n° groupe} – {Document}.pdf`
 - **Format dossiers** : A4 **portrait**, pagination **1/100** (pas « 1 »)

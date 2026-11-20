@@ -38,7 +38,7 @@ docker build -f ../../05-workflow/docker/Dockerfile.admin \
   -t theetiptop/admin:$TAG .
 ```
 
-### ⚠️ Une image front par environnement
+### Une image front par environnement
 
 Les variables `NEXT_PUBLIC_*` sont des **arguments de build**, pas de la configuration
 d'exécution. Next.js les inscrit dans le bundle navigateur à la compilation : une image
@@ -69,10 +69,10 @@ dépendances d'une seule application n'est pas trivial**. Trois approches ont é
 
 | Approche | Résultat mesuré |
 |---|---|
-| `npm ci --omit=dev -w @theetiptop-contest/api --include-workspace-root` | ❌ **936 Mo** de `node_modules`. Le filtre de workspace de npm ne restreint pas `ci` : TypeScript, Next et Playwright sont installés |
-| `npm prune --omit=dev --include-workspace-root` | ❌ Même résultat, pour la même raison |
-| `nx prune`, qui produit un `package.json` et un `package-lock.json` élagués | ❌ Le lockfile élagué est incohérent avec son propre manifeste : `npm ci` s'arrête sur `Missing: content-type@1.0.5 from lock file`. Express 5 atteint `content-type` par deux chemins, le pruner n'en enregistre qu'un |
-| ✅ **`generatePackageJson` + épinglage aux versions exactes** | **471 Mo.** Webpack émet la liste exacte de ses externes, `tools/pin-runtime-deps.mjs` remplace chaque intervalle par la version que l'étage de build a réellement résolue, puis `npm install --no-package-lock` installe exactement celles-là |
+| `npm ci --omit=dev -w @theetiptop-contest/api --include-workspace-root` | **936 Mo** de `node_modules`. Le filtre de workspace de npm ne restreint pas `ci` : TypeScript, Next et Playwright sont installés |
+| `npm prune --omit=dev --include-workspace-root` | Même résultat, pour la même raison |
+| `nx prune`, qui produit un `package.json` et un `package-lock.json` élagués | Le lockfile élagué est incohérent avec son propre manifeste : `npm ci` s'arrête sur `Missing: content-type@1.0.5 from lock file`. Express 5 atteint `content-type` par deux chemins, le pruner n'en enregistre qu'un |
+| **`generatePackageJson` + épinglage aux versions exactes** | **471 Mo.** Webpack émet la liste exacte de ses externes, `tools/pin-runtime-deps.mjs` remplace chaque intervalle par la version que l'étage de build a réellement résolue, puis `npm install --no-package-lock` installe exactement celles-là |
 
 La chaîne reste reproductible de bout en bout : lockfile versionné → étage de build →
 manifeste épinglé → installation d'exécution.
