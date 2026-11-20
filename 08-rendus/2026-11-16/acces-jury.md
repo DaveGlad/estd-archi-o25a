@@ -26,8 +26,9 @@ effectué sur ce site.
 | Maquettes Figma | <https://www.figma.com/design/CkO6KsKKatpJPP2ky53WOO/Design---Site-The-Tip-TOP> | compte Figma | lecture partagée |
 | Google Analytics | <https://analytics.google.com> | voir § Analytics | voir § Analytics |
 
-Chaque identifiant de ce tableau a été testé le 19 novembre : bon mot de passe accepté,
-mauvais mot de passe refusé, accès anonyme refusé.
+Chaque identifiant de ce tableau a été testé le 20 novembre, dans un navigateur et non
+seulement en ligne de commande : connexion réelle depuis le formulaire, mauvais mot de
+passe refusé, accès anonyme refusé.
 
 ## Se connecter
 
@@ -101,8 +102,8 @@ applicatif.
 | Règlement déposé chez l'huissier | `/jeu-concours/reglement` |
 | Inscription par formulaire, Google ou Facebook | `/inscription` |
 | Saisie d'un code | `/participer` |
-| Historique des gains | `/mon-compte/gains` |
-| Droits RGPD | `/mon-compte/confidentialite` |
+| Historique des gains | `/mon-compte`, détail sur `/mon-compte/gains/<id>` |
+| Droits RGPD : export, retrait de consentement, suppression | `/mon-compte/confidentialite` |
 | Mentions légales et CGU | `/mentions-legales` et `/cgu` |
 
 Dans le back-office :
