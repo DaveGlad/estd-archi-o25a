@@ -15,14 +15,68 @@
 # The containers still run, still migrate, still pass their healthchecks. The pipeline's
 # "deploy to dev" stage therefore proves what it claims: an artefact built minutes ago is
 # running. It is reachable from the host, which is where the functional tests run.
+#
+# ---------------------------------------------------------------------------------------
+# Why the five published ports below, all bound to the loopback
+#
+# Unrouted is not the same as unreachable. The functional suite drives a real browser
+# against this environment, and that browser needs ONE host to talk to.
+#
+# Reaching the containers by name -- `http://web:3000`, `http://api:3333` -- looks simpler
+# and cannot work: Better Auth sets the session cookie on the host that issued it, with no
+# Domain attribute, so a cookie set by `api` is never sent back to `web`. They share no
+# parent domain to scope it to either. Every signed-in test would 401 after a sign-in that
+# returned 200.
+#
+# `127.0.0.1` is the shared host that makes the cookie travel, exactly as `localhost` does
+# on a developer's machine: a cookie is scoped by host and ignores the port, so the API on
+# 3133 sets a cookie that the site on 3100 sends back. The ports are bound to the loopback
+# and to nothing else, so this environment stays as unpublished as it was before.
+#
+# The two data ports are for the fixtures rather than the browser. The suite takes an
+# untouched code out of the pool before a test and puts it back after, which is a direct
+# database connection, and it clears its own rate-limit counters in Redis so the third run
+# of the morning is not refused.
+#
+# The numbers come from the env file so two unrouted environments can coexist. The defaults
+# are dev's; .env.preprod sets its own, otherwise whichever started second would fail on an
+# address already in use.
+# ---------------------------------------------------------------------------------------
 
 services:
   api:
     labels: !override
       traefik.enable: 'false'
+    ports:
+      - '127.0.0.1:${HOST_API_PORT:-3133}:3333'
   web:
     labels: !override
       traefik.enable: 'false'
+    ports:
+      - '127.0.0.1:${HOST_WEB_PORT:-3100}:3000'
   admin:
     labels: !override
       traefik.enable: 'false'
+    ports:
+      - '127.0.0.1:${HOST_ADMIN_PORT:-3101}:3001'
+  postgres:
+    ports:
+      - '127.0.0.1:${HOST_DB_PORT:-5433}:5432'
+  redis:
+    ports:
+      - '127.0.0.1:${HOST_REDIS_PORT:-6380}:6379'
+
+networks:
+  # `internal: true` in compose.prod.yml, and it has to be lifted here for the five ports
+  # above to answer at all.
+  #
+  # An internal network has no gateway, so the host has no route to the containers on it and
+  # the published port DNATs to an address nothing can reach. Docker accepts the mapping
+  # without a word: `docker ps` shows the port, and every connection to it times out. Checked
+  # on this host before writing the line, with an nginx on an internal network and a curl
+  # from the host -- exit code 000, no error anywhere.
+  #
+  # Production is unaffected: it loads compose.singlehost.yml instead of this file, and its
+  # database and Redis stay unroutable from the host, with no published port.
+  backend:
+    internal: false

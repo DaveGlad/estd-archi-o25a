@@ -269,7 +269,29 @@ pipeline {
             // built with the preprod URL calls preprod whatever the production compose
             // says. See 05-workflow/docker/README.md.
             def envName = env.TAG_NAME ? 'prod' : (env.BRANCH_NAME == 'develop' ? 'dev' : 'preprod')
-            def host = envName == 'prod' ? 'dsp5-archi-o25a-15m-g1.fr' : "${envName}.dsp5-archi-o25a-15m-g1.fr"
+
+            // Production is addressed by its hostname. The other two are not published —
+            // one hostname resolves on this host — so they are addressed on the loopback,
+            // on the ports compose.norouting.yml binds there.
+            //
+            // The URL baked in has to be the one the BROWSER will really use, since it
+            // cannot be changed at run time. Baking `https://api.dev.…` into an environment
+            // where that name does not resolve gave a front end that renders and whose every
+            // client-side call fails, and a functional suite with nothing to sign in to.
+            //
+            // One host for the three applications is also what makes the session work: the
+            // cookie the API sets on `127.0.0.1` is sent back by the site, because a cookie
+            // is scoped by host and ignores the port.
+            def apiUrl = [
+              prod: 'https://api.dsp5-archi-o25a-15m-g1.fr',
+              dev: 'http://127.0.0.1:3133',
+              preprod: 'http://127.0.0.1:3233',
+            ][envName]
+            def siteUrl = [
+              prod: 'https://dsp5-archi-o25a-15m-g1.fr',
+              dev: 'http://127.0.0.1:3100',
+              preprod: 'http://127.0.0.1:3200',
+            ][envName]
 
             sh """
               docker build -f ../../05-workflow/docker/Dockerfile.api \
@@ -281,12 +303,12 @@ pipeline {
                 -t \$REGISTRY/\$IMAGE_NAMESPACE/migrate:\$TAG .
 
               docker build -f ../../05-workflow/docker/Dockerfile.web \
-                --build-arg NEXT_PUBLIC_API_URL=https://api.${host} \
-                --build-arg NEXT_PUBLIC_SITE_URL=https://${host} \
+                --build-arg NEXT_PUBLIC_API_URL=${apiUrl} \
+                --build-arg NEXT_PUBLIC_SITE_URL=${siteUrl} \
                 -t \$REGISTRY/\$IMAGE_NAMESPACE/web:\$TAG-${envName} .
 
               docker build -f ../../05-workflow/docker/Dockerfile.admin \
-                --build-arg NEXT_PUBLIC_API_URL=https://api.${host} \
+                --build-arg NEXT_PUBLIC_API_URL=${apiUrl} \
                 -t \$REGISTRY/\$IMAGE_NAMESPACE/admin:\$TAG-${envName} .
             """
             env.DEPLOY_ENV = envName
@@ -346,21 +368,75 @@ pipeline {
       }
     }
 
-    stage('Functional tests on dev') {
+    stage('Seed dev') {
       when { branch 'develop' }
-      agent {
-        docker {
-          image 'mcr.microsoft.com/playwright:v1.65.0-noble'
-          args '-v npm-cache:/root/.npm'
-          reuseNode true
+      steps {
+        dir('06-app/theetiptop-contest') {
+          // A migrated database is an empty one. The functional suite signs in as the demo
+          // customer and plays a code out of the pool, so both have to exist before it runs
+          // — and `deploy.sh` deliberately does not seed, because the same script deploys
+          // production and seeding production would overwrite live data.
+          //
+          // Both commands are safe to re-run, which matters: this runs on every merge into
+          // develop, not once. The seed is a series of upserts keyed on natural keys, and
+          // `--if-empty` makes the generator leave a pool that is already there alone
+          // instead of refusing to run. See prisma/generate-codes.ts.
+          //
+          // `--network host`, so the loopback addresses in the env file below resolve to
+          // the ports compose.norouting.yml publishes for dev.
+          sh '''
+            docker run --rm --network host \
+              --volumes-from "$(hostname)" -w "$PWD" \
+              -v nx-cache:/cache -v npm-cache:/root/.npm \
+              --env-file /etc/theetiptop/env/.env.dev-host \
+              furious-ducks/node-ci:1 \
+              sh -c 'npm run db:seed && npm run codes:generate -- --if-empty'
+          '''
         }
       }
+    }
+
+    stage('Functional tests on dev') {
+      when { branch 'develop' }
       steps {
         dir('06-app/theetiptop-contest') {
           // Against the DEPLOYED environment, not a local dev server. These tests exist to
           // prove the artefact that was just published actually works where it was put;
           // running them against `next dev` would test something nobody deploys.
-          sh 'npx playwright test --reporter=junit'
+          //
+          // The three E2E_* variables are what switch playwright.config.ts off its
+          // `webServer` block. Without them the suite starts three servers of its own from
+          // the checkout and tests those — a different binary from the one just deployed,
+          // which is the one thing this stage exists to check.
+          //
+          // The env file carries DATABASE_URL and REDIS_URL on the loopback, for the
+          // fixtures: they take an untouched code out of the pool before a test and put it
+          // back after, and clear the suite's own rate-limit counters so the third run of
+          // the morning is not refused. It is passed as a FILE rather than as `-e KEY=value`
+          // so the database password does not end up in the build log, which Jenkins writes
+          // with `set -x`.
+          //
+          // Explicit `docker run` rather than a stage-level Docker agent: the earlier shape
+          // reported `tests=0` and a bare exit 1, because the container's working directory
+          // was the workspace root and `testDir: './e2e'` resolved to a path that does not
+          // exist there. Nothing in the log said so.
+          //
+          // No `--reporter=junit` either. The flag REPLACES the reporter list in
+          // playwright.config.ts, which writes the JUnit file to reports/junit/ for the
+          // `junit` step in the post block and the HTML report next to it. With the flag the
+          // XML went to the console and the post block collected nothing.
+          sh '''
+            docker run --rm --network host \
+              --volumes-from "$(hostname)" -w "$PWD" \
+              -v npm-cache:/root/.npm \
+              --env-file /etc/theetiptop/env/.env.dev-host \
+              -e CI=1 \
+              -e E2E_SITE_URL=http://127.0.0.1:3100 \
+              -e E2E_ADMIN_URL=http://127.0.0.1:3101 \
+              -e E2E_API_URL=http://127.0.0.1:3133 \
+              mcr.microsoft.com/playwright:v1.65.0-noble \
+              npx playwright test
+          '''
         }
       }
     }
@@ -416,8 +492,11 @@ pipeline {
         // the agency to keep.
         junit allowEmptyResults: true, testResults: 'reports/junit/*.xml'
         archiveArtifacts artifacts: 'reports/**/*', allowEmptyArchive: true, fingerprint: true
+        // `reports/playwright`, which is the `outputFolder` in playwright.config.ts — not
+        // Playwright's own default of `playwright-report`. Pointing at the default left the
+        // link in the sidebar empty on every build.
         publishHTML(target: [
-          reportDir: 'playwright-report', reportFiles: 'index.html',
+          reportDir: 'reports/playwright', reportFiles: 'index.html',
           reportName: 'Playwright', allowMissing: true, keepAll: true, alwaysLinkToLastBuild: true
         ])
       }
