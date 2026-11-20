@@ -151,8 +151,9 @@ export function createAuth(prisma: PrismaService, config: AppConfig) {
 
     advanced: {
       // Cookies are only sent over HTTPS once deployed; relaxed in development so the
-      // flow works on http://localhost without a self-signed certificate.
-      useSecureCookies: config.isProduction,
+      // flow works on http://localhost without a self-signed certificate. Follows
+      // NODE_ENV unless AUTH_SECURE_COOKIES overrides it -- see the comment there.
+      useSecureCookies: config.auth.secureCookies,
 
       /**
        * One session across the three subdomains.

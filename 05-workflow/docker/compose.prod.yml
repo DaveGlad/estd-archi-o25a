@@ -59,6 +59,11 @@ services:
       # Required once the three pieces sit on three subdomains: without it the session
       # cookie is host-only and every call from the site comes back 401.
       COOKIE_DOMAIN: ${COOKIE_DOMAIN}
+      # Empty in production, and it has to stay that way: empty means "follow NODE_ENV",
+      # which here means `Secure`. Only the unrouted environments set it to `false`, because
+      # they are served over plain http on the loopback, where a `Secure` cookie is dropped
+      # by the browser without an error of any kind. See apps/api/src/config/env.ts.
+      AUTH_SECURE_COOKIES: ${AUTH_SECURE_COOKIES:-}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       FACEBOOK_CLIENT_ID: ${FACEBOOK_CLIENT_ID}

@@ -40,6 +40,31 @@ const EnvSchema = z.object({
    */
   COOKIE_DOMAIN: z.string().optional(),
 
+  /**
+   * Whether the session cookie carries the `Secure` attribute.
+   *
+   * Defaults to whatever NODE_ENV says, which is the right default: production serves over
+   * HTTPS, and a session cookie that a proxy downgrade could leak in clear is a session
+   * anyone on the path can replay.
+   *
+   * It is a setting rather than a derivation because NODE_ENV and the transport are two
+   * different facts. The dev environment on the single host runs the PRODUCTION build --
+   * that is the whole point of deploying it -- and reaches it over plain http on the
+   * loopback, with no certificate and no proxy. A `Secure` cookie is silently dropped by
+   * the browser there, so every sign-in appears to succeed and the next request is a 401.
+   *
+   * Only ever false on an environment that is not published. Production never sets it.
+   */
+  // An empty value means "not set", not "invalid". `.env.example` ships the key with no
+  // value so it is discoverable, and dotenv hands that over as an empty string rather than
+  // as undefined -- without this the documented file would fail its own validation.
+  AUTH_SECURE_COOKIES: z
+    .preprocess(
+      (value) => (value === '' ? undefined : value),
+      z.enum(['true', 'false']).optional(),
+    )
+    .transform((value) => (value === undefined ? undefined : value === 'true')),
+
   // Optional: the OAuth providers are only registered when their pair is complete, so a
   // developer without Google credentials still gets a working API, with the form login.
   GOOGLE_CLIENT_ID: z.string().optional(),
@@ -95,6 +120,8 @@ export interface AppConfig {
     baseUrl: string;
     /** `null` in development, where everything shares the `localhost` host. */
     cookieDomain: string | null;
+    /** `Secure` on the session cookie. Follows NODE_ENV unless AUTH_SECURE_COOKIES says otherwise. */
+    secureCookies: boolean;
     google: { clientId: string; clientSecret: string } | null;
     facebook: { clientId: string; clientSecret: string } | null;
   };
@@ -159,6 +186,7 @@ export function loadConfig(): AppConfig {
       secret: env.BETTER_AUTH_SECRET,
       baseUrl: env.BETTER_AUTH_URL,
       cookieDomain: env.COOKIE_DOMAIN?.trim() || null,
+      secureCookies: env.AUTH_SECURE_COOKIES ?? env.NODE_ENV === 'production',
       google:
         env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET
           ? { clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET }
