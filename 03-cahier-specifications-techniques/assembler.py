@@ -107,6 +107,61 @@ def build_markdown() -> str:
     return '\n\n\\newpage\n\n'.join(parts) + '\n'
 
 
+def finalise_docx(path: pathlib.Path) -> None:
+    """Imposes A4 portrait and the pagination the brief asks for.
+
+    Two requirements of the plan, both written in bold in the source document:
+    « le format du cahier est obligatoirement en portrait au format A4 » and
+    « doit comporter une pagination (1/100) et non un numéro de page (1) ».
+
+    Neither comes for free. Pandoc's default template carries no page size at all,
+    so the word processor applies whatever its locale says, which is US Letter on
+    an American account. And a page number on its own is what every template does
+    by default; the brief explicitly refuses it.
+
+    The footer uses two Word fields rather than literal text, so the numbering
+    survives every edit: PAGE renumbers itself, NUMPAGES recounts the document.
+    """
+    import docx
+    from docx.enum.section import WD_ORIENT
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.oxml.ns import qn
+    from docx.shared import Mm, Pt
+
+    def field(run, instruction: str) -> None:
+        begin = run._r.makeelement(qn('w:fldChar'), {qn('w:fldCharType'): 'begin'})
+        instr = run._r.makeelement(qn('w:instrText'), {qn('xml:space'): 'preserve'})
+        instr.text = instruction
+        end = run._r.makeelement(qn('w:fldChar'), {qn('w:fldCharType'): 'end'})
+        run._r.append(begin)
+        run._r.append(instr)
+        run._r.append(end)
+
+    document = docx.Document(str(path))
+    for section in document.sections:
+        section.orientation = WD_ORIENT.PORTRAIT
+        section.page_width = Mm(210)
+        section.page_height = Mm(297)
+        section.left_margin = section.right_margin = Mm(20)
+        section.top_margin = section.bottom_margin = Mm(18)
+
+        footer = section.footer
+        footer.is_linked_to_previous = False
+        para = footer.paragraphs[0] if footer.paragraphs else footer.add_paragraph()
+        para.text = ''
+        para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        run = para.add_run()
+        run.font.size = Pt(9)
+        field(run, ' PAGE ')
+        para.add_run(' / ').font.size = Pt(9)
+        run = para.add_run()
+        run.font.size = Pt(9)
+        field(run, ' NUMPAGES ')
+
+    document.save(str(path))
+
+
 def main() -> None:
     markdown = build_markdown()
     OUT_MD.write_text(markdown, encoding='utf-8')
@@ -131,9 +186,11 @@ def main() -> None:
         print(result.stderr, file=sys.stderr)
         sys.exit('pandoc a échoué')
 
+    finalise_docx(OUT_DOCX)
+
     size = OUT_DOCX.stat().st_size / 1024
     print(f'  {OUT_DOCX.name}')
-    print(f'  {size:,.0f} Ko'.replace(',', ' '))
+    print(f'  {size:,.0f} Ko, A4 portrait, pagination 1/100'.replace(',', ' '))
     if result.stderr.strip():
         print('  avertissements pandoc :')
         for line in result.stderr.strip().splitlines()[:6]:
