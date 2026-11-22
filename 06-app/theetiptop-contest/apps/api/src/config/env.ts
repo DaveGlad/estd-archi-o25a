@@ -27,7 +27,7 @@ const EnvSchema = z.object({
   BETTER_AUTH_URL: z.url('BETTER_AUTH_URL must be an absolute URL'),
 
   /**
-   * Parent domain the session cookie is scoped to, e.g. `.dsp5-archi-o25a-15m-g1.fr`.
+   * Parent domain the session cookie is scoped to, e.g. `.dsp5-archi-o25a-15m-g3.fr`.
    *
    * Empty in development, and that is correct there: everything runs on `localhost`, and a
    * cookie is scoped by HOST, not by port, so `localhost:3333` setting it makes

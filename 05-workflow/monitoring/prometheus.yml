@@ -69,19 +69,19 @@ scrape_configs:
   - job_name: contest-api-prod
     metrics_path: /metrics
     static_configs:
-      - targets: ['api.dsp5-archi-o25a-15m-g1.fr:3333']
+      - targets: ['api.dsp5-archi-o25a-15m-g3.fr:3333']
         labels: { environment: prod }
 
   - job_name: contest-api-preprod
     metrics_path: /metrics
     static_configs:
-      - targets: ['api.preprod.dsp5-archi-o25a-15m-g1.fr:3333']
+      - targets: ['api.preprod.dsp5-archi-o25a-15m-g3.fr:3333']
         labels: { environment: preprod }
 
   - job_name: contest-api-dev
     metrics_path: /metrics
     static_configs:
-      - targets: ['api.dev.dsp5-archi-o25a-15m-g1.fr:3333']
+      - targets: ['api.dev.dsp5-archi-o25a-15m-g3.fr:3333']
         labels: { environment: dev }
 
   # --- the datastores --------------------------------------------------------
@@ -106,9 +106,9 @@ scrape_configs:
       module: [http_2xx]
     static_configs:
       - targets:
-          - https://dsp5-archi-o25a-15m-g1.fr
-          - https://dsp5-archi-o25a-15m-g1.fr/participer
-          - https://api.dsp5-archi-o25a-15m-g1.fr/health
+          - https://dsp5-archi-o25a-15m-g3.fr
+          - https://dsp5-archi-o25a-15m-g3.fr/participer
+          - https://api.dsp5-archi-o25a-15m-g3.fr/health
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target

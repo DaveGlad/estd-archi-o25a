@@ -17,9 +17,9 @@
 global:
   resolve_timeout: 5m
   # The WORKFLOW domain: these are the agency's own alerts, not the client's site.
-  smtp_from: alertes@wk-archi-o25a-15m-g1.fr
-  smtp_smarthost: smtp.wk-archi-o25a-15m-g1.fr:587
-  smtp_auth_username: alertes@wk-archi-o25a-15m-g1.fr
+  smtp_from: alertes@wk-archi-o25a-15m-g3.fr
+  smtp_smarthost: smtp.wk-archi-o25a-15m-g3.fr:587
+  smtp_auth_username: alertes@wk-archi-o25a-15m-g3.fr
   smtp_auth_password_file: /etc/alertmanager/secrets/smtp-password
 
 route:
@@ -63,7 +63,7 @@ receivers:
     email_configs:
       # Two channels for critical alerts, because the first thing an incident takes down is
       # often the way you find out about incidents.
-      - to: astreinte@wk-archi-o25a-15m-g1.fr
+      - to: astreinte@wk-archi-o25a-15m-g3.fr
         send_resolved: true
 
   - name: platform

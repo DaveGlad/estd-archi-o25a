@@ -283,12 +283,12 @@ pipeline {
             // cookie the API sets on `127.0.0.1` is sent back by the site, because a cookie
             // is scoped by host and ignores the port.
             def apiUrl = [
-              prod: 'https://api.dsp5-archi-o25a-15m-g1.fr',
+              prod: 'https://api.dsp5-archi-o25a-15m-g3.fr',
               dev: 'http://127.0.0.1:3133',
               preprod: 'http://127.0.0.1:3233',
             ][envName]
             def siteUrl = [
-              prod: 'https://dsp5-archi-o25a-15m-g1.fr',
+              prod: 'https://dsp5-archi-o25a-15m-g3.fr',
               dev: 'http://127.0.0.1:3100',
               preprod: 'http://127.0.0.1:3200',
             ][envName]

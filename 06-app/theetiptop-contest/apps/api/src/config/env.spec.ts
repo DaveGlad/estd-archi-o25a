@@ -73,8 +73,8 @@ describe('loadConfig', () => {
     });
 
     it('is kept as given when a parent domain is set', () => {
-      process.env['COOKIE_DOMAIN'] = '.dsp5-archi-o25a-15m-g1.fr';
-      expect(loadConfig().auth.cookieDomain).toBe('.dsp5-archi-o25a-15m-g1.fr');
+      process.env['COOKIE_DOMAIN'] = '.dsp5-archi-o25a-15m-g3.fr';
+      expect(loadConfig().auth.cookieDomain).toBe('.dsp5-archi-o25a-15m-g3.fr');
     });
   });
 });

@@ -11,8 +11,8 @@ numéro de groupe :
 
 | Rôle | Forme imposée | Valeur du projet |
 |---|---|---|
-| Workflow et ses outils | `wk-archi-<classe>-G<groupe>.fr` | `wk-archi-o25a-15m-g1.fr` |
-| Site du jeu-concours | `dsp5-archi-<classe>-G<groupe>.fr` | `dsp5-archi-o25a-15m-g1.fr` |
+| Workflow et ses outils | `wk-archi-<classe>-G<groupe>.fr` | `wk-archi-o25a-15m-g3.fr` |
+| Site du jeu-concours | `dsp5-archi-<classe>-G<groupe>.fr` | `dsp5-archi-o25a-15m-g3.fr` |
 
 > **Ces deux valeurs sont encore des hypothèses.** Au 15 novembre 2026, ni l'un ni
 > l'autre n'est déposé — `dig` ne renvoie ni enregistrement A ni serveur de noms. Le
@@ -47,9 +47,9 @@ d'attente, pas une minute.
 Vérifier avant d'aller plus loin :
 
 ```bash
-dig +short dsp5-archi-o25a-15m-g1.fr A
-dig +short api.dsp5-archi-o25a-15m-g1.fr A
-dig +short ci.wk-archi-o25a-15m-g1.fr A
+dig +short dsp5-archi-o25a-15m-g3.fr A
+dig +short api.dsp5-archi-o25a-15m-g3.fr A
+dig +short ci.wk-archi-o25a-15m-g3.fr A
 ```
 
 ### 2. Le socle
@@ -117,7 +117,7 @@ au réseau `edge` qu'il surveille ; les démarrer avant le laisse injoignables.
 Attendre les certificats — une minute environ — puis vérifier :
 
 ```bash
-curl -I https://ci.wk-archi-o25a-15m-g1.fr
+curl -I https://ci.wk-archi-o25a-15m-g3.fr
 docker compose -f 05-workflow/compose.workflow.yml logs traefik | grep -i acme
 ```
 
@@ -151,9 +151,9 @@ la génération, et quiconque la détient peut dériver tous les codes et leurs 
 ### 6. Contrôler
 
 ```bash
-curl -I https://dsp5-archi-o25a-15m-g1.fr
-curl -s https://api.dsp5-archi-o25a-15m-g1.fr/health | jq
-curl -s https://api.dsp5-archi-o25a-15m-g1.fr/metrics | grep theetiptop_codes_available
+curl -I https://dsp5-archi-o25a-15m-g3.fr
+curl -s https://api.dsp5-archi-o25a-15m-g3.fr/health | jq
+curl -s https://api.dsp5-archi-o25a-15m-g3.fr/metrics | grep theetiptop_codes_available
 ```
 
 Et dans Grafana, sur `metrics.wk-archi-…`, le tableau de bord « Jeu-concours ».
@@ -189,8 +189,8 @@ confirmé :
 ```bash
 cd /Users/daveglad/Documents/work/estd-archi-o25a
 git ls-files -z | xargs -0 sed -i '' \
-  -e 's/dsp5-archi-o25a-15m-g1\.fr/<nouveau-domaine-site>/g' \
-  -e 's/wk-archi-o25a-15m-g1\.fr/<nouveau-domaine-workflow>/g'
+  -e 's/dsp5-archi-o25a-15m-g3\.fr/<nouveau-domaine-site>/g' \
+  -e 's/wk-archi-o25a-15m-g3\.fr/<nouveau-domaine-workflow>/g'
 git diff --stat
 ```
 

@@ -369,7 +369,7 @@ Titre, Étiquette, Responsable, Deadline et Statut.
 ## Le nom de domaine
 
 L'adresse ci-dessus est celle du serveur. Le sujet demande un domaine portant le numéro de
-classe et le numéro de groupe : `dsp5-archi-o25a-15M-G1.fr` pour le site et
-`wk-archi-o25a-15M-G1.fr` pour le workflow. Leur achat est en cours. Le basculement ne
+classe et le numéro de groupe : `dsp5-archi-o25a-15M-G3.fr` pour le site et
+`wk-archi-o25a-15M-G3.fr` pour le workflow. Leur achat est en cours. Le basculement ne
 coupera pas le service : l'adresse est une variable de déploiement, pas une valeur écrite
 dans le code.

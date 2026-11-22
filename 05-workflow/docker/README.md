@@ -29,12 +29,12 @@ docker build -f ../../05-workflow/docker/Dockerfile.api \
   -t theetiptop/api:$TAG .
 
 docker build -f ../../05-workflow/docker/Dockerfile.web \
-  --build-arg NEXT_PUBLIC_API_URL=https://api.dsp5-archi-o25a-15m-g1.fr \
-  --build-arg NEXT_PUBLIC_SITE_URL=https://dsp5-archi-o25a-15m-g1.fr \
+  --build-arg NEXT_PUBLIC_API_URL=https://api.dsp5-archi-o25a-15m-g3.fr \
+  --build-arg NEXT_PUBLIC_SITE_URL=https://dsp5-archi-o25a-15m-g3.fr \
   -t theetiptop/web:$TAG .
 
 docker build -f ../../05-workflow/docker/Dockerfile.admin \
-  --build-arg NEXT_PUBLIC_API_URL=https://api.dsp5-archi-o25a-15m-g1.fr \
+  --build-arg NEXT_PUBLIC_API_URL=https://api.dsp5-archi-o25a-15m-g3.fr \
   -t theetiptop/admin:$TAG .
 ```
 
@@ -126,7 +126,7 @@ posé par `api.exemple.fr` sans attribut `Domain` est **lié à cet hôte unique
 reviendrait en 401.
 
 D'où la variable `COOKIE_DOMAIN`, qui vaut le domaine parent avec un point initial
-(`.dsp5-archi-o25a-15m-g1.fr`). Elle est **vide en développement**, et c'est correct : tout
+(`.dsp5-archi-o25a-15m-g3.fr`). Elle est **vide en développement**, et c'est correct : tout
 tourne sur `localhost`, et un cookie est lié à l'hôte sans tenir compte du port — les trois
 ports se le partagent déjà.
 
