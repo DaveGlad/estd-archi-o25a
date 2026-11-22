@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1248" height="1114" viewBox="0 0 1248 1114" font-family="Helvetica, Arial, sans-serif">
+<rect width="1248" height="1114" fill="#ffffff"/>
+<text x="16" y="30" font-size="17" font-weight="600" fill="#1b2733">Figure 1 — Infrastructure du workflow : services, ports et protocoles</text>
+<text x="16" y="52" font-size="11" fill="#5a6b7d">Seuls 80, 443 et 22 sont ouverts vers internet. Tout le reste ne circule qu&#x27;à l&#x27;intérieur des réseaux Docker, qui sont étanches entre eux.</text>
+<rect x="8" y="72" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="72" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="153.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 153.0)">Internet</text>
+<rect x="8" y="234" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="234" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="315.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 315.0)">Réseau proxy</text>
+<rect x="8" y="396" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="396" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="477.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 477.0)">Réseau workflow</text>
+<rect x="8" y="558" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="558" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="639.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 639.0)">Réseau metrics</text>
+<rect x="8" y="720" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="720" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="801.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 801.0)">Réseaux d&#x27;environnement</text>
+<rect x="8" y="882" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="882" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="963.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 963.0)">Hors site</text>
+<path d="M 369.0 156.0 L 369.0 260.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 829.0 160.0 L 829.0 260.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 369.0 322.0 L 369.0 348.0 L 139.0 348.0 L 139.0 422.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 369.0 322.0 L 369.0 422.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 369.0 322.0 L 369.0 374.0 L 829.0 374.0 L 829.0 422.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 369.0 322.0 L 369.0 387.0 L 139.0 387.0 L 139.0 584.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 453.0 L 284.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 453.0 L 514.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 453.0 L 744.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 369.0 646.0 L 369.0 676.0 L 829.0 676.0 L 829.0 584.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 369.0 646.0 L 369.0 689.0 L 1059.0 689.0 L 1059.0 584.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 615.0 L 284.0 615.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 599.0 484.0 L 599.0 523.0 L 139.0 523.0 L 139.0 746.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 599.0 484.0 L 599.0 536.0 L 369.0 536.0 L 369.0 746.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 599.0 484.0 L 599.0 746.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 777.0 L 744.0 777.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 829.0 808.0 L 829.0 912.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<circle cx="369.0" cy="129.0" r="27.0" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Internet</text>
+<rect x="744.0" y="98.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="829.0" y="126.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Poste développeur</text>
+<text x="829.0" y="139.5" font-size="10.5" fill="#1b2733" text-anchor="middle">git push</text>
+<rect x="284.0" y="260.0" width="170" height="62" rx="8" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="369.0" y="275.5" font-size="10.5" fill="#1b2733" text-anchor="middle">TRAEFIK</text>
+<text x="369.0" y="288.5" font-size="10.5" fill="#1b2733" text-anchor="middle">reverse proxy, terminaison</text>
+<text x="369.0" y="301.5" font-size="10.5" fill="#1b2733" text-anchor="middle">TLS</text>
+<text x="369.0" y="314.5" font-size="10.5" fill="#1b2733" text-anchor="middle">80 → 443</text>
+<rect x="744.0" y="260.0" width="170" height="62" rx="8" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="829.0" y="282.0" font-size="10.5" fill="#1b2733" text-anchor="middle">SSH hôte</text>
+<text x="829.0" y="295.0" font-size="10.5" fill="#1b2733" text-anchor="middle">22/tcp, par clé,</text>
+<text x="829.0" y="308.0" font-size="10.5" fill="#1b2733" text-anchor="middle">filtrage d&#x27;adresses</text>
+<rect x="54.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="444.0" font-size="10.5" fill="#1b2733" text-anchor="middle">GITEA</text>
+<text x="139.0" y="457.0" font-size="10.5" fill="#1b2733" text-anchor="middle">:3000 HTTP web</text>
+<text x="139.0" y="470.0" font-size="10.5" fill="#1b2733" text-anchor="middle">:2222 SSH Git</text>
+<rect x="284.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="444.0" font-size="10.5" fill="#1b2733" text-anchor="middle">JENKINS</text>
+<text x="369.0" y="457.0" font-size="10.5" fill="#1b2733" text-anchor="middle">:8080 HTTP</text>
+<text x="369.0" y="470.0" font-size="10.5" fill="#1b2733" text-anchor="middle">:50000 TCP agents</text>
+<rect x="514.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="444.0" font-size="10.5" fill="#1b2733" text-anchor="middle">AGENTS JENKINS</text>
+<text x="599.0" y="457.0" font-size="10.5" fill="#1b2733" text-anchor="middle">éphémères, socket</text>
+<text x="599.0" y="470.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Docker en UNIX</text>
+<rect x="744.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="444.0" font-size="10.5" fill="#1b2733" text-anchor="middle">REGISTRY</text>
+<text x="829.0" y="457.0" font-size="10.5" fill="#1b2733" text-anchor="middle">:5000 HTTP</text>
+<text x="829.0" y="470.0" font-size="10.5" fill="#1b2733" text-anchor="middle">images signées</text>
+<rect x="284.0" y="584.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="606.0" font-size="10.5" fill="#1b2733" text-anchor="middle">PROMETHEUS</text>
+<text x="369.0" y="619.0" font-size="10.5" fill="#1b2733" text-anchor="middle">:9090 HTTP</text>
+<text x="369.0" y="632.0" font-size="10.5" fill="#1b2733" text-anchor="middle">scrape toutes les 15 s</text>
+<rect x="54.0" y="584.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="606.0" font-size="10.5" fill="#1b2733" text-anchor="middle">GRAFANA</text>
+<text x="139.0" y="619.0" font-size="10.5" fill="#1b2733" text-anchor="middle">:3000 HTTP</text>
+<text x="139.0" y="632.0" font-size="10.5" fill="#1b2733" text-anchor="middle">requêtes PromQL</text>
+<rect x="744.0" y="584.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="612.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Exportateur système</text>
+<text x="829.0" y="625.5" font-size="10.5" fill="#1b2733" text-anchor="middle">:9100 HTTP</text>
+<rect x="974.0" y="584.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="1059.0" y="612.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Exportateur conteneurs</text>
+<text x="1059.0" y="625.5" font-size="10.5" fill="#1b2733" text-anchor="middle">:8080 HTTP</text>
+<rect x="54.0" y="746.0" width="170" height="62" rx="8" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="139.0" y="768.0" font-size="10.5" fill="#1b2733" text-anchor="middle">DEV</text>
+<text x="139.0" y="781.0" font-size="10.5" fill="#1b2733" text-anchor="middle">api web admin :3000</text>
+<text x="139.0" y="794.0" font-size="10.5" fill="#1b2733" text-anchor="middle">pg :5432 · redis :6379</text>
+<rect x="284.0" y="746.0" width="170" height="62" rx="8" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="369.0" y="768.0" font-size="10.5" fill="#1b2733" text-anchor="middle">PRÉPRODUCTION</text>
+<text x="369.0" y="781.0" font-size="10.5" fill="#1b2733" text-anchor="middle">api web admin :3000</text>
+<text x="369.0" y="794.0" font-size="10.5" fill="#1b2733" text-anchor="middle">pg :5432 · redis :6379</text>
+<rect x="514.0" y="746.0" width="170" height="62" rx="8" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="599.0" y="768.0" font-size="10.5" fill="#1b2733" text-anchor="middle">PRODUCTION</text>
+<text x="599.0" y="781.0" font-size="10.5" fill="#1b2733" text-anchor="middle">api web admin :3000</text>
+<text x="599.0" y="794.0" font-size="10.5" fill="#1b2733" text-anchor="middle">pg :5432 · redis :6379</text>
+<rect x="744.0" y="746.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="774.5" font-size="10.5" fill="#1b2733" text-anchor="middle">SAUVEGARDE</text>
+<text x="829.0" y="787.5" font-size="10.5" fill="#1b2733" text-anchor="middle">planifiée, chiffrée</text>
+<circle cx="829.0" cy="939.0" r="27.0" fill="#ffffff" stroke="#2f5d8c" stroke-width="3.5"/>
+<text x="829.0" y="984.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Stockage externalisé</text>
+<text x="377.0" y="208.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">443/tcp HTTPS</text>
+<text x="837.0" y="210.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">22/tcp SSH</text>
+<text x="300.0" y="342.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">HTTP</text>
+<text x="377.0" y="372.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">HTTP</text>
+<text x="654.2" y="368.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">HTTPS</text>
+<text x="189.6" y="381.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">HTTP</text>
+<text x="254.0" y="445.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">webhook HTTP</text>
+<text x="484.0" y="445.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">JNLP 50000/tcp</text>
+<text x="714.0" y="445.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">push HTTPS</text>
+<text x="507.0" y="670.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">scrape HTTP</text>
+<text x="686.4" y="683.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">scrape HTTP</text>
+<text x="254.0" y="607.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">PromQL HTTP</text>
+<text x="387.4" y="517.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">déploiement</text>
+<text x="456.4" y="530.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">déploiement</text>
+<text x="607.0" y="615.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">déploiement</text>
+<text x="714.0" y="769.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">dump</text>
+<text x="837.0" y="860.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">SFTP chiffré</text>
+<circle cx="24" cy="1070" r="8" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="40" y="1074" font-size="10" fill="#43525f">Événement de début</text>
+<rect x="146.8" y="1063" width="18" height="14" rx="3" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="170.8" y="1074" font-size="10" fill="#43525f">Tâche</text>
+<rect x="204.8" y="1063" width="18" height="14" rx="3" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="228.8" y="1074" font-size="10" fill="#43525f">Tâche automatique</text>
+<rect x="330.0" y="1063" width="18" height="14" rx="3" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="354.0" y="1074" font-size="10" fill="#43525f">Tâche humaine</text>
+<polygon points="440.8,1062 448.8,1070 440.8,1078 432.8,1070" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="456.8" y="1074" font-size="10" fill="#43525f">Passerelle exclusive</text>
+<rect x="574.8" y="1063" width="18" height="14" rx="3" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
+<text x="598.8" y="1074" font-size="10" fill="#43525f">Appel de sous-processus</text>
+<circle cx="741.5999999999999" cy="1070" r="8" fill="#ffffff" stroke="#2f5d8c" stroke-width="3"/>
+<text x="757.5999999999999" y="1074" font-size="10" fill="#43525f">Événement de fin</text>
+<circle cx="861.1999999999999" cy="1070" r="8" fill="#fdecea" stroke="#a6342a" stroke-width="3"/>
+<text x="877.1999999999999" y="1074" font-size="10" fill="#43525f">Fin sur erreur</text>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5a6b7d"/></marker></defs>
+</svg>

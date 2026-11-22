@@ -47,11 +47,15 @@ Données **à construire**, que le sujet ne donne pas. Toutes fictives, à garde
 
 | Élément | Valeur | Statut |
 |---|---|---|
-| Forme juridique / capital | *(SAS ? cohérent avec 45 salariés)* |  À faire  |
-| Siège social | |  À faire  |
-| SIREN / SIRET / RCS / APE-NAF / TVA intracom | *(APE 6201Z « programmation informatique » ; RCS cohérent avec le siège)* |  À faire  |
-| Storytelling + valeurs | *(matière première possible : le positionnement de Nextilabs)* |  À faire  |
-| Organigramme / pôles | *(comment 45 personnes se répartissent)* |  À faire  |
+| Forme juridique / capital | SAS au capital de 50 000 € | **Figé** |
+| Siège social | 12 quai de la Fosse, 44000 Nantes | **Figé** |
+| SIREN / SIRET / RCS / APE-NAF / TVA intracom | SIREN 842 196 370 · SIRET 842 196 370 00014 · RCS Nantes B 842 196 370 · APE 6201Z · TVA FR 52 842196370 | **Figé** |
+| Storytelling + valeurs | Rédigés, CST partie A.1 | **Figé** |
+| Organigramme / pôles | CST partie C.3 pour les topologies, F pour les effectifs | **Figé** |
+
+Les identifiants sont **fictifs** et construits pour respecter les règles de forme françaises : clé de Luhn valide sur le SIREN et sur le SIRET, clé de TVA recalculable par `(12 + 3 × (SIREN mod 97)) mod 97` = 52. Ils ne désignent aucune entreprise réelle.
+
+Le raisonnement derrière chaque valeur est dans le CST partie A.1, pas ici : le jury lit le dossier, pas ce fichier de pilotage.
 
 ## 3. Stack du site jeu-concours : **décidé, conventions `deal-israel`**
 

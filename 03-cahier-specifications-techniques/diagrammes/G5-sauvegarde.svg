@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1248" height="1010" viewBox="0 0 1248 1010" font-family="Helvetica, Arial, sans-serif">
+<rect width="1248" height="1010" fill="#ffffff"/>
+<text x="16" y="30" font-size="17" font-weight="600" fill="#1b2733">Figure 6 — Sauvegarde de la production, planifiée et sans intervention humaine</text>
+<text x="16" y="52" font-size="11" fill="#5a6b7d">Le journal de transactions est archivé toutes les 15 minutes, et c&#x27;est lui qui tient le RPO de 15 minutes : le dump quotidien seul plafonnerait la perte à 24 heures.</text>
+<rect x="8" y="72" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="72" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="153.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 153.0)">Planificateur</text>
+<rect x="8" y="234" width="1224" height="272" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="234" width="34" height="272" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="370.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 370.0)">Production</text>
+<rect x="8" y="506" width="1224" height="272" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="506" width="34" height="272" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="642.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 642.0)">Stockage hors site</text>
+<rect x="8" y="778" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="778" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="859.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 859.0)">Équipe plateforme</text>
+<path d="M 139.0 156.0 L 139.0 182.0 L 369.0 182.0 L 369.0 260.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 291.0 L 514.0 291.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 291.0 L 744.0 291.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 914.0 291.0 L 974.0 291.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 322.0 L 1059.0 348.0 L 139.0 348.0 L 139.0 370.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 401.0 L 284.0 401.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 369.0 432.0 L 369.0 458.0 L 599.0 458.0 L 599.0 532.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 563.0 L 786.0 563.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 872.0 563.0 L 974.0 563.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 594.0 L 1059.0 620.0 L 139.0 620.0 L 139.0 630.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 716.0 L 139.0 808.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 182.0 673.0 L 284.0 673.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 829.0 606.0 L 829.0 645.0 L 369.0 645.0 L 369.0 642.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 673.0 L 556.0 673.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 599.0 716.0 L 599.0 742.0 L 139.0 742.0 L 139.0 808.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 642.0 673.0 L 744.0 673.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 914.0 673.0 L 974.0 673.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 704.0 L 1059.0 808.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<circle cx="139.0" cy="129.0" r="27.0" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Planificateur,</text>
+<text x="139.0" y="187.0" font-size="10.5" fill="#1b2733" text-anchor="middle">2 h du matin</text>
+<rect x="284.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="295.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Dump de la base</text>
+<rect x="514.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="288.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Archiver le journal</text>
+<text x="599.0" y="301.5" font-size="10.5" fill="#1b2733" text-anchor="middle">de transactions</text>
+<rect x="744.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="288.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Archiver les volumes</text>
+<text x="829.0" y="301.5" font-size="10.5" fill="#1b2733" text-anchor="middle">applicatifs</text>
+<rect x="974.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="1059.0" y="288.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Archiver la configuration</text>
+<text x="1059.0" y="301.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Gitea, Jenkins, registry</text>
+<rect x="54.0" y="370.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="405.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Calculer les empreintes</text>
+<rect x="284.0" y="370.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="405.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Chiffrer l&#x27;archive</text>
+<rect x="514.0" y="532.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="567.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Transférer hors site</text>
+<polygon points="829.0,520.0 872.0,563.0 829.0,606.0 786.0,563.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 816.0 550.0 L 842.0 576.0 M 842.0 550.0 L 816.0 576.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="829.0" y="624.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Transfert</text>
+<text x="829.0" y="637.0" font-size="10.5" fill="#1b2733" text-anchor="middle">réussi ?</text>
+<rect x="974.0" y="532.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="1059.0" y="560.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Nouvelle tentative,</text>
+<text x="1059.0" y="573.5" font-size="10.5" fill="#1b2733" text-anchor="middle">3 fois</text>
+<polygon points="139.0,630.0 182.0,673.0 139.0,716.0 96.0,673.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 126.0 660.0 L 152.0 686.0 M 152.0 660.0 L 126.0 686.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="139.0" y="734.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Toujours</text>
+<text x="139.0" y="747.0" font-size="10.5" fill="#1b2733" text-anchor="middle">en échec ?</text>
+<rect x="284.0" y="642.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="670.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Vérifier l&#x27;empreinte</text>
+<text x="369.0" y="683.5" font-size="10.5" fill="#1b2733" text-anchor="middle">à distance</text>
+<polygon points="599.0,630.0 642.0,673.0 599.0,716.0 556.0,673.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 586.0 660.0 L 612.0 686.0 M 612.0 660.0 L 586.0 686.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="599.0" y="734.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Archive</text>
+<text x="599.0" y="747.0" font-size="10.5" fill="#1b2733" text-anchor="middle">intègre ?</text>
+<rect x="744.0" y="642.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="670.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Purger les archives</text>
+<text x="829.0" y="683.5" font-size="10.5" fill="#1b2733" text-anchor="middle">hors rétention</text>
+<rect x="974.0" y="642.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="1059.0" y="670.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Publier les métriques</text>
+<text x="1059.0" y="683.5" font-size="10.5" fill="#1b2733" text-anchor="middle">de sauvegarde</text>
+<circle cx="139.0" cy="835.0" r="27.0" fill="#fdecea" stroke="#a6342a" stroke-width="3.5"/>
+<text x="139.0" y="880.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Alerte critique</text>
+<text x="139.0" y="893.0" font-size="10.5" fill="#1b2733" text-anchor="middle">équipe plateforme</text>
+<circle cx="1059.0" cy="835.0" r="27.0" fill="#ffffff" stroke="#2f5d8c" stroke-width="3.5"/>
+<text x="1059.0" y="880.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Sauvegarde terminée</text>
+<text x="923.0" y="555.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="147.0" y="762.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="233.0" y="665.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="617.4" y="639.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="461.0" y="736.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="693.0" y="665.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<circle cx="24" cy="966" r="8" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="40" y="970" font-size="10" fill="#43525f">Événement de début</text>
+<rect x="146.8" y="959" width="18" height="14" rx="3" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="170.8" y="970" font-size="10" fill="#43525f">Tâche</text>
+<rect x="204.8" y="959" width="18" height="14" rx="3" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="228.8" y="970" font-size="10" fill="#43525f">Tâche automatique</text>
+<rect x="330.0" y="959" width="18" height="14" rx="3" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="354.0" y="970" font-size="10" fill="#43525f">Tâche humaine</text>
+<polygon points="440.8,958 448.8,966 440.8,974 432.8,966" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="456.8" y="970" font-size="10" fill="#43525f">Passerelle exclusive</text>
+<rect x="574.8" y="959" width="18" height="14" rx="3" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
+<text x="598.8" y="970" font-size="10" fill="#43525f">Appel de sous-processus</text>
+<circle cx="741.5999999999999" cy="966" r="8" fill="#ffffff" stroke="#2f5d8c" stroke-width="3"/>
+<text x="757.5999999999999" y="970" font-size="10" fill="#43525f">Événement de fin</text>
+<circle cx="861.1999999999999" cy="966" r="8" fill="#fdecea" stroke="#a6342a" stroke-width="3"/>
+<text x="877.1999999999999" y="970" font-size="10" fill="#43525f">Fin sur erreur</text>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5a6b7d"/></marker></defs>
+</svg>

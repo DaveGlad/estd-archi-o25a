@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1248" height="738" viewBox="0 0 1248 738" font-family="Helvetica, Arial, sans-serif">
+<rect width="1248" height="738" fill="#ffffff"/>
+<text x="16" y="30" font-size="17" font-weight="600" fill="#1b2733">Figure 4 — Déploiement en préproduction, automatique, avec anonymisation</text>
+<text x="16" y="52" font-size="11" fill="#5a6b7d">L&#x27;anonymisation n&#x27;est pas une précaution de confort : la préproduction est accessible au client, elle ne doit jamais contenir de données réelles. RGPD.</text>
+<rect x="8" y="72" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="72" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="153.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 153.0)">Jenkins</text>
+<rect x="8" y="234" width="1224" height="272" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="234" width="34" height="272" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="370.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 370.0)">Préproduction</text>
+<rect x="8" y="506" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="506" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="587.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 587.0)">Équipe projet</text>
+<path d="M 166.0 129.0 L 284.0 129.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 129.0 L 556.0 129.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 642.0 129.0 L 802.0 129.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 599.0 172.0 L 599.0 211.0 L 139.0 211.0 L 139.0 260.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 291.0 L 284.0 291.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 291.0 L 514.0 291.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 291.0 L 744.0 291.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 914.0 291.0 L 974.0 291.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 322.0 L 1059.0 348.0 L 139.0 348.0 L 139.0 358.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 182.0 401.0 L 342.0 401.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 444.0 L 139.0 487.0 L 599.0 487.0 L 599.0 370.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 401.0 L 744.0 401.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 914.0 401.0 L 1016.0 401.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 444.0 L 1059.0 474.0 L 829.0 474.0 L 829.0 102.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 444.0 L 1059.0 483.0 L 599.0 483.0 L 599.0 532.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 563.0 L 744.0 563.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 914.0 563.0 L 1032.0 563.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<circle cx="139.0" cy="129.0" r="27.0" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Création de la</text>
+<text x="139.0" y="187.0" font-size="10.5" fill="#1b2733" text-anchor="middle">branche release</text>
+<rect x="284.0" y="98.0" width="170" height="62" rx="8" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
+<text x="369.0" y="126.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Pipeline identique à G.2</text>
+<text x="369.0" y="139.5" font-size="10.5" fill="#1b2733" text-anchor="middle">jusqu&#x27;à la publication</text>
+<polygon points="599.0,86.0 642.0,129.0 599.0,172.0 556.0,129.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 586.0 116.0 L 612.0 142.0 M 612.0 116.0 L 586.0 142.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="599.0" y="190.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Pipeline vert ?</text>
+<circle cx="829.0" cy="129.0" r="27.0" fill="#fdecea" stroke="#a6342a" stroke-width="3.5"/>
+<text x="829.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Build rouge</text>
+<text x="829.0" y="187.0" font-size="10.5" fill="#1b2733" text-anchor="middle">notification équipe</text>
+<rect x="54.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="288.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Copier la base de</text>
+<text x="139.0" y="301.5" font-size="10.5" fill="#1b2733" text-anchor="middle">production de la veille</text>
+<rect x="284.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="288.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Anonymiser les</text>
+<text x="369.0" y="301.5" font-size="10.5" fill="#1b2733" text-anchor="middle">données personnelles</text>
+<rect x="514.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="295.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Appliquer les migrations</text>
+<rect x="744.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="295.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Déployer les conteneurs</text>
+<rect x="974.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="1059.0" y="295.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Sonde de santé</text>
+<polygon points="139.0,358.0 182.0,401.0 139.0,444.0 96.0,401.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 126.0 388.0 L 152.0 414.0 M 152.0 388.0 L 126.0 414.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="139.0" y="462.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Service</text>
+<text x="139.0" y="475.0" font-size="10.5" fill="#1b2733" text-anchor="middle">disponible ?</text>
+<circle cx="369.0" cy="401.0" r="27.0" fill="#fdecea" stroke="#a6342a" stroke-width="3.5"/>
+<text x="369.0" y="446.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Retour arrière</text>
+<text x="369.0" y="459.0" font-size="10.5" fill="#1b2733" text-anchor="middle">notification</text>
+<rect x="514.0" y="370.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="405.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Tests fonctionnels E2E</text>
+<rect x="744.0" y="370.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="398.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Tests de performance</text>
+<text x="829.0" y="411.5" font-size="10.5" fill="#1b2733" text-anchor="middle">charge sur 500 000 codes</text>
+<polygon points="1059.0,358.0 1102.0,401.0 1059.0,444.0 1016.0,401.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 1046.0 388.0 L 1072.0 414.0 M 1072.0 388.0 L 1046.0 414.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="1059.0" y="462.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Seuils</text>
+<text x="1059.0" y="475.0" font-size="10.5" fill="#1b2733" text-anchor="middle">respectés ?</text>
+<rect x="514.0" y="532.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="567.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Publier les rapports</text>
+<rect x="744.0" y="532.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="829.0" y="567.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Notifier le chef de projet</text>
+<circle cx="1059.0" cy="563.0" r="27.0" fill="#ffffff" stroke="#2f5d8c" stroke-width="3.5"/>
+<text x="1059.0" y="608.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Préproduction prête</text>
+<text x="1059.0" y="621.0" font-size="10.5" fill="#1b2733" text-anchor="middle">pour la sprint review</text>
+<text x="722.0" y="121.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="387.4" y="205.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="262.0" y="393.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="350.6" y="481.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="990.0" y="468.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="847.4" y="477.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<circle cx="24" cy="694" r="8" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="40" y="698" font-size="10" fill="#43525f">Événement de début</text>
+<rect x="146.8" y="687" width="18" height="14" rx="3" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="170.8" y="698" font-size="10" fill="#43525f">Tâche</text>
+<rect x="204.8" y="687" width="18" height="14" rx="3" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="228.8" y="698" font-size="10" fill="#43525f">Tâche automatique</text>
+<rect x="330.0" y="687" width="18" height="14" rx="3" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="354.0" y="698" font-size="10" fill="#43525f">Tâche humaine</text>
+<polygon points="440.8,686 448.8,694 440.8,702 432.8,694" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="456.8" y="698" font-size="10" fill="#43525f">Passerelle exclusive</text>
+<rect x="574.8" y="687" width="18" height="14" rx="3" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
+<text x="598.8" y="698" font-size="10" fill="#43525f">Appel de sous-processus</text>
+<circle cx="741.5999999999999" cy="694" r="8" fill="#ffffff" stroke="#2f5d8c" stroke-width="3"/>
+<text x="757.5999999999999" y="698" font-size="10" fill="#43525f">Événement de fin</text>
+<circle cx="861.1999999999999" cy="694" r="8" fill="#fdecea" stroke="#a6342a" stroke-width="3"/>
+<text x="877.1999999999999" y="698" font-size="10" fill="#43525f">Fin sur erreur</text>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5a6b7d"/></marker></defs>
+</svg>

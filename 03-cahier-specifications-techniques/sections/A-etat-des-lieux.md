@@ -2,7 +2,7 @@
 
 ## A.1 Présentation de l'agence
 
-> Les éléments entre guillemets sont fictifs et doivent être figés dans `01-pilotage/DECISIONS.md` § 2 avant l'export du dossier. Les données factuelles (2007, 45 employés, Guido Brasletti, open source, cycle en V) viennent du sujet.
+> Ce qui vient du sujet : la création en 2007, les 45 employés, Guido Brasletti, le positionnement open source, le cycle en V et la désorganisation constatée. Le reste, à commencer par l'identité juridique, est construit et assumé comme fictif. Les valeurs sont figées dans `01-pilotage/DECISIONS.md` § 2.
 
 ### Storytelling
 
@@ -26,18 +26,31 @@ C'est précisément ce succès qui produit aujourd'hui son point de rupture. Une
 | Champ | Valeur |
 |---|---|
 | Dénomination sociale | Furious Ducks |
-| Forme juridique | « à définir, une SAS serait cohérente avec 45 salariés » |
-| Capital social | « à définir » |
-| Siège social | « à définir » |
-| RCS | « ville du siège et numéro » |
-| SIREN et SIRET | « à définir, cohérents entre eux » |
+| Forme juridique | SAS, société par actions simplifiée |
+| Capital social | 50 000 € |
+| Siège social | 12 quai de la Fosse, 44000 Nantes |
+| RCS | Nantes B 842 196 370 |
+| SIREN | 842 196 370 |
+| SIRET du siège | 842 196 370 00014 |
 | Code APE / NAF | 6201Z, programmation informatique |
-| TVA intracommunautaire | « FR, clé, SIREN » |
+| TVA intracommunautaire | FR 52 842196370 |
 | Date de création | 2007 |
 | Effectif | 45 salariés |
-| Direction | Guido Brasletti |
+| Direction | Guido Brasletti, président |
 
-> Rappel de méthode : selon la forme juridique retenue, certaines mentions ne s'appliquent pas. Le capital social n'a aucun sens pour une entreprise individuelle, par exemple. Cette cohérence est à vérifier avant l'export, c'est un point de contrôle explicite du plan imposé.
+Pourquoi ces valeurs, et pas d'autres.
+
+**La SAS.** Le sujet impose le nom et l'effectif, pas la forme. À 45 salariés, l'entreprise individuelle et la SARL sont écartées pour la même raison : la SARL plafonne à 100 associés et impose un gérant personne physique, mais surtout ses statuts sont rigides là où une agence qui fait entrer des associés au fil de sa croissance a besoin de souplesse. La SAS laisse écrire librement la gouvernance et accueillir un investisseur sans refondre les statuts. C'est la forme la plus courante en France pour une agence de cette taille.
+
+**Le capital.** 50 000 €. La SAS n'impose aucun minimum, un euro suffirait légalement. Un capital symbolique ferme en pratique l'accès au crédit bancaire et aux marchés publics, où le capital social est lu comme un signal de solidité. 50 000 € est l'ordre de grandeur constaté sur des agences de 40 à 60 personnes, sans immobiliser de trésorerie utile à l'exploitation.
+
+**Le siège.** Nantes. L'agence est née en 2007 sur un pari open source à contre-courant, et Nantes est l'un des pôles numériques français où ce positionnement a un vivier : des écoles, une communauté open source active, et des salaires de développeur inférieurs de 10 à 15 % à ceux de Paris. Ce différentiel se retrouve directement dans la grille de la partie F.1 et dans le TJM des annexes.
+
+**La cohérence des numéros.** Le RCS reprend la ville du siège et le SIREN, c'est la règle. Le SIRET est le SIREN suivi du NIC de l'établissement, `00014` désignant ici le siège. Les deux portent une clé de Luhn, et la clé de TVA se recalcule par `(12 + 3 × (SIREN mod 97)) mod 97`, soit 52 pour ce SIREN. Ces trois contrôles tombent juste, ce qui est vérifiable sans rien d'autre qu'une calculatrice.
+
+> **Ces identifiants sont fictifs.** Furious Ducks est une agence inventée par le sujet. Les numéros ci-dessus ont été construits pour respecter les règles de forme et de clé de contrôle de l'administration française, de sorte que le dossier soit cohérent à la lecture. Ils ne désignent aucune entreprise réelle et n'ont aucune valeur juridique.
+
+> Point de contrôle du plan imposé : selon la forme juridique, certaines mentions ne s'appliquent pas. Le capital social n'aurait aucun sens pour une entreprise individuelle, le RCS serait remplacé par le répertoire des métiers pour un artisan. La SAS retenue ici les appelle toutes, donc aucune ligne du tableau n'est de trop.
 
 ## A.2 Présentation de la problématique
 
