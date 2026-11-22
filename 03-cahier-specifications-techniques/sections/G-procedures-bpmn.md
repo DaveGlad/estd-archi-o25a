@@ -23,8 +23,6 @@ Ce premier diagramme donne la vue d'ensemble, du besoin exprimé jusqu'à la mis
 
 ![Figure 2. Cycle de vie d'une fonctionnalité, du besoin à la production](../diagrammes/G1-activite.png)
 
-*Figure 2. Cycle de vie d'une fonctionnalité, du besoin à la production.*
-
 Le point important se situe à la passerelle H. Tant que le build n'est pas vert, la story n'est pas terminée, même si le code est écrit. C'est ce qui rend la Definition of Done vérifiable au lieu de déclarative, comme annoncé en B.2.
 
 ## G.2 Processus de déploiement en développement
@@ -33,8 +31,6 @@ Entièrement automatique, déclenché par une fusion sur `develop`.
 
 ![Figure 3. Déploiement en développement, entièrement automatique](../diagrammes/G2-deploiement-dev.png)
 
-*Figure 3. Déploiement en développement, entièrement automatique.*
-
 Deux choses méritent d'être signalées. Le tag de l'image reprend le hash du commit, ce qui permet de savoir à tout instant quelle version exacte tourne sur quel environnement. Et le retour à l'image précédente en cas d'échec de la sonde de santé est automatique, sans intervention humaine.
 
 ## G.3 Processus de déploiement en préproduction
@@ -42,8 +38,6 @@ Deux choses méritent d'être signalées. Le tag de l'image reprend le hash du c
 Automatique lui aussi, déclenché par la création ou la mise à jour d'une branche `release/*`. Il se distingue du précédent sur trois points : le jeu de données, les tests de performance et la notification au client.
 
 ![Figure 4. Déploiement en préproduction, automatique, avec anonymisation](../diagrammes/G3-deploiement-preprod.png)
-
-*Figure 4. Déploiement en préproduction, automatique, avec anonymisation.*
 
 L'anonymisation à l'étape E n'est pas une précaution de confort. La préproduction est accessible au client et sert aux démonstrations, elle ne doit donc jamais contenir les données réelles des participants au jeu-concours. C'est une obligation RGPD, pas un choix technique.
 
@@ -55,8 +49,6 @@ C'est le seul processus qui comporte une décision humaine, pour les raisons exp
 
 ![Figure 5. Déploiement en production, le seul processus avec une décision humaine](../diagrammes/G4-deploiement-prod.png)
 
-*Figure 5. Déploiement en production, le seul processus avec une décision humaine.*
-
 Quatre garde-fous encadrent ce processus. La sauvegarde préalable est vérifiée avant toute modification, et son échec bloque le déploiement. Les migrations sont jouées avant le basculement de l'image, ce qui permet de détecter un problème de schéma avant que le trafic n'arrive. Les tests de fumée couvrent les parcours critiques, dont la saisie d'un code de jeu. Et la surveillance renforcée pendant trente minutes attrape les régressions qui ne se voient qu'en charge réelle.
 
 Le créneau de déploiement mérite une explication pour le client. Pendant les soixante jours du jeu-concours, aucune mise en production n'est possible entre 9 h et 21 h, ce sont les heures d'affluence en boutique. Un correctif urgent reste évidemment possible, par la procédure de hotfix.
@@ -67,8 +59,6 @@ Automatique et planifiée, sans intervention humaine en fonctionnement normal.
 
 ![Figure 6. Sauvegarde de la production, planifiée et sans intervention humaine](../diagrammes/G5-sauvegarde.png)
 
-*Figure 6. Sauvegarde de la production, planifiée et sans intervention humaine.*
-
 En complément, le journal de transactions de la base de production est archivé toutes les quinze minutes. C'est ce qui permet de tenir le RPO de quinze minutes annoncé en D.3, là où le dump quotidien seul limiterait la perte maximale à vingt-quatre heures.
 
 Un test de restauration complet est exécuté le premier lundi de chaque mois sur l'environnement de préproduction. Il est chronométré, et son résultat consigné. Une sauvegarde qui n'a jamais été restaurée reste une hypothèse.
@@ -78,8 +68,6 @@ Un test de restauration complet est exécuté le premier lundi de chaque mois su
 Le sujet demande explicitement une procédure de restauration pour les trois environnements. Elles partagent le même début, puis divergent selon les enjeux.
 
 ![Figure 7. Restauration, les trois environnements](../diagrammes/G6-restauration.png)
-
-*Figure 7. Restauration, les trois environnements.*
 
 Trois différences structurent ces trois variantes.
 

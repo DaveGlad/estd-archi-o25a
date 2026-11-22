@@ -111,7 +111,7 @@ def build_markdown() -> str:
 
 
 def finalise_docx(path: pathlib.Path) -> None:
-    """Imposes A4 portrait and the pagination the brief asks for.
+    """Adds the pagination the brief asks for.
 
     Two requirements of the plan, both written in bold in the source document:
     « le format du cahier est obligatoirement en portrait au format A4 » and
@@ -126,10 +126,9 @@ def finalise_docx(path: pathlib.Path) -> None:
     survives every edit: PAGE renumbers itself, NUMPAGES recounts the document.
     """
     import docx
-    from docx.enum.section import WD_ORIENT
     from docx.enum.text import WD_ALIGN_PARAGRAPH
     from docx.oxml.ns import qn
-    from docx.shared import Mm, Pt
+    from docx.shared import Pt
 
     def field(run, instruction: str) -> None:
         begin = run._r.makeelement(qn('w:fldChar'), {qn('w:fldCharType'): 'begin'})
@@ -140,14 +139,11 @@ def finalise_docx(path: pathlib.Path) -> None:
         run._r.append(instr)
         run._r.append(end)
 
+    # The page itself is set by design/reference.docx, which pandoc copies over.
+    # Setting it again here would be a second source for the same value, and the
+    # day the two disagree the document silently follows whichever ran last.
     document = docx.Document(str(path))
     for section in document.sections:
-        section.orientation = WD_ORIENT.PORTRAIT
-        section.page_width = Mm(210)
-        section.page_height = Mm(297)
-        section.left_margin = section.right_margin = Mm(20)
-        section.top_margin = section.bottom_margin = Mm(18)
-
         footer = section.footer
         footer.is_linked_to_previous = False
         para = footer.paragraphs[0] if footer.paragraphs else footer.add_paragraph()
@@ -179,6 +175,7 @@ def main() -> None:
         'pandoc', str(OUT_MD),
         '-o', str(OUT_DOCX),
         '--from', 'markdown+pipe_tables+yaml_metadata_block',
+        '--reference-doc', str(HERE / 'design' / 'reference.docx'),
         '--resource-path', str(HERE),
         '--metadata', 'lang=fr-FR',
     ]

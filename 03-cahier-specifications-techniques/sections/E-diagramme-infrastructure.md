@@ -18,8 +18,6 @@ Quatre règles ont guidé la construction de cette infrastructure.
 
 ![Figure 1. Infrastructure du workflow : services, ports et protocoles](../diagrammes/E-infrastructure.png)
 
-*Figure 1. Infrastructure du workflow : services, ports et protocoles.*
-
 Le schéma se lit par bandes horizontales, une par réseau Docker. Ce découpage est le point important : deux services qui ne partagent aucune bande ne peuvent pas se joindre, quelle que soit leur configuration. Les ports portés sur chaque bloc sont les ports **internes** aux conteneurs ; les seuls ports ouverts vers internet sont ceux de la bande du haut.
 
 ## E.3 Sous-domaines exposés
