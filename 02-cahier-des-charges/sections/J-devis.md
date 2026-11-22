@@ -24,60 +24,60 @@
 
 | Réf. | Désignation | Quantité | Unité | Prix unitaire | Total HT |
 |---|---|---|---|---|---|
-| **L0** | **Cadrage et lancement** | | | | **1 695 €** |
-| L0.1 | Réunion de lancement et note de cadrage | 3 | jour | 565 € | 1 695 € |
-| **L1** | **Études et stratégie** | | | | **8 145 €** |
-| L1.1 | Plan de veille, étude de marché et chiffres clés | 6 | jour | 430 € | 2 580 € |
-| L1.2 | Benchmark concurrentiel, 3 sites et 5 audits par site | 5 | jour | 430 € | 2 150 € |
-| L1.3 | Cibles, personas, zone de chalandise | 2 | jour | 430 € | 860 € |
-| L1.4 | Stratégie de communication digitale | 2 | jour | 430 € | 860 € |
-| L1.5 | Présentation et validation | 3 | jour | 565 € | 1 695 € |
-| **L2** | **Conception fonctionnelle** | | | | **7 260 €** |
-| L2.1 | Ateliers de cadrage et arborescence | 4 | jour | 455 € | 1 820 € |
-| L2.2 | Cas d'utilisation, diagrammes et modèle de données | 6 | jour | 530 € | 3 180 € |
-| L2.3 | Spécifications et validation | 4 | jour | 565 € | 2 260 € |
-| **L3** | **Identité visuelle et maquettes** | | | | **9 320 €** |
-| L3.1 | Recherches de logo, 3 concepts et 3 déclinaisons chacun | 4 | jour | 455 € | 1 820 € |
-| L3.2 | Charte graphique complète | 3 | jour | 455 € | 1 365 € |
-| L3.3 | Zoning et wireframes, ordinateur, tablette et mobile | 4 | jour | 455 € | 1 820 € |
-| L3.4 | Maquettes, 3 formats | 7 | jour | 455 € | 3 185 € |
-| L3.5 | Présentations et validation | 2 | jour | 565 € | 1 130 € |
-| **L4** | **Développement** | | | | **33 535 €** |
-| L4.1 | Initialisation, base de données et environnements | 3 | jour | 530 € | 1 590 € |
-| L4.2 | Génération et contrôle des 500 000 codes | 5 | jour | 530 € | 2 650 € |
-| L4.3 | Authentification, comptes et rôles, connexions Google et Facebook | 7 | jour | 530 € | 3 710 € |
-| L4.4 | Parcours de participation et historique des gains | 8 | jour | 530 € | 4 240 € |
-| L4.5 | Interface employé et remise des lots | 4 | jour | 530 € | 2 120 € |
-| L4.6 | Back-office, statistiques et export | 6 | jour | 530 € | 3 180 € |
-| L4.7 | Tirage au sort et fonctionnalités RGPD | 4 | jour | 530 € | 2 120 € |
-| L4.8 | API pour les caisses et le futur site marchand | 3 | jour | 530 € | 1 590 € |
-| L4.9 | Intégration graphique adaptative | 6 | jour | 455 € | 2 730 € |
-| L4.10 | Infrastructure et automatisation du déploiement | 8 | jour | 565 € | 4 520 € |
-| L4.11 | Sécurisation, clés d'API et durcissement | 4 | jour | 565 € | 2 260 € |
-| L4.12 | Pilotage du développement | 5 | jour | 565 € | 2 825 € |
-| **L5** | **Recette et mise en ligne** | | | | **10 185 €** |
-| L5.1 | Tests fonctionnels, de charge et d'accessibilité | 8 | jour | 530 € | 4 240 € |
-| L5.2 | Optimisation du référencement et contenus | 2 | jour | 430 € | 860 € |
-| L5.3 | Recette client et corrections | 4 | jour | 565 € | 2 260 € |
-| L5.4 | Mise en production | 2 | jour | 565 € | 1 130 € |
-| L5.5 | Formation des employés en boutique | 3 | jour | 565 € | 1 695 € |
-| **L6** | **Dispositif de communication** | | | | **6 525 €** |
-| L6.1 | Création des comptes sociaux et visuels associés | 3 | jour | 455 € | 1 365 € |
-| L6.2 | Calendrier éditorial et publications | 4 | jour | 430 € | 1 720 € |
-| L6.3 | Partenariats d'influence | 3 | jour | 430 € | 1 290 € |
-| L6.4 | Templates d'emailing | 3 | jour | 430 € | 1 290 € |
-| L6.5 | Mesure d'audience et rapports | 2 | jour | 430 € | 860 € |
-| **L7** | **Pilotage et suivi** | | | | **5 650 €** |
-| L7.1 | Comités de pilotage et reporting | 8 | jour | 565 € | 4 520 € |
-| L7.2 | Bilan de fin d'opération | 2 | jour | 565 € | 1 130 € |
+| **L0** | **Cadrage et lancement** | | | | **1 980 €** |
+| L0.1 | Réunion de lancement et note de cadrage | 3 | jour | 660 € | 1 980 € |
+| **L1** | **Études et stratégie** | | | | **9 180 €** |
+| L1.1 | Plan de veille, étude de marché et chiffres clés | 6 | jour | 480 € | 2 880 € |
+| L1.2 | Benchmark concurrentiel, 3 sites et 5 audits par site | 5 | jour | 480 € | 2 400 € |
+| L1.3 | Cibles, personas, zone de chalandise | 2 | jour | 480 € | 960 € |
+| L1.4 | Stratégie de communication digitale | 2 | jour | 480 € | 960 € |
+| L1.5 | Présentation et validation | 3 | jour | 660 € | 1 980 € |
+| **L2** | **Conception fonctionnelle** | | | | **8 140 €** |
+| L2.1 | Ateliers de cadrage et arborescence | 4 | jour | 505 € | 2 020 € |
+| L2.2 | Cas d'utilisation, diagrammes et modèle de données | 6 | jour | 580 € | 3 480 € |
+| L2.3 | Spécifications et validation | 4 | jour | 660 € | 2 640 € |
+| **L3** | **Identité visuelle et maquettes** | | | | **10 410 €** |
+| L3.1 | Recherches de logo, 3 concepts et 3 déclinaisons chacun | 4 | jour | 505 € | 2 020 € |
+| L3.2 | Charte graphique complète | 3 | jour | 505 € | 1 515 € |
+| L3.3 | Zoning et wireframes, ordinateur, tablette et mobile | 4 | jour | 505 € | 2 020 € |
+| L3.4 | Maquettes, 3 formats | 7 | jour | 505 € | 3 535 € |
+| L3.5 | Présentations et validation | 2 | jour | 660 € | 1 320 € |
+| **L4** | **Développement** | | | | **37 450 €** |
+| L4.1 | Initialisation, base de données et environnements | 3 | jour | 580 € | 1 740 € |
+| L4.2 | Génération et contrôle des 500 000 codes | 5 | jour | 580 € | 2 900 € |
+| L4.3 | Authentification, comptes et rôles, connexions Google et Facebook | 7 | jour | 580 € | 4 060 € |
+| L4.4 | Parcours de participation et historique des gains | 8 | jour | 580 € | 4 640 € |
+| L4.5 | Interface employé et remise des lots | 4 | jour | 580 € | 2 320 € |
+| L4.6 | Back-office, statistiques et export | 6 | jour | 580 € | 3 480 € |
+| L4.7 | Tirage au sort et fonctionnalités RGPD | 4 | jour | 580 € | 2 320 € |
+| L4.8 | API pour les caisses et le futur site marchand | 3 | jour | 580 € | 1 740 € |
+| L4.9 | Intégration graphique adaptative | 6 | jour | 505 € | 3 030 € |
+| L4.10 | Infrastructure et automatisation du déploiement | 8 | jour | 660 € | 5 280 € |
+| L4.11 | Sécurisation, clés d'API et durcissement | 4 | jour | 660 € | 2 640 € |
+| L4.12 | Pilotage du développement | 5 | jour | 660 € | 3 300 € |
+| **L5** | **Recette et mise en ligne** | | | | **11 540 €** |
+| L5.1 | Tests fonctionnels, de charge et d'accessibilité | 8 | jour | 580 € | 4 640 € |
+| L5.2 | Optimisation du référencement et contenus | 2 | jour | 480 € | 960 € |
+| L5.3 | Recette client et corrections | 4 | jour | 660 € | 2 640 € |
+| L5.4 | Mise en production | 2 | jour | 660 € | 1 320 € |
+| L5.5 | Formation des employés en boutique | 3 | jour | 660 € | 1 980 € |
+| **L6** | **Dispositif de communication** | | | | **7 275 €** |
+| L6.1 | Création des comptes sociaux et visuels associés | 3 | jour | 505 € | 1 515 € |
+| L6.2 | Calendrier éditorial et publications | 4 | jour | 480 € | 1 920 € |
+| L6.3 | Partenariats d'influence | 3 | jour | 480 € | 1 440 € |
+| L6.4 | Templates d'emailing | 3 | jour | 480 € | 1 440 € |
+| L6.5 | Mesure d'audience et rapports | 2 | jour | 480 € | 960 € |
+| **L7** | **Pilotage et suivi** | | | | **6 600 €** |
+| L7.1 | Comités de pilotage et reporting | 8 | jour | 660 € | 5 280 € |
+| L7.2 | Bilan de fin d'opération | 2 | jour | 660 € | 1 320 € |
 
 ### Récapitulatif
 
 | | Montant |
 |---|---|
-| Total HT | **82 315 €** |
-| TVA 20 % | 16 463 € |
-| **Total TTC** | **98 778 €** |
+| Total HT | **92 575 €** |
+| TVA 20 % | 18 515 € |
+| **Total TTC** | **111 090 €** |
 
 Charge totale : 162 jours-homme.
 
@@ -119,10 +119,10 @@ Applicable après la période de garantie de 3 mois.
 
 | Réf. | Désignation | Quantité | Prix unitaire | Total HT |
 |---|---|---|---|---|
-| M1 | Maintenance corrective, forfait mensuel, 1 jour | 12 | 530 € | 6 360 € |
-| M2 | Mises à jour de sécurité et supervision | 12 | 565 € | 6 780 € |
-| M3 | Sauvegardes et test de restauration mensuel | 6 | 565 € | 3 390 € |
-| | **Total annuel HT** | | | **16 530 €** |
+| M1 | Maintenance corrective, forfait mensuel, 1 jour | 12 | 580 € | 6 960 € |
+| M2 | Mises à jour de sécurité et supervision | 12 | 660 € | 7 920 € |
+| M3 | Sauvegardes et test de restauration mensuel | 6 | 660 € | 3 960 € |
+| | **Total annuel HT** | | | **18 840 €** |
 
 Engagement de 12 mois, résiliable avec un préavis de 3 mois. Intervention sous 4 heures ouvrées en cas d'incident bloquant.
 
@@ -132,10 +132,10 @@ Pour prolonger l'opération au-delà du jeu-concours.
 
 | Réf. | Désignation | Quantité | Prix unitaire | Total HT |
 |---|---|---|---|---|
-| C1 | Animation des réseaux sociaux, forfait mensuel | 12 | 1 720 € | 20 640 € |
-| C2 | Campagnes d'emailing, une par mois | 12 | 430 € | 5 160 € |
-| C3 | Rapport de performance trimestriel | 4 | 860 € | 3 440 € |
-| | **Total annuel HT** | | | **29 240 €** |
+| C1 | Animation des réseaux sociaux, forfait mensuel | 12 | 1 920 € | 23 040 € |
+| C2 | Campagnes d'emailing, une par mois | 12 | 480 € | 5 760 € |
+| C3 | Rapport de performance trimestriel | 4 | 960 € | 3 840 € |
+| | **Total annuel HT** | | | **32 640 €** |
 
 Le budget publicitaire éventuel n'est pas compris et reste souscrit directement par le client.
 
@@ -143,10 +143,10 @@ Le budget publicitaire éventuel n'est pas compris et reste souscrit directement
 
 | Réf. | Désignation | Quantité | Prix unitaire | Total HT |
 |---|---|---|---|---|
-| F1 | Formation des employés en boutique, session de 2 heures | 5 | 565 € | 2 825 € |
-| F2 | Formation des administrateurs au back-office, une journée | 1 | 565 € | 565 € |
-| F3 | Support de formation et tutoriels vidéo | 2 | 455 € | 910 € |
-| | **Total HT** | | | **4 300 €** |
+| F1 | Formation des employés en boutique, session de 2 heures | 5 | 660 € | 3 300 € |
+| F2 | Formation des administrateurs au back-office, une journée | 1 | 660 € | 660 € |
+| F3 | Support de formation et tutoriels vidéo | 2 | 505 € | 1 010 € |
+| | **Total HT** | | | **4 970 €** |
 
 Les sessions se tiennent en boutique ou à distance, par groupes de 8 personnes au maximum.
 
@@ -156,10 +156,10 @@ Ces évolutions correspondent aux fonctionnalités classées « pourrait être f
 
 | Réf. | Désignation | Quantité | Prix unitaire | Total HT |
 |---|---|---|---|---|
-| E1 | Partage du gain sur les réseaux sociaux | 3 | 530 € | 1 590 € |
-| E2 | Rappel automatique avant la date limite de réclamation | 2 | 530 € | 1 060 € |
-| E3 | Tableau de bord temps réel pour la direction | 4 | 530 € | 2 120 € |
-| E4 | Reconduction du dispositif pour une nouvelle opération | 5 | 530 € | 2 650 € |
-| | **Total HT** | | | **7 420 €** |
+| E1 | Partage du gain sur les réseaux sociaux | 3 | 580 € | 1 740 € |
+| E2 | Rappel automatique avant la date limite de réclamation | 2 | 580 € | 1 160 € |
+| E3 | Tableau de bord temps réel pour la direction | 4 | 580 € | 2 320 € |
+| E4 | Reconduction du dispositif pour une nouvelle opération | 5 | 580 € | 2 900 € |
+| | **Total HT** | | | **8 120 €** |
 
 L'option E4 mérite d'être signalée au client. Le jeu-concours a été conçu avec ses règles en base de données plutôt qu'écrites dans le code. Reconduire l'opération l'année suivante coûte donc cinq jours de paramétrage et de génération de nouveaux codes, et non un nouveau développement.

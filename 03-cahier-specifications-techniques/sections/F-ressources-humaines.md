@@ -76,15 +76,23 @@ La question de l'astreinte mérite d'être tranchée explicitement plutôt que l
 
 #### Grille de salaire
 
-> Les fourchettes ci-dessous sont indicatives et doivent être confirmées dans le dossier par une source citée, par exemple une étude de rémunération sectorielle récente ou la grille de la convention Syntec. Le cahier des charges exige que toute donnée chiffrée soit sourcée et datée de moins de cinq ans.
+Les fourchettes ci-dessous partent des études de rémunération françaises consultées en novembre 2026, puis appliquent l'écart de la place de Nantes, où l'agence a son siège. Les sources sont citées dans l'annexe consacrée au TJM.
 
-| Niveau | Expérience | Fourchette brute annuelle | Commentaire |
-|---|---|---|---|
-| Junior | 0 à 2 ans | à confirmer | Écarté ici, le poste est seul sur son périmètre |
-| Confirmé | 3 à 5 ans | à confirmer | **Cible du recrutement** |
-| Senior | 6 ans et plus | à confirmer | À envisager si l'agence veut aussi un rôle de référent technique transverse |
+| Niveau | Expérience | Fourchette nationale | **Fourchette Nantes** | Commentaire |
+|---|---|---|---|---|
+| Junior | 0 à 2 ans | 40 000 à 48 000 € | 36 000 à 42 000 € | Écarté ici, le poste est seul sur son périmètre |
+| Confirmé | 3 à 5 ans | 55 000 à 65 000 € | **48 000 à 57 000 €** | **Cible du recrutement, offre positionnée à 52 000 €** |
+| Senior | 6 ans et plus | 70 000 à 85 000 € | 62 000 à 75 000 € | À envisager si l'agence veut aussi un rôle de référent technique transverse |
 
-Le coût employeur se calcule en ajoutant les charges patronales au salaire brut. Le détail du calcul figure dans l'annexe consacrée au TJM des ressources, avec le taux retenu et sa source. C'est ce coût complet, et non le salaire brut, qui alimente l'estimation de rentabilité de la partie I.
+Trois choses à dire sur ce tableau, parce qu'un chiffre de salaire se défend ou ne vaut rien.
+
+**Pourquoi l'écart régional, et pourquoi il n'est pas un rabais.** Les études situent les métropoles régionales environ 12 % sous l'Île-de-France. Le coût de la vie et les loyers y sont plus bas dans des proportions au moins équivalentes, donc le pouvoir d'achat réel ne baisse pas. C'est un argument à tenir tel quel en entretien, parce qu'un candidat qui compare une offre nantaise à une offre parisienne fait ce calcul de toute façon.
+
+**Pourquoi 52 000 € et non le bas de la fourchette.** Le poste est seul sur son périmètre : la personne recrutée sera, pendant au moins un an, la seule de l'agence à savoir opérer la chaîne de production. Recruter au plancher sur un métier en tension, c'est accepter un délai de recrutement plus long et un risque de départ au bout de dix-huit mois. Le surcoût de 4 000 € par an par rapport au bas de la fourchette est très inférieur au coût d'un recrutement à refaire, que les professionnels du secteur chiffrent entre six mois et un an de salaire.
+
+**Pourquoi le junior est écarté.** Ce n'est pas une question de budget, puisqu'il coûterait moins cher. Un profil junior a besoin d'un pair pour progresser, et il n'y en a pas ici. Le recruter reviendrait à lui confier seul une infrastructure dont dépendent quarante projets clients, ce qui serait à la fois risqué pour l'agence et injuste pour lui.
+
+Le coût employeur se calcule en ajoutant les charges patronales au salaire brut, soit 52 000 × 1,42 = **73 840 €** par an. C'est ce coût complet, et non le salaire brut, qui alimente l'estimation de rentabilité de la partie I. Le détail figure dans l'annexe consacrée au TJM des ressources.
 
 #### Recrutement en pratique
 

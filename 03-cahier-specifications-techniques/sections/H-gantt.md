@@ -12,19 +12,21 @@ Les deux plannings se recoupent sur un point : le workflow doit être opération
 
 ## H.2 Structure en lots
 
-| Lot | Intitulé | Charge | Coût |
-|---|---|---|---|
-| A | Cadrage et audit de l'existant | 7 j | 3 955 € |
-| B | Socle serveur et Docker | 6 j | 3 390 € |
-| C | SCM et conventions Git | 6 j | 3 320 € |
-| D | Jenkins, agents et registry | 8 j | 4 520 € |
-| E | Pipelines des trois types de projets | 15 j | 8 300 € |
-| F | Environnements dev, préproduction, production | 8 j | 4 520 € |
-| G | Métriques et alertes | 5 j | 2 825 € |
-| H | Sauvegardes et restauration | 6 j | 3 390 € |
-| I | Documentation et procédures | 6 j | 3 390 € |
-| J | Formation des équipes | 7 j | 3 955 € |
-| | **Total** | **74 j** | **41 565 €** |
+| Lot | Intitulé | Charge | Répartition | Coût |
+|---|---|---|---|---|
+| A | Cadrage et audit de l'existant | 7 j | 4 j DevOps, 3 j chef de projet | 4 620 € |
+| B | Socle serveur et Docker | 6 j | 6 j DevOps | 3 960 € |
+| C | SCM et conventions Git | 6 j | 4 j DevOps, 2 j développeur | 3 800 € |
+| D | Jenkins, agents et registry | 8 j | 8 j DevOps | 5 280 € |
+| E | Pipelines des trois types de projets | 15 j | 10 j DevOps, 5 j développeur | 9 500 € |
+| F | Environnements dev, préproduction, production | 8 j | 8 j DevOps | 5 280 € |
+| G | Métriques et alertes | 5 j | 5 j DevOps | 3 300 € |
+| H | Sauvegardes et restauration | 6 j | 6 j DevOps | 3 960 € |
+| I | Documentation et procédures | 6 j | 4 j DevOps, 2 j chef de projet | 3 960 € |
+| J | Formation des équipes | 7 j | 5 j DevOps, 2 j chef de projet | 4 620 € |
+| | **Total** | **74 j** | | **48 280 €** |
+
+Les coûts appliquent les taux journaliers de l'annexe TJM : **660 €** pour l'ingénieur DevOps comme pour le chef de projet, **580 €** pour le développeur. Le contrôle se refait en une ligne, par ressource plutôt que par lot : 60 × 660 + 7 × 660 + 7 × 580 = 39 600 + 4 620 + 4 060 = **48 280 €**.
 
 ## H.3 Détail des tâches
 
