@@ -38,7 +38,7 @@
 <path d="M 684.0 777.0 L 744.0 777.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 829.0 808.0 L 829.0 912.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <circle cx="369.0" cy="129.0" r="27.0" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
-<text x="369.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Internet</text>
+<text x="369.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Internet</text>
 <rect x="744.0" y="98.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
 <text x="829.0" y="126.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Poste développeur</text>
 <text x="829.0" y="139.5" font-size="10.5" fill="#1b2733" text-anchor="middle">git push</text>
@@ -97,19 +97,19 @@
 <text x="829.0" y="774.5" font-size="10.5" fill="#1b2733" text-anchor="middle">SAUVEGARDE</text>
 <text x="829.0" y="787.5" font-size="10.5" fill="#1b2733" text-anchor="middle">planifiée, chiffrée</text>
 <circle cx="829.0" cy="939.0" r="27.0" fill="#ffffff" stroke="#2f5d8c" stroke-width="3.5"/>
-<text x="829.0" y="984.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Stockage externalisé</text>
+<text x="829.0" y="984.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Stockage externalisé</text>
 <text x="377.0" y="208.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">443/tcp HTTPS</text>
 <text x="837.0" y="210.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">22/tcp SSH</text>
 <text x="300.0" y="342.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">HTTP</text>
 <text x="377.0" y="372.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">HTTP</text>
 <text x="654.2" y="368.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">HTTPS</text>
 <text x="189.6" y="381.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">HTTP</text>
-<text x="254.0" y="445.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">webhook HTTP</text>
-<text x="484.0" y="445.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">JNLP 50000/tcp</text>
+<text x="254.0" y="409.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">webhook HTTP</text>
+<text x="484.0" y="409.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">JNLP 50000/tcp</text>
 <text x="714.0" y="445.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">push HTTPS</text>
 <text x="507.0" y="670.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">scrape HTTP</text>
 <text x="686.4" y="683.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">scrape HTTP</text>
-<text x="254.0" y="607.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">PromQL HTTP</text>
+<text x="254.0" y="571.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">PromQL HTTP</text>
 <text x="387.4" y="517.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">déploiement</text>
 <text x="456.4" y="530.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">déploiement</text>
 <text x="607.0" y="615.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">déploiement</text>

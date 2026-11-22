@@ -15,11 +15,11 @@
 <path d="M 454.0 129.0 L 514.0 129.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 599.0 160.0 L 599.0 186.0 L 829.0 186.0 L 829.0 370.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 829.0 432.0 L 829.0 480.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
-<path d="M 829.0 542.0 L 829.0 572.0 L 1059.0 572.0 L 1059.0 86.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 744.0 511.0 L 714.0 511.0 L 714.0 129.0 L 1016.0 129.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 1059.0 172.0 L 1059.0 198.0 L 139.0 198.0 L 139.0 212.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 1059.0 172.0 L 1059.0 468.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 1059.0 554.0 L 1059.0 580.0 L 139.0 580.0 L 139.0 590.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
-<path d="M 139.0 652.0 L 139.0 682.0 L 1059.0 682.0 L 1059.0 468.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 54.0 621.0 L 40 621.0 L 40 511.0 L 1016.0 511.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 1059.0 554.0 L 1059.0 593.0 L 139.0 593.0 L 139.0 752.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 224.0 783.0 L 326.0 783.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 412.0 783.0 L 572.0 783.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
@@ -40,7 +40,7 @@
 <path d="M 872.0 1003.0 L 974.0 1003.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 829.0 1046.0 L 829.0 1085.0 L 1059.0 1085.0 L 1059.0 1086.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <circle cx="139.0" cy="129.0" r="27.0" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
-<text x="139.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Recette client validée</text>
+<text x="139.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Recette client validée</text>
 <rect x="284.0" y="98.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
 <text x="369.0" y="126.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Merge de release</text>
 <text x="369.0" y="139.5" font-size="10.5" fill="#1b2733" text-anchor="middle">vers main</text>
@@ -48,12 +48,12 @@
 <text x="599.0" y="133.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Poser un tag de version</text>
 <polygon points="1059.0,86.0 1102.0,129.0 1059.0,172.0 1016.0,129.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
 <path d="M 1046.0 116.0 L 1072.0 142.0 M 1072.0 116.0 L 1046.0 142.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
-<text x="1059.0" y="190.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Validation chef de</text>
-<text x="1059.0" y="203.0" font-size="10.5" fill="#1b2733" text-anchor="middle">projet</text>
-<text x="1059.0" y="216.0" font-size="10.5" fill="#1b2733" text-anchor="middle">et Product Owner</text>
+<text x="1110.0" y="120.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Validation chef de</text>
+<text x="1110.0" y="133.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">projet</text>
+<text x="1110.0" y="146.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">et Product Owner</text>
 <circle cx="139.0" cy="239.0" r="27.0" fill="#fdecea" stroke="#a6342a" stroke-width="3.5"/>
-<text x="139.0" y="284.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Déploiement annulé</text>
-<text x="139.0" y="297.0" font-size="10.5" fill="#1b2733" text-anchor="middle">motif consigné</text>
+<text x="139.0" y="284.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Déploiement annulé</text>
+<text x="139.0" y="297.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">motif consigné</text>
 <rect x="744.0" y="370.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
 <text x="829.0" y="398.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Préparer l&#x27;artefact</text>
 <text x="829.0" y="411.5" font-size="10.5" fill="#1b2733" text-anchor="middle">de production</text>
@@ -62,8 +62,9 @@
 <text x="829.0" y="521.5" font-size="10.5" fill="#1b2733" text-anchor="middle">déploiement en attente</text>
 <polygon points="1059.0,468.0 1102.0,511.0 1059.0,554.0 1016.0,511.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
 <path d="M 1046.0 498.0 L 1072.0 524.0 M 1072.0 498.0 L 1046.0 524.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
-<text x="1059.0" y="572.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Créneau de</text>
-<text x="1059.0" y="585.0" font-size="10.5" fill="#1b2733" text-anchor="middle">déploiement ouvert ?</text>
+<text x="1110.0" y="502.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Créneau de</text>
+<text x="1110.0" y="515.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">déploiement ouvert</text>
+<text x="1110.0" y="528.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">?</text>
 <rect x="54.0" y="590.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
 <text x="139.0" y="625.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Mise en file d&#x27;attente</text>
 <rect x="54.0" y="752.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
@@ -71,11 +72,11 @@
 <text x="139.0" y="793.5" font-size="10.5" fill="#1b2733" text-anchor="middle">base et volumes</text>
 <polygon points="369.0,740.0 412.0,783.0 369.0,826.0 326.0,783.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
 <path d="M 356.0 770.0 L 382.0 796.0 M 382.0 770.0 L 356.0 796.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
-<text x="369.0" y="844.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Sauvegarde</text>
-<text x="369.0" y="857.0" font-size="10.5" fill="#1b2733" text-anchor="middle">vérifiée ?</text>
+<text x="420.0" y="780.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Sauvegarde</text>
+<text x="420.0" y="793.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">vérifiée ?</text>
 <circle cx="599.0" cy="783.0" r="27.0" fill="#fdecea" stroke="#a6342a" stroke-width="3.5"/>
-<text x="599.0" y="828.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Déploiement bloqué</text>
-<text x="599.0" y="841.0" font-size="10.5" fill="#1b2733" text-anchor="middle">alerte plateforme</text>
+<text x="599.0" y="828.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Déploiement bloqué</text>
+<text x="599.0" y="841.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">alerte plateforme</text>
 <rect x="744.0" y="752.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
 <text x="829.0" y="780.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Activer la page</text>
 <text x="829.0" y="793.5" font-size="10.5" fill="#1b2733" text-anchor="middle">de maintenance</text>
@@ -83,7 +84,7 @@
 <text x="1059.0" y="787.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Appliquer les migrations</text>
 <polygon points="139.0,850.0 182.0,893.0 139.0,936.0 96.0,893.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
 <path d="M 126.0 880.0 L 152.0 906.0 M 152.0 880.0 L 126.0 906.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
-<text x="139.0" y="954.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Migrations OK ?</text>
+<text x="190.0" y="897.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Migrations OK ?</text>
 <rect x="284.0" y="862.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
 <text x="369.0" y="890.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Déployer la</text>
 <text x="369.0" y="903.5" font-size="10.5" fill="#1b2733" text-anchor="middle">nouvelle image</text>
@@ -91,14 +92,14 @@
 <text x="599.0" y="897.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Sonde de santé</text>
 <polygon points="829.0,850.0 872.0,893.0 829.0,936.0 786.0,893.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
 <path d="M 816.0 880.0 L 842.0 906.0 M 842.0 880.0 L 816.0 906.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
-<text x="829.0" y="954.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Service</text>
-<text x="829.0" y="967.0" font-size="10.5" fill="#1b2733" text-anchor="middle">disponible ?</text>
+<text x="880.0" y="890.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Service</text>
+<text x="880.0" y="903.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">disponible ?</text>
 <rect x="974.0" y="862.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
 <text x="1059.0" y="890.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Tests de fumée</text>
 <text x="1059.0" y="903.5" font-size="10.5" fill="#1b2733" text-anchor="middle">parcours critiques</text>
 <polygon points="139.0,960.0 182.0,1003.0 139.0,1046.0 96.0,1003.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
 <path d="M 126.0 990.0 L 152.0 1016.0 M 152.0 990.0 L 126.0 1016.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
-<text x="139.0" y="1064.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Parcours OK ?</text>
+<text x="190.0" y="1007.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Parcours OK ?</text>
 <rect x="284.0" y="972.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
 <text x="369.0" y="1007.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Désactiver la maintenance</text>
 <rect x="514.0" y="972.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
@@ -106,29 +107,29 @@
 <text x="599.0" y="1013.5" font-size="10.5" fill="#1b2733" text-anchor="middle">30 minutes</text>
 <polygon points="829.0,960.0 872.0,1003.0 829.0,1046.0 786.0,1003.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
 <path d="M 816.0 990.0 L 842.0 1016.0 M 842.0 990.0 L 816.0 1016.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
-<text x="829.0" y="1064.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Alerte</text>
-<text x="829.0" y="1077.0" font-size="10.5" fill="#1b2733" text-anchor="middle">déclenchée ?</text>
+<text x="880.0" y="1000.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Alerte</text>
+<text x="880.0" y="1013.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">déclenchée ?</text>
 <rect x="974.0" y="972.0" width="170" height="62" rx="8" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
 <text x="1059.0" y="1000.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Processus G.6</text>
 <text x="1059.0" y="1013.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Restauration production</text>
 <circle cx="1059.0" cy="1113.0" r="27.0" fill="#ffffff" stroke="#2f5d8c" stroke-width="3.5"/>
-<text x="1059.0" y="1158.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Mise en production</text>
-<text x="1059.0" y="1171.0" font-size="10.5" fill="#1b2733" text-anchor="middle">réussie</text>
-<text x="1059.0" y="1184.0" font-size="10.5" fill="#1b2733" text-anchor="middle">consignation au</text>
-<text x="1059.0" y="1197.0" font-size="10.5" fill="#1b2733" text-anchor="middle">journal</text>
+<text x="1059.0" y="1158.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Mise en production</text>
+<text x="1059.0" y="1171.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">réussie</text>
+<text x="1059.0" y="1184.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">consignation au</text>
+<text x="1059.0" y="1197.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">journal</text>
 <text x="783.0" y="192.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Refusée</text>
 <text x="1067.0" y="320.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Accordée</text>
 <text x="783.0" y="574.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
 <text x="635.8" y="587.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
 <text x="492.0" y="775.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
-<text x="580.6" y="863.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="580.6" y="935.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
 <text x="415.0" y="956.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
-<text x="233.0" y="885.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="233.0" y="873.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
 <text x="898.0" y="956.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
-<text x="923.0" y="885.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="923.0" y="873.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
 <text x="415.0" y="1070.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
-<text x="233.0" y="995.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
-<text x="923.0" y="995.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="233.0" y="983.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="923.0" y="983.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
 <text x="934.8" y="1079.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
 <circle cx="24" cy="1244" r="8" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
 <text x="40" y="1248" font-size="10" fill="#43525f">Événement de début</text>

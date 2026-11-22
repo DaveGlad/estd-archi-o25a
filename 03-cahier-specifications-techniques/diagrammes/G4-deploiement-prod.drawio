@@ -22,7 +22,7 @@
         <mxCell id="n_C" value="Poser un tag de version" style="rounded=1;arcSize=12;fillColor=#fdf3e3;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="514" y="26" width="170" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="n_F" value="Validation chef de projet&#10;et Product Owner" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="n_F" value="Validation chef de projet&#10;et Product Owner" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;labelPosition=right;align=left;verticalLabelPosition=middle;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1">
           <mxGeometry x="1016" y="14" width="86" height="86" as="geometry" />
         </mxCell>
         <mxCell id="n_G" value="Déploiement annulé&#10;motif consigné" style="ellipse;fillColor=#fdecea;strokeColor=#a6342a;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=4;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
@@ -34,7 +34,7 @@
         <mxCell id="n_Ee" value="Notification :&#10;déploiement en attente" style="rounded=1;arcSize=12;fillColor=#eaf3ee;strokeColor=#2f6d4f;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="744" y="408" width="170" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="n_H" value="Créneau de&#10;déploiement ouvert ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="n_H" value="Créneau de&#10;déploiement ouvert ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;labelPosition=right;align=left;verticalLabelPosition=middle;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1">
           <mxGeometry x="1016" y="396" width="86" height="86" as="geometry" />
         </mxCell>
         <mxCell id="n_I" value="Mise en file d'attente" style="rounded=1;arcSize=12;fillColor=#eaf3ee;strokeColor=#2f6d4f;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;" vertex="1" parent="1">
@@ -43,7 +43,7 @@
         <mxCell id="n_J" value="Sauvegarde immédiate&#10;base et volumes" style="rounded=1;arcSize=12;fillColor=#eaf3ee;strokeColor=#2f6d4f;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="54" y="680" width="170" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="n_K" value="Sauvegarde&#10;vérifiée ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="n_K" value="Sauvegarde&#10;vérifiée ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;labelPosition=right;align=left;verticalLabelPosition=middle;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1">
           <mxGeometry x="326" y="668" width="86" height="86" as="geometry" />
         </mxCell>
         <mxCell id="n_L" value="Déploiement bloqué&#10;alerte plateforme" style="ellipse;fillColor=#fdecea;strokeColor=#a6342a;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=4;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
@@ -55,7 +55,7 @@
         <mxCell id="n_Nn" value="Appliquer les migrations" style="rounded=1;arcSize=12;fillColor=#eaf3ee;strokeColor=#2f6d4f;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="974" y="680" width="170" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="n_O" value="Migrations OK ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="n_O" value="Migrations OK ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;labelPosition=right;align=left;verticalLabelPosition=middle;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1">
           <mxGeometry x="96" y="778" width="86" height="86" as="geometry" />
         </mxCell>
         <mxCell id="n_Q" value="Déployer la&#10;nouvelle image" style="rounded=1;arcSize=12;fillColor=#eaf3ee;strokeColor=#2f6d4f;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;" vertex="1" parent="1">
@@ -64,13 +64,13 @@
         <mxCell id="n_R" value="Sonde de santé" style="rounded=1;arcSize=12;fillColor=#eaf3ee;strokeColor=#2f6d4f;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="514" y="790" width="170" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="n_S" value="Service&#10;disponible ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="n_S" value="Service&#10;disponible ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;labelPosition=right;align=left;verticalLabelPosition=middle;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1">
           <mxGeometry x="786" y="778" width="86" height="86" as="geometry" />
         </mxCell>
         <mxCell id="n_T" value="Tests de fumée&#10;parcours critiques" style="rounded=1;arcSize=12;fillColor=#eaf3ee;strokeColor=#2f6d4f;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="974" y="790" width="170" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="n_U" value="Parcours OK ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="n_U" value="Parcours OK ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;labelPosition=right;align=left;verticalLabelPosition=middle;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1">
           <mxGeometry x="96" y="888" width="86" height="86" as="geometry" />
         </mxCell>
         <mxCell id="n_V" value="Désactiver la maintenance" style="rounded=1;arcSize=12;fillColor=#eaf3ee;strokeColor=#2f6d4f;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;" vertex="1" parent="1">
@@ -79,7 +79,7 @@
         <mxCell id="n_W" value="Surveillance renforcée&#10;30 minutes" style="rounded=1;arcSize=12;fillColor=#eaf3ee;strokeColor=#2f6d4f;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="514" y="900" width="170" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="n_X" value="Alerte&#10;déclenchée ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="n_X" value="Alerte&#10;déclenchée ?" style="rhombus;fillColor=#fffbe9;strokeColor=#9a6a17;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=2;labelPosition=right;align=left;verticalLabelPosition=middle;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1">
           <mxGeometry x="786" y="888" width="86" height="86" as="geometry" />
         </mxCell>
         <mxCell id="n_P" value="Processus G.6&#10;Restauration production" style="rounded=1;arcSize=12;fillColor=#f1eef8;strokeColor=#59438f;fontColor=#1b2733;fontSize=11;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;strokeWidth=4;" vertex="1" parent="1">

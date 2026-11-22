@@ -24,22 +24,22 @@
 <path d="M 139.0 444.0 L 139.0 487.0 L 599.0 487.0 L 599.0 370.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 684.0 401.0 L 744.0 401.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 914.0 401.0 L 1016.0 401.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
-<path d="M 1059.0 444.0 L 1059.0 474.0 L 829.0 474.0 L 829.0 102.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1016.0 401.0 L 986.0 401.0 L 986.0 129.0 L 856.0 129.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 1059.0 444.0 L 1059.0 483.0 L 599.0 483.0 L 599.0 532.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 684.0 563.0 L 744.0 563.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <path d="M 914.0 563.0 L 1032.0 563.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
 <circle cx="139.0" cy="129.0" r="27.0" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
-<text x="139.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Création de la</text>
-<text x="139.0" y="187.0" font-size="10.5" fill="#1b2733" text-anchor="middle">branche release</text>
+<text x="139.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Création de la</text>
+<text x="139.0" y="187.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">branche release</text>
 <rect x="284.0" y="98.0" width="170" height="62" rx="8" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
 <text x="369.0" y="126.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Pipeline identique à G.2</text>
 <text x="369.0" y="139.5" font-size="10.5" fill="#1b2733" text-anchor="middle">jusqu&#x27;à la publication</text>
 <polygon points="599.0,86.0 642.0,129.0 599.0,172.0 556.0,129.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
 <path d="M 586.0 116.0 L 612.0 142.0 M 612.0 116.0 L 586.0 142.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
-<text x="599.0" y="190.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Pipeline vert ?</text>
+<text x="650.0" y="133.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Pipeline vert ?</text>
 <circle cx="829.0" cy="129.0" r="27.0" fill="#fdecea" stroke="#a6342a" stroke-width="3.5"/>
-<text x="829.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Build rouge</text>
-<text x="829.0" y="187.0" font-size="10.5" fill="#1b2733" text-anchor="middle">notification équipe</text>
+<text x="829.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Build rouge</text>
+<text x="829.0" y="187.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">notification équipe</text>
 <rect x="54.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
 <text x="139.0" y="288.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Copier la base de</text>
 <text x="139.0" y="301.5" font-size="10.5" fill="#1b2733" text-anchor="middle">production de la veille</text>
@@ -54,11 +54,11 @@
 <text x="1059.0" y="295.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Sonde de santé</text>
 <polygon points="139.0,358.0 182.0,401.0 139.0,444.0 96.0,401.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
 <path d="M 126.0 388.0 L 152.0 414.0 M 152.0 388.0 L 126.0 414.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
-<text x="139.0" y="462.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Service</text>
-<text x="139.0" y="475.0" font-size="10.5" fill="#1b2733" text-anchor="middle">disponible ?</text>
+<text x="190.0" y="398.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Service</text>
+<text x="190.0" y="411.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">disponible ?</text>
 <circle cx="369.0" cy="401.0" r="27.0" fill="#fdecea" stroke="#a6342a" stroke-width="3.5"/>
-<text x="369.0" y="446.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Retour arrière</text>
-<text x="369.0" y="459.0" font-size="10.5" fill="#1b2733" text-anchor="middle">notification</text>
+<text x="369.0" y="446.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Retour arrière</text>
+<text x="369.0" y="459.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">notification</text>
 <rect x="514.0" y="370.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
 <text x="599.0" y="405.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Tests fonctionnels E2E</text>
 <rect x="744.0" y="370.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
@@ -66,20 +66,20 @@
 <text x="829.0" y="411.5" font-size="10.5" fill="#1b2733" text-anchor="middle">charge sur 500 000 codes</text>
 <polygon points="1059.0,358.0 1102.0,401.0 1059.0,444.0 1016.0,401.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
 <path d="M 1046.0 388.0 L 1072.0 414.0 M 1072.0 388.0 L 1046.0 414.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
-<text x="1059.0" y="462.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Seuils</text>
-<text x="1059.0" y="475.0" font-size="10.5" fill="#1b2733" text-anchor="middle">respectés ?</text>
+<text x="1110.0" y="398.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Seuils</text>
+<text x="1110.0" y="411.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">respectés ?</text>
 <rect x="514.0" y="532.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
 <text x="599.0" y="567.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Publier les rapports</text>
 <rect x="744.0" y="532.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
 <text x="829.0" y="567.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Notifier le chef de projet</text>
 <circle cx="1059.0" cy="563.0" r="27.0" fill="#ffffff" stroke="#2f5d8c" stroke-width="3.5"/>
-<text x="1059.0" y="608.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Préproduction prête</text>
-<text x="1059.0" y="621.0" font-size="10.5" fill="#1b2733" text-anchor="middle">pour la sprint review</text>
-<text x="722.0" y="121.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="1059.0" y="608.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Préproduction prête</text>
+<text x="1059.0" y="621.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">pour la sprint review</text>
+<text x="722.0" y="109.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
 <text x="387.4" y="205.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
-<text x="262.0" y="393.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="262.0" y="381.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
 <text x="350.6" y="481.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
-<text x="990.0" y="468.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="1002.0" y="394.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
 <text x="847.4" y="477.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
 <circle cx="24" cy="694" r="8" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
 <text x="40" y="698" font-size="10" fill="#43525f">Événement de début</text>

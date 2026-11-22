@@ -91,7 +91,16 @@ class Diagram:
                        for lane in (self.lanes or [''])}
 
         max_col = max(n.col for n in self.nodes.values())
-        self.width = LANE_TITLE_W + (max_col + 1) * COL_W + 40
+        grid_w = LANE_TITLE_W + (max_col + 1) * COL_W + 40
+
+        # The canvas has to hold the title, the note and the legend, not only the boxes.
+        # A narrow diagram like the activity one is two columns wide and its title is far
+        # wider than that: sized on the grid alone, the heading ran off the right edge and
+        # the last three entries of the legend were simply not on the image.
+        title_w = len(self.title) * 9.2 + 32
+        note_w = len(self.note) * 5.4 + 32
+        legend_w = sum(30 + len(label) * 5.6 for _, label in LEGEND) + 32
+        self.width = max(grid_w, title_w, note_w, min(legend_w, 1400))
 
         for n in self.nodes.values():
             if n.kind in SHAPES:
@@ -116,7 +125,10 @@ def style_for(kind: str) -> str:
     if kind in ('end', 'error'):
         return 'ellipse;' + base + 'strokeWidth=4;verticalLabelPosition=bottom;verticalAlign=top;'
     if kind == 'gateway':
-        return 'rhombus;' + base + 'strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;'
+        # Beside the diamond, not beneath it. See the note on label placement in `to_svg`:
+        # underneath, the question printed on top of the answers leaving it.
+        return ('rhombus;' + base + 'strokeWidth=2;labelPosition=right;align=left;'
+                'verticalLabelPosition=middle;verticalAlign=middle;spacingLeft=6;')
     if kind == 'call':
         return 'rounded=1;arcSize=12;' + base + 'strokeWidth=4;'
     return 'rounded=1;arcSize=12;' + base + 'strokeWidth=2;'
@@ -180,6 +192,11 @@ LEGEND = [
 ]
 
 
+def overlaps(a, b) -> bool:
+    """Two boxes (x0, y0, x1, y1) share some surface."""
+    return not (a[2] <= b[0] or b[2] <= a[0] or a[3] <= b[1] or b[3] <= a[1])
+
+
 def wrap(label: str, width: int):
     """Breaks a label on its explicit newlines first, then on width."""
     out = []
@@ -232,6 +249,25 @@ def to_svg(d: Diagram) -> str:
     # A gateway with three branches sent all three around at the same height, so the
     # three labels printed on top of one another and read as one unusable word. Each
     # branch after the first is pushed down a little, and its label slid along.
+    # Everything a flow label has to stay clear of: the shapes themselves, and the labels
+    # the shapes carry outside their own outline. Computed before any flow is drawn,
+    # because a flow label is placed against what is already on the sheet.
+    occupied: list[tuple[float, float, float, float]] = []
+    for n in d.nodes.values():
+        occupied.append((n.x, n.y + top, n.x + n.w, n.y + n.h + top))
+        if n.kind in DIAMONDS:
+            lines = wrap(n.label, 18)
+            w = max(len(l) for l in lines) * 5.4
+            cy = n.y + top + n.h / 2
+            occupied.append((n.x + n.w + 6, cy - len(lines) * 6.5 - 2,
+                             n.x + n.w + 10 + w, cy + len(lines) * 6.5 + 2))
+        elif n.kind in SHAPES:
+            lines = wrap(n.label, 22)
+            w = max(len(l) for l in lines) * 5.4
+            top_y = n.y + n.h + top + 8
+            occupied.append((n.x + n.w / 2 - w / 2, top_y,
+                             n.x + n.w / 2 + w / 2, top_y + len(lines) * 13 + 4))
+
     labels = []
     seen_from: dict[str, int] = {}
     for a, b, label in d.edges:
@@ -241,6 +277,37 @@ def to_svg(d: Diagram) -> str:
         cx1, cy1 = na.x + na.w / 2, na.y + na.h / 2 + top
         cx2, cy2 = nb.x + nb.w / 2, nb.y + nb.h / 2 + top
         adjacent = abs(nb.col - na.col) <= 1
+
+        if cy2 < cy1 - 4:
+            # Backward: the target sits ABOVE the source. Every "Non" that sends the work
+            # back to an earlier step is one of these.
+            #
+            # The generic route below cannot draw it. It leaves the bottom of the source,
+            # runs to the target's column and comes back up, and on a vertical spine the
+            # two columns are the same one: the line is drawn on top of itself and is
+            # simply not visible. The flow looked like it had no loop at all, and the two
+            # branch labels printed on the same spot under the gateway.
+            #
+            # So it goes out to the left, up, and back in. The rank keeps two loops that
+            # leave the same shape on separate tracks.
+            # Clamped so a loop leaving a first-column shape does not run off the sheet,
+            # nor across the vertical title bar of its pool.
+            floor = (LANE_TITLE_W + 6) if d.lanes else 10
+            out = max(floor, na.x - 30 - rank * 18)
+            # Enter the target on the side the loop arrives from, or the arrow crosses the
+            # whole box to plant its head on the far edge.
+            entry = nb.x + nb.w if out > nb.x + nb.w else nb.x
+            path = (f'M {na.x} {cy1} L {out} {cy1} L {out} {cy2} L {entry} {cy2}')
+            # Beside the shape it LEAVES, not halfway up the loop. The reader asks which
+            # way a branch goes while looking at the gateway, and three loops labelled
+            # "Non" halfway along their run read as three identical labels in a column
+            # with nothing to attach them to.
+            mx, my = out + 16, cy1 - 7
+            s.append(f'<path d="{path}" fill="none" stroke="#5a6b7d" stroke-width="1.4" '
+                     f'marker-end="url(#a)"/>')
+            if label:
+                labels.append((mx, my, label))
+            continue
 
         if abs(cy1 - cy2) < 4 and cx2 > cx1 and adjacent:          # same row, next column
             path = f'M {na.x + na.w} {cy1} L {nb.x} {cy2}'
@@ -284,19 +351,60 @@ def to_svg(d: Diagram) -> str:
             s.append(f'<rect x="{n.x}" y="{y}" width="{n.w}" height="{n.h}" rx="8" fill="{fill}" '
                      f'stroke="{stroke}" stroke-width="{sw}"/>')
 
-        # Events and gateways carry their label underneath, as BPMN does. 18 px of
-        # clearance rather than 13: at 13 the label of a gateway and the label of the
-        # branch leaving it printed on top of one another.
+        # Where the label goes depends on the shape.
+        #
+        # Inside, for a task. Underneath, for a start or end event, which is what BPMN
+        # does and where there is room.
+        #
+        # To the RIGHT for a gateway, and that is the fix for a whole class of collision.
+        # A diamond is 86 px tall in a row of 110, so only 24 px separate it from the next
+        # shape: a label underneath lands on the branch label of the arrow leaving it, and
+        # "Revue de code approuvée ?" printed on top of "Oui" and "Non" at once. The gap
+        # beside the diamond is about 100 px, which is room enough.
         inside = n.kind not in SHAPES and n.kind not in DIAMONDS
+        if n.kind in DIAMONDS:
+            lines = wrap(n.label, 18)
+            base = y + n.h / 2 - (len(lines) - 1) * 6.5 + 4
+            for i, line in enumerate(lines):
+                # A thick halo, because the branch leaving the gateway runs through this
+                # exact band on its way to the next shape. At 3.5 the line reappeared in
+                # the gaps between words, as a dot nobody could explain.
+                s.append(f'<text x="{n.x + n.w + 8}" y="{base + i*13}" font-size="10.5" '
+                         f'fill="#1b2733" text-anchor="start" paint-order="stroke" '
+                         f'stroke="#ffffff" stroke-width="5.5">{html.escape(line)}</text>')
+            continue
+
         lines = wrap(n.label, 26 if inside else 22)
         base = y + n.h / 2 - (len(lines) - 1) * 6.5 if inside else y + n.h + 18
+        # A task carries its label inside its own outline, where nothing crosses. The label
+        # of an event hangs underneath, in open space a flow may well run through, so it
+        # gets the same halo as a gateway's.
+        halo = '' if inside else (' paint-order="stroke" stroke="#ffffff" stroke-width="5.5"')
         for i, line in enumerate(lines):
             s.append(f'<text x="{n.x + n.w/2}" y="{base + i*13 + (4 if inside else 0)}" '
-                     f'font-size="10.5" fill="#1b2733" text-anchor="middle">{html.escape(line)}</text>')
+                     f'font-size="10.5" fill="#1b2733" text-anchor="middle"{halo}>'
+                     f'{html.escape(line)}</text>')
 
     # Third pass: the flow labels, above everything, each on its own white halo.
+    #
+    # Placed one at a time against everything already on the sheet, and nudged until the
+    # spot is free. Without this the two branches of a gateway land on the same point and
+    # print "Oui" and "Non" on top of each other, which is worse than either alone: the
+    # reader cannot tell which way the flow goes.
+    #
+    # The nudges alternate above and below the ideal position, so a label stays near the
+    # line it belongs to instead of drifting off in one direction.
     for mx, my, label in labels:
-        s.append(f'<text x="{mx}" y="{my}" font-size="10" fill="#43525f" '
+        w = len(label) * 5.4 + 6
+        x, y_ = mx, my
+        for step in range(14):
+            offset = ((step + 1) // 2) * 12 * (1 if step % 2 else -1)
+            box = (x - w / 2, y_ + offset - 9, x + w / 2, y_ + offset + 3)
+            if not any(overlaps(box, taken) for taken in occupied):
+                y_ += offset
+                break
+        occupied.append((x - w / 2, y_ - 9, x + w / 2, y_ + 3))
+        s.append(f'<text x="{x}" y="{y_}" font-size="10" fill="#43525f" '
                  f'text-anchor="middle" paint-order="stroke" stroke="#ffffff" '
                  f'stroke-width="3.5">{html.escape(label)}</text>')
 
