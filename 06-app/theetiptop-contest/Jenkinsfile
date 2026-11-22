@@ -425,8 +425,13 @@ pipeline {
           // playwright.config.ts, which writes the JUnit file to reports/junit/ for the
           // `junit` step in the post block and the HTML report next to it. With the flag the
           // XML went to the console and the post block collected nothing.
+          //
+          // `--ipc=host` is what Playwright's own Docker guidance asks for. Chromium puts
+          // its shared buffers in /dev/shm, which Docker sizes at 64 MB by default, and a
+          // tab that outgrows it dies with a crash the test reports as a navigation
+          // timeout -- intermittently, on whichever spec happens to be heaviest.
           sh '''
-            docker run --rm --network host \
+            docker run --rm --network host --ipc=host \
               --volumes-from "$(hostname)" -w "$PWD" \
               -v npm-cache:/root/.npm \
               --env-file /etc/theetiptop/env/.env.dev-host \
