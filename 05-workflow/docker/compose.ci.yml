@@ -1,8 +1,8 @@
 # Throw-away infrastructure for the integration-test stage of the pipeline.
 #
 # Separate from compose.dev.yml on purpose. The developer file keeps its data between
-# sessions — losing the 500,000 generated codes on every `down` would make local work
-# miserable — whereas a CI run must start from nothing, every time, or a test can pass on
+# sessions, losing the 500,000 generated codes on every `down` would make local work
+# miserable, whereas a CI run must start from nothing, every time, or a test can pass on
 # residue left by the previous build.
 #
 # Jenkins runs it under a per-build project name so two concurrent builds never share a

@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config';
 // `.mts` rather than `.ts`: still TypeScript, but with an extension that tells Vite's
 // native config loader the file is ESM. With a plain `.ts` and no `"type": "module"` in
 // the root package.json, Vite warns on every run that it is loading ESM syntax as
-// CommonJS — and that loader is slated to become the default.
+// CommonJS, and that loader is slated to become the default.
 
 /**
  * Vitest configuration for the whole workspace.
@@ -15,8 +15,8 @@ import { defineConfig } from 'vitest/config';
  *     is what makes them worth running on every commit.
  *
  *   - **integration** needs PostgreSQL and the 500,000 generated codes. These are the
- *     tests that actually prove the brief's requirement — that the 60/20/10/6/4% split is
- *     respected — because they count it in the database rather than in a mock. They run
+ *     tests that actually prove the brief's requirement, that the 60/20/10/6/4% split is
+ *     respected, because they count it in the database rather than in a mock. They run
  *     single-file-at-a-time against one shared database, hence `fileParallelism: false`.
  *
  * The brief requires the test reports to be exported to Jenkins, so both projects emit

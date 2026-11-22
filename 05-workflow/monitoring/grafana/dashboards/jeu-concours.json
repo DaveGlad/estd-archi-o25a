@@ -1,5 +1,5 @@
 {
-  "title": "Jeu-concours — exploitation",
+  "title": "Jeu-concours, exploitation",
   "uid": "theetiptop-contest",
   "tags": ["theetiptop", "production"],
   "timezone": "Europe/Paris",
@@ -10,7 +10,7 @@
     {
       "type": "stat",
       "title": "Codes restants",
-      "description": "Le pool NE PEUT PAS être réapprovisionné : la répartition 60/20/10/6/4 % est figée depuis la génération et déposée chez l'huissier. À zéro, les caisses cessent d'imprimer des codes jusqu'à la fin du jeu. Seuil orange à 50 000, rouge à 10 000 — là où l'alerte se déclenche.",
+      "description": "Le pool NE PEUT PAS être réapprovisionné : la répartition 60/20/10/6/4 % est figée depuis la génération et déposée chez l'huissier. À zéro, les caisses cessent d'imprimer des codes jusqu'à la fin du jeu. Seuil orange à 50 000, rouge à 10 000, là où l'alerte se déclenche.",
       "gridPos": { "h": 5, "w": 6, "x": 0, "y": 0 },
       "targets": [
         {

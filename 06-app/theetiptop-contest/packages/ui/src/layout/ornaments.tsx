@@ -6,7 +6,7 @@
  *
  * Drawn as inline SVG rather than images. That avoids a network request each, stays sharp
  * at every screen density, and follows the light or dark theme automatically because the
- * shapes inherit the current colour — three things a PNG would each need a workaround for.
+ * shapes inherit the current colour, three things a PNG would each need a workaround for.
  */
 
 /** Fine grain over the background, which keeps it from reading as a perfect digital flat. */

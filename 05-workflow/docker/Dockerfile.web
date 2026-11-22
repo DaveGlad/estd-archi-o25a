@@ -8,7 +8,7 @@
 # ⚠️ The `NEXT_PUBLIC_*` variables are BUILD arguments, not runtime environment. Next
 # inlines them into the client bundle at build time, so an image built with the staging URL
 # will call staging no matter what the production compose file sets. The pipeline therefore
-# builds one image per environment — which is why they are declared as `ARG` below rather
+# builds one image per environment, which is why they are declared as `ARG` below rather
 # than quietly inherited.
 
 FROM node:24-alpine AS deps
@@ -61,7 +61,7 @@ ENV HOSTNAME=0.0.0.0
 WORKDIR /app
 
 # `output: 'standalone'` in next.config.ts produces a self-contained server with only the
-# modules the app actually imports — a few tens of megabytes instead of the whole
+# modules the app actually imports, a few tens of megabytes instead of the whole
 # node_modules tree. There is no `npm ci` in this stage for that reason.
 COPY --from=build /app/apps/web/.next/standalone ./
 # Static assets and the public directory are not part of the standalone bundle by design,

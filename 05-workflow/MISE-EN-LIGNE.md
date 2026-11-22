@@ -15,7 +15,7 @@ numéro de groupe :
 | Site du jeu-concours | `dsp5-archi-<classe>-G<groupe>.fr` | `dsp5-archi-o25a-15m-g3.fr` |
 
 > **Ces deux valeurs sont encore des hypothèses.** Au 15 novembre 2026, ni l'un ni
-> l'autre n'est déposé — `dig` ne renvoie ni enregistrement A ni serveur de noms. Le
+> l'autre n'est déposé, `dig` ne renvoie ni enregistrement A ni serveur de noms. Le
 > numéro de groupe et le format de classe doivent être confirmés avant achat, puis
 > substitués partout (voir « Changer les domaines » plus bas).
 
@@ -81,7 +81,7 @@ Sur l'hôte, jamais dans le dépôt :
 05-workflow/docker/.env.prod                 depuis .env.deploy.example
 ```
 
-Le fichier du registry se génère une fois, en **bcrypt** — le registry refuse tout autre
+Le fichier du registry se génère une fois, en **bcrypt**, le registry refuse tout autre
 algorithme :
 
 ```bash
@@ -114,7 +114,7 @@ docker compose -f 05-workflow/compose.workflow.yml --env-file 05-workflow/.env.w
 Traefik vit dans cette pile et détient les ports 80 et 443. Les environnements s'attachent
 au réseau `edge` qu'il surveille ; les démarrer avant le laisse injoignables.
 
-Attendre les certificats — une minute environ — puis vérifier :
+Attendre les certificats, une minute environ, puis vérifier :
 
 ```bash
 curl -I https://ci.wk-archi-o25a-15m-g3.fr
@@ -141,7 +141,7 @@ docker compose … run --rm api npm run codes:verify
 génération casserait la répartition 60/20/10/6/4 % déposée chez l'huissier.
 
 La graine de génération s'affiche **une fois** et n'est pas stockée. La remettre à
-l'huissier et au gestionnaire de secrets immédiatement — elle est ce qui permet de rejouer
+l'huissier et au gestionnaire de secrets immédiatement, elle est ce qui permet de rejouer
 la génération, et quiconque la détient peut dériver tous les codes et leurs lots.
 
 > `db:seed:demo` ne doit **pas** être joué en production. Il refuse déjà
@@ -176,7 +176,7 @@ tiennent pas**. L'arbitrage à assumer, dans cet ordre :
 | 3 | Jenkins + Gitea | Le workflow doit être démontrable en soutenance |
 | 4 | Prometheus + Grafana | Exigence n° 3, mais consultable en différé |
 | 5 | Loki | Le premier à sacrifier : utile, pas exigé nommément |
-| — | dev et préprod | À ne PAS déployer ici. Les démontrer depuis le pipeline |
+|, | dev et préprod | À ne PAS déployer ici. Les démontrer depuis le pipeline |
 
 `bootstrap-vps.sh` mesure la RAM au démarrage et avertit sous 16 Go plutôt que de laisser
 découvrir le problème quand le tueur de mémoire arrête PostgreSQL en pleine écriture.

@@ -81,7 +81,7 @@ const EnvSchema = z.object({
   POS_API_KEYS: z.string().default(''),
 
   /**
-   * Code-submission rate limits. The defaults ARE the production values — the variables
+   * Code-submission rate limits. The defaults ARE the production values, the variables
    * exist so an environment can tighten them, and so the load test can raise them.
    *
    * A load test that keeps the production limit measures the limiter, not the query:

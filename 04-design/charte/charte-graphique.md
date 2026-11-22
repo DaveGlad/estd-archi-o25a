@@ -1,4 +1,4 @@
-# Charte graphique — Thé Tip Top
+# Charte graphique, Thé Tip Top
 
 > **État** : cette charte documente l'identité **réellement implémentée** dans
 > `packages/ui/src/styles/theme.css`, qui la référence en retour. Les valeurs ci-dessous
@@ -16,15 +16,15 @@
 
 | Concept | Fichier | Décision |
 |---|---|---|
-| **A — la feuille inscrite** | `logo/concepts/concept-a-feuille.svg` | **Retenu** |
-| B — la vapeur | `logo/concepts/concept-b-vapeur.svg` | Écarté |
-| C — le monogramme TTT | `logo/concepts/concept-c-monogramme.svg` | Écarté |
+| **A, la feuille inscrite** | `logo/concepts/concept-a-feuille.svg` | **Retenu** |
+| B, la vapeur | `logo/concepts/concept-b-vapeur.svg` | Écarté |
+| C, le monogramme TTT | `logo/concepts/concept-c-monogramme.svg` | Écarté |
 
 **Pourquoi A.** La feuille est construite géométriquement et non dessinée à main levée :
 le contour est une vesica symétrique, la nervure centrale suit l'axe, les nervures
 secondaires sont appariées. L'ensemble est incliné de 15°, ce qui retire la raideur d'un
 axe strictement vertical. Elle dit « thé » immédiatement, sans illustration ni dégradé, et
-tient dans un disque — la forme la plus robuste quand le support impose une vignette
+tient dans un disque, la forme la plus robuste quand le support impose une vignette
 (favicon, avatar de réseau social, pastille d'application).
 
 **Pourquoi pas B.** Les volutes de vapeur se referment sous 24 px : à la taille d'un
@@ -50,7 +50,7 @@ guidé la construction : un lot du jeu est un infuseur gravé, et une gravure n'
 seconde encre.
 
 La version fond sombre n'est pas une inversion mécanique. Le vert `#185B37` sur le fond
-sombre `#0D1610` tomberait à **1,4:1** — invisible. Le disque passe donc au vert clair
+sombre `#0D1610` tomberait à **1,4:1**, invisible. Le disque passe donc au vert clair
 `#68B986`, à **7,8:1**.
 
 ### Zone de protection et taille minimale
@@ -77,7 +77,7 @@ sombre `#0D1610` tomberait à **1,4:1** — invisible. Le disque passe donc au v
 
 Les jetons sont définis en **OKLCH** dans le thème, pas en hexadécimal, et c'est un choix :
 OKLCH est perceptuellement uniforme, donc faire varier la clarté d'un cran produit un écart
-visuel régulier — ce qui n'est vrai ni en HSL ni en RVB. Les valeurs sRGB ci-dessous sont
+visuel régulier, ce qui n'est vrai ni en HSL ni en RVB. Les valeurs sRGB ci-dessous sont
 la conversion, données pour les supports qui ne lisent pas OKLCH.
 
 ### Thème clair
@@ -133,7 +133,7 @@ le texte courant, **3:1** pour le grand texte et les éléments graphiques (crit
 | `fg-muted` | `surface` | **5,92:1** | AA |
 | `primary` | `bg` | **7,77:1** | AAA |
 | `primary` | `surface` | **8,11:1** | AAA |
-| `primary-fg` | `primary` | **7,90:1** | AAA — texte des boutons |
+| `primary-fg` | `primary` | **7,90:1** | AAA, texte des boutons |
 | `accent-strong` | `bg` | **6,98:1** | AAA |
 | `accent-strong` | `surface` | **7,29:1** | AAA |
 | `success` | `surface` | **7,12:1** | AAA |
@@ -176,16 +176,16 @@ des **motifs de trait distincts**.
 |---|---|---|---|
 | Titres | **Fraunces** | SIL Open Font License 1.1 | `next/font/google`, auto-hébergée |
 | Texte courant | **Inter** | SIL Open Font License 1.1 | `next/font/google`, auto-hébergée |
-| Chiffres | Inter, `font-variant-numeric: tabular-nums` | — | — |
+| Chiffres | Inter, `font-variant-numeric: tabular-nums` |, |, |
 
 **Licences.** Les deux sont sous OFL 1.1 : usage commercial autorisé, redistribution
-autorisée, aucune redevance. Cela compte au-delà du juridique — l'exigence n° 6 du sujet
+autorisée, aucune redevance. Cela compte au-delà du juridique, l'exigence n° 6 du sujet
 impose de l'open source, et une police propriétaire dans l'identité de marque est une
 dépendance payante par poste de travail, à vie.
 
 **Auto-hébergement.** `next/font` télécharge les fichiers à la compilation et les sert
 depuis le domaine du site. Aucune requête vers `fonts.googleapis.com` à l'exécution : c'est
-une exigence RGPD — une requête vers un tiers transmet l'adresse IP du visiteur — et c'est
+une exigence RGPD, une requête vers un tiers transmet l'adresse IP du visiteur, et c'est
 aussi une requête de moins et un rendu sans décalage.
 
 **Chiffres tabulaires** dans le back-office et sur les compteurs. Sans cela, le nombre de
@@ -204,7 +204,7 @@ proportionnel est plus étroit que le 8.
 | Surtitre | 0,75 rem, interlettrage 0,08 em, capitales | 600 | Inter |
 
 Tailles en `rem` et non en `px` : un visiteur qui agrandit la police par défaut de son
-navigateur — ce que font beaucoup de gens malvoyants — doit voir le site suivre.
+navigateur, ce que font beaucoup de gens malvoyants, doit voir le site suivre.
 
 ## 5. Images
 
@@ -214,10 +214,10 @@ navigateur — ce que font beaucoup de gens malvoyants — doit voir le site sui
 | Formats **AVIF** et **WebP**, avec repli JPEG via `<picture>` | Poids divisé par trois à qualité égale. Démarche RSE : des octets non transmis sont de l'énergie non consommée, à chaque visite |
 | `alt` descriptif obligatoire, vide **uniquement** si l'image est décorative | WCAG 1.1.1. Un `alt` vide sur une image porteuse de sens est pire que pas d'image |
 | Aucune image de texte | Non sélectionnable, non traduisible, non lisible par un lecteur d'écran, floue en zoom |
-| Dimensions déclarées sur chaque image | Sinon la page saute au chargement — le CLS des Core Web Vitals, qui compte pour le référencement |
+| Dimensions déclarées sur chaque image | Sinon la page saute au chargement, le CLS des Core Web Vitals, qui compte pour le référencement |
 
 Le site livré n'utilise **aucune photographie** : l'ornement est un tracé SVG dérivé de la
-feuille du logo. C'est délibéré — pas de banque d'images à licencier, rien à flouter pour le
+feuille du logo. C'est délibéré, pas de banque d'images à licencier, rien à flouter pour le
 RGPD, et une page d'accueil qui tient en quelques dizaines de kilo-octets.
 
 ## 6. Mise en page

@@ -13,7 +13,7 @@ import { signInWithPassword } from '@theetiptop-contest/api-client/auth';
  *
  * After a successful sign-in it navigates to `/admin` unconditionally. The role is not
  * read here: the `/admin` layout guard redirects an EMPLOYEE on to `/employe`, so the
- * routing decision lives in exactly one place instead of being duplicated — once in a
+ * routing decision lives in exactly one place instead of being duplicated, once in a
  * client component that could be edited in a browser, once in the guard that actually
  * enforces it.
  */

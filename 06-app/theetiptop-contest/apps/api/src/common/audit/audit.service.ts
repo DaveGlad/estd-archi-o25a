@@ -29,7 +29,7 @@ export interface AuditEntry {
 /**
  * Append-only trail of sensitive actions.
  *
- * Required twice over: by GDPR accountability (article 5.2 — being able to demonstrate
+ * Required twice over: by GDPR accountability (article 5.2, being able to demonstrate
  * compliance, not merely claim it) and by the bailiff's oversight of the contest, who
  * must be able to establish after the fact who handed out which prize and who ran the
  * draw.

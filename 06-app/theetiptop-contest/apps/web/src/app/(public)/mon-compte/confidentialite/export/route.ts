@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { ApiError, getMyPersonalData } from '@theetiptop-contest/api-client/server';
 
 /**
- * Downloads the customer's personal data — GDPR article 20, right to portability.
+ * Downloads the customer's personal data, GDPR article 20, right to portability.
  *
  * A route handler rather than a server action, because the result is a **file**. A server
  * action returns a value to a React component; producing a download from one means

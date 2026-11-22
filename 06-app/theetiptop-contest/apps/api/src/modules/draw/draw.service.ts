@@ -21,7 +21,7 @@ import { CatalogueService } from '../catalogue/catalogue.service.js';
  *
  *   2. "For the grand prize draw, the number of entries a customer has does not increase
  *      their chances of winning."
- *      So the pool is `SELECT DISTINCT userId FROM Participation` — the set of
+ *      So the pool is `SELECT DISTINCT userId FROM Participation`, the set of
  *      PARTICIPANTS, not the set of participations. A customer who played forty codes gets
  *      one ticket in this draw, exactly like a customer who played one. Drawing over
  *      participations would be the single easiest way to fail this requirement, and the

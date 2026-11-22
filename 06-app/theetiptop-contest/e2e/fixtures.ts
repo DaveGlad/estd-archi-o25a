@@ -10,7 +10,7 @@ loadDotenv({ quiet: true });
  *
  * The tests need two things the browser cannot give them: an untouched code to play, and a
  * way to put it back afterwards. Both go through a direct database connection, which is
- * the right tool — asking the UI to produce a fresh code would mean driving the till
+ * the right tool, asking the UI to produce a fresh code would mean driving the till
  * endpoints through the back office on every test.
  *
  * The demo accounts come from `prisma/reference-data.ts`, so the credentials below cannot
@@ -115,7 +115,7 @@ export async function prizeOfCode(code: string): Promise<string> {
 /**
  * Clears the rate-limit counters for a customer.
  *
- * The API limits code submission to 10 attempts per 10 minutes per account — the
+ * The API limits code submission to 10 attempts per 10 minutes per account, the
  * brute-force protection the brief asks for. That limit is correct, and it is exactly what
  * makes a functional suite that plays several codes in a row fail on its third run of the
  * morning.

@@ -10,13 +10,13 @@ import type { PrismaClient } from '../apps/api/src/generated/prisma/client';
  * exactly one person.**
  *
  * Tested at the database level rather than through HTTP, deliberately. The guarantee is not
- * in the service — it is in the `UPDATE ... WHERE status IN (playable)` compare-and-swap and
+ * in the service, it is in the `UPDATE ... WHERE status IN (playable)` compare-and-swap and
  * in the unique constraint on `Participation.ticketCodeId`. Driving it through two
  * concurrent transactions tests the mechanism itself, and does not need a running API.
  *
  * What would pass a naive test and fail here: a read-then-write service. Between a
  * `SELECT status` and the `UPDATE`, a second request passes the same check, and two
- * participations are created for one code — a double click, a network retry, or a script.
+ * participations are created for one code, a double click, a network retry, or a script.
  *
  * Requires a seeded and generated database.
  */
@@ -172,7 +172,7 @@ describe('playing a code, under concurrency', () => {
   it('leaves exactly one participation per code across many concurrent plays', async () => {
     // Reserved sequentially, not with `Promise.all`: `reserveCode` excludes what it has
     // already handed out through `consumedCodeIds`, and three concurrent calls would all
-    // read that list before any of them appended to it — returning the same code three
+    // read that list before any of them appended to it, returning the same code three
     // times. The concurrency under test is the claiming below, not the reserving.
     const codes = [await reserveCode(), await reserveCode(), await reserveCode()];
 

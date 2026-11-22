@@ -9,7 +9,7 @@ import { IsString, MaxLength } from 'class-validator';
  * at all. The 10-character check is NOT done by the pipe, because a malformed code is a
  * business outcome of use case UC-01 (`{ outcome: 'INVALID_FORMAT' }`) and not a protocol
  * error. Letting the pipe answer 400 would force the front end to parse error bodies back
- * into the result union — see the comment on `ParticipationsController.submit`.
+ * into the result union, see the comment on `ParticipationsController.submit`.
  *
  * `MaxLength(32)` is the one hard guard: it stops a megabyte of text being normalised and
  * regex-tested before being rejected.

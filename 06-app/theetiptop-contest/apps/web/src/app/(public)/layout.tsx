@@ -7,7 +7,7 @@ import { SiteHeader } from '../../components/layout/site-header';
  * Resolves the session once, server-side, and hands the result to the header.
  *
  * The header could call Better Auth's `useSession()` in the browser instead, but that
- * means the first paint shows the signed-out state and then flips — on every page, for
+ * means the first paint shows the signed-out state and then flips, on every page, for
  * every signed-in visitor. Reading it here renders the right header immediately.
  */
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {

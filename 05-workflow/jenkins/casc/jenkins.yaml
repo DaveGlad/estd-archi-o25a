@@ -1,7 +1,7 @@
 # Jenkins configuration as code.
 #
 # Read at startup through CASC_JENKINS_CONFIG. Everything Jenkins needs to come up ready is
-# here, in the repository, under review — and nothing is clicked into the UI.
+# here, in the repository, under review, and nothing is clicked into the UI.
 #
 # This is what makes the CI reproducible. A Jenkins configured by hand is a snowflake: it
 # cannot be rebuilt after a disk failure, its history is nobody's memory, and the one person
@@ -13,7 +13,7 @@
 
 jenkins:
   systemMessage: |
-    Furious Ducks — intégration continue.
+    Furious Ducks, intégration continue.
     Configuration gérée par code : 05-workflow/jenkins/casc/jenkins.yaml.
     Toute modification passe par une merge request.
 
@@ -33,7 +33,7 @@ jenkins:
 
   # Matrix authorization rather than "logged-in users can do anything". Developers need to
   # read builds and replay them; they do not need to reconfigure the server, which is
-  # precisely the separation requirement n° 5 asks for — the pipeline is theirs, the CI
+  # precisely the separation requirement n° 5 asks for, the pipeline is theirs, the CI
   # administration is not.
   authorizationStrategy:
     globalMatrix:
@@ -92,7 +92,7 @@ jenkins:
                 user: "root"
             instanceCapStr: "4"
             # Removed after each build. A reused agent carries the previous project's
-            # node_modules, its environment and occasionally its secrets — and a build that
+            # node_modules, its environment and occasionally its secrets, and a build that
             # only passes on a dirty agent is the hardest kind of failure to reproduce.
             removeVolumes: true
 

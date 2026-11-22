@@ -7,14 +7,14 @@
 # never in label KEYS. `traefik.http.routers.${COMPOSE_PROJECT_NAME}-api.rule` reaches
 # Traefik with the `${…}` intact, so the router name cannot carry the environment.
 #
-# Two routers with the same name are not an error — Traefik keeps one of them, and which
+# Two routers with the same name are not an error, Traefik keeps one of them, and which
 # one depends on container start order. The symptom is preprod answering on the production
 # hostname after an unrelated restart: intermittent, absent from every log, and found by a
 # customer rather than by us.
 #
 # `!override` and not a plain map. Compose MERGES label maps across files by default, so
 # without it both the production router names and these would be attached to the same
-# container — which is the collision this file exists to prevent, doubled.
+# container, which is the collision this file exists to prevent, doubled.
 #
 # Only needed when a second environment runs on the SAME host as production. On the
 # project's VPS it does not: CST D.3 puts dev and preprod on a second machine, and the

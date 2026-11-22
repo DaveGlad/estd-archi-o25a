@@ -2,7 +2,7 @@
 --
 -- Requirement 7 of the brief: "allow in-store employees to view a customer's prizes in
 -- order to hand them over". In practice the employee has the customer in front of them and
--- types a fragment of a name or an email — a substring search, not a prefix search.
+-- types a fragment of a name or an email, a substring search, not a prefix search.
 --
 -- `LIKE '%fragment%'` cannot use a B-tree index: a B-tree is ordered by prefix, and a
 -- pattern that starts with a wildcard has no prefix to seek on. PostgreSQL falls back to a

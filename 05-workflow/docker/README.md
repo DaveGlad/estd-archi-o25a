@@ -8,9 +8,9 @@ trois images applicatives, un compose de développement, un compose de déploiem
 | Fichier | Rôle |
 |---|---|
 | `compose.dev.yml` | Développement local : **uniquement** PostgreSQL 17 et Redis 8. Les applications tournent en direct via `nx dev`, pour garder le rechargement à chaud |
-| `Dockerfile.api` | API v1, NestJS 11 — 4 étages |
-| `Dockerfile.web` | Site public, Next.js 16 — 3 étages |
-| `Dockerfile.admin` | Back-office, Next.js 16 — 3 étages |
+| `Dockerfile.api` | API v1, NestJS 11, 4 étages |
+| `Dockerfile.web` | Site public, Next.js 16, 3 étages |
+| `Dockerfile.admin` | Back-office, Next.js 16, 3 étages |
 | `compose.prod.yml` | Environnements déployés : dev, préprod-QA, prod. **Un seul fichier**, trois `.env` |
 | `.env.deploy.example` | Modèle de configuration d'un environnement déployé |
 
@@ -98,8 +98,8 @@ l'artefact qui tourne n'est pas celui que le pipeline a testé.
 ### Les migrations
 
 Le service `migrate` est un **travail à usage unique**, pas un service permanent. Il exécute
-`prisma migrate deploy` depuis l'image de l'API — le même artefact que celui qui servira le
-trafic — puis se termine. Les trois applications attendent sa réussite
+`prisma migrate deploy` depuis l'image de l'API, le même artefact que celui qui servira le
+trafic, puis se termine. Les trois applications attendent sa réussite
 (`condition: service_completed_successfully`), ce qui empêche un conteneur de démarrer
 contre un schéma qui ne correspond pas au sien.
 
@@ -115,7 +115,7 @@ production.
 | `edge` | externe, partagé | api, web, admin, et le reverse proxy |
 
 PostgreSQL et Redis n'ont **aucun port publié** et aucune route depuis l'hôte : ils ne sont
-joignables que depuis le réseau interne. L'API elle-même n'expose pas de port — le reverse
+joignables que depuis le réseau interne. L'API elle-même n'expose pas de port, le reverse
 proxy du réseau `edge` est la seule entrée.
 
 ## Le partage de session entre les trois sous-domaines
@@ -127,7 +127,7 @@ reviendrait en 401.
 
 D'où la variable `COOKIE_DOMAIN`, qui vaut le domaine parent avec un point initial
 (`.dsp5-archi-o25a-15m-g3.fr`). Elle est **vide en développement**, et c'est correct : tout
-tourne sur `localhost`, et un cookie est lié à l'hôte sans tenir compte du port — les trois
+tourne sur `localhost`, et un cookie est lié à l'hôte sans tenir compte du port, les trois
 ports se le partagent déjà.
 
 ## Ce que `compose.dev.yml` ne fait pas
@@ -136,7 +136,7 @@ Il ne contient **pas** les applications. En développement elles tournent via `n
 garder le rechargement à chaud. Les images multi-étages ci-dessus servent aux trois
 environnements déployés par Jenkins.
 
-Ports décalés en local — 5434 pour PostgreSQL, 6381 pour Redis — pour ne pas entrer en
+Ports décalés en local, 5434 pour PostgreSQL, 6381 pour Redis, pour ne pas entrer en
 conflit avec une autre instance déjà installée sur la machine du développeur.
 
 ## Les trois fichiers compose du projet
@@ -149,7 +149,7 @@ conflit avec une autre instance déjà installée sur la machine du développeur
 | `../compose.workflow.yml` | dossier parent | Le workflow lui-même : Traefik, Gitea, Jenkins, registry, Prometheus, Grafana, Loki |
 
 `compose.ci.yml` est séparé de `compose.dev.yml` pour une raison précise : le fichier du
-développeur **conserve** ses données entre deux sessions — perdre les 500 000 codes à
-chaque `down` rendrait le travail local pénible — alors qu'une exécution de CI doit partir
+développeur **conserve** ses données entre deux sessions, perdre les 500 000 codes à
+chaque `down` rendrait le travail local pénible, alors qu'une exécution de CI doit partir
 de rien à chaque fois, sinon un test peut passer sur un résidu du build précédent. Son
 répertoire de données est un disque RAM, qui ne peut pas survivre au conteneur.

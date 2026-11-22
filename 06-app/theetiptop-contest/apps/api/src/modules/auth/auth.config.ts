@@ -2,8 +2,8 @@
  * Better Auth instance.
  *
  * One library covers the three sign-up methods the brief mandates: classic form, Google
- * OAuth, Facebook OAuth (`DECISIONS.md` § 3). Writing three flows by hand — password
- * hashing, session rotation, two OAuth dances, CSRF on the callbacks — is where
+ * OAuth, Facebook OAuth (`DECISIONS.md` § 3). Writing three flows by hand, password
+ * hashing, session rotation, two OAuth dances, CSRF on the callbacks, is where
  * home-grown authentication usually goes wrong.
  *
  * No `modelName` overrides below: Better Auth's default model names (`user`, `session`,
@@ -37,8 +37,8 @@ const MIN_PASSWORD_LENGTH = 12;
  *
  * Needed on the OAuth path only: Google and Facebook hand over a single `name` string,
  * whereas the back-office statistics and the in-store employee search both work on the
- * split form. The heuristic is deliberately crude — first token is the first name, the
- * rest is the last name — and the customer can correct it from their account page. There
+ * split form. The heuristic is deliberately crude, first token is the first name, the
+ * rest is the last name, and the customer can correct it from their account page. There
  * is no reliable way to split an arbitrary name, and pretending otherwise would be worse.
  */
 function splitDisplayName(name: string): { firstName: string; lastName: string } {
@@ -54,7 +54,7 @@ export function createAuth(prisma: PrismaService, config: AppConfig) {
   /**
    * Providers are registered only when their credential pair is complete. A developer
    * without Google credentials still gets a working API with the form login, instead of a
-   * boot failure — and the deployed environments, where both pairs are set by Jenkins,
+   * boot failure, and the deployed environments, where both pairs are set by Jenkins,
    * get all three methods.
    */
   const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {};
@@ -88,7 +88,7 @@ export function createAuth(prisma: PrismaService, config: AppConfig) {
        * payload could set `role: 'ADMIN'` and hand the attacker the back office. The
        * default is applied server-side and the field is rejected if it arrives from a
        * client. Same reasoning for the consent timestamps, which are the only enforceable
-       * proof and must therefore be stamped by the server — see `UserService.register`.
+       * proof and must therefore be stamped by the server, see `UserService.register`.
        */
       additionalFields: {
         firstName: { type: 'string', required: false, input: true },
@@ -163,7 +163,7 @@ export function createAuth(prisma: PrismaService, config: AppConfig) {
        * so the site would never send it back and every authenticated call would 401.
        * Scoping it to the parent domain is what makes one sign-in serve all three.
        *
-       * Off in development, where `localhost` is already the shared host — a cookie is
+       * Off in development, where `localhost` is already the shared host, a cookie is
        * scoped by host and ignores the port.
        */
       ...(config.auth.cookieDomain

@@ -25,7 +25,7 @@ log() { logger -t "$LOG_TAG" -s "$*"; }
 die() { log "FAILED: $*"; exit 1; }
 
 # Any failure must be loud. A backup job that fails quietly is indistinguishable from one
-# that works, right up until the restore — which is dysfunction n° 2 of the état des lieux
+# that works, right up until the restore, which is dysfunction n° 2 of the état des lieux
 # in a slightly more modern costume.
 trap 'die "aborted at line $LINENO"' ERR
 
@@ -45,7 +45,7 @@ for environment in prod preprod dev; do
   fi
 
   # `pg_dump -Fc`, not plain SQL. The custom format is compressed, and it can be restored
-  # table by table — which is what you actually want at 3am when one table was truncated by
+  # table by table, which is what you actually want at 3am when one table was truncated by
   # a bad migration and the rest of the database is fine.
   #
   # Run INSIDE the container, so the client version always matches the server version.
@@ -77,7 +77,7 @@ if docker ps --format '{{.Names}}' | grep -q gitea; then
   log "gitea: $(wc -c < "${STAGING}/gitea.tar.gz") bytes"
 fi
 
-# Jenkins: jobs, credentials store, plugin list. Not the build history — hundreds of
+# Jenkins: jobs, credentials store, plugin list. Not the build history, hundreds of
 # gigabytes of logs for artefacts that are already in the registry, and restoring them
 # would slow the restore down for no operational value.
 if docker ps --format '{{.Names}}' | grep -q jenkins; then
@@ -90,7 +90,7 @@ if docker ps --format '{{.Names}}' | grep -q jenkins; then
   log "jenkins: $(wc -c < "${STAGING}/jenkins-home.tar.gz") bytes"
 fi
 
-# The registry. Arguably redundant — every image can be rebuilt from a tag — but only if
+# The registry. Arguably redundant, every image can be rebuilt from a tag, but only if
 # Gitea and Jenkins are both back first. Keeping the images shortens an outage from hours
 # to minutes, and they compress to very little since the layers are already compressed.
 if docker ps --format '{{.Names}}' | grep -q registry; then
@@ -116,7 +116,7 @@ docker run --rm -v monitoring-data:/data -v "${STAGING}:/out" alpine:3 \
 # ------------------------------------------------------- 4. encrypt, then send offsite
 #
 # Encrypted BEFORE it leaves the host. The backups contain the customer table of a contest
-# with 1,200 participants — names, emails, birth dates — so an unencrypted copy at a
+# with 1,200 participants, names, emails, birth dates, so an unencrypted copy at a
 # storage provider would be a GDPR breach waiting for a misconfigured bucket.
 #
 # age rather than GPG: one key file, no keyring, no agent, and a restore procedure a tired
@@ -126,7 +126,7 @@ tar czf - -C "$(dirname "$STAGING")" "$(basename "$STAGING")" \
   > "${STAGING}.tar.gz.age"
 
 # Offsite, because a backup on the same machine protects against a bad migration and
-# against nothing else — not a disk, not a fire, not a provider account suspension.
+# against nothing else, not a disk, not a fire, not a provider account suspension.
 rclone copy "${STAGING}.tar.gz.age" "${REMOTE}/${KIND}/" --s3-no-check-bucket
 
 # ------------------------------------------------------------------- 5. retention

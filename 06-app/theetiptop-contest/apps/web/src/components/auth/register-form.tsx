@@ -16,7 +16,7 @@ import { registerAction } from '../../app/(public)/inscription/actions';
  * Sign-up by form. One of the three methods the brief mandates.
  *
  * Two steps, in this order:
- *   1. the server action creates the account — adulthood, mandatory consents and the
+ *   1. the server action creates the account, adulthood, mandatory consents and the
  *      server-stamped consent timestamps all happen there;
  *   2. the browser signs in with the credentials it already has in the form.
  *

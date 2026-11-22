@@ -5,7 +5,7 @@
  * `NEXT_PUBLIC_*` into the bundle at compile time, which is why there is one `web` image
  * per environment (see 05-workflow/docker/README.md).
  *
- * It used to be hardcoded in four files — the layout's `metadataBase`, the sitemap, the
+ * It used to be hardcoded in four files, the layout's `metadataBase`, the sitemap, the
  * robots file and the JSON-LD. Four copies of one fact is four chances to move three of
  * them, and the one left behind would publish a canonical URL pointing at a domain the
  * site no longer answers on. That is an SEO defect nobody notices for weeks.

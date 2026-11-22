@@ -5,7 +5,7 @@
 #   ./deploy.sh <dev|preprod|prod> <tag>
 #
 # Called by the Jenkinsfile. Written as a script rather than inline pipeline steps so that
-# an operator can run exactly what the CI runs when the CI is the thing that is broken —
+# an operator can run exactly what the CI runs when the CI is the thing that is broken,
 # which is the moment a deployment procedure is actually needed.
 #
 # It PULLS, it never builds. An image built on the target host is not the artefact the
@@ -27,7 +27,7 @@ case "$ENVIRONMENT" in
   *) die "usage: deploy.sh <dev|preprod|prod> <tag>" ;;
 esac
 
-[[ -n "$TAG" ]] || die "a tag is required — 'latest' is not deployable, see CST D.2"
+[[ -n "$TAG" ]] || die "a tag is required, 'latest' is not deployable, see CST D.2"
 [[ "$TAG" != "latest" ]] || die "refusing to deploy 'latest': a deployed artefact must be identifiable and reversible"
 
 # Environment files live on the HOST, not in the checkout.
@@ -116,13 +116,13 @@ if ! docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" u
 
   if [[ -n "$PREVIOUS_TAG" ]]; then
     # Roll the IMAGES back, never the database. The migration that just ran may already
-    # have rewritten data, and `migrate deploy` has no down step by design — a reversed
+    # have rewritten data, and `migrate deploy` has no down step by design, a reversed
     # migration on live data is how you turn an outage into data loss. Recovering a schema
     # is a restore from backup, a human decision, not something a deploy script takes.
     echo "deploy: rolling images back to ${PREVIOUS_TAG}" >&2
     export IMAGE_TAG="$PREVIOUS_TAG"
     docker compose "${COMPOSE_FILES[@]}" --env-file "$ENV_FILE" -p "$PROJECT" up -d --wait --remove-orphans
-    echo "deploy: rolled back. The schema was NOT reverted — check it against ${PREVIOUS_TAG}." >&2
+    echo "deploy: rolled back. The schema was NOT reverted, check it against ${PREVIOUS_TAG}." >&2
   fi
 
   exit 1

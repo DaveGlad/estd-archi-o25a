@@ -105,13 +105,13 @@ export default async function StatistiquesPage() {
                 return (
                   <tr key={row.prizeId}>
                     <Td>{row.prizeLabel}</Td>
-                    <Td className="tabular-nums">{prize?.targetPercentage ?? '—'} %</Td>
+                    <Td className="tabular-nums">{prize?.targetPercentage ?? '-'} %</Td>
                     <Td className="tabular-nums">{formatCount(row.won)}</Td>
                     <Td className="tabular-nums">{formatCount(row.redeemed)}</Td>
                     <Td className="tabular-nums">
                       {/* Guarded: on the morning the contest opens every prize has zero
                           winners, and an unguarded ratio renders "NaN %". */}
-                      {row.won > 0 ? `${Math.round((row.redeemed / row.won) * 100)} %` : '—'}
+                      {row.won > 0 ? `${Math.round((row.redeemed / row.won) * 100)} %` : '-'}
                     </Td>
                     <Td className="tabular-nums">
                       {formatPrice(row.won * (prize?.valueCents ?? 0))}
@@ -165,7 +165,7 @@ export default async function StatistiquesPage() {
                       <Td className="tabular-nums">
                         {stats.codesUsed > 0
                           ? `${Math.round((row.codesUsed / stats.codesUsed) * 100)} %`
-                          : '—'}
+                          : '-'}
                       </Td>
                     </tr>
                   ))}

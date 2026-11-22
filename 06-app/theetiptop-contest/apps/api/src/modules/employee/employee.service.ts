@@ -40,8 +40,8 @@ export class EmployeeService {
    * Finds customers by email fragment, name fragment, or exact ticket code.
    *
    * Written as raw SQL rather than through the Prisma query builder, deliberately. The
-   * search has to be an unanchored substring match — the employee types a fragment of what
-   * the customer tells them — and that is only indexable through the `pg_trgm` GIN indexes
+   * search has to be an unanchored substring match, the employee types a fragment of what
+   * the customer tells them, and that is only indexable through the `pg_trgm` GIN indexes
    * added in `20261111070019_add_trgm_customer_search_indexes`. Those indexes are built on
    * `lower(email)` and on `lower(firstName || ' ' || lastName)`; Prisma's
    * `mode: 'insensitive'` emits `ILIKE "email"`, which does not match an index on an

@@ -21,7 +21,7 @@ readonly WHEN="$(date -u '+%Y-%m-%d %H:%M UTC')"
 EXTRACT="$(journalctl -u "$UNIT" -n 20 --no-pager 2>/dev/null || echo '(journal illisible)')"
 
 read -r -d '' MESSAGE <<MSG || true
-🔴 Sauvegarde en échec — ${HOST}
+🔴 Sauvegarde en échec, ${HOST}
 
 Unité  : ${UNIT}
 Heure  : ${WHEN}
@@ -41,7 +41,7 @@ if [[ -n "${ALERT_WEBHOOK:-}" ]]; then
 fi
 
 if [[ -n "${ALERT_EMAIL:-}" ]]; then
-  printf '%s\n' "$MESSAGE" | mail -s "🔴 Sauvegarde en échec — ${HOST} — ${UNIT}" "$ALERT_EMAIL" \
+  printf '%s\n' "$MESSAGE" | mail -s "🔴 Sauvegarde en échec, ${HOST}, ${UNIT}" "$ALERT_EMAIL" \
     || logger -t backup-alert "mail command failed"
 fi
 

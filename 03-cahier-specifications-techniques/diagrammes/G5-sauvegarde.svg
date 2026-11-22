@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1248" height="1010" viewBox="0 0 1248 1010" font-family="Helvetica, Arial, sans-serif">
 <rect width="1248" height="1010" fill="#ffffff"/>
-<text x="16" y="30" font-size="17" font-weight="600" fill="#1b2733">Figure 6 — Sauvegarde de la production, planifiée et sans intervention humaine</text>
+<text x="16" y="30" font-size="17" font-weight="600" fill="#1b2733">Figure 6. Sauvegarde de la production, planifiée et sans intervention humaine</text>
 <text x="16" y="52" font-size="11" fill="#5a6b7d">Le journal de transactions est archivé toutes les 15 minutes, et c&#x27;est lui qui tient le RPO de 15 minutes : le dump quotidien seul plafonnerait la perte à 24 heures.</text>
 <rect x="8" y="72" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
 <rect x="8" y="72" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>

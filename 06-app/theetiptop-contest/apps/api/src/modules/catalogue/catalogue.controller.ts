@@ -24,7 +24,7 @@ export class CatalogueController {
     summary: 'Le jeu-concours en cours',
     description:
       'Dates, seuil de participation, volume de codes, huissier.\n\n' +
-      'Deux fenêtres distinctes, toutes deux calculées par le serveur — l’horloge du ' +
+      'Deux fenêtres distinctes, toutes deux calculées par le serveur, l’horloge du ' +
       'navigateur du visiteur n’est pas une référence :\n' +
       '- `isOpen` : les tickets portent encore un code (`startsAt` → `endsAt`, 30 jours). ' +
       'C’est la fenêtre de la caisse.\n' +

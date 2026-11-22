@@ -12,7 +12,7 @@
  *    500,000 codes in the database, ready to be used, with their prize already assigned."
  *
  * The consequence is the whole design: the prize is NOT drawn when a customer submits a
- * code. Drawing at submission time could not guarantee the split — the last customers
+ * code. Drawing at submission time could not guarantee the split, the last customers
  * would get whatever quota was left, and an early run of luck would exhaust a prize the
  * contest rules promise. Freezing the prize at insertion makes the split a property of
  * the data, not of the traffic.
@@ -48,7 +48,7 @@ const prisma = createScriptClient();
  *
  * PostgreSQL caps a statement at 65,535 bound parameters. Prisma's `createMany` sends one
  * multi-row INSERT with 4 parameters per row (id, code, prizeId, contestId), so 5,000
- * rows is 20,000 parameters — comfortably inside the cap, and large enough that the 100
+ * rows is 20,000 parameters, comfortably inside the cap, and large enough that the 100
  * round trips are not what dominates the run. Measured alternatives are in BENCHMARK.md.
  */
 const BATCH_SIZE = 5_000;
@@ -143,7 +143,7 @@ function drawDistinctCodes(count: number, random: SeededRandom): string[] {
   }
 
   if (collisions > 0) {
-    console.log(`  ${collisions} collision(s) drawn again — expected, and handled`);
+    console.log(`  ${collisions} collision(s) drawn again, expected, and handled`);
   }
 
   if (degenerate > 0) {

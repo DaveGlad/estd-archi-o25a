@@ -5,7 +5,7 @@
 # page that mattered.
 #
 # ⚠️ Alertmanager does NOT expand environment variables in its configuration. `${VAR}`
-# here would be sent to a literal host named "${VAR}" — the config does not even load,
+# here would be sent to a literal host named "${VAR}", the config does not even load,
 # `amtool check-config` reports `unsupported scheme "" for URL`. Hence `url_file` and
 # `auth_password_file`, which read a secret from disk at send time. The files are mounted
 # from /etc/theetiptop/alerting/ on the host and are not in this repository.
@@ -43,7 +43,7 @@ route:
     # now, and a person woken up cannot fix a storage credential any faster than a person
     # who slept. They go to the daily channel instead.
     #
-    # Placed BEFORE nothing and AFTER the critical route on purpose — routes are evaluated
+    # Placed BEFORE nothing and AFTER the critical route on purpose, routes are evaluated
     # in order and the first match wins, so putting this one first would divert a genuinely
     # critical backup alert away from the on-call rota. Alertmanager's `continue` is left
     # false so exactly one receiver fires.

@@ -15,8 +15,8 @@ export type RegisterActionResult =
  * about: the contest is for adults only, accepting the rules is mandatory, and the consent
  * timestamps are the only enforceable proof and must therefore be stamped by the server.
  *
- * It does **not** open the session. The API does return a valid session cookie — which is
- * right for an API consumer that is not a browser — but this action discards it and the
+ * It does **not** open the session. The API does return a valid session cookie, which is
+ * right for an API consumer that is not a browser, but this action discards it and the
  * client signs in immediately afterwards with the credentials it already holds. Relaying a
  * third-party `Set-Cookie` through a server action means parsing and re-emitting its
  * attributes by hand, and getting `HttpOnly`, `SameSite` or `Max-Age` subtly wrong there is

@@ -20,7 +20,7 @@ import {
 /**
  * The contest rules, tested against the brief.
  *
- * These assertions are not testing the implementation — there is barely any. They pin the
+ * These assertions are not testing the implementation, there is barely any. They pin the
  * numbers the brief dictates, so that a well-meaning edit to a percentage fails the build
  * instead of silently producing a contest whose split no longer matches the rules filed
  * with the bailiff.
@@ -97,7 +97,7 @@ describe('contest rules', () => {
  * Both of these were wrong in the first implementation, and neither was caught by any
  * other test: the submission window was closed at `endsAt` instead of `claimDeadline`, and
  * the purchase threshold accepted exactly 49,00 €. They are boundary conditions, so they
- * are tested exactly on the boundary — a test that only checks the middle of each range
+ * are tested exactly on the boundary, a test that only checks the middle of each range
  * passes against both the correct and the incorrect implementation.
  */
 describe('the contest windows', () => {
@@ -144,7 +144,7 @@ describe('the contest windows', () => {
 
     it('stays open for the 30 days AFTER the contest closes', () => {
       // The regression that mattered. A customer who bought tea on the last day must be
-      // able to go home, find the site, and play the code — for a further 30 days.
+      // able to go home, find the site, and play the code, for a further 30 days.
       expect(isSubmissionOpen(contest, new Date('2026-05-01T00:00:00.000Z'))).toBe(true);
       expect(isSubmissionOpen(contest, new Date('2026-05-15T12:00:00.000Z'))).toBe(true);
       expect(isSubmissionOpen(contest, contest.claimDeadline)).toBe(true);
@@ -169,7 +169,7 @@ describe('the purchase threshold', () => {
   });
 
   it('refuses a purchase of exactly 49,00 EUR', () => {
-    // "une somme supérieure à 49€" — strictly above. This single assertion is the
+    // "une somme supérieure à 49€", strictly above. This single assertion is the
     // difference between the brief and a plausible misreading of it.
     expect(qualifiesForCode(MINIMUM_PURCHASE_CENTS, MINIMUM_PURCHASE_CENTS)).toBe(false);
   });
@@ -198,7 +198,7 @@ describe('code composition', () => {
 
   it('is a rule the format pattern deliberately does not carry', () => {
     // `CODE_PATTERN` validates what a customer types. An all-letter code is a generation
-    // defect, not a typing mistake, so the pattern must keep accepting it — the right
+    // defect, not a typing mistake, so the pattern must keep accepting it, the right
     // answer for such an input is UNKNOWN_CODE, not INVALID_FORMAT.
     expect(CODE_PATTERN.test('ABCDEFGHIJ')).toBe(true);
     expect(hasDigitsAndLetters('ABCDEFGHIJ')).toBe(false);

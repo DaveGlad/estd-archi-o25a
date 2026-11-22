@@ -12,7 +12,7 @@ import { toContestDto, toPrizeDto, toStoreDto } from './catalogue.mapper.js';
  *
  * All read-only and all public. Also the module every other one depends on, since
  * "the current contest" is needed to play a code, to dispense one from a till and to run
- * the draw — resolving it in one place keeps the rule out of five services.
+ * the draw, resolving it in one place keeps the rule out of five services.
  */
 @Injectable()
 export class CatalogueService {
@@ -21,7 +21,7 @@ export class CatalogueService {
    *
    * The catalogue changes a handful of times over the life of the contest, but it is read
    * on every page load of the public site. A short TTL keeps an administrator's edit
-   * visible quickly while removing the query from the hot path — the eco-design argument
+   * visible quickly while removing the query from the hot path, the eco-design argument
    * of the specification, measured rather than asserted.
    */
   private static readonly CACHE_TTL_SECONDS = 300;
@@ -36,7 +36,7 @@ export class CatalogueService {
    *
    * The platform is built to outlive this single operation (see the header of
    * `contest.prisma`), so "the current contest" is a query, not a constant. The open one
-   * wins; if none is open — before the start, or after the claim window — the most recent
+   * wins; if none is open, before the start, or after the claim window, the most recent
    * one is returned so the public pages and the claim screens keep working instead of
    * 404ing the day after closing.
    */

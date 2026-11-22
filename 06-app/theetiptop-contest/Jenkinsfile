@@ -1,4 +1,4 @@
-// Pipeline of the Thé Tip Top contest site — the "site administrable" of the three
+// Pipeline of the Thé Tip Top contest site, the "site administrable" of the three
 // project shapes the agency's workflow has to serve.
 //
 // This file lives in the PROJECT repository, not in Jenkins. That is requirement n° 5 of
@@ -48,10 +48,10 @@ pipeline {
     REGISTRY          = 'srv1581779.hstgr.cloud'
     IMAGE_NAMESPACE   = 'theetiptop'
     // The commit, never `latest`. A deployed artefact has to be identifiable and
-    // reversible — CST D.2, "Versionnement des images".
+    // reversible, CST D.2, "Versionnement des images".
     //
     // `env.GIT_COMMIT` is not populated at this point in a multibranch job, so the
-    // fallback was silently winning and every build pushed the same `dev` tag — exactly
+    // fallback was silently winning and every build pushed the same `dev` tag, exactly
     // the moving tag this is meant to avoid. The checkout step records the real commit in
     // `COMMIT_SHA`, and the build number keeps the two apart if a commit is rebuilt.
     TAG               = "${env.GIT_COMMIT ?: 'b' + env.BUILD_NUMBER}".take(12)
@@ -206,7 +206,7 @@ pipeline {
         dir('06-app/theetiptop-contest') {
           // Against a real PostgreSQL and a real Redis, thrown away afterwards. The
           // concurrency guarantee on playing a code lives in an `UPDATE ... WHERE` and in a
-          // unique index — a mocked client would prove nothing about either.
+          // unique index, a mocked client would prove nothing about either.
           //
           // The 500 000 codes are generated here, on every build, and that is the point
           // rather than an expense: `code-distribution.integration.spec.ts` recounts the
@@ -259,7 +259,7 @@ pipeline {
       steps {
         dir('06-app/theetiptop-contest') {
           script {
-            // Asset optimisation — requirement 4a — happens inside these builds: Next.js
+            // Asset optimisation, requirement 4a, happens inside these builds: Next.js
             // minifies, tree-shakes and fingerprints its output during `next build`, and
             // the API bundle is minified by webpack. Doing it again in a separate stage
             // would be a second, divergent implementation of the same thing.
@@ -270,8 +270,8 @@ pipeline {
             // says. See 05-workflow/docker/README.md.
             def envName = env.TAG_NAME ? 'prod' : (env.BRANCH_NAME == 'develop' ? 'dev' : 'preprod')
 
-            // Production is addressed by its hostname. The other two are not published —
-            // one hostname resolves on this host — so they are addressed on the loopback,
+            // Production is addressed by its hostname. The other two are not published,
+            // one hostname resolves on this host, so they are addressed on the loopback,
             // on the ports compose.norouting.yml binds there.
             //
             // The URL baked in has to be the one the BROWSER will really use, since it
@@ -374,7 +374,7 @@ pipeline {
         dir('06-app/theetiptop-contest') {
           // A migrated database is an empty one. The functional suite signs in as the demo
           // customer and plays a code out of the pool, so both have to exist before it runs
-          // — and `deploy.sh` deliberately does not seed, because the same script deploys
+          //, and `deploy.sh` deliberately does not seed, because the same script deploys
           // production and seeding production would overwrite live data.
           //
           // Both commands are safe to re-run, which matters: this runs on every merge into
@@ -406,7 +406,7 @@ pipeline {
           //
           // The three E2E_* variables are what switch playwright.config.ts off its
           // `webServer` block. Without them the suite starts three servers of its own from
-          // the checkout and tests those — a different binary from the one just deployed,
+          // the checkout and tests those, a different binary from the one just deployed,
           // which is the one thing this stage exists to check.
           //
           // The env file carries DATABASE_URL and REDIS_URL on the loopback, for the
@@ -465,7 +465,7 @@ pipeline {
       agent none
       steps {
         // Requirement 4e leaves the level of automation to us, and this is the line we
-        // drew — justified in CST D.1, "Pourquoi la production n'est pas entièrement
+        // drew, justified in CST D.1, "Pourquoi la production n'est pas entièrement
         // automatique". The contest runs for 30 days on codes already printed on receipts
         // in customers' pockets. A bad deployment is not rolled back by a fix: the codes
         // are out there. Everything up to production is automatic; crossing into it is a
@@ -497,7 +497,7 @@ pipeline {
         // the agency to keep.
         junit allowEmptyResults: true, testResults: 'reports/junit/*.xml'
         archiveArtifacts artifacts: 'reports/**/*', allowEmptyArchive: true, fingerprint: true
-        // `reports/playwright`, which is the `outputFolder` in playwright.config.ts — not
+        // `reports/playwright`, which is the `outputFolder` in playwright.config.ts, not
         // Playwright's own default of `playwright-report`. Pointing at the default left the
         // link in the sidebar empty on every build.
         publishHTML(target: [
@@ -510,7 +510,7 @@ pipeline {
       // Only on failure, and only to the people who can act on it. A pipeline that notifies
       // on every success trains everyone to filter it out, including the failures.
       emailext(
-        subject: "Build KO — ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+        subject: "Build KO, ${env.JOB_NAME} #${env.BUILD_NUMBER}",
         body: '''${SCRIPT, template="groovy-html.template"}''',
         mimeType: 'text/html',
         recipientProviders: [developers(), requestor()]

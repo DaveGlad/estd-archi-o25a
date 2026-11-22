@@ -25,7 +25,7 @@ Elles se régénèrent en une commande, donc elles ne peuvent pas vieillir en si
 | `profil` | Historique des gains et droits RGPD, exigences n° 4 et n° 8 |
 | `lots` | La dotation et la répartition 60/20/10/6/4 % |
 
-Trois formats à chaque fois — 1440, 820 et 390 px — parce que le sujet demande un site
+Trois formats à chaque fois, 1440, 820 et 390 px, parce que le sujet demande un site
 « accessible à tous devices » et qu'une capture en 1440 ne prouve rien du téléphone.
 
 ## La charte documente l'existant

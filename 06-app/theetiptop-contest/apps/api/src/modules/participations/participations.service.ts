@@ -45,7 +45,7 @@ export class ParticipationsService {
   private readonly logger = new Logger(ParticipationsService.name);
 
   /**
-   * Rate limiting on code submission — the brute-force protection the brief's security
+   * Rate limiting on code submission, the brute-force protection the brief's security
    * requirement calls for.
    *
    * Two windows, because they stop two different things:
@@ -58,7 +58,7 @@ export class ParticipationsService {
    *     creating accounts; the per-IP window raises the cost of that.
    *
    * Both are generous on purpose. The code space is 3.6 x 10^15 (see BENCHMARK.md), so
-   * brute force is not a realistic threat to begin with — the limiter exists to keep an
+   * brute force is not a realistic threat to begin with, the limiter exists to keep an
    * automated script from consuming the API, not to be the thing standing between an
    * attacker and the prizes. Locking out a real customer would be the worse failure, which
    * is also why the Redis limiter fails open.
@@ -66,7 +66,7 @@ export class ParticipationsService {
    * The four numbers come from the validated environment, with those same values as
    * defaults. They are configuration rather than constants for two reasons: an
    * environment may need to tighten them without a release, and the load test has to be
-   * able to raise them — against the production ceiling it would measure the limiter
+   * able to raise them, against the production ceiling it would measure the limiter
    * rejecting, not the indexed lookup it reports on. There is no value that disables the
    * limiter.
    */
@@ -83,7 +83,7 @@ export class ParticipationsService {
    * Hashes a client IP for storage alongside the participation.
    *
    * Salted SHA-256. Without the salt, hashing an IPv4 address is reversible by brute
-   * force in seconds — the whole space is 4 billion values, which is nothing. With the
+   * force in seconds, the whole space is 4 billion values, which is nothing. With the
    * salt the hash still supports the one thing it is for (spotting many participations
    * from one source) while holding no address in clear, which is what GDPR minimisation
    * requires.
@@ -138,7 +138,7 @@ export class ParticipationsService {
    * Why not read-then-write: between a `SELECT status` and the `UPDATE`, a second request
    * can pass the same check. A double click, a network retry or a script would then create
    * two participations for one code. The unique constraint on `Participation.ticketCodeId`
-   * would catch that second insert, but as a 500 rather than a clean answer — the
+   * would catch that second insert, but as a 500 rather than a clean answer, the
    * conditional update turns the race into an ordinary outcome.
    */
   private async claimCode(
@@ -168,7 +168,7 @@ export class ParticipationsService {
    *
    * This wrapper exists only to record the outcome for Prometheus. Instrumenting each of
    * the six `return` statements instead would mean a seventh branch added later silently
-   * stops being counted — and the `ERROR` case, the one an alert actually fires on, has no
+   * stops being counted, and the `ERROR` case, the one an alert actually fires on, has no
    * `return` to attach to at all.
    */
   async submitCode(
@@ -211,7 +211,7 @@ export class ParticipationsService {
     //    site internet afin tester le code de leur(s) ticket(s) et réclamer leur lot".
     //
     //    Closing submissions at `endsAt` would lock out every customer holding a receipt
-    //    from the last days of the contest — exactly the people the extra 30 days exist
+    //    from the last days of the contest, exactly the people the extra 30 days exist
     //    for. Ticket distribution does close at `endsAt`; that check lives in the till
     //    service, which is the only thing that creates new codes.
     const contest = await this.catalogue.getCurrentContestEntity();
@@ -224,7 +224,7 @@ export class ParticipationsService {
       };
     }
 
-    // 4. Does the code exist. Rides the unique index — 529 µs over 500,000 rows, measured
+    // 4. Does the code exist. Rides the unique index, 529 µs over 500,000 rows, measured
     //    in BENCHMARK.md.
     const ticketCode = await this.prisma.ticketCode.findUnique({
       where: { code },
@@ -294,7 +294,7 @@ export class ParticipationsService {
    *
    * Ownership is checked rather than assumed: the id is a cuid and therefore unguessable,
    * but "hard to guess" is not an authorisation rule. An employee or an administrator may
-   * read any participation — the employee has to, in order to hand the prize over.
+   * read any participation, the employee has to, in order to hand the prize over.
    */
   async getOne(viewer: AuthenticatedUser, participationId: string): Promise<ParticipationDto> {
     const participation = await this.prisma.participation.findUnique({
@@ -319,7 +319,7 @@ export class ParticipationsService {
    * 500,000 codes means up to 500,000 participations, and an endpoint that returns them
    * all is one that eventually times out on the screen an administrator uses most.
    *
-   * The free-text search covers the customer's name and email, plus an exact ticket code —
+   * The free-text search covers the customer's name and email, plus an exact ticket code,
    * the three things an administrator has in front of them when somebody calls about a
    * prize. The name and email halves ride the same `pg_trgm` indexes the in-store employee
    * search uses.

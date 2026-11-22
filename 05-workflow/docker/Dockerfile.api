@@ -10,7 +10,7 @@
 #   runtime the image that ships, carrying no compiler and no dev dependency
 #
 # The brief requires 100% Docker. It also requires the pipeline to be defensible, which is
-# why every COPY below is a named path rather than `COPY . .` — see the note on the deps
+# why every COPY below is a named path rather than `COPY . .`, see the note on the deps
 # stage.
 
 # ---------------------------------------------------------------------------- deps
@@ -39,7 +39,7 @@ FROM deps AS build
 WORKDIR /app
 
 # The source. `.dockerignore` keeps node_modules, .nx, .next and every .env out of the
-# context — without it this COPY ships several hundred megabytes to the daemon.
+# context, without it this COPY ships several hundred megabytes to the daemon.
 COPY . .
 
 # Prisma 7 generates a TypeScript client into apps/api/src/generated, and that directory is
@@ -69,7 +69,7 @@ RUN node tools/pin-runtime-deps.mjs apps/api/dist/package.json
 
 # NOTE: stage order is load-bearing. `docker build` with no `--target` builds the LAST
 # stage in the file, so `runtime` must stay at the bottom. Putting `migrate` after it
-# made every plain build produce the migration image under the API tag — same size,
+# made every plain build produce the migration image under the API tag, same size,
 # same name, wrong contents, and nothing says so.
 
 # ------------------------------------------------------------------------- migrate
@@ -77,7 +77,7 @@ RUN node tools/pin-runtime-deps.mjs apps/api/dist/package.json
 # The image that applies the migrations. A one-shot job, pulled once per deployment and
 # never part of what serves traffic.
 #
-# Why separate at all. The Prisma CLI drags in tooling production has no use for —
+# Why separate at all. The Prisma CLI drags in tooling production has no use for.
 # measured on this project: @prisma/studio-core 43 MB, @prisma/dev 19 MB, @prisma/engines
 # 24 MB, for a total of +375 MB on an image that was 483. Carrying a GUI and a dev server
 # in every replica of a web API, permanently, to run one command at deploy time is the
@@ -91,7 +91,7 @@ RUN node tools/pin-runtime-deps.mjs apps/api/dist/package.json
 #   docker build -f Dockerfile.api --target migrate -t …/theetiptop/migrate:$TAG .
 #
 # It carries the CLI INSTALLED, not fetched at deploy time. `npx prisma` would resolve the
-# package over the network, and the `backend` network is `internal: true` — a container on
+# package over the network, and the `backend` network is `internal: true`, a container on
 # it has no route to npm, and should not. More fundamentally, an artefact that still needs
 # the internet to finish installing itself is not reproducible: deployed twice, it can
 # resolve two different CLI versions against the same database.
@@ -108,7 +108,7 @@ WORKDIR /app
 # A manifest rather than `npm install prisma@7.10.1 …` on the command line, because this set
 # needs an `overrides` block and there is no flag that carries one.
 #
-# `@prisma/config` depends on `effect` at an exact `3.20.0`, which carries CVE-2026-121707 —
+# `@prisma/config` depends on `effect` at an exact `3.20.0`, which carries CVE-2026-121707,
 # a ReDoS in the regex compiled for `Schema.TemplateLiteral`, rated HIGH. The scan stage
 # caught it on the migrate image and on nothing else: the CLI is the only place prisma's own
 # dependencies reach an image, and the runtime stage has no CLI.
@@ -165,7 +165,7 @@ CMD ["./node_modules/.bin/prisma", "migrate", "deploy"]
 FROM node:24-alpine AS runtime
 
 # `dumb-init` so SIGTERM reaches Node. Without an init process, PID 1 is Node itself and
-# Docker's stop signal is delivered to a process that does not forward it — the container
+# Docker's stop signal is delivered to a process that does not forward it, the container
 # is then killed after the 10-second grace period, mid-request.
 RUN apk add --no-cache dumb-init
 
@@ -175,7 +175,7 @@ WORKDIR /app
 COPY --from=prune /app/apps/api/dist/package.json ./package.json
 
 # `--no-package-lock`: the manifest is pinned to exact versions, so there is no range left
-# for a lockfile to resolve. `--omit=dev` is belt and braces — the generated manifest has
+# for a lockfile to resolve. `--omit=dev` is belt and braces, the generated manifest has
 # no devDependencies to begin with.
 RUN npm install --omit=dev --no-package-lock --no-audit --no-fund \
  && npm cache clean --force

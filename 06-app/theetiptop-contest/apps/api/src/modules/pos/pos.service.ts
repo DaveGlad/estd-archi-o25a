@@ -48,8 +48,8 @@ export class PosService {
   /**
    * Audit entries need a `userId`, and a till is not a person.
    *
-   * Rather than making the column nullable — which would weaken it for every human action
-   * it records — the consumer's actions are attributed to the administrator account, with
+   * Rather than making the column nullable, which would weaken it for every human action
+   * it records, the consumer's actions are attributed to the administrator account, with
    * the consumer name in the metadata. Honest and traceable: the log says "dispensed by
    * the till integration", not "dispensed by nobody".
    */
@@ -109,7 +109,7 @@ export class PosService {
    * on the hottest write path of the till integration. It is also unnecessary: the prize
    * behind each code was shuffled at generation time, so consecutive codes carry
    * independent prizes. Handing them out in whatever order the `(contestId, status)` index
-   * yields leaks nothing — the randomness is in the prize mapping, not in the dispensing
+   * yields leaks nothing, the randomness is in the prize mapping, not in the dispensing
    * order. Point to defend at the oral.
    */
   async dispenseCode(consumer: ApiKeyConsumer, input: DispenseCodeDto): Promise<DispenseCodeResult> {
@@ -227,7 +227,7 @@ export class PosService {
    *
    * Only a `DISPENSED` code can be voided. Refusing on `USED` is the important branch: once
    * a customer has played the code and seen their prize, cancelling the sale cannot take
-   * the prize back — that is a commercial dispute, not a database operation, and silently
+   * the prize back, that is a commercial dispute, not a database operation, and silently
    * voiding a played code would erase a participation the bailiff has to be able to count.
    */
   async voidCode(consumer: ApiKeyConsumer, input: VoidCodeDto): Promise<{ code: string; status: string }> {

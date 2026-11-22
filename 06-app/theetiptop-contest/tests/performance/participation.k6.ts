@@ -19,7 +19,7 @@
  * ⚠️ This test is read-heavy on purpose. It does NOT play valid codes: doing so would
  * consume the pool a few thousand codes per run and make the conformity test fail
  * afterwards. What it measures is the lookup-and-reject path, which executes exactly the
- * same index lookup as a winning submission — the branch after it is one INSERT.
+ * same index lookup as a winning submission, the branch after it is one INSERT.
  */
 
 import http from 'k6/http';
@@ -48,7 +48,7 @@ export const options = {
      *
      * Ramped rather than constant: a flat load tells you the steady state, a ramp tells
      * you where it stops being steady. 50 virtual users is above any plausible traffic for
-     * a contest run by a 10-store chain, which is the point — the figure in the
+     * a contest run by a 10-store chain, which is the point, the figure in the
      * specification should be a ceiling, not a guess.
      */
     catalogue_browsing: {
@@ -87,7 +87,7 @@ export const options = {
      *
      * Deliberately modest: 10 stores cannot physically ring up more than a few sales a
      * second between them. The interesting property is not the throughput but that
-     * concurrent pops never collide — which the integration suite proves, and this one
+     * concurrent pops never collide, which the integration suite proves, and this one
      * confirms under real contention.
      */
     pos_dispensing: {
@@ -168,7 +168,7 @@ export function browseCatalogue(): void {
  * every iteration afterwards exercises the path under test with a real session.
  *
  * This is what makes the submission scenario honest. Run unauthenticated, the API answers
- * 401 at the guard and never touches the database — the reported `code_lookup_duration`
+ * 401 at the guard and never touches the database, the reported `code_lookup_duration`
  * would then describe a guard, under a name that claims an index lookup.
  */
 export function setup(): { cookie: string } {
@@ -180,7 +180,7 @@ export function setup(): { cookie: string } {
 
   if (response.status !== 200) {
     throw new Error(
-      `Sign-in failed (${response.status}). Run: npm run db:seed — and check the API is up on ${API_URL}.`
+      `Sign-in failed (${response.status}). Run: npm run db:seed, and check the API is up on ${API_URL}.`
     );
   }
 
@@ -199,7 +199,7 @@ export function setup(): { cookie: string } {
  *
  * Authenticated with the shared session, so the request goes all the way to the unique
  * index on `TicketCode.code` over 500,000 rows. The codes submitted are well-formed but
- * absent from the pool, so the answer is `UNKNOWN_CODE` and nothing is consumed — the
+ * absent from the pool, so the answer is `UNKNOWN_CODE` and nothing is consumed, the
  * lookup is identical either way, a winning submission differing only by the INSERT that
  * follows.
  *
@@ -229,7 +229,7 @@ export function submitCode(data: { cookie: string }): void {
     const ok = check(response, {
       'submission reaches the lookup': (r) => r.status === 200,
       // The point of the assertion: anything else means the request stopped earlier than
-      // the database — at the guard (401) or at the limiter (RATE_LIMITED) — and the
+      // the database, at the guard (401) or at the limiter (RATE_LIMITED), and the
       // duration recorded above would not be a lookup at all.
       'the answer is UNKNOWN_CODE, not a guard or the limiter': (r) =>
         r.status === 200 && r.json('outcome') === 'UNKNOWN_CODE',
@@ -251,8 +251,8 @@ export function submitCode(data: { cookie: string }): void {
  * 5 a second and leave the conformity check counting a pool this test had eaten, so the
  * `FOR UPDATE SKIP LOCKED` pop is proven under contention by
  * `tests/participation-concurrency.integration.spec.ts` instead, where the codes can be
- * rolled back. What is measured here is that `codesRemaining` — an aggregate over 500,000
- * rows — stays fast while the submission scenario hammers the same table.
+ * rolled back. What is measured here is that `codesRemaining`, an aggregate over 500,000
+ * rows, stays fast while the submission scenario hammers the same table.
  */
 export function dispenseCode(): void {
   group('pos', () => {

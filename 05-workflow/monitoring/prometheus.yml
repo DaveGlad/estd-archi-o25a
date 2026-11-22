@@ -61,7 +61,7 @@ scrape_configs:
   # --- the three deployed environments ---------------------------------------
   #
   # These targets are on the SITE domain, dsp5-archi-…, and that is correct: they are the
-  # client's application. Everything above — Jenkins, Gitea, Traefik — is on the WORKFLOW
+  # client's application. Everything above, Jenkins, Gitea, Traefik, is on the WORKFLOW
   # domain, wk-archi-…. The brief requires the two to be separate.
   #
   # One job per environment rather than one job with an `env` label, so a scrape failure

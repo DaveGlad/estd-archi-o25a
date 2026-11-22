@@ -26,7 +26,7 @@ export class ParticipationsController {
    *
    * Unusual, and deliberate. "Tell me what my code is worth" has six normal answers: the
    * customer won, the code was mistyped, it does not exist, it was already played, the
-   * contest has closed, or they have tried too often. None of those is a protocol error —
+   * contest has closed, or they have tried too often. None of those is a protocol error,
    * every one of them is a screen the front end renders. Mapping them onto 400/404/409/429
    * would mean the client has to branch on status, parse error bodies back into a union,
    * and keep that mapping in sync with the API by hand.
@@ -39,7 +39,7 @@ export class ParticipationsController {
   @Post()
   // Nest answers 201 to a POST by default, and the Swagger block below has always
   // declared 200. Three of this endpoint's six outcomes create nothing at all, so 200 is
-  // the honest answer — and more to the point, the API is published to consumers we do
+  // the honest answer, and more to the point, the API is published to consumers we do
   // not write, the tills and the future e-commerce site. A documented status the server
   // does not return is a bug in their client, not in ours, which is the worst place for
   // it to surface.

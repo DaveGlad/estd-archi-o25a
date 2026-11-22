@@ -12,7 +12,7 @@ import { getMyParticipations } from '@theetiptop-contest/api-client/server';
 export const metadata: Metadata = { title: 'Mes gains' };
 
 export default async function MesGainsPage() {
-  // The prize is embedded in each participation by the API, so no second lookup per row —
+  // The prize is embedded in each participation by the API, so no second lookup per row,
   // the mock needed `getPrize(p.prizeId)` because it held them in separate collections.
   const items = await getMyParticipations();
 

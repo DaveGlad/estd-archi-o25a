@@ -7,7 +7,7 @@
 #
 # Task W14, and the reason it is a separate task from W13: a backup that has never been
 # restored is a hypothesis. This script is what turns it into a fact, and it runs on a
-# schedule — monthly, weekly during the 30 days of the contest, as written in CDC part F.
+# schedule, monthly, weekly during the 30 days of the contest, as written in CDC part F.
 #
 # It restores into a container created for the occasion and destroyed afterwards. It never
 # touches a live database: a restore drill that can damage production is a drill nobody
@@ -21,7 +21,7 @@ readonly WORK="$(mktemp -d /tmp/restore-test.XXXXXX)"
 readonly CONTAINER="restore-test-$$"
 readonly REPORT="/var/log/theetiptop/restore-test-$(date -u +%Y-%m-%d).md"
 
-# Every exit path cleans up, including the failures — otherwise the first failed drill
+# Every exit path cleans up, including the failures, otherwise the first failed drill
 # leaves a container and a few gigabytes behind, and the second one fails on disk space
 # for reasons that have nothing to do with the backup.
 cleanup() {
@@ -37,7 +37,7 @@ pass() { log "✅ $*"; }
 FAILURES=0
 mkdir -p "$(dirname "$REPORT")"
 
-log "# Test de restauration — $(date -u +%Y-%m-%d\ %H:%M) UTC"
+log "# Test de restauration, $(date -u +%Y-%m-%d\ %H:%M) UTC"
 log ""
 
 # --------------------------------------------------------------- 1. fetch and decrypt
@@ -119,7 +119,7 @@ SPLIT="$(query '
 if [[ "$SPLIT" == "60.00, 20.00, 10.00, 6.00, 4.00" ]]; then
   pass "Répartition : ${SPLIT} %"
 else
-  fail "Répartition : ${SPLIT} % — attendu 60.00, 20.00, 10.00, 6.00, 4.00"
+  fail "Répartition : ${SPLIT} %, attendu 60.00, 20.00, 10.00, 6.00, 4.00"
 fi
 
 # c) Participations and their users came back together. A dump restored without its
@@ -132,7 +132,7 @@ ORPHANS="$(query '
 
 # d) The indexes, not just the data. pg_restore rebuilds them, and a restore that
 #    "succeeded" without the unique index on `code` would let the same code be played
-#    twice — the one guarantee the whole application rests on.
+#    twice, the one guarantee the whole application rests on.
 UNIQUE_INDEX="$(query '
   SELECT count(*) FROM pg_indexes
   WHERE tablename = \"TicketCode\" AND indexdef LIKE \"%UNIQUE%(code)%\"' 2>/dev/null || echo 0)"

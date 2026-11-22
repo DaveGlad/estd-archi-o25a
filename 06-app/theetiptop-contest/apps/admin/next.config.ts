@@ -5,7 +5,7 @@ import type { NextConfig } from 'next';
  *
  * A second Next.js application rather than a route group inside the public site. The
  * decision and its rationale are in `DECISIONS.md` § 3: the public site is the exposed
- * surface — indexed, crawled, open to anonymous visitors — and the back office is not.
+ * surface, indexed, crawled, open to anonymous visitors, and the back office is not.
  * Separating them means the administrator screens are not even reachable on the public
  * host, and the two deploy with different ingress rules.
  */
@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
    *
    * Normally it has its own subdomain and this stays empty, which is the arrangement the
    * comment above describes. The prefix exists for the case where only ONE hostname is
-   * available — a provider's default host, a demonstration server, a review environment —
+   * available, a provider's default host, a demonstration server, a review environment,
    * and the three applications still have to be reachable.
    *
    * A build argument, not runtime configuration: Next.js rewrites every internal link and

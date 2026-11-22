@@ -4,7 +4,7 @@
  * Why not `Math.random()`: it cannot be seeded, so the code generation could never be
  * replayed in front of the bailiff.
  *
- * Why not `crypto.randomInt()` for the shuffle: same reason — unseedable, hence not
+ * Why not `crypto.randomInt()` for the shuffle: same reason, unseedable, hence not
  * replayable. The seed itself IS produced by `crypto.randomBytes`, so the output is
  * unpredictable to anyone who does not hold it; see the comment block on
  * `Contest.codeGenerationSeedHash` for how the seed is kept out of the database.
@@ -12,7 +12,7 @@
  * xoshiro128** is used rather than a 32-bit generator such as mulberry32: a 32-bit state
  * has only 2^32 reachable streams, which for a shuffle of 500,000 elements means the vast
  * majority of permutations are unreachable. 2^128 does not make every one of the 500,000!
- * permutations reachable either — no finite-state generator can — but it moves the limit
+ * permutations reachable either, no finite-state generator can, but it moves the limit
  * so far past any statistical test applied to a 60/20/10/6/4 split that it stops being a
  * meaningful objection. Honest statement of the limit, rather than a claim of perfection.
  */
@@ -73,7 +73,7 @@ export function createSeededRandom(seed: string): SeededRandom {
    *
    * Modulo maps 2^32 values onto `bound` buckets, and unless `bound` divides 2^32 the
    * first few buckets receive one more value than the rest. Over 500,000 draws that bias
-   * is measurable — and the one property this generation run has to be able to defend is
+   * is measurable, and the one property this generation run has to be able to defend is
    * that the 60/20/10/6/4 split is exact.
    */
   function nextBelow(bound: number): number {
@@ -96,7 +96,7 @@ export function createSeededRandom(seed: string): SeededRandom {
  *
  * The downward form is the correct one: each step picks uniformly from the still-unshuffled
  * prefix, which makes every permutation equally likely. The variant that picks from the
- * whole array at each step (a common mistake) does not — it biases towards permutations
+ * whole array at each step (a common mistake) does not, it biases towards permutations
  * close to the identity.
  */
 export function shuffleInPlace<T>(items: T[], random: SeededRandom): void {

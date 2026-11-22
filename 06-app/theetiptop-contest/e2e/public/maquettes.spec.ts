@@ -35,7 +35,7 @@ const PAGES = [
 
 for (const viewport of BREAKPOINTS) {
   for (const page of PAGES) {
-    test(`${page.slug} — ${viewport.name}`, async ({ page: p }) => {
+    test(`${page.slug}, ${viewport.name}`, async ({ page: p }) => {
       await p.setViewportSize({ width: viewport.width, height: viewport.height });
       if (page.auth) {
         // Signed in inline rather than through a shared helper: the two existing ones

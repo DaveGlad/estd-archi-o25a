@@ -11,7 +11,7 @@ export function ThemeToggle() {
   useEffect(() => {
     // The theme is already set on <html> by the inline script in the layout, which runs
     // before the first paint. All this does is read the effective state, so the icon
-    // matches — recomputing it here would produce a flash of the wrong one.
+    // matches, recomputing it here would produce a flash of the wrong one.
     const applied = document.documentElement.dataset.theme as Theme | undefined;
     setTheme(
       applied ??

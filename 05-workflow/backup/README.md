@@ -20,7 +20,7 @@ les bases lui laisserait un pipeline et rien à livrer.
 
 | Élément | Format | Pourquoi |
 |---|---|---|
-| PostgreSQL des 3 environnements | `pg_dump -Fc` | Format custom, compressé, **restaurable table par table** — ce qu'on veut réellement à 3 h du matin quand une seule table a été vidée |
+| PostgreSQL des 3 environnements | `pg_dump -Fc` | Format custom, compressé, **restaurable table par table**, ce qu'on veut réellement à 3 h du matin quand une seule table a été vidée |
 | Gitea | `gitea dump` | Le code source de tous les projets. La seule perte à laquelle l'agence ne pourrait pas remédier |
 | Jenkins | `tar` de `JENKINS_HOME` | Jobs, identifiants, plugins. **Sans l'historique des builds** : des dizaines de Go de journaux pour des artefacts déjà au registry |
 | Registry | `tar` du stockage | Redondant en théorie, mais seulement si Gitea et Jenkins sont revenus d'abord. Raccourcit une panne de plusieurs heures à quelques minutes |
@@ -29,7 +29,7 @@ les bases lui laisserait un pipeline et rien à livrer.
 ## Chiffrement et externalisation
 
 L'archive est **chiffrée avant de quitter la machine**. Elle contient la table des clients
-d'un jeu-concours — noms, courriels, dates de naissance — donc une copie en clair chez un
+d'un jeu-concours, noms, courriels, dates de naissance, donc une copie en clair chez un
 hébergeur de stockage serait une violation RGPD en attente d'un bucket mal configuré.
 
 `age` plutôt que GPG : une clé, pas de trousseau, pas d'agent, et une procédure de
@@ -50,7 +50,7 @@ restauration qu'une personne fatiguée peut suivre correctement.
 
 C'est une tâche distincte de la sauvegarde (W14 et non W13), et ce n'est pas de la
 bureaucratie : **une sauvegarde jamais restaurée est une hypothèse.** Les deux pannes sont
-différentes — « nous n'avons pas de copie » et « nous avons une copie inutilisable » — et
+différentes, « nous n'avons pas de copie » et « nous avons une copie inutilisable », et
 la seconde ne se découvre qu'en situation de crise si rien ne la teste.
 
 `restore-test.sh` restaure dans un conteneur créé pour l'occasion et détruit ensuite. Il ne
@@ -60,13 +60,13 @@ est un exercice que personne ne lance.
 Quatre contrôles métier, chacun cassé par une corruption plausible qui laisserait pourtant
 l'archive parfaitement valide aux yeux de PostgreSQL :
 
-1. **Le pool est entier** — comparé au compte enregistré *au moment de la sauvegarde*, pas
+1. **Le pool est entier**, comparé au compte enregistré *au moment de la sauvegarde*, pas
    à une constante qui pourrait dériver.
-2. **La répartition 60/20/10/6/4 %** — une restauration qui perd des lignes inégalement
+2. **La répartition 60/20/10/6/4 %**, une restauration qui perd des lignes inégalement
    donne une base qui s'ouvre et interroge très bien, et un jeu qui ne correspond plus au
    règlement déposé chez l'huissier.
-3. **Aucune participation orpheline** — des lots que personne ne peut réclamer.
-4. **L'index unique sur `code` est présent** — une restauration « réussie » sans lui
+3. **Aucune participation orpheline**, des lots que personne ne peut réclamer.
+4. **L'index unique sur `code` est présent**, une restauration « réussie » sans lui
    laisserait rejouer deux fois le même code, c'est-à-dire la seule garantie sur laquelle
    repose toute l'application.
 
@@ -100,7 +100,7 @@ Procédure complète en cas de sinistre, dans l'ordre :
 rclone copy s3:dsp5-archi-o25a-backups/daily/<stamp>.tar.gz.age .
 age -d -i /etc/theetiptop/backup-key.txt <stamp>.tar.gz.age | tar xzf -
 
-# 2. Gitea d'abord — sans le code source, rien d'autre ne se reconstruit
+# 2. Gitea d'abord, sans le code source, rien d'autre ne se reconstruit
 docker compose -f compose.workflow.yml up -d gitea-db
 docker exec -i gitea gitea restore --file /tmp/gitea.tar.gz
 

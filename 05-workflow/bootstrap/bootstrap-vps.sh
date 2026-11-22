@@ -6,8 +6,8 @@
 #   ssh root@<ip> 'bash /root/bootstrap-vps.sh <admin-user>'
 #
 # Idempotent: running it twice changes nothing the second time. That matters because the
-# first run of a bootstrap script is almost never the only one — something is missing, it
-# is fixed, it runs again — and a script that only works on a pristine machine is a script
+# first run of a bootstrap script is almost never the only one, something is missing, it
+# is fixed, it runs again, and a script that only works on a pristine machine is a script
 # nobody trusts to re-run.
 #
 # It does NOT deploy anything. It installs Docker, hardens access, creates the networks and
@@ -32,7 +32,7 @@ TOTAL_RAM_GB=$(free -g | awk '/^Mem:/ {print $2}')
 if (( TOTAL_RAM_GB < 15 )); then
   # Stated rather than silently ignored. CST D.3 sizes the full stack at 32 GB, viable at
   # 16. Below that, the workflow and the three environments do not fit on one machine, and
-  # the documented answer is to split them across two hosts — which also has a merit of its
+  # the documented answer is to split them across two hosts, which also has a merit of its
   # own: saturating the build agents can no longer degrade a client's production.
   warn "RAM below the 16 GB the CST calls a viable minimum."
   warn "Do not run the workflow AND the three environments here. See CST D.3."
@@ -68,7 +68,7 @@ else
 fi
 
 # Container logs are capped at the DAEMON level, not only per compose file. The default
-# json-file driver has no limit, and the first symptom is a full disk — which looks like a
+# json-file driver has no limit, and the first symptom is a full disk, which looks like a
 # dozen unrelated failures before anyone thinks to run `df`.
 cat > /etc/docker/daemon.json <<'EOF'
 {
@@ -113,7 +113,7 @@ EOF
 
 # Validated before restarting. A syntax error in sshd_config takes the host offline for
 # good: the daemon refuses to start, and the only way back is the provider's console.
-sshd -t || die "sshd config invalid — NOT restarting. Fix /etc/ssh/sshd_config.d/99-hardening.conf"
+sshd -t || die "sshd config invalid, NOT restarting. Fix /etc/ssh/sshd_config.d/99-hardening.conf"
 systemctl reload ssh
 
 # -------------------------------------------------------------------- 5. firewall
@@ -137,7 +137,7 @@ systemctl enable --now fail2ban
 # ------------------------------------------------------- 6. networks and layout
 log "Docker networks"
 # `edge` is shared: Traefik lives in the workflow stack, the environments attach to it.
-# Created here, once, so neither compose file owns it — whichever ran second would fail.
+# Created here, once, so neither compose file owns it, whichever ran second would fail.
 docker network inspect edge >/dev/null 2>&1 || docker network create edge
 # `metrics` is shared the same way: Prometheus lives in the workflow stack, the database
 # and Redis exporters live with the environment they observe. Internal, so nothing on it
@@ -179,7 +179,7 @@ cat <<EOF
   Docker      $(docker --version | cut -d, -f1)
   Compose     $(docker compose version --short)
   User        ${ADMIN_USER} (docker, sudo)
-  Firewall    22, 80, 443, 2222 — everything else closed
+  Firewall    22, 80, 443, 2222, everything else closed
   Networks    edge (public-facing), metrics (internal)
   SSH         keys only, root password login disabled
 

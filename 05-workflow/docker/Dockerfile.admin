@@ -6,8 +6,8 @@
 #     -t theetiptop/admin:$TAG .
 #
 # Identical in shape to Dockerfile.web, and a separate file rather than a shared one with a
-# build argument. The two deploy to different hosts with different ingress rules — the back
-# office is not reachable from the public internet — so keeping them separate means a change
+# build argument. The two deploy to different hosts with different ingress rules, the back
+# office is not reachable from the public internet, so keeping them separate means a change
 # to one cannot silently alter the other.
 
 FROM node:24-alpine AS deps

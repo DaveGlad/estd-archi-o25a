@@ -98,7 +98,7 @@ export type DrawRefusal = 'CONTEST_NOT_CLOSED' | 'ALREADY_DRAWN' | 'NO_PARTICIPA
  * Page of results.
  *
  * Generic and declared once: the participant list is the only paginated endpoint today,
- * but it is also the only one that can grow without bound — 500,000 codes means up to
+ * but it is also the only one that can grow without bound, 500,000 codes means up to
  * 500,000 participations, and an endpoint that returns them all is an endpoint that
  * eventually times out.
  */

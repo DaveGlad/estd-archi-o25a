@@ -13,7 +13,7 @@ const links = [
  * Guards the whole personal area.
  *
  * Checked in the layout rather than in each page: a layout wraps every route beneath it,
- * so a page added later is protected by default. The alternative — a check per page — is
+ * so a page added later is protected by default. The alternative, a check per page, is
  * how one screen ends up reachable without a session after a refactor.
  *
  * The API enforces this independently; this redirect is about not showing a visitor an

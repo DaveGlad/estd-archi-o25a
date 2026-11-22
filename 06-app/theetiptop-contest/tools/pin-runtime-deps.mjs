@@ -28,8 +28,8 @@
  * lockfile. `npm install --no-package-lock` against an exactly-pinned manifest then
  * installs exactly those versions.
  *
- * The result is reproducible end to end — committed lockfile → build stage → pinned
- * manifest → runtime install — without depending on a lockfile pruner being correct.
+ * The result is reproducible end to end, committed lockfile → build stage → pinned
+ * manifest → runtime install, without depending on a lockfile pruner being correct.
  *
  * ── Limitation, stated plainly ───────────────────────────────────────────────────
  *

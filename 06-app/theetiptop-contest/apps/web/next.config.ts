@@ -4,7 +4,7 @@ import type { NextConfig } from 'next';
  * Public contest site.
  *
  * Next.js was chosen for its server rendering, which is what makes the contest pages
- * indexable — SEO is an explicit requirement of the brief, and a client-rendered
+ * indexable, SEO is an explicit requirement of the brief, and a client-rendered
  * single-page application would hand a crawler an empty document.
  */
 const nextConfig: NextConfig = {
@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
   transpilePackages: ['@theetiptop-contest/ui', '@theetiptop-contest/shared'],
 
   // A thrown error must not be served as a 200 with a stack trace, and the standalone
-  // output is what keeps the production image small — see 05-workflow/docker.
+  // output is what keeps the production image small, see 05-workflow/docker.
   output: 'standalone',
 
   // Hides the framework and version from response headers. Free, and one fewer hint for

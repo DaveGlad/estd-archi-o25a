@@ -13,8 +13,8 @@ import {
  * What a form action hands back to its client component.
  *
  * A result object rather than a thrown error: a validation failure is an ordinary outcome
- * of submitting a form, and the field has to be able to show it. Only genuine faults — the
- * API being down — are left to propagate to the error boundary.
+ * of submitting a form, and the field has to be able to show it. Only genuine faults, the
+ * API being down, are left to propagate to the error boundary.
  */
 export type ActionResult =
   | { ok: true; message: string }

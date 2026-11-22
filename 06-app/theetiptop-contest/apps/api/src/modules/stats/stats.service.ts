@@ -37,8 +37,8 @@ interface DailyRow {
  *    statistics on winners in terms of gender, age, etc."
  *
  * Most of the aggregations are written as raw SQL rather than through the Prisma query
- * builder. Three of them cannot be expressed by it at all — bucketing an age computed from
- * a birth date, a zero-filled daily series, and a conditional count — and the others are
+ * builder. Three of them cannot be expressed by it at all, bucketing an age computed from
+ * a birth date, a zero-filled daily series, and a conditional count, and the others are
  * written the same way so the whole dashboard is one consistent set of queries rather than
  * a mix a reader has to switch between.
  *
@@ -54,8 +54,8 @@ export class StatsService {
    *
    * Short enough that an administrator who hands over a prize and refreshes sees it;
    * long enough to absorb a page that is reloaded while being read. The cache is also
-   * invalidated outright on the two events that move the figures — a new participation and
-   * a prize handover — so the TTL is a backstop rather than the mechanism.
+   * invalidated outright on the two events that move the figures, a new participation and
+   * a prize handover, so the TTL is a backstop rather than the mechanism.
    */
   private static readonly CACHE_TTL_SECONDS = 120;
 
@@ -180,7 +180,7 @@ export class StatsService {
    *
    * The age is computed from the birth date at query time, never stored: a stored age is
    * wrong within a year, and GDPR minimisation argues for keeping the one fact that stays
-   * true. Customers with no birth date — the OAuth path, where no provider supplies one —
+   * true. Customers with no birth date, the OAuth path, where no provider supplies one,
    * are excluded rather than bucketed, because inventing a bracket for them would skew the
    * very statistic the brief asks for.
    *
@@ -228,7 +228,7 @@ export class StatsService {
   /**
    * Codes played, per store.
    *
-   * Only computable because `TicketCode` records which store dispensed it — the field
+   * Only computable because `TicketCode` records which store dispensed it, the field
    * added alongside the till endpoints. A `LEFT JOIN` so a store that has sold nothing
    * still appears at zero rather than vanishing from the chart.
    */

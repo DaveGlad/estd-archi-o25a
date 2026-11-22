@@ -59,7 +59,7 @@ export class PosController {
     description: [
       'Passe un code distribué à l’état `VOIDED` : il ne sera jamais jouable.',
       '',
-      'Seul un code **distribué** peut être neutralisé. Un code déjà **joué** est refusé : le client a vu son lot, et annuler la vente ne reprend pas le lot — c’est un litige commercial, pas une opération de base de données. Neutraliser un code joué effacerait une participation que l’huissier doit pouvoir compter.',
+      'Seul un code **distribué** peut être neutralisé. Un code déjà **joué** est refusé : le client a vu son lot, et annuler la vente ne reprend pas le lot, c’est un litige commercial, pas une opération de base de données. Neutraliser un code joué effacerait une participation que l’huissier doit pouvoir compter.',
       '',
       'Le motif est obligatoire : un ticket gagnant retiré du jeu sans justification est indéfendable devant l’huissier.',
     ].join('\n'),

@@ -12,7 +12,7 @@ import { PrismaClient } from '../../generated/prisma/client.js';
  * through API v1. One connection pool, one place where queries are written, one place to
  * look when a query is slow.
  *
- * Prisma 7 requires a driver adapter — the Rust query engine binary is gone. `PrismaPg`
+ * Prisma 7 requires a driver adapter, the Rust query engine binary is gone. `PrismaPg`
  * wraps `node-postgres`, which is what lets the pool be sized explicitly below instead of
  * inherited from a connection-string parameter.
  */

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1248" height="738" viewBox="0 0 1248 738" font-family="Helvetica, Arial, sans-serif">
 <rect width="1248" height="738" fill="#ffffff"/>
-<text x="16" y="30" font-size="17" font-weight="600" fill="#1b2733">Figure 4 — Déploiement en préproduction, automatique, avec anonymisation</text>
+<text x="16" y="30" font-size="17" font-weight="600" fill="#1b2733">Figure 4. Déploiement en préproduction, automatique, avec anonymisation</text>
 <text x="16" y="52" font-size="11" fill="#5a6b7d">L&#x27;anonymisation n&#x27;est pas une précaution de confort : la préproduction est accessible au client, elle ne doit jamais contenir de données réelles. RGPD.</text>
 <rect x="8" y="72" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
 <rect x="8" y="72" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>

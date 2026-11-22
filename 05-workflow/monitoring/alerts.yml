@@ -62,7 +62,7 @@ groups:
             Les caisses ne pourront plus imprimer de code quand le pool sera vide, et le
             pool NE PEUT PAS être réapprovisionné : la répartition 60/20/10/6/4 % est figée
             et déposée chez l'huissier. Seuil à 10 000, soit plusieurs jours de marge au
-            rythme observé — assez pour prévenir le client, pas pour le découvrir trop tard.
+            rythme observé, assez pour prévenir le client, pas pour le découvrir trop tard.
 
       - alert: CodeSubmissionFailing
         expr: |
@@ -83,7 +83,7 @@ groups:
         annotations:
           summary: 'Redis est hors service : la limitation de débit ne protège plus rien'
           description: >-
-            Le limiteur échoue OUVERT, volontairement — verrouiller un vrai client serait
+            Le limiteur échoue OUVERT, volontairement, verrouiller un vrai client serait
             pire. Conséquence : pendant cette panne, la protection contre la force brute
             sur les codes est absente et l'application ne s'en aperçoit pas. C'est
             exactement pourquoi la règle existe ici.
@@ -145,7 +145,7 @@ groups:
           description: >-
             Trois environnements partagent l'instance, chaque conteneur d'API ouvre 10
             connexions. Le symptôme, au plafond, est un délai d'attente qui ressemble à une
-            requête lente — d'où cette règle plutôt qu'un diagnostic à l'aveugle.
+            requête lente, d'où cette règle plutôt qu'un diagnostic à l'aveugle.
 
       - alert: CertificateExpiringSoon
         expr: probe_ssl_earliest_cert_expiry - time() < 14 * 24 * 3600

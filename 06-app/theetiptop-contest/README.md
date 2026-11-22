@@ -28,7 +28,7 @@ npm run codes:verify       # contrôle de la répartition 60/20/10/6/4 %
 npm run db:seed:demo       # ~3 s : 1 200 clients, 2 000 participations
 
 # 5. Les trois applications, dans trois terminaux
-npm run dev:api            # http://localhost:3333  — Swagger sur /docs
+npm run dev:api            # http://localhost:3333, Swagger sur /docs
 npm run dev:web            # http://localhost:3000
 npm run dev:admin          # http://localhost:3001
 ```
@@ -68,7 +68,7 @@ tools/        Outillage de build
 | | Raison |
 |---|---|
 | `api` séparée des fronts | Elle sert **trois consommateurs**, dont deux que nous n'écrivons pas : les caisses des 10 boutiques et le futur site e-commerce. D'où une API REST versionnée et documentée, et non un back-end privé |
-| `admin` séparée de `web` | Le site public est la surface exposée — indexée, ouverte aux anonymes ; le back-office ne l'est pas. Séparées, les écrans d'administration ne sont même pas joignables sur l'hôte public, et les deux se déploient avec des règles d'entrée distinctes |
+| `admin` séparée de `web` | Le site public est la surface exposée, indexée, ouverte aux anonymes ; le back-office ne l'est pas. Séparées, les écrans d'administration ne sont même pas joignables sur l'hôte public, et les deux se déploient avec des règles d'entrée distinctes |
 
 ## Les commandes
 
@@ -144,8 +144,8 @@ retirer le jour où Next remonte de lui-même.
 
 ## Conventions
 
-- **Commentaires de code en anglais.** La prose du projet — dossiers, README, textes
-  affichés à l'utilisateur — reste en français.
+- **Commentaires de code en anglais.** La prose du projet, dossiers, README, textes
+  affichés à l'utilisateur, reste en français.
 - **TypeScript partout**, y compris les fichiers de configuration : `prisma.config.ts`,
   `next.config.ts`, `playwright.config.ts`, `vitest.config.mts`.
 - **`.env` jamais versionné**, jamais embarqué dans une image Docker. Les secrets sont

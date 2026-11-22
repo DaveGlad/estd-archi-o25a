@@ -75,7 +75,7 @@ module → controller (v1/…, Swagger) → service (DomainException) → Prisma
 (`prisma`, `redis`, `audit`, `config`).
 
 **Écart assumé par rapport à la convention** : pas de couche `repository` distincte. Le
-client Prisma **est** la couche d'accès aux données — une classe de plus qui ne ferait que
+client Prisma **est** la couche d'accès aux données, une classe de plus qui ne ferait que
 réexporter ses méthodes n'ajouterait rien. Les services convertissent en revanche
 systématiquement les lignes Prisma en DTO du paquet partagé, via un `*.mapper.ts` par
 module : une ligne Prisma porte des colonnes qu'aucun client ne doit voir (`password`,
@@ -107,7 +107,7 @@ sont à connaître, parce qu'elles sont visibles dans le MLD du cahier des charg
 **1. Suivi de la distribution des codes.** `CodeStatus` ne connaissait que
 `AVAILABLE | USED | VOIDED`, et `TicketCode` n'avait aucun lien vers une boutique. Il était
 donc impossible de savoir qu'un code avait été imprimé sur un ticket, ni par quelle
-boutique — ce qui rendait l'exigence n° 8 (API pour les caisses) incomplète et la
+boutique, ce qui rendait l'exigence n° 8 (API pour les caisses) incomplète et la
 statistique « codes joués par boutique » **non calculable**. Ajoutés :
 
 - `CodeStatus.DISPENSED`, entre `AVAILABLE` et `USED` ;
@@ -119,11 +119,11 @@ sans appeler l'API.
 
 **2. Auditabilité de la génération.** Ajoutés sur `Contest` : `codesGeneratedAt`,
 `codeGenerationSeedHash`, `codePoolFingerprint`. La graine elle-même n'est
-**volontairement pas stockée** — voir ci-dessous.
+**volontairement pas stockée**, voir ci-dessous.
 
 ## Les deux algorithmes critiques
 
-### 1. Génération des 500 000 codes — `prisma/generate-codes.ts`
+### 1. Génération des 500 000 codes, `prisma/generate-codes.ts`
 
 ```
 1. Vérifier que la répartition totalise exactement 500 000 (échec avant toute écriture)
@@ -148,7 +148,7 @@ dériver les 500 000 codes avec le lot de chacun. À la place : la graine est af
 fois et remise à l'huissier, la base conserve son SHA-256 (pour prouver qu'une graine
 présentée est *la* graine) et l'empreinte du pool (pour prouver qu'aucun code n'a bougé).
 
-### 2. Tirage du gros lot — `modules/draw/draw.service.ts`
+### 2. Tirage du gros lot, `modules/draw/draw.service.ts`
 
 ```sql
 SELECT DISTINCT p."userId" FROM "Participation" p ... ORDER BY p."userId" ASC
@@ -156,12 +156,12 @@ SELECT DISTINCT p."userId" FROM "Participation" p ... ORDER BY p."userId" ASC
 
 L'assiette est l'ensemble des **participants**, pas des participations : un client ayant
 joué quarante codes a une chance, exactement comme celui qui en a joué un. La différence
-tient à un `DISTINCT`, et c'est l'exigence la plus facile à manquer du sujet —
+tient à un `DISTINCT`, et c'est l'exigence la plus facile à manquer du sujet,
 `tests/draw-fairness.integration.spec.ts` ne teste rien d'autre.
 
 Contrairement à la graine de génération, **celle du tirage est conservée en clair** : elle
 décrit une opération terminée, et la connaître ne permet que de recalculer un résultat déjà
-public. `GET /v1/admin/draw/:id/verify` rejoue le tirage et compare — c'est le bouton que
+public. `GET /v1/admin/draw/:id/verify` rejoue le tirage et compare, c'est le bouton que
 presse l'huissier.
 
 ## Exigences transverses
@@ -171,7 +171,7 @@ presse l'huissier.
 | **SEO** | SSR Next.js, métadonnées par page, `sitemap.xml` généré depuis le code, `robots.txt`, données structurées Schema.org | `e2e/public/catalogue.spec.ts` |
 | **Accessibilité** | Lien d'évitement, un seul `h1` par page, libellés liés par `id`, régions `aria-live`, focus visible, `prefers-reduced-motion`, contrastes validés, `jsx-a11y` au lint | `e2e/public/catalogue.spec.ts`, lint |
 | **RGPD** | Consentements horodatés **côté serveur**, retrait aussi simple que l'octroi, export article 20, effacement article 17 par anonymisation, IP hachée salée, export emailing minimisé | `e2e/public/participation.spec.ts` |
-| **Éco-conception** | `nx affected`, cache Redis sur le catalogue et les agrégats, images Next optimisées, dépendances inutiles retirées (`@nestjs/config`, `@nestjs/throttler`, Elasticsearch, Stripe) | — |
+| **Éco-conception** | `nx affected`, cache Redis sur le catalogue et les agrégats, images Next optimisées, dépendances inutiles retirées (`@nestjs/config`, `@nestjs/throttler`, Elasticsearch, Stripe) |, |
 | **Sécurité** | Limitation de débit Redis sur la saisie, clés d'API distinctes comparées en temps constant, `role` non modifiable par le client, Helmet, CORS explicite, pas de fuite de pile | `smoke` + `e2e/back-office/roles.spec.ts` |
 | **Responsive** | Parcours client rejoué sur viewport mobile | projet Playwright `public-site-mobile` |
 
@@ -181,13 +181,13 @@ presse l'huissier.
 compose de déploiement couvrant les trois environnements. Images mesurées : **api 471 Mo**,
 **web 322 Mo**, **admin 319 Mo**, toutes vérifiées à l'exécution.
 
-Le `.dockerignore` racine — correctif n° 2 des décisions § 4 bis — est en place.
+Le `.dockerignore` racine, correctif n° 2 des décisions § 4 bis, est en place.
 
 ## Design
 
 Le design system part des patterns `liquid glass` de `deal-israel`, mais la charte vient de
 l'identité visuelle de Thé Tip Top (CDC partie G). Tokens en `oklch`, thème clair et sombre,
-palette de data-viz à ordre fixe, feuille d'impression — un client imprime sa page de gain
+palette de data-viz à ordre fixe, feuille d'impression, un client imprime sa page de gain
 pour la présenter en boutique, un administrateur imprime ses statistiques.
 
 ## Ce qui reste à faire, et qui n'est pas applicatif
@@ -198,4 +198,4 @@ pour la présenter en boutique, un administrateur imprime ses statistiques.
 | Registry d'images, reverse proxy, TLS | W5, W9 |
 | Prometheus + Grafana, exposition des métriques de l'API | W13 |
 | Sauvegardes automatisées et test de restauration | W12 |
-| Identifiants OAuth Google et Facebook réels | — |
+| Identifiants OAuth Google et Facebook réels |, |

@@ -24,7 +24,7 @@ interface CodeFormProps {
  *
  * The submission goes through a **server action**, not a `fetch`. The call needs the
  * session cookie and the internal API address, and routing it through the server keeps
- * both out of the browser — see `participer/actions.ts`.
+ * both out of the browser, see `participer/actions.ts`.
  *
  * `useTransition` rather than a hand-rolled pending flag: it is what React provides for
  * exactly this, and it keeps the input responsive while the action is in flight.

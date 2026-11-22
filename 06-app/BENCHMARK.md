@@ -134,7 +134,7 @@ théoriquement environ 1 850 vérifications de code par seconde sur cette seule 
 sujet annonce 500 000 codes distribués sur 30 jours ; même en concentrant la moitié des
 participations sur une seule journée, on reste trois ordres de grandeur sous cette limite.
 La base n'est donc pas le facteur limitant, ce qui justifie de dimensionner les conteneurs
-sur la mémoire plutôt que sur le débit SQL — voir `DECISIONS.md` § 4 bis, risque n° 5.
+sur la mémoire plutôt que sur le débit SQL, voir `DECISIONS.md` § 4 bis, risque n° 5.
 
 ## 5. Conformité de la répartition
 
@@ -145,11 +145,11 @@ déployer un jeu dont la répartition ne correspond pas au règlement déposé.
 | Contrôle | Attendu | Mesuré |
 |---|---|---|
 | Nombre total de codes | 500 000 | 500 000 |
-| Infuseur à thé | 300 000 — 60,00 % | 300 000 — 60,00 % |
-| Thé détox ou infusion | 100 000 — 20,00 % | 100 000 — 20,00 % |
-| Thé signature | 50 000 — 10,00 % | 50 000 — 10,00 % |
-| Coffret 39 € | 30 000 — 6,00 % | 30 000 — 6,00 % |
-| Coffret 69 € | 20 000 — 4,00 % | 20 000 — 4,00 % |
+| Infuseur à thé | 300 000, 60,00 % | 300 000, 60,00 % |
+| Thé détox ou infusion | 100 000, 20,00 % | 100 000, 20,00 % |
+| Thé signature | 50 000, 10,00 % | 50 000, 10,00 % |
+| Coffret 39 € | 30 000, 6,00 % | 30 000, 6,00 % |
+| Coffret 69 € | 20 000, 4,00 % | 20 000, 4,00 % |
 | Codes attachés au gros lot | 0 | 0 |
 | Codes distincts | 500 000 | 500 000 |
 | Codes malformés | 0 | 0 |
@@ -161,7 +161,7 @@ Empreinte SHA-256 du pool au 11 novembre 2026 :
 ### Pourquoi la répartition est exacte et non statistique
 
 Le script ne tire pas un lot par code contre une probabilité. Il **construit le vecteur
-exact** — 300 000 entrées pour l'infuseur, pas une de plus — puis il le mélange. Un tirage
+exact**, 300 000 entrées pour l'infuseur, pas une de plus, puis il le mélange. Un tirage
 par code tomberait près de 60 % mais pratiquement jamais sur exactement 60 %, alors que le
 règlement déposé chez l'huissier dit 60 %. C'est le point à défendre en soutenance.
 
@@ -195,7 +195,7 @@ pas trivial. Trois approches mesurées avant d'arriver à la bonne.
 |---|---|---|
 | `npm ci --omit=dev -w @theetiptop-contest/api --include-workspace-root` | **936 Mo** | Le filtre de workspace ne restreint pas `ci` : TypeScript, Next et Playwright sont installés |
 | `npm prune --omit=dev --include-workspace-root` | **936 Mo** | Même résultat, même raison |
-| `nx prune`, qui produit un manifeste **et** un lockfile élagués | — | Lockfile incohérent avec son propre manifeste : `npm ci` s'arrête sur `Missing: content-type@1.0.5`. Express 5 atteint `content-type` par deux chemins, le pruner n'en enregistre qu'un |
+| `nx prune`, qui produit un manifeste **et** un lockfile élagués |, | Lockfile incohérent avec son propre manifeste : `npm ci` s'arrête sur `Missing: content-type@1.0.5`. Express 5 atteint `content-type` par deux chemins, le pruner n'en enregistre qu'un |
 | **`generatePackageJson` + épinglage aux versions exactes** | **~380 Mo** | Webpack émet la liste exacte de ses externes ; `tools/pin-runtime-deps.mjs` remplace chaque intervalle par la version résolue par l'étage de build |
 
 La chaîne reste reproductible : lockfile versionné → étage de build → manifeste épinglé →
@@ -216,7 +216,7 @@ Exécutions du 11 novembre 2026.
 **Les 2,5 heures du suite fonctionnelle sont un artefact du serveur de développement** :
 `next dev` compile chaque route à sa première visite, et la suite en parcourt une vingtaine
 sur trois projets de navigateur. En CI, `playwright.config.ts` démarre les **builds de
-production** (`next start`), ce qui supprime l'essentiel de ce temps — et teste au passage
+production** (`next start`), ce qui supprime l'essentiel de ce temps, et teste au passage
 l'artefact qui est réellement déployé.
 
 ## 8. Charge, mesurée avec k6
@@ -239,9 +239,9 @@ retard. Rien n'a été accumulé.
 
 Le scénario de soumission tournait **sans session**. L'API répondait 401 au garde, avant
 toute requête en base : la métrique nommée `code_lookup_duration` mesurait un refus
-d'authentification. Le scénario ouvre désormais **une** session dans `setup()` — une
+d'authentification. Le scénario ouvre désormais **une** session dans `setup()`, une
 seule, parce que le hachage du mot de passe est volontairement lent et que 50 connexions
-par seconde mesureraient la fonction de dérivation — et chaque itération atteint
+par seconde mesureraient la fonction de dérivation, et chaque itération atteint
 réellement l'index unique sur `TicketCode.code`.
 
 Deuxième obstacle : la limitation de débit. Au-delà de la dixième tentative, la réponse

@@ -28,7 +28,7 @@ function configureSwagger(app: NestExpressApplication, config: AppConfig): void 
   const document = SwaggerModule.createDocument(
     app,
     new DocumentBuilder()
-      .setTitle('API Thé Tip Top — jeu-concours')
+      .setTitle('API Thé Tip Top, jeu-concours')
       .setDescription(
         [
           'API REST versionnée du jeu-concours organisé pour l’ouverture de la 10e boutique Thé Tip Top.',
@@ -105,7 +105,7 @@ async function bootstrap(): Promise<void> {
   app.enableCors({
     origin: config.corsOrigins,
     // Required: the session travels in a cookie, and a cross-origin request does not send
-    // cookies without it. This is also why the origin list is explicit rather than `*` —
+    // cookies without it. This is also why the origin list is explicit rather than `*`,
     // the two are mutually exclusive by specification.
     credentials: true,
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],

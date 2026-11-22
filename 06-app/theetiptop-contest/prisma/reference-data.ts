@@ -51,7 +51,7 @@ export const NICE_STORE_NAME = 'Nice Vieille Ville';
  *
  * ⚠️ Inserted only when `NODE_ENV !== 'production'`. Seeding a known administrator
  * password into production would hand the back office to anyone who read this file in the
- * repository — and the repository is what the examiners will read.
+ * repository, and the repository is what the examiners will read.
  */
 export const DEMO_PASSWORD = 'MotDePasse2026!';
 

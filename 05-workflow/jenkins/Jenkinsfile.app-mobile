@@ -1,4 +1,4 @@
-// Pipeline of the `demo-app-mobile` repository — a hybrid application, React Native with
+// Pipeline of the `demo-app-mobile` repository, a hybrid application, React Native with
 // Expo.
 //
 // Third of the three project shapes requirement n° 7 names: "Application Mobile Hybride /
@@ -12,7 +12,7 @@
 //      the signed binaries", and the registry plays no part.
 //
 //   2. There is no "deploy to dev". An application is INSTALLED, not deployed. The
-//      equivalent is a distribution channel — an over-the-air update for the JS bundle, a
+//      equivalent is a distribution channel, an over-the-air update for the JS bundle, a
 //      test track for the native build.
 //
 //   3. iOS cannot be built in a Linux container. Apple's toolchain requires macOS, which
@@ -69,7 +69,7 @@ pipeline {
         }
       }
       steps {
-        // Requirement 4f. Business logic only — rendering is covered by the end-to-end
+        // Requirement 4f. Business logic only, rendering is covered by the end-to-end
         // run on a real device below, because a mocked React Native renderer proves
         // nothing about either platform.
         sh 'npm run test -- --reporter=junit --outputFile=reports/junit/jest.xml'
@@ -133,7 +133,7 @@ pipeline {
           // The gap, stated rather than hidden. Jenkins reports UNSTABLE, which is yellow
           // in the trend and visibly not a pass.
           if (!nodesByLabel('macos')) {
-            unstable('No macOS agent: the iOS build is NOT produced. Apple\'s toolchain cannot run in a Linux container — see CST D.3, "Dimensionnement".')
+            unstable('No macOS agent: the iOS build is NOT produced. Apple\'s toolchain cannot run in a Linux container, see CST D.3, "Dimensionnement".')
             return
           }
           withCredentials([
@@ -174,8 +174,8 @@ pipeline {
       agent { label 'docker' }
       steps {
         // Requirement 4f, functional half. On an emulator running the signed artefact, not
-        // on a mocked renderer: the defects worth catching on mobile — a permission
-        // prompt, a keyboard covering a field, a crash on a cold start — only exist on a
+        // on a mocked renderer: the defects worth catching on mobile, a permission
+        // prompt, a keyboard covering a field, a crash on a cold start, only exist on a
         // real runtime.
         sh '''
           docker run --rm --device /dev/kvm \
@@ -197,7 +197,7 @@ pipeline {
       }
       steps {
         // The equivalent of "deploy to dev" for this shape. The JS bundle reaches testers
-        // in minutes without a store review — which is the whole reason a hybrid stack was
+        // in minutes without a store review, which is the whole reason a hybrid stack was
         // chosen. It CANNOT ship a change to native code: that needs a new binary, and
         // pretending otherwise is how a team ships an update that bricks the app.
         withCredentials([string(credentialsId: 'expo-token', variable: 'EXPO_TOKEN')]) {
@@ -212,7 +212,7 @@ pipeline {
       steps {
         // Never straight to the public track. Store review takes days and is not
         // reversible on demand, so automation stops at the internal track and a person
-        // promotes from there — the same reasoning as the production gate on the client
+        // promotes from there, the same reasoning as the production gate on the client
         // project, for a stronger reason: a bad release cannot be rolled back at all once
         // customers have installed it.
         timeout(time: 60, unit: 'MINUTES') {

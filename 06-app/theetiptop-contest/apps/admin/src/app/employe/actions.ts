@@ -40,7 +40,7 @@ export type RedeemActionResult =
  *
  * Every refusal code is relayed rather than flattened into one message: `ALREADY_REDEEMED`
  * and `CLAIM_WINDOW_CLOSED` are both 409 and need the employee to do two different things
- * — one is "somebody already gave it to them", the other is "the deadline has passed".
+ *, one is "somebody already gave it to them", the other is "the deadline has passed".
  */
 export async function redeemPrizeAction(
   participationId: string,

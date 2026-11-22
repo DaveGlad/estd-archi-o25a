@@ -31,7 +31,7 @@ from generate import Diagram, Node as N
 
 E_INFRA = Diagram(
     'E-infrastructure',
-    "Figure 1 — Infrastructure du workflow : services, ports et protocoles",
+    "Figure 1. Infrastructure du workflow : services, ports et protocoles",
     ['Internet', 'Réseau proxy', 'Réseau workflow', 'Réseau metrics',
      'Réseaux d\'environnement', 'Hors site'],
     [
@@ -95,7 +95,7 @@ E_INFRA = Diagram(
 
 G1 = Diagram(
     'G1-activite',
-    "Figure 2 — Cycle de vie d'une fonctionnalité, du besoin à la production",
+    "Figure 2. Cycle de vie d'une fonctionnalité, du besoin à la production",
     [],
     [
         N('A', 'start', 'Story sélectionnée\nen sprint planning', '', 0, 0),
@@ -132,7 +132,7 @@ G1 = Diagram(
 
 G2 = Diagram(
     'G2-deploiement-dev',
-    "Figure 3 — Déploiement en développement, entièrement automatique",
+    "Figure 3. Déploiement en développement, entièrement automatique",
     ['Développeur', 'Gitea', 'Jenkins', 'Environnement dev'],
     [
         N('A', 'start', 'Merge request\napprouvée', 'Développeur', 0),
@@ -188,7 +188,7 @@ G2 = Diagram(
 
 G3 = Diagram(
     'G3-deploiement-preprod',
-    "Figure 4 — Déploiement en préproduction, automatique, avec anonymisation",
+    "Figure 4. Déploiement en préproduction, automatique, avec anonymisation",
     ['Jenkins', 'Préproduction', 'Équipe projet'],
     [
         N('A', 'start', 'Création de la\nbranche release', 'Jenkins', 0, 0),
@@ -225,7 +225,7 @@ G3 = Diagram(
 
 G4 = Diagram(
     'G4-deploiement-prod',
-    "Figure 5 — Déploiement en production, le seul processus avec une décision humaine",
+    "Figure 5. Déploiement en production, le seul processus avec une décision humaine",
     ['Équipe projet', 'Jenkins', 'Production'],
     [
         N('A', 'start', 'Recette client validée', 'Équipe projet', 0, 0),
@@ -274,7 +274,7 @@ G4 = Diagram(
 
 G5 = Diagram(
     'G5-sauvegarde',
-    "Figure 6 — Sauvegarde de la production, planifiée et sans intervention humaine",
+    "Figure 6. Sauvegarde de la production, planifiée et sans intervention humaine",
     ['Planificateur', 'Production', 'Stockage hors site', 'Équipe plateforme'],
     [
         N('A', 'start', 'Planificateur,\n2 h du matin', 'Planificateur', 0),
@@ -313,7 +313,7 @@ G5 = Diagram(
 
 G6 = Diagram(
     'G6-restauration',
-    "Figure 7 — Restauration, les trois environnements",
+    "Figure 7. Restauration, les trois environnements",
     ['Qualification', 'Développement', 'Préproduction', 'Production'],
     [
         N('A', 'start', 'Perte de données\nou incident', 'Qualification', 0),
