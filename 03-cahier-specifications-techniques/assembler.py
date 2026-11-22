@@ -111,7 +111,7 @@ def build_markdown() -> str:
 
 
 def finalise_docx(path: pathlib.Path) -> None:
-    """Adds the pagination the brief asks for.
+    """Adds the pagination the brief asks for, and sizes the tables.
 
     Two requirements of the plan, both written in bold in the source document:
     « le format du cahier est obligatoirement en portrait au format A4 » and
@@ -128,7 +128,7 @@ def finalise_docx(path: pathlib.Path) -> None:
     import docx
     from docx.enum.text import WD_ALIGN_PARAGRAPH
     from docx.oxml.ns import qn
-    from docx.shared import Pt
+    from docx.shared import Pt, Twips
 
     def field(run, instruction: str) -> None:
         begin = run._r.makeelement(qn('w:fldChar'), {qn('w:fldCharType'): 'begin'})
@@ -143,6 +143,56 @@ def finalise_docx(path: pathlib.Path) -> None:
     # Setting it again here would be a second source for the same value, and the
     # day the two disagree the document silently follows whichever ran last.
     document = docx.Document(str(path))
+
+    # Tables take the full measure, and breathe.
+    #
+    # Pandoc sizes each table from the relative width of its markdown columns, which
+    # leaves most of them stopping two thirds of the way across the page: a table of
+    # two short columns looks like a fragment dropped on the sheet rather than part of
+    # the layout. Seventy-six of them cannot be dragged into place by hand, and Google
+    # Docs refuses to edit more than one table at a time, so it is settled here.
+    #
+    # The widths are rescaled rather than equalised. A column holding "1.0" and one
+    # holding a sentence do not deserve the same share, and pandoc's proportions encode
+    # that. They are multiplied by whatever factor makes them fill the text column.
+    text_width = Twips(int((210 - 2 * 22) / 25.4 * 1440))    # A4 less the 22 mm margins
+    for table in document.tables:
+        table.autofit = False
+        tbl_pr = table._tbl.tblPr
+
+        for existing in tbl_pr.findall(qn('w:tblW')):
+            tbl_pr.remove(existing)
+        width = tbl_pr.makeelement(qn('w:tblW'), {
+            qn('w:w'): '5000', qn('w:type'): 'pct'})
+        tbl_pr.append(width)
+
+        # Air inside the cells. The default is 0 at the top and bottom, which is what
+        # makes an imported table look cramped however good the type is.
+        for existing in tbl_pr.findall(qn('w:tblCellMar')):
+            tbl_pr.remove(existing)
+        margins = tbl_pr.makeelement(qn('w:tblCellMar'), {})
+        for side, value in (('top', 90), ('bottom', 90), ('left', 110), ('right', 110)):
+            margins.append(margins.makeelement(qn(f'w:{side}'), {
+                qn('w:w'): str(value), qn('w:type'): 'dxa'}))
+        tbl_pr.append(margins)
+
+        grid = table._tbl.find(qn('w:tblGrid'))
+        if grid is not None:
+            cols = grid.findall(qn('w:gridCol'))
+            current = [int(c.get(qn('w:w')) or 0) for c in cols]
+            total = sum(current)
+            if total:
+                factor = text_width.twips / total
+                for col, value in zip(cols, current):
+                    col.set(qn('w:w'), str(int(value * factor)))
+
+        # The header row repeats at the top of every page the table spills onto.
+        if table.rows:
+            tr_pr = table.rows[0]._tr.get_or_add_trPr()
+            for existing in tr_pr.findall(qn('w:tblHeader')):
+                tr_pr.remove(existing)
+            tr_pr.append(tr_pr.makeelement(qn('w:tblHeader'), {}))
+
     for section in document.sections:
         footer = section.footer
         footer.is_linked_to_previous = False

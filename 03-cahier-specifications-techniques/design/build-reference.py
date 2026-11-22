@@ -25,12 +25,14 @@ That is the whole point: a dossier whose text and whose diagrams share a palette
 reads as one document, where two palettes read as a figure pasted in from
 somewhere else.
 
-Type is a pairing rather than a single family. Lato carries the headings, where
-its flat terminals and open counters stay legible at small sizes and in colour.
-PT Serif carries the body, because this dossier is read at length and a serif
-holds a line of 95 characters better than a sans. Both are available in Google
-Docs and in Word; where PT Serif is absent, Georgia is the declared fallback and
-the measure barely moves.
+Type is one family, Inter, told apart by size, weight and colour rather than by
+a second typeface. That is the contemporary documentation setting, and it is
+chosen here for a reason beyond fashion: the labels inside the seven figures are
+set in a grotesque, so a grotesque text face puts the prose and the diagrams in
+one family instead of making the figures look imported.
+
+The line spacing goes to 1,3 rather than the 1,22 a serif would take. A sans set
+tightly over a long measure is exactly where a reader loses the line.
 """
 
 from __future__ import annotations
@@ -57,8 +59,8 @@ RULE = '8FA3B8'                          # hairlines
 TABLE_HEAD = 'EEF4FB'                    # table header fill
 CODE_BG = 'F2F5F8'
 
-BODY_FONT = 'PT Serif'
-HEAD_FONT = 'Lato'
+BODY_FONT = 'Inter'
+HEAD_FONT = 'Inter'
 MONO_FONT = 'Roboto Mono'
 
 
@@ -146,24 +148,24 @@ def build() -> None:
 
     # ---------------------------------------------------------------- body
     set_font(styles['Normal'], BODY_FONT, 10.5, colour=INK,
-             spacing_after=7, line=1.22, align=WD_ALIGN_PARAGRAPH.JUSTIFY)
+             spacing_after=8, line=1.3, align=WD_ALIGN_PARAGRAPH.JUSTIFY)
 
     for name in ('Body Text', 'First Paragraph', 'Compact'):
         if name in [s.name for s in styles]:
             set_font(styles[name], BODY_FONT, 10.5, colour=INK,
-                     spacing_after=7, line=1.22, align=WD_ALIGN_PARAGRAPH.JUSTIFY)
+                     spacing_after=8, line=1.3, align=WD_ALIGN_PARAGRAPH.JUSTIFY)
 
     # ------------------------------------------------------------ headings
     #
     # A scale rather than arbitrary sizes: 20, 15, 12.5, 11, each about 1.22 times
     # the next, which is the same ratio as the line spacing. Nothing in the document
     # is sized by eye.
-    set_font(styles['Heading 1'], HEAD_FONT, 20, colour=HEADING, bold=True,
+    set_font(styles['Heading 1'], HEAD_FONT, 21, colour=HEADING, bold=True,
              spacing_before=0, spacing_after=14, keep_with_next=True,
              align=WD_ALIGN_PARAGRAPH.LEFT)
     bottom_rule(styles['Heading 1'], RULE, size=8)
 
-    set_font(styles['Heading 2'], HEAD_FONT, 15, colour=HEADING, bold=True,
+    set_font(styles['Heading 2'], HEAD_FONT, 15.5, colour=HEADING, bold=True,
              spacing_before=20, spacing_after=7, keep_with_next=True,
              align=WD_ALIGN_PARAGRAPH.LEFT)
 
