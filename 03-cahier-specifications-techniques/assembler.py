@@ -21,9 +21,12 @@ once. Assembling by hand means remembering the order, the annexes, the shared TJ
 file that lives in the OTHER dossier, and the image paths. It means getting it
 wrong once, late, on the evening of the deadline.
 
-The brief imposes A4 portrait and pagination in the form 1/100. Both are set in
-the reference .docx that pandoc uses as a template; the page numbers themselves
-are inserted by the word processor, since only it knows where the pages break.
+The brief imposes A4 portrait and pagination in the form 1/100. Pandoc sets
+neither, so `finalise_docx` below writes both into the file afterwards.
+
+One step is left to the word processor on purpose: the table of contents. The
+brief wants it with page numbers, and only the software that lays out the pages
+knows where they break. Inserting it is one menu entry, and it stays live.
 """
 
 from __future__ import annotations
@@ -176,11 +179,18 @@ def main() -> None:
         'pandoc', str(OUT_MD),
         '-o', str(OUT_DOCX),
         '--from', 'markdown+pipe_tables+yaml_metadata_block',
-        '--toc', '--toc-depth=3',
         '--resource-path', str(HERE),
         '--metadata', 'lang=fr-FR',
-        '--metadata', 'title=Cahier des spécifications techniques, Furious Ducks',
     ]
+    # No `--toc`, and no `title` metadata.
+    #
+    # Both looked like free wins and both made the document worse. The title
+    # metadata prints a title page of its own, which duplicated the cover that is
+    # already the first section. And `--toc` inserts a Word field headed "Table of
+    # Contents", in English whatever the document language, that Google Docs does
+    # not compute on import: it arrived as an empty heading above the real
+    # sommaire. The table of contents is inserted in the word processor instead,
+    # where it is live, clickable and carries the page numbers the brief asks for.
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         print(result.stderr, file=sys.stderr)
