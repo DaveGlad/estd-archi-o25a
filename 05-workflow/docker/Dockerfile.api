@@ -104,8 +104,35 @@ WORKDIR /app
 
 # Versions pinned to the lockfile, not to a range. A CLI ahead of @prisma/client can write
 # a migration the running code cannot read.
+#
+# A manifest rather than `npm install prisma@7.10.1 …` on the command line, because this set
+# needs an `overrides` block and there is no flag that carries one.
+#
+# `@prisma/config` depends on `effect` at an exact `3.20.0`, which carries CVE-2026-121707 —
+# a ReDoS in the regex compiled for `Schema.TemplateLiteral`, rated HIGH. The scan stage
+# caught it on the migrate image and on nothing else: the CLI is the only place prisma's own
+# dependencies reach an image, and the runtime stage has no CLI.
+#
+# Adding `effect@3.22.5` to the install list would not help. npm honours the exact pin and
+# nests the vulnerable copy under @prisma/config, so the top-level one simply sits beside it.
+# An override is the only thing that reaches a transitive exact pin. The same override is in
+# the workspace package.json, so the CLI used locally and in CI resolves the same version.
+COPY <<'MANIFEST' /app/package.json
+{
+  "name": "theetiptop-migrate",
+  "private": true,
+  "dependencies": {
+    "prisma": "7.10.1",
+    "tsx": "4.23.15",
+    "dotenv": "18.0.10"
+  },
+  "overrides": {
+    "effect": "3.22.5"
+  }
+}
+MANIFEST
+
 RUN npm install --no-package-lock --no-audit --no-fund \
-      prisma@7.10.1 tsx@4.23.15 dotenv@18.0.10 \
  && npm cache clean --force
 
 # The schema and the migrations come from the build stage, so they are byte-identical to
