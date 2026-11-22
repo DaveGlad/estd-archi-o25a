@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Mise en place du workflow d'intégration continue" company="Furious Ducks" webLink="" view-date="2026-09-01" view-index="0" gantt-divider-location="460" resource-divider-location="300" version="3.3.3316" locale="fr_FR">
+    <description>Projet interne. Du cadrage à la formation des équipes. Planification au plus tôt, voir la partie H du cahier des spécifications techniques.</description>
+    <view zooming-state="default:3" id="gantt-chart">
+        <field id="tpd3" name="name" width="220" order="0" />
+        <field id="tpd4" name="begindate" width="85" order="1" />
+        <field id="tpd5" name="enddate" width="85" order="2" />
+        <field id="tpd6" name="duration" width="50" order="3" />
+        <field id="tpd7" name="completion" width="50" order="4" />
+        <field id="tpd8" name="coordinator" width="90" order="5" />
+    </view>
+    <view id="resource-table" />
+    <tasks empty-milestones="true" color="#8cb6ce">
+        <taskproperties />
+        <task id="0" uid="lotA" name="A. Cadrage et audit de l'existant" meeting="false" start="2026-09-01" duration="1" complete="0" expand="true">
+            <task id="1" uid="A.1" name="A.1 Entretiens avec les équipes, recensement des pratiques" meeting="false" start="2026-09-01" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="2" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="2" uid="A.2" name="A.2 Inventaire des projets et de leurs contraintes" meeting="false" start="2026-09-03" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="3" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="3" uid="A.3" name="A.3 Choix des briques et validation en comité" meeting="false" start="2026-09-07" duration="3" complete="100" expand="true">
+                <notes>Ressource : chef. Coût : 3 j x 660 € = 1980 €</notes>
+                <depend id="5" type="2" difference="0" hardness="Strong" />
+            </task>
+        </task>
+        <task id="4" uid="lotB" name="B. Socle serveur et Docker" meeting="false" start="2026-09-01" duration="1" complete="0" expand="true">
+            <task id="5" uid="B.1" name="B.1 Commande du serveur et des noms de domaine" meeting="false" start="2026-09-10" duration="1" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 1 j x 660 € = 660 €</notes>
+                <depend id="6" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="6" uid="B.2" name="B.2 Installation, durcissement, filtrage réseau" meeting="false" start="2026-09-11" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="7" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="7" uid="B.3" name="B.3 Docker, réseaux cloisonnés, volumes" meeting="false" start="2026-09-15" duration="1" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 1 j x 660 € = 660 €</notes>
+                <depend id="8" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="8" uid="B.4" name="B.4 Reverse proxy, certificats, sous-domaines" meeting="false" start="2026-09-16" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="10" type="2" difference="0" hardness="Strong" />
+            </task>
+        </task>
+        <task id="9" uid="lotC" name="C. SCM et conventions Git" meeting="false" start="2026-09-01" duration="1" complete="0" expand="true">
+            <task id="10" uid="C.1" name="C.1 Installation du SCM et des comptes" meeting="false" start="2026-09-18" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="11" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="11" uid="C.2" name="C.2 Modèle de branches et protections" meeting="false" start="2026-09-22" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="12" type="2" difference="0" hardness="Strong" />
+                <depend id="14" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="12" uid="C.3" name="C.3 Migration des dépôts existants" meeting="false" start="2026-09-24" duration="2" complete="100" expand="true">
+                <notes>Ressource : dev. Coût : 2 j x 580 € = 1160 €</notes>
+            </task>
+        </task>
+        <task id="13" uid="lotD" name="D. Jenkins, agents et registry" meeting="false" start="2026-09-01" duration="1" complete="0" expand="true">
+            <task id="14" uid="D.1" name="D.1 Installation de Jenkins et raccordement au SCM" meeting="false" start="2026-09-24" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="15" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="15" uid="D.2" name="D.2 Agents conteneurisés et jetables" meeting="false" start="2026-09-28" duration="3" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 3 j x 660 € = 1980 €</notes>
+                <depend id="16" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="16" uid="D.3" name="D.3 Registry privé et politique de tags" meeting="false" start="2026-10-01" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="17" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="17" uid="D.4" name="D.4 Premier pipeline de bout en bout" meeting="false" start="2026-10-05" duration="1" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 1 j x 660 € = 660 €</notes>
+                <depend id="19" type="2" difference="0" hardness="Strong" />
+                <depend id="20" type="2" difference="0" hardness="Strong" />
+                <depend id="21" type="2" difference="0" hardness="Strong" />
+            </task>
+        </task>
+        <task id="18" uid="lotE" name="E. Pipelines des trois types de projets" meeting="false" start="2026-09-01" duration="1" complete="0" expand="true">
+            <task id="19" uid="E.1" name="E.1 Pipeline site vitrine, minification et compression" meeting="false" start="2026-10-06" duration="3" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 3 j x 660 € = 1980 €</notes>
+                <depend id="22" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="20" uid="E.2" name="E.2 Pipeline site administrable, tests et migrations" meeting="false" start="2026-10-06" duration="4" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 4 j x 660 € = 2640 €</notes>
+                <depend id="22" type="2" difference="0" hardness="Strong" />
+                <depend id="23" type="2" difference="0" hardness="Strong" />
+                <depend id="25" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="21" uid="E.3" name="E.3 Pipeline application mobile hybride" meeting="false" start="2026-10-06" duration="3" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 3 j x 660 € = 1980 €</notes>
+                <depend id="22" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="22" uid="E.4" name="E.4 Jenkinsfile de référence et documentation" meeting="false" start="2026-10-12" duration="2" complete="100" expand="true">
+                <notes>Ressource : dev. Coût : 2 j x 580 € = 1160 €</notes>
+            </task>
+            <task id="23" uid="E.5" name="E.5 Intégration des contrôles de sécurité" meeting="false" start="2026-10-12" duration="3" complete="100" expand="true">
+                <notes>Ressource : dev. Coût : 3 j x 580 € = 1740 €</notes>
+            </task>
+        </task>
+        <task id="24" uid="lotF" name="F. Environnements dev, préproduction, production" meeting="false" start="2026-09-01" duration="1" complete="0" expand="true">
+            <task id="25" uid="F.1" name="F.1 Environnement de développement et déploiement automatique" meeting="false" start="2026-10-12" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="26" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="26" uid="F.2" name="F.2 Environnement de préproduction et anonymisation" meeting="false" start="2026-10-14" duration="3" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 3 j x 660 € = 1980 €</notes>
+                <depend id="27" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="27" uid="F.3" name="F.3 Environnement de production et validation humaine" meeting="false" start="2026-10-19" duration="3" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 3 j x 660 € = 1980 €</notes>
+                <depend id="29" type="2" difference="0" hardness="Strong" />
+                <depend id="33" type="2" difference="0" hardness="Strong" />
+            </task>
+        </task>
+        <task id="28" uid="lotG" name="G. Métriques et alertes" meeting="false" start="2026-09-01" duration="1" complete="0" expand="true">
+            <task id="29" uid="G.1" name="G.1 Collecte des métriques système et conteneurs" meeting="false" start="2026-10-22" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="30" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="30" uid="G.2" name="G.2 Tableaux de bord et indicateurs de pilotage" meeting="false" start="2026-10-26" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="31" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="31" uid="G.3" name="G.3 Règles d'alerte et canaux de notification" meeting="false" start="2026-10-28" duration="1" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 1 j x 660 € = 660 €</notes>
+            </task>
+        </task>
+        <task id="32" uid="lotH" name="H. Sauvegardes et restauration" meeting="false" start="2026-09-01" duration="1" complete="0" expand="true">
+            <task id="33" uid="H.1" name="H.1 Sauvegardes automatisées et externalisation chiffrée" meeting="false" start="2026-10-22" duration="3" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 3 j x 660 € = 1980 €</notes>
+                <depend id="34" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="34" uid="H.2" name="H.2 Procédures de restauration des trois environnements" meeting="false" start="2026-10-27" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="35" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="35" uid="H.3" name="H.3 Test de restauration réel, chronométré et consigné" meeting="false" start="2026-10-29" duration="1" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 1 j x 660 € = 660 €</notes>
+                <depend id="37" type="2" difference="0" hardness="Strong" />
+            </task>
+        </task>
+        <task id="36" uid="lotI" name="I. Documentation et procédures" meeting="false" start="2026-09-01" duration="1" complete="0" expand="true">
+            <task id="37" uid="I.1" name="I.1 Diagramme d'infrastructure et procédures BPMN" meeting="false" start="2026-10-30" duration="2" complete="100" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="38" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="38" uid="I.2" name="I.2 Fiches de mode opératoire par profil" meeting="false" start="2026-11-03" duration="2" complete="60" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="39" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="39" uid="I.3" name="I.3 Relecture et validation" meeting="false" start="2026-11-05" duration="2" complete="0" expand="true">
+                <notes>Ressource : chef. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="41" type="2" difference="0" hardness="Strong" />
+            </task>
+        </task>
+        <task id="40" uid="lotJ" name="J. Formation des équipes" meeting="false" start="2026-09-01" duration="1" complete="0" expand="true">
+            <task id="41" uid="J.1" name="J.1 Préparation des supports et des ateliers" meeting="false" start="2026-11-09" duration="2" complete="0" expand="true">
+                <notes>Ressource : devops. Coût : 2 j x 660 € = 1320 €</notes>
+                <depend id="42" type="2" difference="0" hardness="Strong" />
+                <depend id="43" type="2" difference="0" hardness="Strong" />
+            </task>
+            <task id="42" uid="J.2" name="J.2 Ateliers développeurs, sept sessions" meeting="false" start="2026-11-11" duration="3" complete="0" expand="true">
+                <notes>Ressource : devops. Coût : 3 j x 660 € = 1980 €</notes>
+            </task>
+            <task id="43" uid="J.3" name="J.3 Ateliers chefs de projet et présentation générale" meeting="false" start="2026-11-11" duration="2" complete="0" expand="true">
+                <notes>Ressource : chef. Coût : 2 j x 660 € = 1320 €</notes>
+            </task>
+        </task>
+        <task id="44" uid="ms44" name="W1 Choix techniques validés" meeting="true" start="2026-09-09" duration="0" complete="0" expand="true" />
+        <task id="45" uid="ms45" name="W2 Socle en ligne" meeting="true" start="2026-09-17" duration="0" complete="0" expand="true" />
+        <task id="46" uid="ms46" name="W3 Code versionné" meeting="true" start="2026-09-25" duration="0" complete="0" expand="true" />
+        <task id="47" uid="ms47" name="W4 Première chaîne complète" meeting="true" start="2026-10-05" duration="0" complete="0" expand="true" />
+        <task id="48" uid="ms48" name="W5 Généricité prouvée" meeting="true" start="2026-10-13" duration="0" complete="0" expand="true" />
+        <task id="49" uid="ms49" name="W6 Trois environnements actifs" meeting="true" start="2026-10-21" duration="0" complete="0" expand="true" />
+        <task id="50" uid="ms50" name="W7 Reprise après sinistre validée" meeting="true" start="2026-10-29" duration="0" complete="0" expand="true" />
+        <task id="51" uid="ms51" name="W8 Équipes autonomes" meeting="true" start="2026-11-12" duration="0" complete="0" expand="true" />
+    </tasks>
+    <resources>
+        <resource id="0" name="Ingénieur DevOps" function="Default:1" contacts="" phone="" />
+        <resource id="1" name="Développeur confirmé" function="Default:1" contacts="" phone="" />
+        <resource id="2" name="Chef de projet" function="Default:1" contacts="" phone="" />
+    </resources>
+    <allocations>
+        <allocation task-id="1" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="2" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="3" resource-id="2" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="5" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="6" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="7" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="8" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="10" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="11" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="12" resource-id="1" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="14" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="15" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="16" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="17" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="19" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="20" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="21" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="22" resource-id="1" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="23" resource-id="1" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="25" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="26" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="27" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="29" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="30" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="31" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="33" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="34" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="35" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="37" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="38" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="39" resource-id="2" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="41" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="42" resource-id="0" function="Default:1" responsible="true" load="100.0" />
+        <allocation task-id="43" resource-id="2" function="Default:1" responsible="true" load="100.0" />
+    </allocations>
+    <vacations />
+    <roles roleset-name="Default" />
+</project>

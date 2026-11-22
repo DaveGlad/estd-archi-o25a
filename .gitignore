@@ -26,3 +26,6 @@ Thumbs.db
 reports/
 test-results/
 playwright-report/
+
+# Assemblé par 03-cahier-specifications-techniques/assembler.py, régénérable.
+03-cahier-specifications-techniques/cahier-specifications-techniques.md

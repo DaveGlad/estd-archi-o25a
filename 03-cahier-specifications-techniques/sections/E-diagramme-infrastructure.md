@@ -16,49 +16,11 @@ Quatre règles ont guidé la construction de cette infrastructure.
 
 ## E.2 Vue d'ensemble
 
-```
-                            INTERNET
-                                │
-                    80/tcp HTTP │ 443/tcp HTTPS
-                                ▼
-          ┌─────────────────────────────────────────┐
-          │              TRAEFIK                    │
-          │   reverse proxy, terminaison TLS        │
-          │   redirection 80 vers 443               │
-          └────┬───────────┬──────────┬─────────────┘
-               │           │          │
-     réseau    │           │          │   réseau     réseau     réseau
-     workflow  │           │          │   dev        preprod    prod
-       ┌───────┴───┬───────┴──┬───────┴───┐
-       ▼           ▼          ▼           ▼
-  ┌─────────┐ ┌─────────┐ ┌────────┐ ┌─────────┐
-  │  GITEA  │ │ JENKINS │ │REGISTRY│ │ GRAFANA │
-  │  :3000  │ │  :8080  │ │ :5000  │ │  :3000  │
-  └────┬────┘ └────┬────┘ └────▲───┘ └────┬────┘
-       │           │           │          │
-       │  webhook  │  push     │          │ requêtes
-       │  HTTP     │  HTTPS    │          │ PromQL
-       │           │           │          ▼
-       │      ┌────▼─────┐     │     ┌──────────┐
-       │      │  AGENTS  │─────┘     │PROMETHEUS│
-       │      │ JENKINS  │           │  :9090   │
-       │      │ éphémères│           └────┬─────┘
-       │      └────┬─────┘                │ scrape
-       └───────────┘                      │ HTTP
-                   │                      │
-                   │ déploiement          │
-    ┌──────────────┼──────────────────────┼──────────────┐
-    ▼              ▼                      ▼              ▼
-┌────────┐   ┌──────────┐          ┌──────────┐   ┌──────────┐
-│  DEV   │   │ PREPROD  │          │   PROD   │   │  BACKUP  │
-│api web │   │ api web  │          │ api web  │   │ planifié │
-│admin   │   │ admin    │          │ admin    │   │          │
-│pg redis│   │ pg redis │          │ pg redis │   └────┬─────┘
-└────────┘   └──────────┘          └──────────┘        │
-                                                        ▼
-                                              stockage externalisé
-                                                 (hors site)
-```
+![Figure 1. Infrastructure du workflow : services, ports et protocoles](../diagrammes/E-infrastructure.png)
+
+*Figure 1. Infrastructure du workflow : services, ports et protocoles.*
+
+Le schéma se lit par bandes horizontales, une par réseau Docker. Ce découpage est le point important : deux services qui ne partagent aucune bande ne peuvent pas se joindre, quelle que soit leur configuration. Les ports portés sur chaque bloc sont les ports **internes** aux conteneurs ; les seuls ports ouverts vers internet sont ceux de la bande du haut.
 
 ## E.3 Sous-domaines exposés
 

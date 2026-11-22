@@ -2,7 +2,7 @@
 
 Cette partie décrit les processus que le workflow automatise, sous forme de diagrammes BPMN, puis les modes opératoires destinés aux utilisateurs.
 
-> Note de production : les diagrammes ci-dessous sont fournis en notation lisible pour la relecture. Ils doivent être redessinés dans un éditeur BPMN avant l'export du dossier, en conservant exactement les mêmes couloirs, tâches et passerelles. Le sujet demande des diagrammes BPMN, la forme compte donc autant que le contenu.
+> Les six diagrammes de cette partie sont produits à partir d'une source unique, `diagrammes/specs.py`, qui transcrit les couloirs, les tâches et les passerelles décrits ici. Chacun existe en trois formats : un `.drawio` éditable, importable tel quel dans Lucidchart ou diagrams.net, un SVG, et le PNG inséré ci-dessous. La notation BPMN et la légende sont détaillées en G.0.
 
 ## G.0 Conventions de lecture
 
@@ -21,29 +21,9 @@ Trois acteurs reviennent dans tous les processus. Le développeur, qui déclench
 
 Ce premier diagramme donne la vue d'ensemble, du besoin exprimé jusqu'à la mise en production. Les processus suivants en détaillent les trois phases de déploiement.
 
-```mermaid
-flowchart TD
-    A([Story sélectionnée en sprint planning]) --> B[Créer la branche feature]
-    B --> C[Développer et committer]
-    C --> D[Ouvrir une merge request vers develop]
-    D --> E{Revue de code<br/>approuvée ?}
-    E -- Non --> C
-    E -- Oui --> F[Merge sur develop]
-    F --> G[[Processus G.2<br/>Déploiement dev]]
-    G --> H{Build vert et<br/>tests E2E OK ?}
-    H -- Non --> C
-    H -- Oui --> I[Story conforme à la Definition of Done]
-    I --> J{Fin de sprint ?}
-    J -- Non --> A
-    J -- Oui --> K[Créer la branche release]
-    K --> L[[Processus G.3<br/>Déploiement préproduction]]
-    L --> M[Sprint review avec le client]
-    M --> N{Recette<br/>validée ?}
-    N -- Non --> O[Correctifs sur la branche release]
-    O --> L
-    N -- Oui --> P[[Processus G.4<br/>Déploiement production]]
-    P --> Q([Fonctionnalité en production])
-```
+![Figure 2. Cycle de vie d'une fonctionnalité, du besoin à la production](../diagrammes/G1-activite.png)
+
+*Figure 2. Cycle de vie d'une fonctionnalité, du besoin à la production.*
 
 Le point important se situe à la passerelle H. Tant que le build n'est pas vert, la story n'est pas terminée, même si le code est écrit. C'est ce qui rend la Definition of Done vérifiable au lieu de déclarative, comme annoncé en B.2.
 
@@ -51,53 +31,9 @@ Le point important se situe à la passerelle H. Tant que le build n'est pas vert
 
 Entièrement automatique, déclenché par une fusion sur `develop`.
 
-```mermaid
-flowchart TD
-    subgraph DEV [Développeur]
-        A([Merge request approuvée]) --> B[Merge sur develop]
-    end
+![Figure 3. Déploiement en développement, entièrement automatique](../diagrammes/G2-deploiement-dev.png)
 
-    subgraph SCM [Gitea]
-        B --> C[Enregistrer le commit]
-        C --> D[Émettre le webhook]
-    end
-
-    subgraph JEN [Jenkins]
-        D --> E[Démarrer un agent conteneurisé]
-        E --> F[Checkout du code et du Jenkinsfile]
-        F --> G[Installer les dépendances<br/>cache monté en volume]
-        G --> H[Analyse statique<br/>détection de secrets]
-        H --> I{Analyse<br/>conforme ?}
-        I -- Non --> Z1([Build rouge<br/>notification équipe])
-        I -- Oui --> J[Tests unitaires]
-        J --> K{Tests<br/>OK ?}
-        K -- Non --> Z1
-        K -- Oui --> L[Tests d'intégration]
-        L --> M{Tests<br/>OK ?}
-        M -- Non --> Z1
-        M -- Oui --> N[Build applicatif<br/>minification et compression des assets]
-        N --> O[Construire l'image Docker<br/>tag = hash du commit]
-        O --> P[Scanner l'image]
-        P --> Q{Vulnérabilité<br/>critique ?}
-        Q -- Oui --> Z1
-        Q -- Non --> R[Publier l'image au registry]
-    end
-
-    subgraph ENV [Environnement dev]
-        R --> S[Récupérer l'image depuis le registry]
-        S --> T[Appliquer les migrations de base]
-        T --> U[Redémarrer les conteneurs]
-        U --> V[Sonde de santé]
-        V --> W{Service<br/>disponible ?}
-        W -- Non --> Z2([Retour à l'image précédente<br/>notification])
-        W -- Oui --> X[Tests fonctionnels E2E]
-    end
-
-    X --> Y{E2E<br/>OK ?}
-    Y -- Non --> Z1
-    Y -- Oui --> AA[Publier et archiver les rapports]
-    AA --> AB([Déploiement dev réussi<br/>notification])
-```
+*Figure 3. Déploiement en développement, entièrement automatique.*
 
 Deux choses méritent d'être signalées. Le tag de l'image reprend le hash du commit, ce qui permet de savoir à tout instant quelle version exacte tourne sur quel environnement. Et le retour à l'image précédente en cas d'échec de la sonde de santé est automatique, sans intervention humaine.
 
@@ -105,26 +41,9 @@ Deux choses méritent d'être signalées. Le tag de l'image reprend le hash du c
 
 Automatique lui aussi, déclenché par la création ou la mise à jour d'une branche `release/*`. Il se distingue du précédent sur trois points : le jeu de données, les tests de performance et la notification au client.
 
-```mermaid
-flowchart TD
-    A([Création de la branche release]) --> B[Pipeline identique à G.2<br/>jusqu'à la publication de l'image]
-    B --> C{Pipeline<br/>vert ?}
-    C -- Non --> Z([Build rouge<br/>notification équipe])
-    C -- Oui --> D[Copier la base de production<br/>de la veille]
-    D --> E[Anonymiser les données personnelles]
-    E --> F[Appliquer les migrations]
-    F --> G[Déployer les conteneurs de préproduction]
-    G --> H[Sonde de santé]
-    H --> I{Service<br/>disponible ?}
-    I -- Non --> Y([Retour arrière<br/>notification])
-    I -- Oui --> J[Tests fonctionnels E2E]
-    J --> K[Tests de performance<br/>charge sur 500 000 codes]
-    K --> L{Seuils<br/>respectés ?}
-    L -- Non --> Z
-    L -- Oui --> M[Publier les rapports]
-    M --> N[Notifier le chef de projet]
-    N --> O([Préproduction prête<br/>pour la sprint review])
-```
+![Figure 4. Déploiement en préproduction, automatique, avec anonymisation](../diagrammes/G3-deploiement-preprod.png)
+
+*Figure 4. Déploiement en préproduction, automatique, avec anonymisation.*
 
 L'anonymisation à l'étape E n'est pas une précaution de confort. La préproduction est accessible au client et sert aux démonstrations, elle ne doit donc jamais contenir les données réelles des participants au jeu-concours. C'est une obligation RGPD, pas un choix technique.
 
@@ -134,37 +53,9 @@ Les tests de performance ne tournent qu'ici, et pas en développement, parce qu'
 
 C'est le seul processus qui comporte une décision humaine, pour les raisons expliquées en D.1.
 
-```mermaid
-flowchart TD
-    A([Recette client validée]) --> B[Merge de release vers main]
-    B --> C[Poser un tag de version]
-    C --> D[Jenkins prépare l'artefact de production]
-    D --> E[Notification : déploiement en attente]
-    E --> F{Validation du chef de projet<br/>et du Product Owner}
-    F -- Refusée --> G([Déploiement annulé<br/>motif consigné])
-    F -- Accordée --> H{Créneau de<br/>déploiement ouvert ?}
-    H -- Non --> I[Mise en file d'attente]
-    I --> H
-    H -- Oui --> J[Sauvegarde immédiate<br/>base et volumes]
-    J --> K{Sauvegarde<br/>vérifiée ?}
-    K -- Non --> L([Déploiement bloqué<br/>alerte équipe plateforme])
-    K -- Oui --> M[Activer la page de maintenance]
-    M --> N[Appliquer les migrations]
-    N --> O{Migrations<br/>OK ?}
-    O -- Non --> P[[Processus G.6<br/>Restauration production]]
-    O -- Oui --> Q[Déployer la nouvelle image]
-    Q --> R[Sonde de santé]
-    R --> S{Service<br/>disponible ?}
-    S -- Non --> P
-    S -- Oui --> T[Tests de fumée<br/>parcours critiques]
-    T --> U{Parcours<br/>OK ?}
-    U -- Non --> P
-    U -- Oui --> V[Désactiver la maintenance]
-    V --> W[Surveillance renforcée 30 minutes]
-    W --> X{Alerte<br/>déclenchée ?}
-    X -- Oui --> P
-    X -- Non --> Y([Mise en production réussie<br/>consignation dans le journal])
-```
+![Figure 5. Déploiement en production, le seul processus avec une décision humaine](../diagrammes/G4-deploiement-prod.png)
+
+*Figure 5. Déploiement en production, le seul processus avec une décision humaine.*
 
 Quatre garde-fous encadrent ce processus. La sauvegarde préalable est vérifiée avant toute modification, et son échec bloque le déploiement. Les migrations sont jouées avant le basculement de l'image, ce qui permet de détecter un problème de schéma avant que le trafic n'arrive. Les tests de fumée couvrent les parcours critiques, dont la saisie d'un code de jeu. Et la surveillance renforcée pendant trente minutes attrape les régressions qui ne se voient qu'en charge réelle.
 
@@ -174,27 +65,9 @@ Le créneau de déploiement mérite une explication pour le client. Pendant les 
 
 Automatique et planifiée, sans intervention humaine en fonctionnement normal.
 
-```mermaid
-flowchart TD
-    A([Planificateur, 2 h du matin]) --> B[Dump de la base de production]
-    B --> C[Archiver le journal de transactions]
-    C --> D[Archiver les volumes applicatifs]
-    D --> E[Archiver la configuration du workflow<br/>Gitea, Jenkins, registry]
-    E --> F[Calculer les empreintes]
-    F --> G[Chiffrer l'archive]
-    G --> H[Transférer vers le stockage hors site]
-    H --> I{Transfert<br/>réussi ?}
-    I -- Non --> J[Nouvelle tentative, 3 fois]
-    J --> K{Toujours<br/>en échec ?}
-    K -- Oui --> L([Alerte critique<br/>équipe plateforme])
-    K -- Non --> M
-    I -- Oui --> M[Vérifier l'empreinte à distance]
-    M --> N{Archive<br/>intègre ?}
-    N -- Non --> L
-    N -- Oui --> O[Purger les archives hors rétention]
-    O --> P[Publier les métriques de sauvegarde]
-    P --> Q([Sauvegarde terminée])
-```
+![Figure 6. Sauvegarde de la production, planifiée et sans intervention humaine](../diagrammes/G5-sauvegarde.png)
+
+*Figure 6. Sauvegarde de la production, planifiée et sans intervention humaine.*
 
 En complément, le journal de transactions de la base de production est archivé toutes les quinze minutes. C'est ce qui permet de tenir le RPO de quinze minutes annoncé en D.3, là où le dump quotidien seul limiterait la perte maximale à vingt-quatre heures.
 
@@ -204,39 +77,9 @@ Un test de restauration complet est exécuté le premier lundi de chaque mois su
 
 Le sujet demande explicitement une procédure de restauration pour les trois environnements. Elles partagent le même début, puis divergent selon les enjeux.
 
-```mermaid
-flowchart TD
-    A([Perte de données ou incident]) --> B[Qualifier l'incident<br/>périmètre et date du dernier état sain]
-    B --> C{Quel<br/>environnement ?}
+![Figure 7. Restauration, les trois environnements](../diagrammes/G6-restauration.png)
 
-    C -- Développement --> D1[Arrêter les conteneurs]
-    D1 --> D2[Restaurer la dernière sauvegarde hebdomadaire]
-    D2 --> D3[Redémarrer et vérifier]
-    D3 --> D4([Restauré, aucune validation requise])
-
-    C -- Préproduction --> E1[Prévenir l'équipe projet]
-    E1 --> E2[Arrêter les conteneurs]
-    E2 --> E3[Restaurer depuis la production de la veille]
-    E3 --> E4[Anonymiser les données personnelles]
-    E4 --> E5[Redémarrer, tests E2E]
-    E5 --> E6([Restauré, équipe notifiée])
-
-    C -- Production --> F1[Déclarer l'incident<br/>chef de projet et client]
-    F1 --> F2[Activer la page de maintenance]
-    F2 --> F3[Choisir le point de restauration<br/>dernier dump plus rejeu du journal]
-    F3 --> F4[Restaurer sur une instance temporaire]
-    F4 --> F5{Contrôles<br/>d'intégrité OK ?}
-    F5 -- Non --> F6[Reculer d'un point de restauration]
-    F6 --> F4
-    F5 -- Oui --> F7[Basculer sur l'instance restaurée]
-    F7 --> F8[Tests de fumée]
-    F8 --> F9{Parcours<br/>OK ?}
-    F9 -- Non --> F6
-    F9 -- Oui --> F10[Désactiver la maintenance]
-    F10 --> F11[Informer le client des données perdues<br/>fenêtre entre le point de restauration et l'incident]
-    F11 --> F12[Post-mortem sous 48 h]
-    F12 --> F13([Service rétabli])
-```
+*Figure 7. Restauration, les trois environnements.*
 
 Trois différences structurent ces trois variantes.
 
