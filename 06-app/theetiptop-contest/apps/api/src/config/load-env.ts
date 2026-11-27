@@ -7,7 +7,7 @@
  *
  * Deliberately not `@nestjs/config`. That package would add a second configuration
  * mechanism on top of the zod validation in `env.ts`, for the sole benefit of reading the
- * file — and the brief's eco-design section commits us to carrying no dependency we do
+ * file, and the brief's eco-design section commits us to carrying no dependency we do
  * not need. In the deployed environments there is no `.env` at all: Jenkins injects the
  * variables and `dotenv` quietly finds nothing to do.
  */

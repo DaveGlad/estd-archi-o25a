@@ -20,7 +20,7 @@ const CONFIRMATION_WORD = 'SUPPRIMER';
  * rest, and is dismissed by the same reflex click that opened it. Typing a word is the
  * standard pattern for an irreversible action because it cannot be done by accident.
  *
- * The operation is an anonymisation server-side, not a row deletion — the participations
+ * The operation is an anonymisation server-side, not a row deletion, the participations
  * have to stay auditable by the bailiff. The copy next to this component says so rather
  * than promising an erasure that does not happen.
  */

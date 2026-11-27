@@ -10,13 +10,13 @@ import { defineConfig } from 'prisma/config';
  * Read directly from `process.env` rather than through Prisma's `env()` helper.
  *
  * `env()` throws when the variable is absent, and this file is evaluated by EVERY prisma
- * command — including `prisma generate`, which only reads the schema and writes TypeScript.
+ * command, including `prisma generate`, which only reads the schema and writes TypeScript.
  * That matters in the Docker build: the build stage generates the client and has no
  * database, and no business having one. Requiring a connection string there would mean
  * passing a fake URL as a build argument, which is the kind of workaround that later gets
  * mistaken for configuration.
  *
- * The commands that genuinely need it — `migrate`, `db seed`, `studio` — still fail with
+ * The commands that genuinely need it, `migrate`, `db seed`, `studio`, still fail with
  * Prisma's own message when it is missing.
  */
 const databaseUrl = process.env['DATABASE_URL'];

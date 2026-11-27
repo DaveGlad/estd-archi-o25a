@@ -24,7 +24,7 @@ import {
  * and an endpoint a customer can call must not be able to grant them.
  *
  * `null` is meaningful on the nullable fields: it clears the value, which is how a
- * customer withdraws an optional piece of data without deleting their account — a GDPR
+ * customer withdraws an optional piece of data without deleting their account, a GDPR
  * data-minimisation right in practice.
  */
 export class UpdateProfileDto implements UpdateProfileInput {

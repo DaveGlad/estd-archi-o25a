@@ -1,7 +1,7 @@
 ---
 title: "Accès site internet et comptes divers"
 subtitle: "ESTD ARCHI O25A, Groupe 1. Thé Tip Top, par Furious Ducks"
-date: "16 novembre 2026"
+date: "20 novembre 2026"
 lang: fr
 ---
 
@@ -9,37 +9,73 @@ Projet étudiant fictif. La société Thé Tip Top et l'agence Furious Ducks son
 de formation. Aucun achat, aucune réservation et aucune participation réelle ne peut être
 effectué sur ce site.
 
-## Te connecter
+## Tous les accès en un coup d'oeil
 
-Tout tient sur une seule adresse, en HTTPS.
-
-| | |
-|---|---|
-| Site public | <https://srv1581779.hstgr.cloud> |
-| Back-office | <https://srv1581779.hstgr.cloud/backoffice> |
-| Documentation de l'API | <https://srv1581779.hstgr.cloud/docs> |
-
-Le mot de passe est le même pour les quatre comptes : **MotDePasse2026!**
-
-| Rôle | Identifiant | Tu vas où | Tu vois quoi |
+| Quoi | Adresse | Identifiant | Mot de passe |
 |---|---|---|---|
-| Administrateur | `admin@theetiptop.fr` | `/backoffice` | Statistiques, export emailing, tirage au sort |
-| Employé boutique | `sofia.legrand@theetiptop.fr` | `/backoffice` | Recherche client, remise d'un lot |
-| Cliente | `camille.rousseau@example.fr` | Site public | Ses gains, saisie de code, droits RGPD |
-| Client | `theo.marchand@example.fr` | Site public | Second compte, pour voir le cloisonnement |
+| Site public | <https://srv1581779.hstgr.cloud> | 4 comptes ci-dessous | `MotDePasse2026!` |
+| Back-office | <https://srv1581779.hstgr.cloud/backoffice> | `admin@theetiptop.fr` | `MotDePasse2026!` |
+| API, documentation | <https://srv1581779.hstgr.cloud/docs> | clé `X-Api-Key` | voir § Tester l'API |
+| Jenkins | <https://srv1581779.hstgr.cloud/ci> | `admin` | `rTRMwmsrry6HLByK68I1` |
+| Gitea | <https://srv1581779.hstgr.cloud/git> | `gitea-admin` | `UuvUi5LlYaTEsUF0mZH0` |
+| Grafana | <https://srv1581779.hstgr.cloud/grafana> | `admin` | `V5xC2k2dv1k4emoGYkth` |
+| Code source | <https://github.com/DaveGlad/estd-archi-o25a> | aucun, dépôt public | aucun |
+| Trello | <https://trello.com/b/6ZYwiaW8/projet-the-tiptop> | aucun, tableau public | aucun |
+| Cahier des charges | <https://docs.google.com/document/d/1EvdQg0d10Yi70kN47ExMLsjHmC8vhL_RpZHuF9y_Otw/edit> | compte Google | lecture partagée |
+| Spécifications techniques | <https://docs.google.com/document/d/1DLrvM9LSZkpNnpW76hh1MlRw12kMtWCKnA8sOFqi4SM/edit> | compte Google | lecture partagée |
+| Maquettes Figma | <https://www.figma.com/design/CkO6KsKKatpJPP2ky53WOO/Design---Site-The-Tip-TOP> | compte Figma | lecture partagée |
+| Google Analytics | <https://analytics.google.com> | voir § Analytics | voir § Analytics |
 
-Ces comptes servent à la démonstration. Les données derrière sont fabriquées.
+Chaque identifiant de ce tableau a été testé le 20 novembre, dans un navigateur et non
+seulement en ligne de commande : connexion réelle depuis le formulaire, mauvais mot de
+passe refusé, accès anonyme refusé.
+
+## Se connecter
+
+Tout tient sur une seule adresse, en HTTPS. Le mot de passe est le même pour les quatre
+comptes : **MotDePasse2026!**
+
+### Pour les deux comptes clients
+
+Rendez-vous sur <https://srv1581779.hstgr.cloud/connexion> et saisissez l'un des deux :
+
+| Identifiant | Profil |
+|---|---|
+| `camille.rousseau@example.fr` | Cliente, a déjà joué des codes, acceptait les offres commerciales |
+| `theo.marchand@example.fr` | Client, a refusé les offres commerciales |
+
+Après connexion, vous arrivez sur l'accueil. Les pages **Participer** et **Mon compte**
+deviennent accessibles depuis le menu.
+
+Vous pouvez aussi créer votre propre compte sur
+<https://srv1581779.hstgr.cloud/inscription>, par formulaire ou avec Google ou Facebook.
+
+### Pour l'administrateur et l'employé
+
+Rendez-vous sur <https://srv1581779.hstgr.cloud/backoffice>. Vous êtes renvoyé vers la
+page de connexion du back-office, distincte de celle du site public.
+
+| Identifiant | Destination | Contenu |
+|---|---|---|
+| `admin@theetiptop.fr` | `/backoffice/admin` | Statistiques, export emailing, tirage au sort, paramétrage |
+| `sofia.legrand@theetiptop.fr` | `/backoffice/employe` | Recherche client, consultation des gains, remise d'un lot |
+
+Chaque rôle est envoyé à son espace automatiquement. Ouvrez `/backoffice/admin` avec le
+compte employé : vous êtes renvoyé vers l'espace boutique. C'est le cloisonnement des
+rôles, et il tient côté serveur, pas dans l'affichage.
+
+Ces quatre comptes servent à la démonstration. Les données derrière sont fabriquées.
 
 ## Un parcours en cinq minutes
 
-1. Ouvre <https://srv1581779.hstgr.cloud>. Tu vois le jeu, les cinq lots, les dix boutiques.
-2. Connecte-toi en `camille.rousseau@example.fr`, puis va sur **Participer**.
-3. Saisis un des codes du paragraphe suivant. Ton lot s'affiche tout de suite.
-4. Va dans **Mon compte**, onglet **Mes gains**. Le lot y est, avec sa date limite.
-5. Déconnecte-toi, connecte-toi en `admin@theetiptop.fr` sur `/backoffice`. Ta participation
-   compte dans les statistiques.
-6. Connecte-toi en `sofia.legrand@theetiptop.fr`. Cherche « rousseau », ouvre la fiche,
-   marque le lot comme remis.
+1. Ouvrez <https://srv1581779.hstgr.cloud>. Le jeu, les cinq lots et les dix boutiques s'affichent.
+2. Connectez-vous en `camille.rousseau@example.fr`, puis allez sur **Participer**.
+3. Saisissez un des codes du paragraphe suivant. Le lot s'affiche immédiatement.
+4. Allez dans **Mon compte**, onglet **Mes gains**. Le lot y figure, avec sa date limite.
+5. Déconnectez-vous, puis connectez-vous en `admin@theetiptop.fr` sur `/backoffice`. La
+   participation compte dans les statistiques.
+6. Connectez-vous en `sofia.legrand@theetiptop.fr`. Cherchez « rousseau », ouvrez la fiche,
+   marquez le lot comme remis.
 
 ## Codes de démonstration
 
@@ -47,15 +83,15 @@ Des codes réels, pris dans le pool de 500 000. Chacun donne un coffret découve
 
 | Code | Lot |
 |---|---|
-| `SQ5HZQ10Z7` | Coffret découverte à 69 € |
+| `M38JD2FLCR` | Coffret découverte à 69 € |
 | `Z205U67MY1` | Coffret découverte à 69 € |
 | `85UDNRFI0A` | Coffret découverte à 69 € |
 | `MRBN4OP42N` | Coffret découverte à 69 € |
 | `KZ17UKAGP7` | Coffret découverte à 69 € |
 | `W15BJ2PVQJ` | Coffret découverte à 69 € |
 
-Un code ne se joue qu'une fois. Rejoue-le, le site te dit quand il a été utilisé et par
-qui. C'est la garantie centrale du jeu, tenue par la base de données et non par le code
+Un code ne se joue qu'une fois. Rejoué, il indique quand il a été utilisé et par qui.
+C'est la garantie centrale du jeu, tenue par la base de données et non par le code
 applicatif.
 
 ## Ce que le site fait
@@ -66,8 +102,8 @@ applicatif.
 | Règlement déposé chez l'huissier | `/jeu-concours/reglement` |
 | Inscription par formulaire, Google ou Facebook | `/inscription` |
 | Saisie d'un code | `/participer` |
-| Historique des gains | `/mon-compte/gains` |
-| Droits RGPD | `/mon-compte/confidentialite` |
+| Historique des gains | `/mon-compte`, détail sur `/mon-compte/gains/<id>` |
+| Droits RGPD : export, retrait de consentement, suppression | `/mon-compte/confidentialite` |
 | Mentions légales et CGU | `/mentions-legales` et `/cgu` |
 
 Dans le back-office :
@@ -80,7 +116,53 @@ Dans le back-office :
 - L'espace boutique laisse l'employé chercher un client et marquer un lot remis. Il ne voit
   ni sa date de naissance ni ses préférences commerciales.
 
-## Ce que tu peux vérifier en base
+## Tester l'API
+
+L'API sert trois consommateurs : le site, le back-office, et les caisses des dix boutiques.
+Les endpoints caisse préparent aussi le futur site de vente en ligne.
+
+Documentation interactive : <https://srv1581779.hstgr.cloud/docs>. Chaque endpoint y est
+décrit avec ses paramètres et ses réponses, et s'appelle directement depuis la page.
+
+### Les clés des consommateurs
+
+| Consommateur | En-tête | Clé |
+|---|---|---|
+| Caisses magasin | `X-Api-Key` | `ddc920d92fae8c0c173805950c54bea9bf81a1250188e35a` |
+| Futur e-commerce | `X-Api-Key` | `19af2ca5ba6680762ccb0d56d7f39af0cb2040e0a3054b46` |
+
+Deux clés et pas une seule, pour que l'une puisse être révoquée sans couper l'autre.
+
+### Trois appels qui montrent le métier
+
+Ce que voit une caisse, sans jamais apprendre le lot qu'elle imprime :
+
+```
+curl -H "X-Api-Key: ddc920d92fae8c0c173805950c54bea9bf81a1250188e35a" \
+  https://srv1581779.hstgr.cloud/v1/pos/contest
+```
+
+Un ticket à 49,00 € pile, refusé. Le règlement dit « une somme supérieure à 49 € », donc
+la comparaison est stricte :
+
+```
+curl -X POST https://srv1581779.hstgr.cloud/v1/pos/codes/dispense \
+  -H "X-Api-Key: ddc920d92fae8c0c173805950c54bea9bf81a1250188e35a" \
+  -H "Content-Type: application/json" \
+  -d '{"channel":"IN_STORE",
+       "storeId":"cmwiyethi000g0uoblwjuhoj6",
+       "purchaseAmountCents":4900}'
+```
+
+L'identifiant ci-dessus est celui de la boutique de Nice. La liste complète est sur
+<https://srv1581779.hstgr.cloud/v1/stores>, sans authentification.
+
+Le même appel à `4901` délivre un code. C'est la démonstration que « une somme supérieure
+à 49 € » se lit au sens strict.
+
+Sans clé, tout endpoint caisse répond 401.
+
+## Ce qui est vérifiable en base
 
 | Mesure | Valeur |
 |---|---|
@@ -126,8 +208,8 @@ Le dépôt Git garde les sources de ces dossiers, partie par partie, dans
 | Identifiant | Aucun. Le dépôt se lit sans compte GitHub |
 | Propriétaire du compte | `DaveGlad` |
 
-Le dépôt est public. Tu cliques sur le lien, tu lis tout : le code, les deux dossiers, le
-workflow, l'historique des commits. Tu n'as besoin ni de compte ni de mot de passe.
+Le dépôt est public. Le lien donne accès à tout : le code, les deux dossiers, le workflow,
+l'historique des commits. Ni compte ni mot de passe ne sont nécessaires.
 
 Branches GitFlow : `main` pour la production, `develop` pour l'intégration, puis
 `feature/*`, `release/*` et `hotfix/*`.
@@ -190,7 +272,7 @@ exécution :
 | `reports/junit/playwright.xml` | Tests fonctionnels, trois navigateurs |
 | `reports/junit/k6.xml` | Tests de charge, un cas par seuil |
 
-Tu peux les régénérer toi-même depuis `06-app/theetiptop-contest` :
+Ils se régénèrent depuis `06-app/theetiptop-contest` :
 
 ```
 npm run test
@@ -199,8 +281,8 @@ npm run test:e2e
 npm run test:perf
 ```
 
-Une fois Jenkins branché, ces mêmes fichiers apparaissent dans l'onglet **Tests** de
-chaque build, avec la courbe de tendance.
+Dans Jenkins, ces mêmes fichiers apparaissent dans l'onglet **Tests** de chaque build,
+avec la courbe de tendance.
 
 ### Sauvegardes
 
@@ -217,8 +299,16 @@ stockage distant.
 | Registry d'images | interne au serveur | `ci` | `hXdEkEbWvkbToaE2QnXa` |
 | Jenkins | <https://srv1581779.hstgr.cloud/ci> | `admin` | `rTRMwmsrry6HLByK68I1` |
 
-Dans Grafana, ouvre le dossier **Thé Tip Top**, tableau **Jeu-concours**. Il montre les
-codes restants, les saisies par issue, la latence de l'API et les lots remis.
+Comment entrer dans chacun :
+
+- **Grafana** : la page s'ouvre sur un écran de connexion. Ensuite, menu **Dashboards**,
+  dossier **Thé Tip Top**, tableau **Jeu-concours**. Il montre les codes restants, les
+  saisies par issue, la latence de l'API et les lots remis.
+- **Jenkins** : la page s'ouvre sur **Sign in**. Les trois pipelines y sont déclarés, et
+  celui du site client a des builds exécutés, avec leurs rapports de tests.
+- **Gitea** : la page s'ouvre sur **Sign In**, en haut à droite. L'instance est vide, elle
+  attend la migration des dépôts depuis GitHub.
+- **Registry** : pas d'interface web et pas d'adresse publique, voir ci-dessous.
 
 Le registry n'a pas d'adresse publique, et c'est voulu. `docker login` et `docker push`
 s'adressent à `/v2/` à la racine d'un hôte, sans préfixe possible. Jenkins l'atteint par le
@@ -279,7 +369,7 @@ Titre, Étiquette, Responsable, Deadline et Statut.
 ## Le nom de domaine
 
 L'adresse ci-dessus est celle du serveur. Le sujet demande un domaine portant le numéro de
-classe et le numéro de groupe : `dsp5-archi-o25a-15M-G1.fr` pour le site et
-`wk-archi-o25a-15M-G1.fr` pour le workflow. Leur achat est en cours. Le basculement ne
+classe et le numéro de groupe : `dsp5-archi-o25a-15M-G3.fr` pour le site et
+`wk-archi-o25a-15M-G3.fr` pour le workflow. Leur achat est en cours. Le basculement ne
 coupera pas le service : l'adresse est une variable de déploiement, pas une valeur écrite
 dans le code.

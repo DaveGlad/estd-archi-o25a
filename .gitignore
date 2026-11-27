@@ -22,10 +22,10 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 
-# Autorisations locales de Claude Code, personnelles et non partagées
-.claude/settings.local.json
-
 # Rapports de test, archivés par Jenkins depuis l'espace de travail
 reports/
 test-results/
 playwright-report/
+
+# Assemblé par 03-cahier-specifications-techniques/assembler.py, régénérable.
+03-cahier-specifications-techniques/cahier-specifications-techniques.md

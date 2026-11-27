@@ -9,8 +9,8 @@
  *      API answers 401 to a perfectly signed-in visitor.
  *
  *   2. **Nothing here reaches the browser bundle.** Importing `next/headers` makes the
- *      module server-only by construction, which is what keeps `API_URL` — the internal
- *      Docker address — out of the client.
+ *      module server-only by construction, which is what keeps `API_URL`, the internal
+ *      Docker address, out of the client.
  *
  *   3. **Mutations are server actions, not client fetches.** A client component calling
  *      the API directly would need the public API URL and CORS credentials; calling a
@@ -150,7 +150,7 @@ export function getMyPersonalData(): Promise<PersonalDataExport> {
 
 export function registerUser(input: RegisterInput): Promise<UserDto> {
   // Unauthenticated by construction, and the API sets the session cookie on the response.
-  // The caller is a server action, which has to relay that `Set-Cookie` onwards — see the
+  // The caller is a server action, which has to relay that `Set-Cookie` onwards, see the
   // sign-up action in apps/web.
   return apiFetch<UserDto>('/users/register', { method: 'POST', body: input, revalidate: false });
 }

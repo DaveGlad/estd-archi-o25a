@@ -5,7 +5,7 @@ import { ACCOUNTS } from '../fixtures';
 /**
  * Requirement 6 of the brief: three distinct profiles, with distinct rights.
  *
- * The valuable half of these tests is the negative half — what each role **cannot** reach.
+ * The valuable half of these tests is the negative half, what each role **cannot** reach.
  * A test that only checks an administrator can open the dashboard would pass just as
  * happily if every role could.
  */
@@ -20,7 +20,7 @@ async function signIn(page: Page, account: { email: string; password: string }) 
   // in the caller races the sign-in navigation: the next page can be requested before the
   // session cookie exists, and the layout guard sends it straight back to /connexion.
   //
-  // The URL is whichever area the role belongs to — the form always pushes `/admin` and the
+  // The URL is whichever area the role belongs to, the form always pushes `/admin` and the
   // guard forwards an EMPLOYEE on to `/employe`.
   await page.waitForURL(/\/(admin|employe)/);
 }
@@ -104,7 +104,7 @@ test.describe('store employee: handing a prize over', () => {
     await signIn(page, ACCOUNTS.employee);
 
     // A surname search is what an employee actually types at the till, so it is worth
-    // covering as such — it may legitimately return several people.
+    // covering as such, it may legitimately return several people.
     await page.getByLabel(/rechercher un client/i).fill('rousseau');
     await page.getByRole('button', { name: /rechercher/i }).click();
 
@@ -139,7 +139,7 @@ test.describe('store employee: handing a prize over', () => {
 
     // Searched by email, not by surname. The demonstration data set contains other
     // customers named Rousseau, so `.first()` on a surname search opens whichever file
-    // pg_trgm happens to rank highest — a test that passes or fails depending on the seed.
+    // pg_trgm happens to rank highest, a test that passes or fails depending on the seed.
     // The email is unique by construction.
     await page.getByLabel(/rechercher un client/i).fill(ACCOUNTS.customer.email);
     await page.getByRole('button', { name: /rechercher/i }).click();

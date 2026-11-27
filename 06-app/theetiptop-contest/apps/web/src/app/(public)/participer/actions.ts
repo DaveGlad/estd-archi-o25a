@@ -38,7 +38,7 @@ export async function submitCodeAction(code: string): Promise<SubmitCodeActionRe
       return { outcome: 'SESSION_EXPIRED' };
     }
 
-    // Anything else is genuinely unexpected — the API is down, a 500. Rethrown so the
+    // Anything else is genuinely unexpected, the API is down, a 500. Rethrown so the
     // Next.js error boundary handles it rather than the form showing "invalid code" for
     // what is actually an outage.
     throw error;

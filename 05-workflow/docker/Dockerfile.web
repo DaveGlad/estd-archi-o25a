@@ -8,7 +8,7 @@
 # ⚠️ The `NEXT_PUBLIC_*` variables are BUILD arguments, not runtime environment. Next
 # inlines them into the client bundle at build time, so an image built with the staging URL
 # will call staging no matter what the production compose file sets. The pipeline therefore
-# builds one image per environment — which is why they are declared as `ARG` below rather
+# builds one image per environment, which is why they are declared as `ARG` below rather
 # than quietly inherited.
 
 FROM node:24-alpine AS deps
@@ -61,7 +61,7 @@ ENV HOSTNAME=0.0.0.0
 WORKDIR /app
 
 # `output: 'standalone'` in next.config.ts produces a self-contained server with only the
-# modules the app actually imports — a few tens of megabytes instead of the whole
+# modules the app actually imports, a few tens of megabytes instead of the whole
 # node_modules tree. There is no `npm ci` in this stage for that reason.
 COPY --from=build /app/apps/web/.next/standalone ./
 # Static assets and the public directory are not part of the standalone bundle by design,
@@ -69,12 +69,50 @@ COPY --from=build /app/apps/web/.next/standalone ./
 COPY --from=build /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=build /app/apps/web/public ./apps/web/public
 
+# npm removed from the runtime image.
+#
+# Every HIGH finding Trivy reported on this image came from npm's own bundled
+# dependencies -- undici and brace-expansion inside
+# /usr/local/lib/node_modules/npm -- and not from a single line of this project's code.
+# The base image ships a package manager that the container never uses: dependencies are
+# installed at build time, and the entrypoint is `node`.
+#
+# Removing it clears six HIGH vulnerabilities at once, shrinks the image, and takes a
+# package manager out of a production container. A process that gets remote code
+# execution can no longer install anything.
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx \
+ && rm -rf /root/.npm /home/node/.npm
+
+# The incremental render cache, created and owned by the user that will write to it.
+#
+# Next.js writes `.next/cache` at RUNTIME for every incrementally regenerated page. The
+# image copies `.next` as root, and the container runs as `node`, so the first revalidation
+# fails with EACCES on mkdir. The page then throws and the browser gets "Application error:
+# a server-side exception has occurred" -- which reads like an application bug and is a
+# directory permission.
+#
+# It surfaces minutes after a deploy, not at startup, because the first render succeeds and
+# only the cache write fails.
+RUN mkdir -p /app/apps/web/.next/cache \
+ && chown -R node:node /app/apps/web/.next
+
 USER node
 
 EXPOSE 3000
 
+# `/health` and not `/`.
+#
+# The home page server-renders the running contest, so it answers 500 on a database that
+# holds no contest -- the state a freshly migrated environment is in. The deployment reported
+# `container theetiptop-dev-web-1 is unhealthy`, rolled itself back, and never reached the
+# stage that seeds the data. A liveness probe that depends on application data cannot
+# distinguish "this process is dead" from "this database is empty", and only one of the two
+# is worth restarting a container over.
+#
+# Whether the page shows the right thing is asked by the functional suite, against the
+# deployed environment. See apps/web/src/app/health/route.ts.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-  CMD node -e "require('http').get('http://127.0.0.1:3000/',r=>process.exit(r.statusCode<500?0:1)).on('error',()=>process.exit(1))"
+  CMD node -e "require('http').get('http://127.0.0.1:3000/health',r=>process.exit(r.statusCode<500?0:1)).on('error',()=>process.exit(1))"
 
 ENTRYPOINT ["dumb-init", "--"]
 # The standalone output places the server next to the app it was built from.

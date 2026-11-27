@@ -13,7 +13,7 @@ import type {
 
 /**
  * Shape the service queries. Spelled out rather than inferred from the Prisma call so the
- * mapper cannot silently start depending on a relation a caller forgot to include —
+ * mapper cannot silently start depending on a relation a caller forgot to include,
  * which is how a `Cannot read properties of undefined` reaches production.
  */
 export type ParticipationWithRelations = ParticipationModel & {

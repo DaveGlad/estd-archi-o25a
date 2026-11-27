@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1695" width="720" height="1695" role="img" aria-label="Zoning accueil, desktop">
+  <title>Zoning accueil, desktop</title>
+  <rect width="720" height="1695" fill="#FFFFFF"/>
+  <text x="0" y="14" font-family="Helvetica,sans-serif" font-size="13" font-weight="bold" fill="#185B37">Zoning accueil, desktop</text>
+  <text x="0" y="29" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">Mesuré sur le site déployé. Largeur 1440 px, hauteur totale 3317 px.</text>
+  <g transform="translate(0,36)">
+  <rect x="0" y="0" width="720" height="37" fill="#D7E3DA" stroke="#18221B"/>
+  <text x="10" y="18" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">En-tête</text>
+  <text x="10" y="32" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">1440 x 73 px</text>
+  <rect x="0" y="37" width="720" height="414" fill="#EFEFE8" stroke="#18221B"/>
+  <text x="10" y="55" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Contenu</text>
+  <text x="10" y="69" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">1440 x 829 px</text>
+  <rect x="566" y="-3" width="210" height="260" fill="#E6EAE3" stroke="#18221B"/>
+  <text x="576" y="15" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Contenu</text>
+  <text x="576" y="29" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">420 x 520 px</text>
+  <rect x="144" y="-51" width="432" height="192" fill="#EFEFE8" stroke="#18221B"/>
+  <text x="154" y="-33" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Contenu</text>
+  <text x="154" y="-19" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">864 x 384 px</text>
+  <rect x="65" y="37" width="590" height="414" fill="#E6EAE3" stroke="#18221B"/>
+  <text x="75" y="55" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">100 % des ticketssont gagnants.Le vôtre auss</text>
+  <text x="75" y="69" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">1180 x 829 px</text>
+  <rect x="0" y="451" width="720" height="282" fill="#EFEFE8" stroke="#18221B"/>
+  <text x="10" y="469" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Comment participer</text>
+  <text x="10" y="483" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">1440 x 563 px</text>
+  <rect x="0" y="733" width="720" height="377" fill="#E6EAE3" stroke="#18221B"/>
+  <text x="10" y="751" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Les lots à gagner</text>
+  <text x="10" y="765" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">1440 x 755 px</text>
+  <rect x="0" y="1110" width="720" height="244" fill="#EFEFE8" stroke="#18221B"/>
+  <text x="10" y="1128" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Dix boutiques,une même exigence</text>
+  <text x="10" y="1142" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">1440 x 487 px</text>
+  <rect x="0" y="1394" width="720" height="265" fill="#D5D5CC" stroke="#18221B"/>
+  <text x="10" y="1412" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Pied de page</text>
+  <text x="10" y="1426" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">1440 x 529 px</text>
+  </g>
+</svg>

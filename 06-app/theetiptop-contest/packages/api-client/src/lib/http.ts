@@ -48,7 +48,7 @@ export class ApiError extends Error {
  *   - `NEXT_PUBLIC_API_URL` is the public address, baked into the client bundle.
  *
  * Collapsing them into one would mean either the server routing its calls out through the
- * public reverse proxy and back — a pointless round trip on every page render — or the
+ * public reverse proxy and back, a pointless round trip on every page render, or the
  * browser being handed a hostname that only resolves inside the Docker network.
  */
 function resolveBaseUrl(): string {
@@ -103,8 +103,8 @@ function buildUrl(path: string, query: RequestOptions['query']): string {
  * Performs one API call and returns the parsed body.
  *
  * Throws `ApiError` on a non-2xx answer rather than returning a result union. The reason
- * is the division of labour with the screens: the business outcomes that are not errors —
- * the six branches of playing a code — are returned by the API as 200 with a discriminated
+ * is the division of labour with the screens: the business outcomes that are not errors,
+ * the six branches of playing a code, are returned by the API as 200 with a discriminated
  * union, so anything that does reach this branch genuinely is exceptional and belongs in a
  * `catch`, not in every call site's happy path.
  */

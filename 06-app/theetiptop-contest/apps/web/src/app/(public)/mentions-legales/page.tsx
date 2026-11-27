@@ -21,9 +21,12 @@ export default function MentionsLegalesPage() {
             <dt>Siège social</dt>
             <dd>18 rue Léon Frot, 75011 Paris</dd>
             <dt>Immatriculation</dt>
-            <dd>RCS Paris, numéro à compléter. SIRET à compléter.</dd>
+            <dd>
+              Sans objet. Thé Tip Top est une société fictive, sans existence légale ni
+              immatriculation au registre du commerce.
+            </dd>
             <dt>TVA intracommunautaire</dt>
-            <dd>Numéro à compléter</dd>
+            <dd>Sans objet, pour la même raison.</dd>
             <dt>Contact</dt>
             <dd>contact@theetiptop.fr, 01 43 00 00 11</dd>
             <dt>Directeur de la publication</dt>
@@ -32,9 +35,10 @@ export default function MentionsLegalesPage() {
 
           <h2>Hébergeur</h2>
           <p>
-            Le site est hébergé sur un serveur situé dans l&apos;Union européenne. La
-            dénomination, l&apos;adresse et le téléphone de l&apos;hébergeur sont à
-            compléter avant la mise en ligne.
+            Hostinger International Ltd, 61 Lordou Vironos Street, 6023 Larnaca, Chypre.
+            Le serveur est situé dans l&apos;Union européenne, ce qui place les données
+            personnelles des participants sous le régime du RGPD sans transfert hors
+            zone.
           </p>
 
           <h2>Réalisation</h2>

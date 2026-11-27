@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 2953" width="390" height="2953" role="img" aria-label="Zoning profil, mobile">
+  <title>Zoning profil, mobile</title>
+  <rect width="390" height="2953" fill="#FFFFFF"/>
+  <text x="0" y="14" font-family="Helvetica,sans-serif" font-size="13" font-weight="bold" fill="#185B37">Zoning profil, mobile</text>
+  <text x="0" y="29" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">Mesuré sur le site déployé. Largeur 390 px, hauteur totale 2917 px.</text>
+  <g transform="translate(0,36)">
+  <rect x="0" y="0" width="390" height="73" fill="#D7E3DA" stroke="#18221B"/>
+  <text x="10" y="18" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">En-tête</text>
+  <text x="10" y="32" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 73 px</text>
+  <rect x="0" y="73" width="390" height="203" fill="#EFEFE8" stroke="#18221B"/>
+  <text x="10" y="91" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Camille Rousseau</text>
+  <text x="10" y="105" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 203 px</text>
+  <rect x="20" y="324" width="473" height="36" fill="#E6EAE3" stroke="#18221B"/>
+  <text x="30" y="342" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Contenu</text>
+  <text x="30" y="356" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">473 x 36 px</text>
+  <rect x="20" y="400" width="473" height="1130" fill="#EFEFE8" stroke="#18221B"/>
+  <text x="30" y="418" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Historique de mes gains</text>
+  <text x="30" y="432" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">473 x 1130 px</text>
+  <rect x="0" y="1658" width="390" height="1258" fill="#D5D5CC" stroke="#18221B"/>
+  <text x="10" y="1676" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Pied de page</text>
+  <text x="10" y="1690" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 1258 px</text>
+  </g>
+</svg>

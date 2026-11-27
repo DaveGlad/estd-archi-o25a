@@ -7,7 +7,7 @@ import { ExportService } from './export.service';
  * CSV rendering of the mailing export.
  *
  * The service is instantiated with stub collaborators: `toCsv` is pure, and the two it
- * does depend on — Prisma and the audit log — are only used by the query half of the
+ * does depend on, Prisma and the audit log, are only used by the query half of the
  * service. Wiring a real database in to test string escaping would make a fast test slow
  * and a deterministic one flaky.
  */
@@ -34,8 +34,8 @@ describe('mailing export, CSV rendering', () => {
   /**
    * Splits without `trim()`.
    *
-   * `String.prototype.trim()` strips U+FEFF — the byte-order mark is part of the
-   * ECMAScript WhiteSpace production — so trimming first would silently remove the very
+   * `String.prototype.trim()` strips U+FEFF, the byte-order mark is part of the
+   * ECMAScript WhiteSpace production, so trimming first would silently remove the very
    * thing half of these assertions are about.
    */
   const lines = (csv: string): string[] => csv.split('\r\n').filter((line) => line !== '');

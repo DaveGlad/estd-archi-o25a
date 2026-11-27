@@ -65,7 +65,7 @@
 - [ ] **Zone de chalandise** : carte + légende, zone actuelle et zone(s) d'extension, **basée sur le besoin** (pas sur les boutiques existantes)
 
 ## D. Stratégie de communication digitale
-- [ ] **Mix marketing** (produit, prix, distribution, communication) ⚠️ *exigé par l'énoncé, « Établissement d'un mix Marketing », mais absent de la trame imposée. À placer en ouverture de la partie D.*
+- [ ] **Mix marketing** (produit, prix, distribution, communication) *exigé par l'énoncé, « Établissement d'un mix Marketing », mais absent de la trame imposée. À placer en ouverture de la partie D.*
 - [ ] Objectifs online **et** offline (Notoriété / Image → Intérêt → Essai / Évaluation → Vente → SAV → Fidélisation) + piliers par objectif
 - [ ] **Objectifs SMART**
 - [ ] **ROI** estimable pour chaque préconisation
@@ -76,8 +76,8 @@
   - [ ] Définition + pourquoi les algorithmes Google + objectifs du pilier
   - [ ] Bonnes pratiques listées **avec un exemple concret d'application au client** pour chacune
   - [ ] **Audit de mots-clés** (Google Trends : volume, saisonnalité)
-  - [ ] ✍️ **Contenu rédigé de la page d'accueil** (balises + liens indiqués)
-  - [ ] ✍️ **Contenu rédigé de la page de présentation de l'entreprise/du concept**
+  - [ ] **Contenu rédigé de la page d'accueil** (balises + liens indiqués)
+  - [ ] **Contenu rédigé de la page de présentation de l'entreprise/du concept**
 - **4. SMO**
   - [ ] Utilité + objectifs du pilier
   - [ ] Plateformes justifiées : 1 objectif + 1 cible + 1 ligne éditoriale par plateforme, illustré
@@ -86,23 +86,23 @@
   - [ ] Exemples d'événements sociaux (jeux-concours, événements blogueurs)
   - [ ] Publicités payantes : cibles, objectifs, période, budget
   - [ ] **Stratégie d'influence** : choix des influenceurs, détail du partenariat, coût
-  - [ ] 🔨 **≥ 1 réseau social réellement créé (en privé)** avec plusieurs publications
-  - [ ] 🔨 **Compte Hootsuite** créé et relié aux réseaux
+  - [ ] **≥ 1 réseau social réellement créé (en privé)** avec plusieurs publications
+  - [ ] **Compte Hootsuite** créé et relié aux réseaux
 - **5. Emailing**
   - [ ] Utilité + objectifs du pilier
   - [ ] Types de mails (promotionnel, transactionnel, newsletter…)
   - [ ] Pour chaque : origine de la base (achat si besoin), contenus, fréquence, **RGPD**
   - [ ] Prestataire préconisé, justification, **coût**
-  - [ ] 🔨 **Compte créé chez le prestataire, lié au site** + **template de mail** conforme à la charte et au RGPD
+  - [ ] **Compte créé chez le prestataire, lié au site** + **template de mail** conforme à la charte et au RGPD
 - **6. Analyse de performance**
   - [ ] **KPI par action** + outils de mesure
   - [ ] Contraintes légales (cookies, opt-in)
-  - [ ] 🔨 **Compte Google Analytics créé et lié au site**, dashboard personnalisé
-  - [ ] 🔨 Événement : nombre de vues d'une page donnée
-  - [ ] 🔨 Événement : soumission d'un formulaire
-  - [ ] 🔨 Événement : clic sur un CTA
-  - [ ] 🔨 Événement : ajout au panier / réservation *(ici : participation au jeu)*
-  - [ ] 🔨 **Rapport personnalisé**
+  - [ ] **Compte Google Analytics créé et lié au site**, dashboard personnalisé
+  - [ ] Événement : nombre de vues d'une page donnée
+  - [ ] Événement : soumission d'un formulaire
+  - [ ] Événement : clic sur un CTA
+  - [ ] Événement : ajout au panier / réservation *(ici : participation au jeu)*
+  - [ ] **Rapport personnalisé**
 
 ## E. Cahier des charges fonctionnel
 - [ ] **1.** ≥ **2 représentations textuelles** de cas d'utilisation (fonctionnalités complexes/principales) + **1 use case** (ou 1 par acteur)

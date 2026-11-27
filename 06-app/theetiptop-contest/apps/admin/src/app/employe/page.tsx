@@ -37,7 +37,7 @@ export default async function EmployePage() {
           <p>
             Cet écran n&apos;affiche que les informations nécessaires à la remise d&apos;un
             lot. La date de naissance, les préférences de communication et le détail du
-            profil du client ne vous sont pas accessibles — l&apos;API elle-même ne les
+            profil du client ne vous sont pas accessibles, l&apos;API elle-même ne les
             renvoie pas à un compte employé.
           </p>
         </Alert>

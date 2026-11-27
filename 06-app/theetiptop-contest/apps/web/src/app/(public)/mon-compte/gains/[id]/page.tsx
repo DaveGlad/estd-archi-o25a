@@ -115,7 +115,9 @@ export default async function GainDetailPage({
                   <dt className="text-sm text-fg-muted">Lieu</dt>
                   <dd className="mt-0.5">
                     {participation.redemption.channel === 'IN_STORE'
-                      ? `Boutique ${participation.redemption.storeName ?? '—'}`
+                      ? participation.redemption.storeName
+                          ? `Boutique ${participation.redemption.storeName}`
+                          : 'En boutique'
                       : 'Envoi en ligne'}
                   </dd>
                 </div>

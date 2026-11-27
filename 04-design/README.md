@@ -2,11 +2,11 @@
 
 | Dossier | État |
 |---|---|
-| `logo/` | ✅ 3 concepts, 1 retenu, 5 déclinaisons SVG |
-| `charte/` | ✅ Couleurs, contrastes **mesurés**, typographie, images, mise en page |
-| `maquettes/` | ✅ 15 captures du site réel : 5 pages × 3 formats |
-| `zoning/` | ⏳ En attente de la direction artistique |
-| `wireframes/` | ⏳ En attente de la direction artistique |
+| `logo/` | 3 concepts, 1 retenu, 5 déclinaisons SVG |
+| `charte/` | Couleurs, contrastes **mesurés**, typographie, images, mise en page |
+| `maquettes/` | 15 captures du site réel : 5 pages × 3 formats |
+| `zoning/` | 9 zonings, 3 pages par 3 formats |
+| `wireframes/` | 9 wireframes, mêmes pages et mêmes formats |
 
 ## Les maquettes sont des captures, pas des dessins
 
@@ -25,7 +25,7 @@ Elles se régénèrent en une commande, donc elles ne peuvent pas vieillir en si
 | `profil` | Historique des gains et droits RGPD, exigences n° 4 et n° 8 |
 | `lots` | La dotation et la répartition 60/20/10/6/4 % |
 
-Trois formats à chaque fois — 1440, 820 et 390 px — parce que le sujet demande un site
+Trois formats à chaque fois, 1440, 820 et 390 px, parce que le sujet demande un site
 « accessible à tous devices » et qu'une capture en 1440 ne prouve rien du téléphone.
 
 ## La charte documente l'existant

@@ -8,7 +8,7 @@ import { PrismaService } from '../../infra/prisma/prisma.service.js';
  * Prometheus metrics for the contest API.
  *
  * Requirement n° 3 of the brief asks the workflow to carry metrics, and dysfunction n° 7
- * of the état des lieux is that Furious Ducks currently has none — it learns about outages
+ * of the état des lieux is that Furious Ducks currently has none, it learns about outages
  * from its clients. Infrastructure metrics (CPU, memory, container restarts) come from
  * node_exporter and cAdvisor and need nothing from us. What only the application can
  * publish is the state of the CONTEST, and that is what this service is for.
@@ -26,7 +26,7 @@ export class MetricsService implements OnModuleDestroy {
    *
    * `prom-client` keeps a module-level singleton, and registering the same metric twice
    * against it throws. In a test suite that builds the Nest application more than once,
-   * that turns into a failure in an unrelated test — and the usual workaround, clearing
+   * that turns into a failure in an unrelated test, and the usual workaround, clearing
    * the global registry, quietly breaks anything else that was using it.
    */
   private readonly registry = new Registry();
@@ -93,7 +93,7 @@ export class MetricsService implements OnModuleDestroy {
    * concrete ids would be one time series per participation. That is the classic way to
    * take Prometheus down with your own instrumentation.
    *
-   * Buckets chosen from the measurements in BENCHMARK.md — an indexed lookup is ~540 µs
+   * Buckets chosen from the measurements in BENCHMARK.md, an indexed lookup is ~540 µs
    * and the p(95) under load is 15 ms, so the interesting resolution is below 100 ms.
    * The default buckets would put nearly every request in the first one.
    */

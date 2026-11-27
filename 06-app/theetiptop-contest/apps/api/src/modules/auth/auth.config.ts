@@ -2,8 +2,8 @@
  * Better Auth instance.
  *
  * One library covers the three sign-up methods the brief mandates: classic form, Google
- * OAuth, Facebook OAuth (`DECISIONS.md` § 3). Writing three flows by hand — password
- * hashing, session rotation, two OAuth dances, CSRF on the callbacks — is where
+ * OAuth, Facebook OAuth (`DECISIONS.md` § 3). Writing three flows by hand, password
+ * hashing, session rotation, two OAuth dances, CSRF on the callbacks, is where
  * home-grown authentication usually goes wrong.
  *
  * No `modelName` overrides below: Better Auth's default model names (`user`, `session`,
@@ -37,8 +37,8 @@ const MIN_PASSWORD_LENGTH = 12;
  *
  * Needed on the OAuth path only: Google and Facebook hand over a single `name` string,
  * whereas the back-office statistics and the in-store employee search both work on the
- * split form. The heuristic is deliberately crude — first token is the first name, the
- * rest is the last name — and the customer can correct it from their account page. There
+ * split form. The heuristic is deliberately crude, first token is the first name, the
+ * rest is the last name, and the customer can correct it from their account page. There
  * is no reliable way to split an arbitrary name, and pretending otherwise would be worse.
  */
 function splitDisplayName(name: string): { firstName: string; lastName: string } {
@@ -54,7 +54,7 @@ export function createAuth(prisma: PrismaService, config: AppConfig) {
   /**
    * Providers are registered only when their credential pair is complete. A developer
    * without Google credentials still gets a working API with the form login, instead of a
-   * boot failure — and the deployed environments, where both pairs are set by Jenkins,
+   * boot failure, and the deployed environments, where both pairs are set by Jenkins,
    * get all three methods.
    */
   const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {};
@@ -68,6 +68,41 @@ export function createAuth(prisma: PrismaService, config: AppConfig) {
     trustedOrigins: config.corsOrigins,
 
     database: prismaAdapter(prisma, { provider: 'postgresql' }),
+
+    /**
+     * Brute-force protection, set deliberately rather than inherited.
+     *
+     * Better Auth turns its limiter on by default in production and allows **three**
+     * sign-in attempts before answering 429. That default was never chosen here, and it
+     * is wrong for this site in a way that only shows up with real users: a household, a
+     * school or an office sits behind one public address, so the third person to sign in
+     * that minute is refused, with a message that says nothing about why. On a contest
+     * open to 500 000 participants that is a support queue, not a security measure.
+     *
+     * It surfaced as two red functional tests. The suite signs in twenty-two times across
+     * its two browser projects, which run in parallel from one address, so it tripped the
+     * limiter and the tests timed out waiting for a navigation that never came. The tests
+     * were right: they reproduced, on a small scale, exactly what a shared connection does.
+     *
+     * Ten attempts a minute per address is the value retained. A password is twelve
+     * characters minimum over an alphabet of about seventy, so ten guesses a minute is not
+     * a path to anything, while leaving room for several people and for the person who
+     * mistypes twice and pastes from a password manager on the third try.
+     *
+     * The limiter is per ADDRESS, which is what protects the service. Protecting one
+     * ACCOUNT from a distributed attempt is a different control and belongs with the
+     * participation limiter in `ParticipationsService`, which counts per user.
+     */
+    rateLimit: {
+      enabled: true,
+      window: 60,
+      max: 100,
+      customRules: {
+        '/sign-in/email': { window: 60, max: 10 },
+        '/sign-up/email': { window: 60, max: 5 },
+        '/forget-password': { window: 300, max: 3 },
+      },
+    },
 
     emailAndPassword: {
       enabled: true,
@@ -88,7 +123,7 @@ export function createAuth(prisma: PrismaService, config: AppConfig) {
        * payload could set `role: 'ADMIN'` and hand the attacker the back office. The
        * default is applied server-side and the field is rejected if it arrives from a
        * client. Same reasoning for the consent timestamps, which are the only enforceable
-       * proof and must therefore be stamped by the server — see `UserService.register`.
+       * proof and must therefore be stamped by the server, see `UserService.register`.
        */
       additionalFields: {
         firstName: { type: 'string', required: false, input: true },
@@ -151,8 +186,9 @@ export function createAuth(prisma: PrismaService, config: AppConfig) {
 
     advanced: {
       // Cookies are only sent over HTTPS once deployed; relaxed in development so the
-      // flow works on http://localhost without a self-signed certificate.
-      useSecureCookies: config.isProduction,
+      // flow works on http://localhost without a self-signed certificate. Follows
+      // NODE_ENV unless AUTH_SECURE_COOKIES overrides it -- see the comment there.
+      useSecureCookies: config.auth.secureCookies,
 
       /**
        * One session across the three subdomains.
@@ -162,7 +198,7 @@ export function createAuth(prisma: PrismaService, config: AppConfig) {
        * so the site would never send it back and every authenticated call would 401.
        * Scoping it to the parent domain is what makes one sign-in serve all three.
        *
-       * Off in development, where `localhost` is already the shared host — a cookie is
+       * Off in development, where `localhost` is already the shared host, a cookie is
        * scoped by host and ignores the port.
        */
       ...(config.auth.cookieDomain

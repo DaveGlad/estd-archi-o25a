@@ -109,7 +109,7 @@ export class ExportService {
    *      carriage return is interpreted as a formula by Excel and LibreOffice. A customer
    *      who registers under the name `=cmd|' /c calc'!A1` turns our marketing export into
    *      code execution on the machine of whoever opens it. Prefixing with an apostrophe
-   *      forces the cell to be read as text. This is not theoretical — it is the standard
+   *      forces the cell to be read as text. This is not theoretical, it is the standard
    *      way spreadsheet exports are weaponised, and the one place in this application
    *      where customer-supplied text reaches a file somebody else opens.
    */

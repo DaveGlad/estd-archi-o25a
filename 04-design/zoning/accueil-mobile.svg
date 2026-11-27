@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 6218" width="390" height="6218" role="img" aria-label="Zoning accueil, mobile">
+  <title>Zoning accueil, mobile</title>
+  <rect width="390" height="6218" fill="#FFFFFF"/>
+  <text x="0" y="14" font-family="Helvetica,sans-serif" font-size="13" font-weight="bold" fill="#185B37">Zoning accueil, mobile</text>
+  <text x="0" y="29" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">Mesuré sur le site déployé. Largeur 390 px, hauteur totale 6182 px.</text>
+  <g transform="translate(0,36)">
+  <rect x="0" y="0" width="390" height="73" fill="#D7E3DA" stroke="#18221B"/>
+  <text x="10" y="18" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">En-tête</text>
+  <text x="10" y="32" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 73 px</text>
+  <rect x="0" y="73" width="390" height="1330" fill="#EFEFE8" stroke="#18221B"/>
+  <text x="10" y="91" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Contenu</text>
+  <text x="10" y="105" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 1330 px</text>
+  <rect x="-237" y="-103" width="864" height="384" fill="#E6EAE3" stroke="#18221B"/>
+  <text x="-227" y="-85" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Contenu</text>
+  <text x="-227" y="-71" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">864 x 384 px</text>
+  <rect x="0" y="73" width="390" height="1330" fill="#EFEFE8" stroke="#18221B"/>
+  <text x="10" y="91" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">100 % des ticketssont gagnants.Le vôtre auss</text>
+  <text x="10" y="105" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 1330 px</text>
+  <rect x="0" y="1404" width="390" height="991" fill="#E6EAE3" stroke="#18221B"/>
+  <text x="10" y="1422" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Comment participer</text>
+  <text x="10" y="1436" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 991 px</text>
+  <rect x="0" y="2395" width="390" height="1443" fill="#EFEFE8" stroke="#18221B"/>
+  <text x="10" y="2413" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Les lots à gagner</text>
+  <text x="10" y="2427" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 1443 px</text>
+  <rect x="0" y="3838" width="390" height="1006" fill="#E6EAE3" stroke="#18221B"/>
+  <text x="10" y="3856" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Dix boutiques,une même exigence</text>
+  <text x="10" y="3870" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 1006 px</text>
+  <rect x="0" y="4924" width="390" height="1258" fill="#D5D5CC" stroke="#18221B"/>
+  <text x="10" y="4942" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Pied de page</text>
+  <text x="10" y="4956" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 1258 px</text>
+  </g>
+</svg>

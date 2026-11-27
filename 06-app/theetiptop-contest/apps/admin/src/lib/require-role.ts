@@ -6,8 +6,8 @@ import { getCurrentUser } from '@theetiptop-contest/api-client/server';
  * Guards a back-office area and returns the signed-in staff member.
  *
  * Called from the two layouts rather than from each page: a layout wraps every route
- * beneath it, so a screen added later is guarded by default. The opposite convention — a
- * check per page — is how one screen ends up reachable without the right role after a
+ * beneath it, so a screen added later is guarded by default. The opposite convention, a
+ * check per page, is how one screen ends up reachable without the right role after a
  * refactor.
  *
  * This is **not** the security boundary. The API enforces the same roles on every endpoint
@@ -25,7 +25,7 @@ export async function requireRole<T extends Role>(
 
   // `(allowed as Role[])` rather than `allowed`: `Array<T>.includes` wants a `T`, and
   // `user.role` is the full `Role` union. Widening the array for the check is the correct
-  // direction — the question being asked is "is this role one of the allowed ones", which
+  // direction, the question being asked is "is this role one of the allowed ones", which
   // is well defined for any `Role`.
   if (!(allowed as Role[]).includes(user.role)) {
     // Sent to the area their own role does have access to, rather than to a dead end.

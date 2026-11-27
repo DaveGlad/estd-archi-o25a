@@ -9,7 +9,7 @@ import { cn } from '../lib/utils';
  * strictly vertical axis.
  *
  * Constraints it meets:
- *  - legible at 16 px — the thinnest vein stays above half a pixel;
+ *  - legible at 16 px, the thinnest vein stays above half a pixel;
  *  - reducible to a single colour, for engraving and for a fax;
  *  - inherits the text colour, so there is no second version for the dark theme;
  *  - no bitmap, so it stays sharp at every screen density.

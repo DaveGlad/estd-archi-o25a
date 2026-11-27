@@ -13,7 +13,7 @@ import type { PrismaClient } from '../apps/api/src/generated/prisma/client';
 /**
  * Task A4 of the backlog: the automated conformity test for the prize split.
  *
- * This is the test the brief's central requirement rests on — "the winning percentages are
+ * This is the test the brief's central requirement rests on, "the winning percentages are
  * necessarily respected". It is an **integration** test on purpose: it counts the rows in
  * PostgreSQL rather than asserting on the generator's return value. A unit test of the
  * generator would prove the algorithm is right; only this one proves the database actually
@@ -58,7 +58,7 @@ describe('code pool conformity', () => {
 
   describe('prize split, counted in the database', () => {
     it.each(TICKET_PRIZES.map((prize) => [prize.key, prize.label, prize.quantity, prize.percentage]))(
-      '%s: %s — %i codes (%i %%)',
+      '%s: %s, %i codes (%i %%)',
       async (_key, label, quantity, percentage) => {
         const prize = await prisma.prize.findUnique({
           where: { contestId_label: { contestId, label: label as string } },
@@ -114,7 +114,7 @@ describe('code pool conformity', () => {
 
   describe('code integrity', () => {
     it('holds no duplicate', async () => {
-      // Enforced by a unique index, so a mismatch here means the index is gone — which is
+      // Enforced by a unique index, so a mismatch here means the index is gone, which is
       // exactly the sort of thing a migration can do by accident.
       const distinct = await prisma.ticketCode.findMany({
         where: { contestId },

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1448" width="720" height="1448" role="img" aria-label="Wireframe connexion-inscription, tablette">
+  <title>Wireframe connexion-inscription, tablette</title>
+  <rect width="720" height="1448" fill="#FFFFFF"/>
+  <text x="0" y="14" font-family="Helvetica,sans-serif" font-size="13" font-weight="bold" fill="#185B37">Wireframe connexion-inscription, tablette</text>
+  <text x="0" y="29" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">Mesuré sur le site déployé. Largeur 820 px, hauteur totale 1608 px.</text>
+  <g transform="translate(0,36)">
+  <rect x="0" y="0" width="720" height="64" fill="none" stroke="#18221B"/>
+  <text x="12" y="20" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">En-tête</text>
+  <rect x="12" y="32" width="61" height="7" fill="#CFCFC8"/>
+
+  <rect x="163" y="113" width="393" height="619" fill="none" stroke="#18221B"/>
+  <text x="175" y="133" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Se connecter</text>
+  <rect x="175" y="145" width="206" height="7" fill="#CFCFC8"/>
+  <rect x="175" y="158" width="141" height="7" fill="#CFCFC8"/>
+  <rect x="175" y="171" width="113" height="7" fill="#CFCFC8"/>
+  <rect x="175" y="184" width="334" height="7" fill="#CFCFC8"/>
+  <rect x="175" y="197" width="153" height="7" fill="#CFCFC8"/>
+  <rect x="175" y="700" width="94" height="22" fill="none" stroke="#18221B" rx="4"/>
+  <text x="183" y="715" font-family="Helvetica,sans-serif" font-size="9" fill="#18221B">Se connecter</text>
+  <rect x="279" y="700" width="94" height="22" fill="none" stroke="#18221B" rx="4"/>
+  <text x="287" y="715" font-family="Helvetica,sans-serif" font-size="9" fill="#18221B">Continuer ave</text>
+  <rect x="383" y="700" width="94" height="22" fill="none" stroke="#18221B" rx="4"/>
+  <text x="391" y="715" font-family="Helvetica,sans-serif" font-size="9" fill="#18221B">Continuer ave</text>
+  <rect x="0" y="852" width="720" height="560" fill="none" stroke="#18221B"/>
+  <text x="12" y="872" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Pied de page</text>
+  <rect x="12" y="884" width="263" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="897" width="73" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="910" width="69" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="923" width="65" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="936" width="57" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="949" width="48" height="7" fill="#CFCFC8"/>
+
+  </g>
+</svg>

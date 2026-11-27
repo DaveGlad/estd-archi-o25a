@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 2327" width="390" height="2327" role="img" aria-label="Zoning connexion-inscription, mobile">
+  <title>Zoning connexion-inscription, mobile</title>
+  <rect width="390" height="2327" fill="#FFFFFF"/>
+  <text x="0" y="14" font-family="Helvetica,sans-serif" font-size="13" font-weight="bold" fill="#185B37">Zoning connexion-inscription, mobile</text>
+  <text x="0" y="29" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">Mesuré sur le site déployé. Largeur 390 px, hauteur totale 2291 px.</text>
+  <g transform="translate(0,36)">
+  <rect x="0" y="0" width="390" height="73" fill="#D7E3DA" stroke="#18221B"/>
+  <text x="10" y="18" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">En-tête</text>
+  <text x="10" y="32" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 73 px</text>
+  <rect x="20" y="129" width="350" height="768" fill="#EFEFE8" stroke="#18221B"/>
+  <text x="30" y="147" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Se connecter</text>
+  <text x="30" y="161" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">350 x 768 px</text>
+  <rect x="0" y="1033" width="390" height="1258" fill="#D5D5CC" stroke="#18221B"/>
+  <text x="10" y="1051" font-family="Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#18221B">Pied de page</text>
+  <text x="10" y="1065" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">390 x 1258 px</text>
+  </g>
+</svg>

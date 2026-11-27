@@ -9,7 +9,7 @@
 
    `@import 'tailwindcss'` stays in each application: Tailwind has to be the first
    rule of the sheet it generates into. The `@source` line is what makes Tailwind
-   scan this package for class names — without it, every class used only inside
+   scan this package for class names. Without it, every class used only inside
    packages/ui would be missing from the built CSS.
    -------------------------------------------------------------------------- */
 
@@ -328,7 +328,7 @@
    Print sheet.
 
    Two real cases, both handled: a customer prints their prize page to present it in a
-   store, and an administrator prints the statistics. Neither is hypothetical — the prize
+   store, and an administrator prints the statistics. Neither is hypothetical, the prize
    page carries a reference number an employee has to read.
    -------------------------------------------------------------------------- */
 

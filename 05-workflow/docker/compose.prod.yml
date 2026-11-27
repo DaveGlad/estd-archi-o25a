@@ -20,15 +20,15 @@ services:
   # ------------------------------------------------------------------ migrations
   # A one-shot job, not a long-running service.
   #
-  # Runs `prisma migrate deploy` from the API image — the same artefact that will serve
-  # traffic — then exits. The applications wait on its successful completion, which is what
+  # Runs `prisma migrate deploy` from the API image, the same artefact that will serve
+  # traffic, then exits. The applications wait on its successful completion, which is what
   # stops a container from starting against a schema it does not match.
   #
   # `migrate deploy` rather than `migrate dev`: it applies committed migrations and never
   # generates one, so it cannot invent a schema change on a production database.
   migrate:
     # Its own image, built from the same Dockerfile and the same build stage as the API
-    # and tagged with the same commit — so it cannot drift from it. The Prisma CLI pulls
+    # and tagged with the same commit, so it cannot drift from it. The Prisma CLI pulls
     # in Studio, the dev server and the engines, 375 MB of tooling that has no business
     # running in every replica of a web API. See the `migrate` stage of Dockerfile.api.
     image: ${REGISTRY:-registry.local}/theetiptop/migrate:${IMAGE_TAG:-latest}
@@ -59,6 +59,11 @@ services:
       # Required once the three pieces sit on three subdomains: without it the session
       # cookie is host-only and every call from the site comes back 401.
       COOKIE_DOMAIN: ${COOKIE_DOMAIN}
+      # Empty in production, and it has to stay that way: empty means "follow NODE_ENV",
+      # which here means `Secure`. Only the unrouted environments set it to `false`, because
+      # they are served over plain http on the loopback, where a `Secure` cookie is dropped
+      # by the browser without an error of any kind. See apps/api/src/config/env.ts.
+      AUTH_SECURE_COOKIES: ${AUTH_SECURE_COOKIES:-}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       FACEBOOK_CLIENT_ID: ${FACEBOOK_CLIENT_ID}
@@ -71,13 +76,27 @@ services:
         condition: service_completed_successfully
       redis:
         condition: service_healthy
-    networks: [backend, edge]
+    networks:
+      backend:
+        # A project-scoped alias, and the reason it exists is worth stating.
+        #
+        # Compose gives every service its own name as a network alias on EVERY network it
+        # joins, including the shared `edge`. Deploy two environments and `edge` then has
+        # two containers answering to `api`. Docker resolves it to either one.
+        #
+        # The symptom was production serving "Contest not found": the production site had
+        # reached the DEV api, whose database is migrated and empty. Nothing was down,
+        # nothing was logged as an error, and the data was simply the wrong data.
+        #
+        # `backend` is internal and per-project, so this alias cannot collide.
+        aliases: [api-internal]
+      edge:
     # No `ports:`. The reverse proxy on the edge network is the only way in, which is what
     # keeps the API off the host's public interface.
     #
     # Traefik discovers this container through the labels below. Without them it is on the
     # edge network and still unreachable: the proxy routes nothing it has not been told
-    # about, because `exposedbydefault` is false — which is the right default, and the
+    # about, because `exposedbydefault` is false, which is the right default, and the
     # reason every service has to opt in explicitly.
     labels:
       traefik.enable: 'true'
@@ -93,7 +112,7 @@ services:
       # Traefik verbatim.
       #
       # Consequence: one Traefik cannot carry two environments from this file as it
-      # stands — two routers with the same name silently keep one of the two, and which
+      # stands, two routers with the same name silently keep one of the two, and which
       # one depends on container start order. Running dev or preprod beside production on
       # the same host therefore needs `compose.preprod-routers.yml` alongside it, which
       # overrides these three keys with distinct literals.
@@ -105,19 +124,28 @@ services:
         limits:
           # Measured headroom, not a guess: the API holds a 10-connection pool and no large
           # in-memory state. The limit exists so one container cannot starve the others on
-          # a 16 GB host running three environments — see DECISIONS.md § 4 bis, risk 5.
+          # a 16 GB host running three environments, see DECISIONS.md § 4 bis, risk 5.
           memory: 512M
 
   # ------------------------------------------------------------------------- web
+  #
+  # `FRONT_IMAGE_TAG`, not `IMAGE_TAG`. NEXT_PUBLIC_* are build arguments baked into the
+  # browser bundle, so there is one web image and one admin image PER ENVIRONMENT, tagged
+  # `<commit>-<environment>`. The API has a single image for all three, because all of its
+  # configuration is read at runtime.
+  #
+  # Using one variable for both produced a deployment that pulled `admin:dev` while the
+  # pipeline had pushed `admin:dev-dev`, and failed on "not found" with the image sitting
+  # in the registry under its real name.
   web:
-    image: ${REGISTRY:-registry.local}/theetiptop/web:${IMAGE_TAG:-latest}
+    image: ${REGISTRY:-registry.local}/theetiptop/web:${FRONT_IMAGE_TAG:-${IMAGE_TAG:-latest}}
     restart: unless-stopped
     environment:
       NODE_ENV: production
       PORT: 3000
       # Server-side only. The browser uses NEXT_PUBLIC_API_URL, which was baked into the
-      # bundle at build time — hence one image per environment.
-      API_URL: http://api:3333
+      # bundle at build time, hence one image per environment.
+      API_URL: http://api-internal:3333
       NEXT_PUBLIC_SITE_URL: ${SITE_URL}
     depends_on:
       api:
@@ -143,12 +171,12 @@ services:
 
   # ----------------------------------------------------------------------- admin
   admin:
-    image: ${REGISTRY:-registry.local}/theetiptop/admin:${IMAGE_TAG:-latest}
+    image: ${REGISTRY:-registry.local}/theetiptop/admin:${FRONT_IMAGE_TAG:-${IMAGE_TAG:-latest}}
     restart: unless-stopped
     environment:
       NODE_ENV: production
       PORT: 3001
-      API_URL: http://api:3333
+      API_URL: http://api-internal:3333
       NEXT_PUBLIC_SITE_URL: ${SITE_URL}
     depends_on:
       api:
@@ -163,7 +191,7 @@ services:
       traefik.http.services.theetiptop-admin.loadbalancer.server.port: '3001'
       # The back office is on its own subdomain and nothing else. It is not indexed, not
       # linked from the public site, and a separate hostname is what lets the proxy carry
-      # a different ingress rule for it later — an IP allow-list, say — without touching
+      # a different ingress rule for it later, an IP allow-list, say, without touching
       # the public site.
     deploy:
       resources:
@@ -285,7 +313,7 @@ volumes:
 
 networks:
   # Internal. PostgreSQL and Redis are reachable from the applications and from nowhere
-  # else — no published port, no route from the host.
+  # else, no published port, no route from the host.
   backend:
     internal: true
   # Shared with the monitoring stack, so Prometheus can scrape the two exporters above.
@@ -301,6 +329,6 @@ networks:
     # Defaults to `edge`, the network Traefik is started with
     # (`--providers.docker.network=edge`). They MUST be the same network: a container on a
     # different one is invisible to the proxy however correct its labels are.
-    # Created once per host by bootstrap-vps.sh, never by a compose file — whichever ran
+    # Created once per host by bootstrap-vps.sh, never by a compose file, whichever ran
     # second would fail on an existing network.
     name: ${EDGE_NETWORK:-edge}

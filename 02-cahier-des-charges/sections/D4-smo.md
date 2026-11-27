@@ -99,7 +99,7 @@ Le jeu court du 2 novembre au 2 décembre. Le calendrier se déploie sur trois t
 > Pour fêter ça, tout ticket de plus de 49 € portera un code. Et tous les codes sont gagnants.
 > Un infuseur, une boîte de thé, un coffret. Et pour l'un d'entre vous, une année de thé.
 > Rendez-vous le 2 novembre.
-> 🍃
+>
 
 **Instagram, pendant le jeu, contenu de conseil**
 

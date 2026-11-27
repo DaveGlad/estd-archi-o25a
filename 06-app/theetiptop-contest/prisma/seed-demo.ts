@@ -24,7 +24,7 @@
  *
  * It is reproducible: the whole dataset is driven by one seeded generator, so two runs
  * with the same seed produce the same customers and the same curve. That matters for a
- * demonstration — the figures on the slides still match the screen a week later.
+ * demonstration, the figures on the slides still match the screen a week later.
  *
  * ⚠️ Refuses to run with NODE_ENV=production. Every account it creates shares one known
  * password, which in production would be 1 200 ways into the back office of a contest.
@@ -122,7 +122,7 @@ const PROVIDERS = [
  * How many codes one customer plays.
  *
  * Heavily weighted to one. A customer needs a separate receipt above 49 EUR per code, so
- * the long tail is thin — and this distribution is what makes the grand prize draw worth
+ * the long tail is thin, and this distribution is what makes the grand prize draw worth
  * demonstrating: a handful of customers hold five or six entries and still get one chance.
  */
 const PARTICIPATION_COUNTS = [

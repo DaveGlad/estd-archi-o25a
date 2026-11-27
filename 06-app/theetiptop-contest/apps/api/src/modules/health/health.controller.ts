@@ -48,7 +48,7 @@ export class HealthController {
       async () => {
         const indicator = this.indicator.check('redis');
         // Redis being down degrades rate limiting and caching but does not stop the
-        // contest, so it is reported as down without failing the whole probe body — the
+        // contest, so it is reported as down without failing the whole probe body, the
         // overall status still turns "error", which is what an operator needs to see.
         return (await this.redis.ping())
           ? indicator.up()

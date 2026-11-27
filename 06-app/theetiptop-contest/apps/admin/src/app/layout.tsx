@@ -25,7 +25,7 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Back-office — Thé Tip Top',
+    default: 'Back-office Thé Tip Top',
     template: '%s | Back-office Thé Tip Top',
   },
   description: 'Administration du jeu-concours Thé Tip Top.',

@@ -10,7 +10,7 @@
  * provider dances end on a full-page redirect back to a callback URL, and that redirect
  * has to be initiated by the browser. A server action could not perform it.
  *
- * Sign-UP by form is the exception — it goes to our own `POST /v1/users/register` instead
+ * Sign-UP by form is the exception, it goes to our own `POST /v1/users/register` instead
  * of Better Auth's `sign-up/email`, because three rules have to be enforced server-side
  * that the library knows nothing about: the contest is for adults only, accepting the
  * rules is mandatory, and the consent timestamps must be stamped by the server.

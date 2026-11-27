@@ -33,7 +33,7 @@ model Contest {
   // --- Auditability of the code generation run -----------------------------------------
   // The brief makes the bailiff responsible for overseeing the contest, and requires the
   // winning percentages to be *guaranteed*. "Guaranteed" has to mean verifiable after the
-  // fact, not asserted — hence these three fields.
+  // fact, not asserted, hence these three fields.
   //
   // ⚠️ The seed itself is deliberately NOT stored. Anyone holding it could replay the
   // generation and derive all 500,000 codes together with the prize behind each one.

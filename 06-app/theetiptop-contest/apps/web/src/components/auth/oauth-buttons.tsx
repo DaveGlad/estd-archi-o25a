@@ -15,7 +15,7 @@ import { signInWithProvider } from '@theetiptop-contest/api-client/auth';
  * Facebook takes its brand blue as a solid fill, which distinguishes the two buttons by
  * more than their icon alone.
  *
- * These two providers are the ones the client named — objective 2, point 2 of the brief.
+ * These two providers are the ones the client named, objective 2, point 2 of the brief.
  * They are not interchangeable with any other.
  *
  * A client component: the OAuth flow ends on a full-page redirect back to a callback URL,
@@ -39,7 +39,7 @@ export function OAuthButtons({
     try {
       await signInWithProvider(provider, callbackURL);
     } finally {
-      // Reached only if the redirect did not happen — a misconfigured provider, for
+      // Reached only if the redirect did not happen, a misconfigured provider, for
       // instance. Otherwise the page is already gone.
       setPendingProvider(null);
     }

@@ -32,6 +32,15 @@ services:
       JENKINS_ADMIN_ID: ${JENKINS_ADMIN_ID:-admin}
       JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD}
       WORKFLOW_DOMAIN: ${SINGLE_HOST}
+      # Read by the `credentials` block of casc/jenkins.yaml, which declares
+      # `registry-credentials` for the three pipelines. Kept in the environment and never
+      # in the configuration file: that file lives in the repository.
+      #
+      # Added here once already, by editing the file on the server, and lost on the next
+      # deploy from the repository. The symptom was `docker login … -u` with an empty
+      # username, three stages after the images were built and scanned.
+      REGISTRY_USER: ${REGISTRY_USER}
+      REGISTRY_PASSWORD: ${REGISTRY_PASSWORD}
     labels: !override
       traefik.enable: 'true'
       traefik.docker.network: ${EDGE_NETWORK:-edge}
@@ -103,12 +112,25 @@ services:
         limits:
           memory: 384M
 
-  # Internal only. `docker login` and `docker push` address `/v2/` at a host root, and the
-  # Docker CLI offers no way to prefix that. Jenkins reaches it by service name on the
-  # workflow network, which is the only client it has.
+  # The registry answers on `/v2` of the single host.
+  #
+  # The Docker CLI addresses `/v2/` at the ROOT of a host and offers no way to prefix it,
+  # so the registry cannot live under `/registry`. But `/v2` IS a root path, and nothing
+  # else uses it: the public site's catch-all router sits at priority 1, this one at 110.
+  #
+  # The alternative was an internal-only registry reached by service name, which fails the
+  # moment the build agents are not on the workflow network -- the pipeline then stops on
+  # "dial tcp: lookup registry.… no such host" after building and scanning four images.
+  # This way the push reuses the certificate the host already has.
   registry:
     labels: !override
-      traefik.enable: 'false'
+      traefik.enable: 'true'
+      traefik.docker.network: ${EDGE_NETWORK:-edge}
+      traefik.http.routers.wf-registry.rule: Host(`${SINGLE_HOST}`) && PathPrefix(`/v2`)
+      traefik.http.routers.wf-registry.priority: '110'
+      traefik.http.routers.wf-registry.entrypoints: websecure
+      traefik.http.routers.wf-registry.tls.certresolver: letsencrypt
+      traefik.http.services.wf-registry.loadbalancer.server.port: '5000'
 
   prometheus:
     deploy:

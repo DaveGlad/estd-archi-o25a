@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 933" width="720" height="933" role="img" aria-label="Wireframe profil, desktop">
+  <title>Wireframe profil, desktop</title>
+  <rect width="720" height="933" fill="#FFFFFF"/>
+  <text x="0" y="14" font-family="Helvetica,sans-serif" font-size="13" font-weight="bold" fill="#185B37">Wireframe profil, desktop</text>
+  <text x="0" y="29" font-family="Helvetica,sans-serif" font-size="9" fill="#5B675E">Mesuré sur le site déployé. Largeur 1440 px, hauteur totale 1794 px.</text>
+  <g transform="translate(0,36)">
+  <rect x="0" y="0" width="720" height="37" fill="none" stroke="#18221B"/>
+  <text x="12" y="20" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">En-tête</text>
+
+
+  <rect x="0" y="37" width="720" height="124" fill="none" stroke="#18221B"/>
+  <text x="12" y="57" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Camille Rousseau</text>
+  <rect x="12" y="69" width="23" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="82" width="62" height="7" fill="#CFCFC8"/>
+
+  <rect x="81" y="185" width="120" height="58" fill="none" stroke="#18221B"/>
+  <text x="93" y="205" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Contenu</text>
+
+
+  <rect x="221" y="185" width="418" height="384" fill="none" stroke="#18221B"/>
+  <text x="233" y="205" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Historique de mes gains</text>
+  <rect x="233" y="217" width="25" height="7" fill="#CFCFC8"/>
+  <rect x="233" y="230" width="2" height="7" fill="#CFCFC8"/>
+  <rect x="233" y="243" width="35" height="7" fill="#CFCFC8"/>
+  <rect x="233" y="256" width="2" height="7" fill="#CFCFC8"/>
+  <rect x="233" y="269" width="94" height="7" fill="#CFCFC8"/>
+  <rect x="233" y="282" width="46" height="7" fill="#CFCFC8"/>
+
+  <rect x="0" y="632" width="720" height="265" fill="none" stroke="#18221B"/>
+  <text x="12" y="652" font-family="Helvetica,sans-serif" font-size="11" font-weight="bold" fill="#18221B">Pied de page</text>
+  <rect x="12" y="664" width="150" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="677" width="41" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="690" width="39" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="703" width="37" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="716" width="32" height="7" fill="#CFCFC8"/>
+  <rect x="12" y="729" width="28" height="7" fill="#CFCFC8"/>
+
+  </g>
+</svg>

@@ -17,7 +17,7 @@ modules:
       follow_redirects: true
       preferred_ip_protocol: ip4
       # Certificate verification left ON deliberately. Turning it off would make the probe
-      # pass through an expired certificate — which is precisely the failure the
+      # pass through an expired certificate, which is precisely the failure the
       # CertificateExpiringSoon alert reads from this module.
       tls_config:
         insecure_skip_verify: false

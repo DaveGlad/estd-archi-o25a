@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
  * Merges class names, with later Tailwind utilities winning over earlier ones.
  *
  * `clsx` alone concatenates, so `cn('p-2', 'p-4')` would emit both and let CSS source
- * order decide — which makes a component's `className` override unreliable. `twMerge`
+ * order decide, which makes a component's `className` override unreliable. `twMerge`
  * resolves the conflict in favour of the last one, which is what a caller expects.
  */
 export function cn(...inputs: ClassValue[]) {
@@ -15,8 +15,8 @@ export function cn(...inputs: ClassValue[]) {
 /**
  * Formats an amount held in cents.
  *
- * Every monetary value in the system is an integer number of cents — see the schema
- * comments — so this is the only place a division by 100 happens. The decimals are dropped
+ * Every monetary value in the system is an integer number of cents, see the schema
+ * comments, so this is the only place a division by 100 happens. The decimals are dropped
  * on round amounts: "12 €" reads better than "12,00 €" on a prize card, and the prizes are
  * mostly round.
  */
@@ -51,7 +51,7 @@ export function formatDateTime(iso: string): string {
  * with no recorded opening date, a prize never claimed.
  */
 export function formatDateOrDash(iso: string | null | undefined): string {
-  return iso ? formatDate(iso) : '—';
+  return iso ? formatDate(iso) : '-';
 }
 
 /**

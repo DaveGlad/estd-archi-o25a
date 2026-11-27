@@ -38,7 +38,7 @@ export const CODE_PATTERN = /^[A-Z0-9]{10}$/;
  * Does a code satisfy the composition the brief describes: "un code à 10 caractères
  * comprenant des chiffres et des lettres".
  *
- * Read strictly — at least one of each — because that is the reading a jury can check in
+ * Read strictly, at least one of each, because that is the reading a jury can check in
  * one SQL query, and the looser reading ("alphanumeric") is satisfied anyway. Drawing
  * uniformly over the 36 symbols does NOT satisfy it: the chance that 10 draws yield no
  * digit at all is (26/36)^10 ≈ 3.8 %, which over 500,000 codes is roughly 19,000 codes
@@ -61,7 +61,7 @@ export function hasDigitsAndLetters(code: string): boolean {
  *
  * The filed terms read "une somme supérieure à 49€", so the comparison is STRICT: a
  * receipt of exactly 49,00 € gives no code. The constant holds the bound, not the
- * smallest qualifying amount — see `PosService.dispenseCode`.
+ * smallest qualifying amount, see `PosService.dispenseCode`.
  */
 export const MINIMUM_PURCHASE_CENTS = 4_900;
 
@@ -189,7 +189,7 @@ export function assertDistributionIsExact(): void {
  *
  * The three predicates below are the only place the contest's time and money boundaries
  * are decided. They used to be inline comparisons repeated in the catalogue mapper, the
- * participation service and the till service — three copies of a rule that must be one,
+ * participation service and the till service, three copies of a rule that must be one,
  * and the reason the submission window had drifted to 30 days in one of them.
  *
  * They take the dates as arguments rather than reading the constants above, because the
@@ -205,7 +205,7 @@ export interface ContestWindow {
 }
 
 /**
- * Are tickets still being handed out — the TILL window, `startsAt` → `endsAt`, 30 days.
+ * Are tickets still being handed out, the TILL window, `startsAt` → `endsAt`, 30 days.
  *
  * After it, no receipt carries a new code. This is NOT the window for playing one.
  */
@@ -217,7 +217,7 @@ export function isDistributionOpen(
 }
 
 /**
- * Can a code still be played — the PLAYER window, `startsAt` → `claimDeadline`, 60 days.
+ * Can a code still be played, the PLAYER window, `startsAt` → `claimDeadline`, 60 days.
  *
  * Deliberately 30 days longer than {@link isDistributionOpen}. The filed terms read: "Les
  * joueurs auront les 30 jours du jeu concours ainsi que 30 jours supplémentaires à compter
@@ -225,7 +225,7 @@ export function isDistributionOpen(
  * leur(s) ticket(s) et réclamer leur lot en magasin ou en ligne."
  *
  * Bounding this at `endsAt` instead would lock out everyone holding a receipt from the
- * final days of the contest — the very people the extra 30 days exist for.
+ * final days of the contest, the very people the extra 30 days exist for.
  */
 export function isSubmissionOpen(
   contest: Pick<ContestWindow, 'startsAt' | 'claimDeadline'>,

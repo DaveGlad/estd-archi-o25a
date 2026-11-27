@@ -1,24 +1,33 @@
-# Zonings
+# Zoning
 
-**Responsable** : R4, relu par R1.
-**Échéance** : 22 août.
+Les trois pages demandées par le cahier des charges, dans les trois formats : accueil,
+connexion et inscription, profil. Neuf fichiers SVG.
 
-## Ce que le sujet exige
+| | desktop 1440 px | tablette 820 px | mobile 390 px |
+|---|---|---|---|
+| Accueil | `accueil-desktop.svg` | `accueil-tablette.svg` | `accueil-mobile.svg` |
+| Connexion et inscription | `connexion-inscription-desktop.svg` | `connexion-inscription-tablette.svg` | `connexion-inscription-mobile.svg` |
+| Profil | `profil-desktop.svg` | `profil-tablette.svg` | `profil-mobile.svg` |
 
-> « Vous mettrez ici les zonings établis pour votre client avec à minima la page d'accueil, la page de connexion/inscription et le profil des clients. Le site internet devant être responsive, vous devez les prévoir pour ordinateur, tablette et smartphone. »
+## Mesurés, pas dessinés
 
-Soit **neuf vues** : trois pages fois trois formats.
+Chaque zone est relevée sur le site déployé, avec ses dimensions réelles en pixels. Un
+zoning dessiné à côté du produit diverge au premier changement de maquette, et devient
+alors un document qui décrit une page qui n'existe plus.
 
-## Ce qu'est un zoning, et ce qu'il n'est pas
+Les zones portent leur propre titre, pas une étiquette générique. Une page dont le zoning
+annonce trois fois « Contenu » ne dit rien de sa structure.
 
-Un zoning découpe la page en blocs nommés : en-tête, héros, contenu principal, barre latérale, pied de page. Aucun contenu, aucune couleur, aucune typographie. Seulement des rectangles étiquetés et leurs proportions.
+## Ce que montre la comparaison des trois formats
 
-C'est l'étape que le jury cherche à voir, parce qu'elle prouve qu'une réflexion de structure a précédé le dessin. Livrer directement des maquettes revient à sauter cette étape, et cela se voit.
+Le même contenu se réorganise sans rien perdre. En desktop, la saisie de code et l'encart
+explicatif tiennent côte à côte. En tablette, l'encart passe sous le formulaire. En mobile,
+tout s'empile et la navigation se replie derrière un bouton.
 
-## Méthode proposée
+La hauteur totale figure en tête de chaque fichier. L'accueil passe de 3 317 px en desktop
+à près du double en mobile, ce qui est la conséquence directe de l'empilement.
 
-Les trois pages existent déjà dans l'intégration. Plutôt que de les redessiner, on peut faire produire le zoning par le code lui-même, ce qui garantit que la structure livrée est celle du site réel. Voir la proposition dans `../maquettes/README.md`.
+## Régénérer
 
-## Nommage
-
-`zoning-{page}-{format}.png`, par exemple `zoning-accueil-mobile.png`. Formats retenus : `desktop` pour 1440 px, `tablette` pour 768 px, `mobile` pour 390 px.
+Le générateur ouvre les pages dans un navigateur, relève les boîtes englobantes et écrit
+les SVG. Il produit aussi les wireframes du dossier voisin, à partir du même relevé.

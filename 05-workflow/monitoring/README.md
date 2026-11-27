@@ -1,7 +1,7 @@
 # Métriques, journaux et alertes
 
 Exigence n° 3 du sujet : le workflow doit comporter des métriques. Le dysfonctionnement
-n° 7 de l'état des lieux est qu'il n'y en a aucune — Furious Ducks apprend ses pannes par
+n° 7 de l'état des lieux est qu'il n'y en a aucune, Furious Ducks apprend ses pannes par
 ses clients.
 
 ## Les fichiers
@@ -59,8 +59,8 @@ conteneur. `blackbox-exporter` répond à la seule question que pose un client :
 le site s'affiche.
 
 C'est aussi lui qui expose la date d'expiration TLS, que lit l'alerte
-`CertificateExpiringSoon`. Cette alerte ne surveille pas vraiment l'expiration — Traefik
-renouvelle automatiquement à 30 jours — elle surveille le **renouvellement** : si elle se
+`CertificateExpiringSoon`. Cette alerte ne surveille pas vraiment l'expiration, Traefik
+renouvelle automatiquement à 30 jours, elle surveille le **renouvellement** : si elle se
 déclenche, c'est qu'ACME échoue depuis deux semaines.
 
 ## Les journaux, dans le même outil
@@ -76,8 +76,8 @@ préproduction ne soient pas lus côte à côte par erreur pendant un incident.
 `node_exporter`. Trois alertes en découlent : sauvegarde périmée, test de restauration en
 échec, test de restauration non exécuté depuis 45 jours.
 
-C'est ce qui transforme « la tâche de sauvegarde a cessé de tourner » — découvert au
-moment d'une restauration — en une alerte du jour même.
+C'est ce qui transforme « la tâche de sauvegarde a cessé de tourner », découvert au
+moment d'une restauration, en une alerte du jour même.
 
 ## Tableaux de bord provisionnés, pas cliqués
 

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 /**
  * Back-office sign-in.
  *
- * Email and password only — no Google, no Facebook. The two social providers exist for
+ * Email and password only, no Google, no Facebook. The two social providers exist for
  * customers, who sign up in a hurry from a receipt. A staff account that grants access to
  * every customer's name, email and prize history should not depend on a third-party
  * identity provider whose account recovery we do not control.
@@ -66,8 +66,8 @@ export default async function BackOfficeLoginPage({
 
         <p className="flex items-start gap-2 text-xs text-fg-muted">
           <ShieldAlert className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-          Les actions sensibles — remise d&apos;un lot, export de la base, tirage du gros
-          lot — sont journalisées avec votre identité.
+          Les actions sensibles (remise d&apos;un lot, export de la base, tirage du gros
+          lot) sont journalisées avec votre identité.
         </p>
       </div>
     </main>

@@ -8,9 +8,9 @@ trois images applicatives, un compose de développement, un compose de déploiem
 | Fichier | Rôle |
 |---|---|
 | `compose.dev.yml` | Développement local : **uniquement** PostgreSQL 17 et Redis 8. Les applications tournent en direct via `nx dev`, pour garder le rechargement à chaud |
-| `Dockerfile.api` | API v1, NestJS 11 — 4 étages |
-| `Dockerfile.web` | Site public, Next.js 16 — 3 étages |
-| `Dockerfile.admin` | Back-office, Next.js 16 — 3 étages |
+| `Dockerfile.api` | API v1, NestJS 11, 4 étages |
+| `Dockerfile.web` | Site public, Next.js 16, 3 étages |
+| `Dockerfile.admin` | Back-office, Next.js 16, 3 étages |
 | `compose.prod.yml` | Environnements déployés : dev, préprod-QA, prod. **Un seul fichier**, trois `.env` |
 | `.env.deploy.example` | Modèle de configuration d'un environnement déployé |
 
@@ -29,16 +29,16 @@ docker build -f ../../05-workflow/docker/Dockerfile.api \
   -t theetiptop/api:$TAG .
 
 docker build -f ../../05-workflow/docker/Dockerfile.web \
-  --build-arg NEXT_PUBLIC_API_URL=https://api.dsp5-archi-o25a-15m-g1.fr \
-  --build-arg NEXT_PUBLIC_SITE_URL=https://dsp5-archi-o25a-15m-g1.fr \
+  --build-arg NEXT_PUBLIC_API_URL=https://api.dsp5-archi-o25a-15m-g3.fr \
+  --build-arg NEXT_PUBLIC_SITE_URL=https://dsp5-archi-o25a-15m-g3.fr \
   -t theetiptop/web:$TAG .
 
 docker build -f ../../05-workflow/docker/Dockerfile.admin \
-  --build-arg NEXT_PUBLIC_API_URL=https://api.dsp5-archi-o25a-15m-g1.fr \
+  --build-arg NEXT_PUBLIC_API_URL=https://api.dsp5-archi-o25a-15m-g3.fr \
   -t theetiptop/admin:$TAG .
 ```
 
-### ⚠️ Une image front par environnement
+### Une image front par environnement
 
 Les variables `NEXT_PUBLIC_*` sont des **arguments de build**, pas de la configuration
 d'exécution. Next.js les inscrit dans le bundle navigateur à la compilation : une image
@@ -69,10 +69,10 @@ dépendances d'une seule application n'est pas trivial**. Trois approches ont é
 
 | Approche | Résultat mesuré |
 |---|---|
-| `npm ci --omit=dev -w @theetiptop-contest/api --include-workspace-root` | ❌ **936 Mo** de `node_modules`. Le filtre de workspace de npm ne restreint pas `ci` : TypeScript, Next et Playwright sont installés |
-| `npm prune --omit=dev --include-workspace-root` | ❌ Même résultat, pour la même raison |
-| `nx prune`, qui produit un `package.json` et un `package-lock.json` élagués | ❌ Le lockfile élagué est incohérent avec son propre manifeste : `npm ci` s'arrête sur `Missing: content-type@1.0.5 from lock file`. Express 5 atteint `content-type` par deux chemins, le pruner n'en enregistre qu'un |
-| ✅ **`generatePackageJson` + épinglage aux versions exactes** | **471 Mo.** Webpack émet la liste exacte de ses externes, `tools/pin-runtime-deps.mjs` remplace chaque intervalle par la version que l'étage de build a réellement résolue, puis `npm install --no-package-lock` installe exactement celles-là |
+| `npm ci --omit=dev -w @theetiptop-contest/api --include-workspace-root` | **936 Mo** de `node_modules`. Le filtre de workspace de npm ne restreint pas `ci` : TypeScript, Next et Playwright sont installés |
+| `npm prune --omit=dev --include-workspace-root` | Même résultat, pour la même raison |
+| `nx prune`, qui produit un `package.json` et un `package-lock.json` élagués | Le lockfile élagué est incohérent avec son propre manifeste : `npm ci` s'arrête sur `Missing: content-type@1.0.5 from lock file`. Express 5 atteint `content-type` par deux chemins, le pruner n'en enregistre qu'un |
+| **`generatePackageJson` + épinglage aux versions exactes** | **471 Mo.** Webpack émet la liste exacte de ses externes, `tools/pin-runtime-deps.mjs` remplace chaque intervalle par la version que l'étage de build a réellement résolue, puis `npm install --no-package-lock` installe exactement celles-là |
 
 La chaîne reste reproductible de bout en bout : lockfile versionné → étage de build →
 manifeste épinglé → installation d'exécution.
@@ -98,8 +98,8 @@ l'artefact qui tourne n'est pas celui que le pipeline a testé.
 ### Les migrations
 
 Le service `migrate` est un **travail à usage unique**, pas un service permanent. Il exécute
-`prisma migrate deploy` depuis l'image de l'API — le même artefact que celui qui servira le
-trafic — puis se termine. Les trois applications attendent sa réussite
+`prisma migrate deploy` depuis l'image de l'API, le même artefact que celui qui servira le
+trafic, puis se termine. Les trois applications attendent sa réussite
 (`condition: service_completed_successfully`), ce qui empêche un conteneur de démarrer
 contre un schéma qui ne correspond pas au sien.
 
@@ -115,7 +115,7 @@ production.
 | `edge` | externe, partagé | api, web, admin, et le reverse proxy |
 
 PostgreSQL et Redis n'ont **aucun port publié** et aucune route depuis l'hôte : ils ne sont
-joignables que depuis le réseau interne. L'API elle-même n'expose pas de port — le reverse
+joignables que depuis le réseau interne. L'API elle-même n'expose pas de port, le reverse
 proxy du réseau `edge` est la seule entrée.
 
 ## Le partage de session entre les trois sous-domaines
@@ -126,8 +126,8 @@ posé par `api.exemple.fr` sans attribut `Domain` est **lié à cet hôte unique
 reviendrait en 401.
 
 D'où la variable `COOKIE_DOMAIN`, qui vaut le domaine parent avec un point initial
-(`.dsp5-archi-o25a-15m-g1.fr`). Elle est **vide en développement**, et c'est correct : tout
-tourne sur `localhost`, et un cookie est lié à l'hôte sans tenir compte du port — les trois
+(`.dsp5-archi-o25a-15m-g3.fr`). Elle est **vide en développement**, et c'est correct : tout
+tourne sur `localhost`, et un cookie est lié à l'hôte sans tenir compte du port, les trois
 ports se le partagent déjà.
 
 ## Ce que `compose.dev.yml` ne fait pas
@@ -136,7 +136,7 @@ Il ne contient **pas** les applications. En développement elles tournent via `n
 garder le rechargement à chaud. Les images multi-étages ci-dessus servent aux trois
 environnements déployés par Jenkins.
 
-Ports décalés en local — 5434 pour PostgreSQL, 6381 pour Redis — pour ne pas entrer en
+Ports décalés en local, 5434 pour PostgreSQL, 6381 pour Redis, pour ne pas entrer en
 conflit avec une autre instance déjà installée sur la machine du développeur.
 
 ## Les trois fichiers compose du projet
@@ -149,7 +149,7 @@ conflit avec une autre instance déjà installée sur la machine du développeur
 | `../compose.workflow.yml` | dossier parent | Le workflow lui-même : Traefik, Gitea, Jenkins, registry, Prometheus, Grafana, Loki |
 
 `compose.ci.yml` est séparé de `compose.dev.yml` pour une raison précise : le fichier du
-développeur **conserve** ses données entre deux sessions — perdre les 500 000 codes à
-chaque `down` rendrait le travail local pénible — alors qu'une exécution de CI doit partir
+développeur **conserve** ses données entre deux sessions, perdre les 500 000 codes à
+chaque `down` rendrait le travail local pénible, alors qu'une exécution de CI doit partir
 de rien à chaque fois, sinon un test peut passer sur un résidu du build précédent. Son
 répertoire de données est un disque RAM, qui ne peut pas survivre au conteneur.

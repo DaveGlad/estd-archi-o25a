@@ -54,7 +54,7 @@ export class UsersService {
    * Registers a customer through the classic form.
    *
    * Better Auth owns the password hashing and the session; this method owns the three
-   * rules it cannot know about — adulthood, mandatory acceptance of the rules, and
+   * rules it cannot know about, adulthood, mandatory acceptance of the rules, and
    * server-stamped consent timestamps.
    */
   async register(input: RegisterDto): Promise<RegistrationResult> {
@@ -82,7 +82,7 @@ export class UsersService {
     }
 
     // Checked up front so the answer is a clean 409 rather than whatever Better Auth
-    // returns for a duplicate — and so the message matches the one on the login link the
+    // returns for a duplicate, and so the message matches the one on the login link the
     // front end shows next to it.
     const existing = await this.prisma.user.findUnique({
       where: { email: input.email },
@@ -114,7 +114,7 @@ export class UsersService {
     })) as Response;
 
     if (!authResponse.ok) {
-      // Better Auth already rejected it — a password policy, a race on the email. Surface
+      // Better Auth already rejected it, a password policy, a race on the email. Surface
       // its status rather than inventing one.
       const detail = await authResponse.text().catch(() => '');
       this.logger.warn(`Sign-up refused by Better Auth (${authResponse.status}): ${detail}`);
@@ -238,7 +238,7 @@ export class UsersService {
   }
 
   /**
-   * Personal data export — GDPR article 20, right to portability.
+   * Personal data export, GDPR article 20, right to portability.
    *
    * Everything the platform holds about the customer, in a readable flat shape. Not a
    * database dump: `ipHash` is excluded because it is a derived anti-fraud signal rather
@@ -302,7 +302,7 @@ export class UsersService {
   }
 
   /**
-   * Right to erasure — GDPR article 17 — implemented as **anonymisation, not deletion**.
+   * Right to erasure, GDPR article 17, implemented as **anonymisation, not deletion**.
    *
    * The tension is real and the resolution is the defensible part. Article 17.3(b) and (e)
    * let a controller keep data where processing is necessary for a legal obligation or for
@@ -312,7 +312,7 @@ export class UsersService {
    *
    * So the identifying data goes and the participation stays:
    *   - email is replaced by an irreversible, collision-free placeholder derived from the
-   *     user id — a random one could collide, and the column is unique;
+   *     user id, a random one could collide, and the column is unique;
    *   - name, phone, postcode are cleared; gender and birth date are kept in the
    *     aggregated statistics only through rows that no longer identify anyone;
    *   - sessions and OAuth accounts are deleted, so the account cannot be signed into;
@@ -382,7 +382,7 @@ export class UsersService {
    * Expires prizes that were never claimed.
    *
    * The brief gives 30 days after closing to claim. Past that, a prize still marked
-   * TO_CLAIM is neither true nor useful — the statistics would count it as outstanding
+   * TO_CLAIM is neither true nor useful, the statistics would count it as outstanding
    * forever. Called by the scheduled job rather than computed on read, so that the status
    * stored in the database is the status in force.
    */

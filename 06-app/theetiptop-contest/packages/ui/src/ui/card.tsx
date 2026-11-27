@@ -50,7 +50,7 @@ export function CardHeader({ className, ...props }: ComponentProps<'div'>) {
  * heading navigation on the page. Making the prop required turns a runtime accessibility
  * defect into a compile error.
  *
- * It also rules out the pattern that produced the empty heading in the first place — a
+ * It also rules out the pattern that produced the empty heading in the first place, a
  * title rendered from a value that can be undefined. The caller now has to decide what to
  * show instead.
  */

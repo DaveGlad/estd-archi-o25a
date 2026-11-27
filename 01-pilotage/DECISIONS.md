@@ -7,11 +7,11 @@
 
 | Élément | Valeur | Statut |
 |---|---|---|
-| Numéro de classe | `à remplir` | ⬜ |
-| Numéro de groupe (Teams) | `à remplir` | ⬜ |
-| Effectif | **4 personnes** | ✅ |
-| Domaine workflow | `wk-archi-o25a-15M-G{n}.fr` | ⬜ |
-| Domaine site | `dsp5-archi-o25a-15M-G{n}.fr` | ⬜ |
+| Numéro de classe | `à remplir` |  À faire  |
+| Numéro de groupe (Teams) | `à remplir` |  À faire  |
+| Effectif | **4 personnes** | Fait |
+| Domaine workflow | `wk-archi-o25a-15M-G{n}.fr` |  À faire  |
+| Domaine site | `dsp5-archi-o25a-15M-G{n}.fr` |  À faire  |
 
 ### Répartition des rôles
 
@@ -26,10 +26,10 @@ Les 4 membres du groupe constituent la maîtrise d'œuvre du comité de pilotage
 
 | Nom | Prénom | Rôle | Poste, mail, téléphone | Statut |
 |---|---|---|---|---|
-| | | R1 | | ⬜ |
-| | | R2 | | ⬜ |
-| | | R3 | | ⬜ |
-| | | R4 | | ⬜ |
+| | | R1 | |  À faire  |
+| | | R2 | |  À faire  |
+| | | R3 | |  À faire  |
+| | | R4 | |  À faire  |
 
 > Ces informations sont obligatoires dans le comité de pilotage du CDC : nom, prénom, poste occupé, adresse postale, mail, téléphone, plus les jours et horaires de travail, les congés éventuels et la personne à contacter en cas d'absence.
 
@@ -39,7 +39,7 @@ Les 4 membres du groupe constituent la maîtrise d'œuvre du comité de pilotage
 
 ## 2. L'agence : **Furious Ducks**, imposée par le sujet
 
-⚠️ Le nom n'est **pas** au choix. Le sujet nous place « en tant que nouveaux employés au sein de la société Furious Ducks », dirigée par Mr Guido Brasletti. C'est ce nom qui figure sur la couverture du CST et dans la partie « présentation de votre agence » du CDC.
+Le nom n'est **pas** au choix. Le sujet nous place « en tant que nouveaux employés au sein de la société Furious Ducks », dirigée par Mr Guido Brasletti. C'est ce nom qui figure sur la couverture du CST et dans la partie « présentation de votre agence » du CDC.
 
 Données **fournies** par le sujet : webagency spécialisée dans les technologies open source · créée en **2007** · **45 employés** · directeur **Guido Brasletti** · travaille actuellement en cycle en V · désorganisation progressive constatée.
 
@@ -47,28 +47,32 @@ Données **à construire**, que le sujet ne donne pas. Toutes fictives, à garde
 
 | Élément | Valeur | Statut |
 |---|---|---|
-| Forme juridique / capital | *(SAS ? cohérent avec 45 salariés)* | ⬜ |
-| Siège social | | ⬜ |
-| SIREN / SIRET / RCS / APE-NAF / TVA intracom | *(APE 6201Z « programmation informatique » ; RCS cohérent avec le siège)* | ⬜ |
-| Storytelling + valeurs | *(matière première possible : le positionnement de Nextilabs)* | ⬜ |
-| Organigramme / pôles | *(comment 45 personnes se répartissent)* | ⬜ |
+| Forme juridique / capital | SAS au capital de 50 000 € | **Figé** |
+| Siège social | 12 quai de la Fosse, 44000 Nantes | **Figé** |
+| SIREN / SIRET / RCS / APE-NAF / TVA intracom | SIREN 842 196 370 · SIRET 842 196 370 00014 · RCS Nantes B 842 196 370 · APE 6201Z · TVA FR 52 842196370 | **Figé** |
+| Storytelling + valeurs | Rédigés, CST partie A.1 | **Figé** |
+| Organigramme / pôles | CST partie C.3 pour les topologies, F pour les effectifs | **Figé** |
 
-## 3. Stack du site jeu-concours : ✅ **décidé, conventions `deal-israel`**
+Les identifiants sont **fictifs** et construits pour respecter les règles de forme françaises : clé de Luhn valide sur le SIREN et sur le SIRET, clé de TVA recalculable par `(12 + 3 × (SIREN mod 97)) mod 97` = 52. Ils ne désignent aucune entreprise réelle.
+
+Le raisonnement derrière chaque valeur est dans le CST partie A.1, pas ici : le jury lit le dossier, pas ce fichier de pilotage.
+
+## 3. Stack du site jeu-concours : **décidé, conventions `deal-israel`**
 
 Référence : `/Users/daveglad/Documents/work/deal-israel` (+ `.agent/conventions/`). Voir `06-app/ARCHITECTURE.md`.
 
 | Poste | Choix | Pourquoi (à écrire dans le CDC) | Statut |
 |---|---|---|---|
-| Monorepo | **Nx 23.1** (npm workspaces) | Un seul dépôt pour API + webApp + admin ⇒ un seul pipeline Jenkins, cache de build Nx, `nx affected` = builds courts (argument **RSE / éco-conception**) | ✅ |
-| Front webApp | **Next.js 16** + React 19 + **Tailwind v4** + shadcn/ui | SSR/SSG ⇒ **SEO** (exigence du sujet), accessibilité native de Radix (shadcn), images optimisées ⇒ Green IT | ✅ |
-| Back-office admin | **Next.js** (`apps/admin`) | Sépare le back-office admin/employé du front public : surface d'attaque réduite, droits distincts | ✅ |
-| API | **NestJS 11.2.9** + Swagger, routes `v1/…` | REST versionnée et documentée, indispensable puisque l'API sert **3 consommateurs** : webApp, **caisses magasin**, **futur e-commerce**. 25 routes livrées | ✅ |
-| ORM | **Prisma 7.10** (schémas splittés par domaine) | Migrations versionnées ⇒ rejouables par la CI sur dev/preprod/prod. Le schéma Prisma sert de base au **MLD** du CDC. ⚠️ Prisma 7 **impose un driver adapter** : `@prisma/adapter-pg`, le moteur Rust a disparu | ✅ |
-| BDD | **PostgreSQL 17** | **Open source** (licence PostgreSQL, OSI) ⇒ conforme à l'exigence du sujet, plus permissive que la GPL de MariaDB. Requis pour insérer et indexer **500 000 codes** (`COPY`, index B-tree unique) | ✅ |
-| Cache / file | **Redis** | Rate-limiting de la saisie de codes (anti-brute-force), sessions, file du batch de génération | ✅ |
-| Auth | **Better Auth** | Couvre en une brique les 3 modes exigés : **formulaire classique + OAuth Google + OAuth Facebook**, avec rôles `client / employé / admin` | ✅ |
-| Tests | **Vitest 5** (unitaires + intégration) · **Playwright 1.65** (fonctionnels/E2E) · **k6** (performance) | Le sujet exige les 4 familles + l'**export des rapports** vers Jenkins (JUnit XML). 132 tests livrés et verts ; k6 écrit mais non exécuté, le binaire reste à installer | ✅ |
-| Mobile *(hors périmètre livrable)* | Expo / React Native | Sert de **projet de démonstration n°3** du workflow (« app mobile hybride ») | ⬜ |
+| Monorepo | **Nx 23.1** (npm workspaces) | Un seul dépôt pour API + webApp + admin ⇒ un seul pipeline Jenkins, cache de build Nx, `nx affected` = builds courts (argument **RSE / éco-conception**) | Fait |
+| Front webApp | **Next.js 16** + React 19 + **Tailwind v4** + shadcn/ui | SSR/SSG ⇒ **SEO** (exigence du sujet), accessibilité native de Radix (shadcn), images optimisées ⇒ Green IT | Fait |
+| Back-office admin | **Next.js** (`apps/admin`) | Sépare le back-office admin/employé du front public : surface d'attaque réduite, droits distincts | Fait |
+| API | **NestJS 11.2.9** + Swagger, routes `v1/…` | REST versionnée et documentée, indispensable puisque l'API sert **3 consommateurs** : webApp, **caisses magasin**, **futur e-commerce**. 25 routes livrées | Fait |
+| ORM | **Prisma 7.10** (schémas splittés par domaine) | Migrations versionnées ⇒ rejouables par la CI sur dev/preprod/prod. Le schéma Prisma sert de base au **MLD** du CDC. Prisma 7 **impose un driver adapter** : `@prisma/adapter-pg`, le moteur Rust a disparu | Fait |
+| BDD | **PostgreSQL 17** | **Open source** (licence PostgreSQL, OSI) ⇒ conforme à l'exigence du sujet, plus permissive que la GPL de MariaDB. Requis pour insérer et indexer **500 000 codes** (`COPY`, index B-tree unique) | Fait |
+| Cache / file | **Redis** | Rate-limiting de la saisie de codes (anti-brute-force), sessions, file du batch de génération | Fait |
+| Auth | **Better Auth** | Couvre en une brique les 3 modes exigés : **formulaire classique + OAuth Google + OAuth Facebook**, avec rôles `client / employé / admin` | Fait |
+| Tests | **Vitest 5** (unitaires + intégration) · **Playwright 1.65** (fonctionnels/E2E) · **k6** (performance) | Le sujet exige les 4 familles + l'**export des rapports** vers Jenkins (JUnit XML). 132 tests livrés et verts ; k6 écrit mais non exécuté, le binaire reste à installer | Fait |
+| Mobile *(hors périmètre livrable)* | Expo / React Native | Sert de **projet de démonstration n°3** du workflow (« app mobile hybride ») |  À faire  |
 
 ### Décisions prises pendant l'implémentation
 
@@ -97,35 +101,35 @@ Le schéma initial ne permettait pas de tenir deux exigences du sujet.
 2. **Auditabilité de la génération.** Ajoutés sur `Contest` : `codesGeneratedAt`,
    `codeGenerationSeedHash`, `codePoolFingerprint`.
 
-⚠️ `02-cahier-des-charges/sections/E5-mcd-mld.md` doit être mis à jour en conséquence.
+`02-cahier-des-charges/sections/E5-mcd-mld.md` doit être mis à jour en conséquence.
 
-### ⚠️ Écarts à traiter par rapport à `deal-israel`
+### Écarts à traiter par rapport à `deal-israel`
 
 | Point | Décision |
 |---|---|
-| **Elasticsearch** | ❌ **À retirer.** Sous licence Elastic v2 / SSPL depuis 7.11 = **non open source** ⇒ viole la contrainte du sujet. Et inutile ici. Si un besoin de recherche apparaît (recherche client par l'employé boutique), utiliser l'index `pg_trgm` de Postgres. |
-| **Stripe** | ❌ Retirer, aucun paiement dans un jeu-concours. |
-| **MinIO** | 🟡 Optionnel (assets, visuels du jeu). AGPL = open source, donc conforme si conservé. |
-| **Better Auth** | ✅ Les trois modes sont câblés. Les deux fournisseurs ne sont enregistrés que si leur paire d'identifiants est complète, donc l'API démarre sans eux avec le seul formulaire. **Identifiants Google et Facebook à créer.** |
-| **Notifications push / chat / Expo** | ❌ Hors périmètre du site jeu-concours. |
+| **Elasticsearch** | **À retirer.** Sous licence Elastic v2 / SSPL depuis 7.11 = **non open source** ⇒ viole la contrainte du sujet. Et inutile ici. Si un besoin de recherche apparaît (recherche client par l'employé boutique), utiliser l'index `pg_trgm` de Postgres. |
+| **Stripe** | Retirer, aucun paiement dans un jeu-concours. |
+| **MinIO** | Optionnel (assets, visuels du jeu). AGPL = open source, donc conforme si conservé. |
+| **Better Auth** | Les trois modes sont câblés. Les deux fournisseurs ne sont enregistrés que si leur paire d'identifiants est complète, donc l'API démarre sans eux avec le seul formulaire. **Identifiants Google et Facebook à créer.** |
+| **Notifications push / chat / Expo** | Hors périmètre du site jeu-concours. |
 
 ## 4. Briques du workflow CI/CD
 
 | Poste | Choix | Contrainte du sujet | Statut |
 |---|---|---|---|
-| Hébergeur / offre | | Serveur dédié ou cloud, **au choix mais justifié** | ⬜ |
-| Distribution | | **Linux** obligatoire | ⬜ |
-| Conteneurisation | **Docker** | **100 % Docker**, imposé | ⬜ |
-| Reverse proxy | | Sous-domaine par outil + TLS | ⬜ |
-| SCM | **Gitea** *(recommandé)* | **Git imposé** + standard **GitFlow**. Gitea plutôt que GitLab CE : quelques centaines de Mo de RAM contre environ 4 Go. Voir § 4 bis, risque n° 5 | ⬜ |
-| CI | **Jenkins** | **Imposé**. Configuration par **Jenkinsfile**, les devs n'ont pas accès au CI | ⬜ |
-| Registry d'images | | « Stocker les images Docker construites par la CI » | ⬜ |
-| Tests / QA | | « Une ou plusieurs solutions de tests applicatifs » | ⬜ |
-| Métriques | Prometheus + Grafana (+ Loki/Kibana) | « Une ou plusieurs solutions de métriques » | ⬜ |
-| Backups | | **Automatisés**, workflow **et** projets, restauration testée | ⬜ |
-| Environnements | dev / preprod-QA / prod | Dev + preprod **auto**, prod : niveau d'automatisation à justifier | ⬜ |
+| Hébergeur / offre | | Serveur dédié ou cloud, **au choix mais justifié** |  À faire  |
+| Distribution | | **Linux** obligatoire |  À faire  |
+| Conteneurisation | **Docker** | **100 % Docker**, imposé |  À faire  |
+| Reverse proxy | | Sous-domaine par outil + TLS |  À faire  |
+| SCM | **Gitea** *(recommandé)* | **Git imposé** + standard **GitFlow**. Gitea plutôt que GitLab CE : quelques centaines de Mo de RAM contre environ 4 Go. Voir § 4 bis, risque n° 5 |  À faire  |
+| CI | **Jenkins** | **Imposé**. Configuration par **Jenkinsfile**, les devs n'ont pas accès au CI |  À faire  |
+| Registry d'images | | « Stocker les images Docker construites par la CI » |  À faire  |
+| Tests / QA | | « Une ou plusieurs solutions de tests applicatifs » |  À faire  |
+| Métriques | Prometheus + Grafana (+ Loki/Kibana) | « Une ou plusieurs solutions de métriques » |  À faire  |
+| Backups | | **Automatisés**, workflow **et** projets, restauration testée |  À faire  |
+| Environnements | dev / preprod-QA / prod | Dev + preprod **auto**, prod : niveau d'automatisation à justifier |  À faire  |
 
-⚠️ Toutes les applis doivent être **open source**, ou au pire **libres**. Justifier chaque exception.
+Toutes les applis doivent être **open source**, ou au pire **libres**. Justifier chaque exception.
 
 ---
 
@@ -135,7 +139,7 @@ Le schéma initial ne permettait pas de tenir deux exigences du sujet.
 > images taguées poussées vers un registry, compose par environnement, soit la forme attendue par le sujet).
 > **Verdict : aucun blocage.** 5 frictions identifiées, 4 correctifs triviaux, 1 décision d'organisation.
 
-### 🔴 1. Le monorepo ne démontre pas la généricité du workflow
+### 1. Le monorepo ne démontre pas la généricité du workflow
 
 Le sujet exige que le workflow sache déployer **3 types de projets** (vitrine HTML/CSS, site administrable, app mobile hybride). Le monorepo est **un seul projet** : un correcteur qui ne voit qu'un dépôt Nx conclura que le workflow n'est pas générique.
 
@@ -149,27 +153,27 @@ Le sujet exige que le workflow sache déployer **3 types de projets** (vitrine H
 
 → Répercuté sur la tâche **W15** du backlog.
 
-### 🟠 2. `.dockerignore` absent
+### 2. `.dockerignore` absent
 
 Vérifié : aucun `.dockerignore` dans `deal-israel`, ni à la racine ni dans les apps. Avec `COPY . .`, **`node_modules` part dans le contexte de build**, soit plusieurs centaines de Mo envoyés au démon Docker, pour 3 apps et 3 environnements.
 
 **Correctif dès le scaffolding** : `.dockerignore` racine avec `node_modules`, `.nx`, `dist`, `.git`, `.env*`.
 
-### 🟠 3. Le cache Nx s'évapore en CI
+### 3. Le cache Nx s'évapore en CI
 
 Le Dockerfile de référence utilise `--skip-nx-cache`, et les agents Jenkins conteneurisés sont éphémères : chaque build recompile tout.
 
 **Correctif** : volume persistant monté sur `.nx/cache` chez l'agent Jenkins. Option avancée : cache distant auto-hébergé vers **MinIO** (S3-compatible, déjà dans la stack).
 
-⚠️ **Ne pas utiliser Nx Cloud** : SaaS propriétaire, contraire à l'exigence « applications open source » du sujet. Point piège probable en soutenance.
+**Ne pas utiliser Nx Cloud** : SaaS propriétaire, contraire à l'exigence « applications open source » du sujet. Point piège probable en soutenance.
 
-### 🟠 4. `nx affected` casse avec un clone superficiel
+### 4. `nx affected` casse avec un clone superficiel
 
 `nx affected` compare deux refs Git. Si Jenkins fait un *shallow clone* (défaut fréquent), la comparaison échoue ou rebuild tout, et on perd l'argument d'éco-conception.
 
 **Correctif** : désactiver le shallow clone dans le job, fixer explicitement `--base=origin/develop --head=HEAD`.
 
-### 🟠 5. Le vrai risque est la RAM, pas Nx
+### 5. Le vrai risque est la RAM, pas Nx
 
 À faire tourner simultanément : SCM + Jenkins + agents + registry + Prometheus + Grafana + reverse proxy + **3 environnements × (api + web + admin + Postgres + Redis)**. Les builds Next.js sont eux-mêmes gourmands.
 
@@ -186,11 +190,11 @@ Types partagés entre l'API et ses **3 consommateurs** (webApp, admin, caisses) 
 
 | Élément | Choix | Statut |
 |---|---|---|
-| Méthodologie préconisée | Scrum / Kanban / XP | ⬜ |
-| Cérémonies et cadence | | ⬜ |
-| Topologies DevOps retenues | | ⬜ |
-| Outil de suivi (accès **public**) | Trello / Notion | ⬜ |
-| Outil de Gantt | **GanttProject** ou MS Project, imposé | ⬜ |
+| Méthodologie préconisée | Scrum / Kanban / XP |  À faire  |
+| Cérémonies et cadence | |  À faire  |
+| Topologies DevOps retenues | |  À faire  |
+| Outil de suivi (accès **public**) | Trello / Notion |  À faire  |
+| Outil de Gantt | **GanttProject** ou MS Project, imposé |  À faire  |
 
 ## 6. Économie du projet
 
@@ -198,27 +202,27 @@ Hypothèses retenues et documentées dans `02-cahier-des-charges/annexes/calcul-
 
 | Élément | Valeur retenue | Statut |
 |---|---|---|
-| Charges patronales | 42 % | 🟡 hypothèse |
-| Frais généraux | 25 % du coût employeur | 🟡 hypothèse |
-| Marge de l'agence | 20 % | 🟡 hypothèse |
-| Jours facturables par an | 169, soit 225 jours à 75 % d'occupation | 🟡 hypothèse |
-| TJM chef de projet | 565 € | 🟡 |
-| TJM ingénieur DevOps | 565 € | 🟡 |
-| TJM développeur confirmé | 530 € | 🟡 |
-| TJM graphiste et UX | 455 € | 🟡 |
-| TJM chargé de communication | 430 € | 🟡 |
-| Budget projet client | 162 j, 82 315 € HT | ✅ calculé |
-| Budget workflow | 74 j, 41 565 € HT | ✅ calculé |
-| Budget réel engagé par le groupe (VPS, domaines) | *(échéance postérieure à mars 2027)* | ⬜ |
+| Charges patronales | 42 % | hypothèse |
+| Frais généraux | 25 % du coût employeur | hypothèse |
+| Marge de l'agence | 20 % | hypothèse |
+| Jours facturables par an | 169, soit 225 jours à 75 % d'occupation | hypothèse |
+| TJM chef de projet | 565 € | En cours |
+| TJM ingénieur DevOps | 565 € | En cours |
+| TJM développeur confirmé | 530 € | En cours |
+| TJM graphiste et UX | 455 € | En cours |
+| TJM chargé de communication | 430 € | En cours |
+| Budget projet client | 162 j, 82 315 € HT | calculé |
+| Budget workflow | 74 j, 41 565 € HT | calculé |
+| Budget réel engagé par le groupe (VPS, domaines) | *(échéance postérieure à mars 2027)* |  À faire  |
 
 ## 7. Modèle des 500 000 codes, décisions techniques à documenter
 
 | Question | Réponse retenue | Statut |
 |---|---|---|
-| Format du code | 10 caractères alphanumériques | ⬜ |
-| Espace de codes / risque de collision | *(à calculer et justifier)* | ⬜ |
-| Génération | Pré-générée en batch, gain associé **dès l'insertion** | ⬜ |
-| Garantie des pourcentages 60/20/10/6/4 | *(algorithme + test automatisé de la répartition)* | ⬜ |
-| Indexation / perfs | | ⬜ |
-| Tirage du gros lot | **Côté serveur**, 1 chance par participant quel que soit son nombre de tickets | ⬜ |
-| Fenêtre de réclamation | 30 j de jeu + 30 j après clôture | ⬜ |
+| Format du code | 10 caractères alphanumériques |  À faire  |
+| Espace de codes / risque de collision | *(à calculer et justifier)* |  À faire  |
+| Génération | Pré-générée en batch, gain associé **dès l'insertion** |  À faire  |
+| Garantie des pourcentages 60/20/10/6/4 | *(algorithme + test automatisé de la répartition)* |  À faire  |
+| Indexation / perfs | |  À faire  |
+| Tirage du gros lot | **Côté serveur**, 1 chance par participant quel que soit son nombre de tickets |  À faire  |
+| Fenêtre de réclamation | 30 j de jeu + 30 j après clôture |  À faire  |

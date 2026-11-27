@@ -4,7 +4,7 @@ Quatre unités systemd, à copier dans `/etc/systemd/system/` sur l'hôte du wor
 
 **systemd plutôt que `cron`** : une tâche `cron` qui échoue envoie un courriel que personne
 ne lit, et ne laisse aucune trace exploitable. Un service systemd écrit dans le journal,
-expose son code de sortie à `systemctl status`, et surtout — c'est l'argument décisif —
+expose son code de sortie à `systemctl status`, et surtout, c'est l'argument décisif,
 `OnFailure=` permet de déclencher une alerte à l'échec. Une sauvegarde qui échoue en
 silence est strictement équivalente à une absence de sauvegarde, et c'est le dysfonctionnement
 n° 2 de l'état des lieux.
@@ -60,7 +60,7 @@ BACKUP_AGE_KEY=/etc/theetiptop/backup-key.txt
 ```
 
 Le fichier est en `0600`, propriété de `root`. La **clé privée de déchiffrement** doit
-exister ailleurs aussi — dans le gestionnaire de secrets de l'agence — parce qu'une clé
+exister ailleurs aussi, dans le gestionnaire de secrets de l'agence, parce qu'une clé
 qui n'existe que sur la machine détruite rend la sauvegarde parfaitement inutile. C'est
 l'erreur classique du chiffrement de sauvegardes, et elle ne se découvre qu'au moment du
 sinistre.

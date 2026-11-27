@@ -5,7 +5,7 @@
 # container; nothing is installed on the host except Docker and the systemd timers that
 # drive the backups.
 #
-# Requirement n° 6 — open source, "ou dans le pire des cas libres" — holds for every image
+# Requirement n° 6, open source, "ou dans le pire des cas libres", holds for every image
 # here. No SaaS, including for the build cache, which is on a local volume for exactly that
 # reason.
 #
@@ -19,7 +19,7 @@ name: furious-ducks-workflow
 
 x-logging: &default-logging
   # Capped, on every service. Docker's default json-file driver has no limit, and the first
-  # time anyone notices is a full disk — which is the DiskFillingUp alert firing for a
+  # time anyone notices is a full disk, which is the DiskFillingUp alert firing for a
   # reason nobody would guess.
   driver: json-file
   options: { max-size: '10m', max-file: '3' }
@@ -55,7 +55,7 @@ services:
       - --certificatesresolvers.letsencrypt.acme.storage=/acme/acme.json
       - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
       # Prometheus reads this. It is the only place where a request that never reached an
-      # application is visible — a 502 here with silence in the API logs means the container
+      # application is visible, a 502 here with silence in the API logs means the container
       # is down, which is a different night from a slow query.
       - --metrics.prometheus=true
       - --entrypoints.metrics.address=:8082
@@ -93,7 +93,7 @@ services:
       # an instance anyone can sign up to is one anyone can fork from.
       GITEA__service__DISABLE_REGISTRATION: 'true'
       # Without this Gitea serves its web installer on every page and refuses every CLI
-      # command with "Unable to load config file for a installed Gitea instance" — even
+      # command with "Unable to load config file for a installed Gitea instance", even
       # though app.ini exists. The configuration here IS the installation, so the step is
       # already done and leaving the installer reachable only invites someone to redo it.
       GITEA__security__INSTALL_LOCK: 'true'
@@ -135,7 +135,7 @@ services:
     # Built locally, not pulled. The official image installs plugins from plugins.txt at
     # BUILD time only; mounting that file into a running container does nothing, and
     # Jenkins then starts with no plugins, therefore no configuration-as-code, therefore
-    # NO SECURITY REALM — while answering happily on its route. See Dockerfile.jenkins.
+    # NO SECURITY REALM, while answering happily on its route. See Dockerfile.jenkins.
     image: furious-ducks/jenkins:1
     build:
       context: ./jenkins
@@ -147,11 +147,11 @@ services:
       # a password in a log file is not something a rebuild should depend on.
       JAVA_OPTS: -Djenkins.install.runSetupWizard=false -Dhudson.model.DownloadService.noSignatureCheck=true
       # Configuration as code, mounted read-only from this repository. Inside the volume
-      # it would be invisible to review and lost with the volume — which is the state this
+      # it would be invisible to review and lost with the volume, which is the state this
       # project is trying to get the agency out of.
       CASC_JENKINS_CONFIG: /usr/share/jenkins/casc/jenkins.yaml
       # Read by jenkins.yaml. The admin password is injected here, never written in the
-      # configuration file — that file is in the repository and in every clone of it.
+      # configuration file, that file is in the repository and in every clone of it.
       JENKINS_ADMIN_ID: ${JENKINS_ADMIN_ID:-admin}
       JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD}
       WORKFLOW_DOMAIN: ${WORKFLOW_DOMAIN}
@@ -163,6 +163,16 @@ services:
       # that run untrusted project code are separate containers rather than this one.
       - /var/run/docker.sock:/var/run/docker.sock
       - nx-cache:/cache
+    # The gid that owns /var/run/docker.sock on the HOST. Jenkins runs as the unprivileged
+    # `jenkins` user, which is not in that group, and the socket is mode 660 -- so every
+    # attempt to provision a build agent failed with "java.net.BindException: Permission
+    # denied" while the container itself looked perfectly healthy and the logs said
+    # nothing about permissions.
+    #
+    # Adding the group rather than running the container as root: it gains the one
+    # permission it needs and nothing else.
+    group_add:
+      - '${DOCKER_GID:-989}'
     networks: [edge, workflow, metrics]
     labels:
       traefik.enable: 'true'
@@ -313,7 +323,7 @@ networks:
   #
   # External, like `metrics`: it is created once per host by bootstrap-vps.sh. Declared
   # without it, Compose expects to own the network and refuses an existing one with
-  # "network edge was found but has incorrect label" — which reads like corruption and is
+  # "network edge was found but has incorrect label", which reads like corruption and is
   # only a question of who created it.
   edge:
     external: true
@@ -325,7 +335,7 @@ networks:
     internal: true
   # Shared with the deployed environments: their postgres-exporter and redis-exporter sit
   # on it so Prometheus can reach them. Created once by bootstrap-vps.sh rather than by
-  # either compose file — whichever ran second would fail on an existing network.
+  # either compose file, whichever ran second would fail on an existing network.
   metrics:
     external: true
     name: ${METRICS_NETWORK:-metrics}

@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 /**
  * The public pages a visitor and a crawler both see.
  *
- * These are server-rendered on purpose — SEO is an explicit requirement of the brief — so
+ * These are server-rendered on purpose, SEO is an explicit requirement of the brief, so
  * every assertion below is also an assertion that the server-side data fetch worked. A
  * client-rendered page would pass a "the heading exists" test while serving a crawler an
  * empty document.
@@ -108,7 +108,7 @@ test.describe('accessibility basics', () => {
 
     // The primary navigation is a different element on each viewport, and asserting the
     // desktop one on a phone would never pass: the desktop `<nav>` is `display: none`
-    // below `md`, which removes it from the accessibility tree entirely — `getByRole`
+    // below `md`, which removes it from the accessibility tree entirely, `getByRole`
     // cannot see it, attached or not. On mobile the labelled nav only exists once the
     // menu is open, so opening it is part of what this test covers.
     if (testInfo.project.name === 'public-site-mobile') {

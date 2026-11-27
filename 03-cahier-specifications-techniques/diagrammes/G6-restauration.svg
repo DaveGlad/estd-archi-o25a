@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1478" height="1010" viewBox="0 0 1478 1010" font-family="Helvetica, Arial, sans-serif">
+<rect width="1478" height="1010" fill="#ffffff"/>
+<text x="16" y="30" font-size="17" font-weight="600" fill="#1b2733">Figure 7. Restauration, les trois environnements</text>
+<text x="16" y="52" font-size="11" fill="#5a6b7d">Trois différences : en dev on écrase sans précaution, en préproduction on repasse par l&#x27;anonymisation, en production on restaure sur une instance temporaire avant de basculer.</text>
+<rect x="8" y="72" width="1454" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="72" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="153.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 153.0)">Qualification</text>
+<rect x="8" y="234" width="1454" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="234" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="315.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 315.0)">Développement</text>
+<rect x="8" y="396" width="1454" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="396" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="477.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 477.0)">Préproduction</text>
+<rect x="8" y="558" width="1454" height="382" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="558" width="34" height="382" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="749.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 749.0)">Production</text>
+<path d="M 166.0 129.0 L 284.0 129.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 129.0 L 556.0 129.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 599.0 172.0 L 599.0 198.0 L 139.0 198.0 L 139.0 260.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 291.0 L 284.0 291.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 291.0 L 514.0 291.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 291.0 L 802.0 291.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 599.0 172.0 L 599.0 211.0 L 139.0 211.0 L 139.0 422.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 453.0 L 284.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 453.0 L 514.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 453.0 L 744.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 914.0 453.0 L 974.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1144.0 453.0 L 1262.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 599.0 172.0 L 599.0 224.0 L 139.0 224.0 L 139.0 584.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 615.0 L 284.0 615.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 615.0 L 514.0 615.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 615.0 L 744.0 615.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 914.0 615.0 L 1016.0 615.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 658.0 L 1059.0 684.0 L 139.0 684.0 L 139.0 694.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 54.0 725.0 L 40 725.0 L 40 615.0 L 744.0 615.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 658.0 L 1059.0 697.0 L 369.0 697.0 L 369.0 694.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 725.0 L 514.0 725.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 725.0 L 786.0 725.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 829.0 768.0 L 829.0 798.0 L 139.0 798.0 L 139.0 694.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 872.0 725.0 L 974.0 725.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 756.0 L 1059.0 782.0 L 139.0 782.0 L 139.0 804.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 835.0 L 284.0 835.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 835.0 L 572.0 835.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<circle cx="139.0" cy="129.0" r="27.0" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Perte de données</text>
+<text x="139.0" y="187.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">ou incident</text>
+<rect x="284.0" y="98.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="369.0" y="120.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Qualifier l&#x27;incident</text>
+<text x="369.0" y="133.0" font-size="10.5" fill="#1b2733" text-anchor="middle">périmètre et dernier état</text>
+<text x="369.0" y="146.0" font-size="10.5" fill="#1b2733" text-anchor="middle">sain</text>
+<polygon points="599.0,86.0 642.0,129.0 599.0,172.0 556.0,129.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 586.0 116.0 L 612.0 142.0 M 612.0 116.0 L 586.0 142.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="650.0" y="126.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Quel</text>
+<text x="650.0" y="139.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">environnement ?</text>
+<rect x="54.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="295.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Arrêter les conteneurs</text>
+<rect x="284.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="288.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Restaurer la dernière</text>
+<text x="369.0" y="301.5" font-size="10.5" fill="#1b2733" text-anchor="middle">sauvegarde hebdomadaire</text>
+<rect x="514.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="295.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Redémarrer et vérifier</text>
+<circle cx="829.0" cy="291.0" r="27.0" fill="#ffffff" stroke="#2f5d8c" stroke-width="3.5"/>
+<text x="829.0" y="336.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Restauré, aucune</text>
+<text x="829.0" y="349.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">validation requise</text>
+<rect x="54.0" y="422.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="139.0" y="457.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Prévenir l&#x27;équipe projet</text>
+<rect x="284.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="457.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Arrêter les conteneurs</text>
+<rect x="514.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="450.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Restaurer depuis la</text>
+<text x="599.0" y="463.5" font-size="10.5" fill="#1b2733" text-anchor="middle">production de la veille</text>
+<rect x="744.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="450.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Anonymiser les</text>
+<text x="829.0" y="463.5" font-size="10.5" fill="#1b2733" text-anchor="middle">données personnelles</text>
+<rect x="974.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="1059.0" y="457.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Redémarrer, tests E2E</text>
+<circle cx="1289.0" cy="453.0" r="27.0" fill="#ffffff" stroke="#2f5d8c" stroke-width="3.5"/>
+<text x="1289.0" y="498.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Restauré,</text>
+<text x="1289.0" y="511.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">équipe notifiée</text>
+<rect x="54.0" y="584.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="139.0" y="612.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Déclarer l&#x27;incident</text>
+<text x="139.0" y="625.5" font-size="10.5" fill="#1b2733" text-anchor="middle">chef de projet et client</text>
+<rect x="284.0" y="584.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="612.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Activer la page</text>
+<text x="369.0" y="625.5" font-size="10.5" fill="#1b2733" text-anchor="middle">de maintenance</text>
+<rect x="514.0" y="584.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="599.0" y="606.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Choisir le point de</text>
+<text x="599.0" y="619.0" font-size="10.5" fill="#1b2733" text-anchor="middle">restauration</text>
+<text x="599.0" y="632.0" font-size="10.5" fill="#1b2733" text-anchor="middle">dump + rejeu du journal</text>
+<rect x="744.0" y="584.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="612.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Restaurer sur une</text>
+<text x="829.0" y="625.5" font-size="10.5" fill="#1b2733" text-anchor="middle">instance temporaire</text>
+<polygon points="1059.0,572.0 1102.0,615.0 1059.0,658.0 1016.0,615.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 1046.0 602.0 L 1072.0 628.0 M 1072.0 602.0 L 1046.0 628.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="1110.0" y="612.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Contrôles</text>
+<text x="1110.0" y="625.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">d&#x27;intégrité OK ?</text>
+<rect x="54.0" y="694.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="722.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Reculer d&#x27;un point</text>
+<text x="139.0" y="735.5" font-size="10.5" fill="#1b2733" text-anchor="middle">de restauration</text>
+<rect x="284.0" y="694.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="722.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Basculer sur</text>
+<text x="369.0" y="735.5" font-size="10.5" fill="#1b2733" text-anchor="middle">l&#x27;instance restaurée</text>
+<rect x="514.0" y="694.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="729.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Tests de fumée</text>
+<polygon points="829.0,682.0 872.0,725.0 829.0,768.0 786.0,725.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 816.0 712.0 L 842.0 738.0 M 842.0 712.0 L 816.0 738.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="880.0" y="729.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Parcours OK ?</text>
+<rect x="974.0" y="694.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="1059.0" y="729.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Désactiver la maintenance</text>
+<rect x="54.0" y="804.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="139.0" y="832.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Informer le client</text>
+<text x="139.0" y="845.5" font-size="10.5" fill="#1b2733" text-anchor="middle">des données perdues</text>
+<rect x="284.0" y="804.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="369.0" y="839.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Post-mortem sous 48 h</text>
+<circle cx="599.0" cy="835.0" r="27.0" fill="#ffffff" stroke="#2f5d8c" stroke-width="3.5"/>
+<text x="599.0" y="880.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Service rétabli</text>
+<text x="461.0" y="192.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Développement</text>
+<text x="387.4" y="205.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Préproduction</text>
+<text x="313.8" y="218.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Production</text>
+<text x="783.0" y="678.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="741.6" y="691.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="622.0" y="792.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="923.0" y="705.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<circle cx="24" cy="966" r="8" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="40" y="970" font-size="10" fill="#43525f">Événement de début</text>
+<rect x="146.8" y="959" width="18" height="14" rx="3" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="170.8" y="970" font-size="10" fill="#43525f">Tâche</text>
+<rect x="204.8" y="959" width="18" height="14" rx="3" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="228.8" y="970" font-size="10" fill="#43525f">Tâche automatique</text>
+<rect x="330.0" y="959" width="18" height="14" rx="3" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="354.0" y="970" font-size="10" fill="#43525f">Tâche humaine</text>
+<polygon points="440.8,958 448.8,966 440.8,974 432.8,966" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="456.8" y="970" font-size="10" fill="#43525f">Passerelle exclusive</text>
+<rect x="574.8" y="959" width="18" height="14" rx="3" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
+<text x="598.8" y="970" font-size="10" fill="#43525f">Appel de sous-processus</text>
+<circle cx="741.5999999999999" cy="966" r="8" fill="#ffffff" stroke="#2f5d8c" stroke-width="3"/>
+<text x="757.5999999999999" y="970" font-size="10" fill="#43525f">Événement de fin</text>
+<circle cx="861.1999999999999" cy="966" r="8" fill="#fdecea" stroke="#a6342a" stroke-width="3"/>
+<text x="877.1999999999999" y="970" font-size="10" fill="#43525f">Fin sur erreur</text>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5a6b7d"/></marker></defs>
+</svg>

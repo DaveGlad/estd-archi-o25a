@@ -8,7 +8,7 @@ type Tone = 'info' | 'success' | 'warning' | 'error';
  * The coloured rule is vertical, on the left, rather than a tinted border on all four
  * sides: the block stays quiet in the page and the colour does not compete with the text.
  *
- * The icon duplicates whatever the colour conveys. That is not decoration — colour alone
+ * The icon duplicates whatever the colour conveys. That is not decoration, colour alone
  * is not an accessible signal (WCAG 1.4.1), and a red block means nothing to a reader who
  * cannot tell it apart from the warning one.
  */

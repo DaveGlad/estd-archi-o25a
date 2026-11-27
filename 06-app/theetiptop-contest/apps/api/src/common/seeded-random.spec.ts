@@ -78,7 +78,7 @@ describe('seeded random generator', () => {
      *
      * `nextUint32() % bound` maps 2^32 values onto `bound` buckets, and unless the bound
      * divides 2^32 the first buckets get one extra value each. The rejection sampling in
-     * `nextBelow` removes that bias — and the bias is exactly what would make a
+     * `nextBelow` removes that bias, and the bias is exactly what would make a
      * 60/20/10/6/4 split come out as 60.01/19.99/… .
      *
      * The bound is deliberately 36: the size of the code alphabet, which does not divide

@@ -20,7 +20,7 @@ export class ExportController {
     description: [
       'Les clients ayant donné un **consentement commercial explicite**, et eux seuls.',
       '',
-      'Données minimisées : adresse, prénom, nom, date de consentement, tranche d’âge, nombre de participations. Ni téléphone, ni code postal, ni date de naissance exacte — une campagne a besoin d’adresser et de segmenter, pas de détenir un profil.',
+      'Données minimisées : adresse, prénom, nom, date de consentement, tranche d’âge, nombre de participations. Ni téléphone, ni code postal, ni date de naissance exacte, une campagne a besoin d’adresser et de segmenter, pas de détenir un profil.',
       '',
       'Chaque export écrit une ligne au journal d’audit : c’est une copie de données personnelles qui sort du système.',
       '',

@@ -13,7 +13,7 @@ import { EmployeeService } from './employee.service.js';
  * In-store employee back office.
  *
  * `@Roles('EMPLOYEE', 'ADMIN')` at class level: both are listed explicitly rather than
- * relying on a role hierarchy. `RolesGuard` has none on purpose — an administrator being
+ * relying on a role hierarchy. `RolesGuard` has none on purpose, an administrator being
  * implicitly an employee is how an admin-only endpoint ends up reachable by a till
  * employee after a refactor. Here an administrator genuinely needs access, to settle a
  * dispute, so the role is named.
@@ -31,7 +31,7 @@ export class EmployeeController {
     description: [
       'Recherche par fragment d’adresse électronique, fragment de nom, ou **code de ticket exact**.',
       '',
-      'Appuyée sur les index trigrammes `pg_trgm` : une recherche de sous-chaîne non ancrée n’est pas indexable par un B-tree, et un balayage séquentiel de la table clients ferait attendre l’employé pendant que la file s’allonge. C’est la solution retenue à la place d’Elasticsearch, écarté parce que non open source depuis la version 7.11 — voir `DECISIONS.md` § 3.',
+      'Appuyée sur les index trigrammes `pg_trgm` : une recherche de sous-chaîne non ancrée n’est pas indexable par un B-tree, et un balayage séquentiel de la table clients ferait attendre l’employé pendant que la file s’allonge. C’est la solution retenue à la place d’Elasticsearch, écarté parce que non open source depuis la version 7.11, voir `DECISIONS.md` § 3.',
       '',
       'Les comptes anonymisés sont exclus : il n’y a plus personne à qui remettre un lot.',
     ].join('\n'),

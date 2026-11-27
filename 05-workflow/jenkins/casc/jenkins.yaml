@@ -1,7 +1,7 @@
 # Jenkins configuration as code.
 #
 # Read at startup through CASC_JENKINS_CONFIG. Everything Jenkins needs to come up ready is
-# here, in the repository, under review — and nothing is clicked into the UI.
+# here, in the repository, under review, and nothing is clicked into the UI.
 #
 # This is what makes the CI reproducible. A Jenkins configured by hand is a snowflake: it
 # cannot be rebuilt after a disk failure, its history is nobody's memory, and the one person
@@ -13,7 +13,7 @@
 
 jenkins:
   systemMessage: |
-    Furious Ducks — intégration continue.
+    Furious Ducks, intégration continue.
     Configuration gérée par code : 05-workflow/jenkins/casc/jenkins.yaml.
     Toute modification passe par une merge request.
 
@@ -33,7 +33,7 @@ jenkins:
 
   # Matrix authorization rather than "logged-in users can do anything". Developers need to
   # read builds and replay them; they do not need to reconfigure the server, which is
-  # precisely the separation requirement n° 5 asks for — the pipeline is theirs, the CI
+  # precisely the separation requirement n° 5 asks for, the pipeline is theirs, the CI
   # administration is not.
   authorizationStrategy:
     globalMatrix:
@@ -71,20 +71,43 @@ jenkins:
           # run their own containers from here.
           - labelString: "docker"
             dockerTemplateBase:
-              image: "jenkins/agent:latest-jdk21"
+              # Built locally, see docker/Dockerfile.jenkins-agent. The stock agent has no
+              # Docker CLI, and every quality gate runs inside `agent { docker { image … } }`,
+              # which makes the agent itself call `docker run`. Without the client the build
+              # fails with "docker: not found", and the trace blames the step, not the image.
+              image: "furious-ducks/jenkins-agent:1"
               mounts:
                 - "type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock"
                 - "type=volume,source=nx-cache,destination=/cache"
                 - "type=volume,source=npm-cache,destination=/root/.npm"
+                # The deployment environment files. deploy.sh reads them from the host
+                # rather than from the checkout, so they are never in a workspace and
+                # never in the repository -- they hold the database password, the session
+                # secret and the till API keys. Read-only: a pipeline deploys, it does
+                # not rewrite the environment it deploys into.
+                - "type=bind,source=/etc/theetiptop/env,destination=/etc/theetiptop/env,readonly"
             remoteFs: "/home/jenkins/agent"
             connector:
               attach:
                 user: "root"
             instanceCapStr: "4"
             # Removed after each build. A reused agent carries the previous project's
-            # node_modules, its environment and occasionally its secrets — and a build that
+            # node_modules, its environment and occasionally its secrets, and a build that
             # only passes on a dirty agent is the hardest kind of failure to reproduce.
             removeVolumes: true
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          # The registry the pipelines push to. Read from the environment, never written
+          # in this file: it is in the repository and in every clone of it.
+          - usernamePassword:
+              scope: GLOBAL
+              id: registry-credentials
+              username: "${REGISTRY_USER}"
+              password: "${REGISTRY_PASSWORD}"
+              description: "Registry d'images auto-hébergé"
 
 security:
   queueItemAuthenticator:
@@ -125,8 +148,10 @@ jobs:
         branchSources {
           git {
             id('theetiptop-contest')
-            remote("https://git.${System.getenv('WORKFLOW_DOMAIN')}/furious-ducks/theetiptop-contest.git")
-            credentialsId('gitea-credentials')
+            // The public GitHub repository, which needs no credentials to clone. Gitea
+            // is deployed and waiting for the migration; pointing the job at an empty
+            // instance would give a pipeline with nothing to build.
+            remote('https://github.com/DaveGlad/estd-archi-o25a.git')
           }
         }
         factory {

@@ -2,7 +2,7 @@
  * Proportion gauge.
  *
  * The fill always keeps two visible pixels, including at zero per cent. Without that floor
- * a zero value and a missing value look identical — and on the prize distribution page,
+ * a zero value and a missing value look identical, and on the prize distribution page,
  * "0 % of the codes" and "no data" are very different statements.
  */
 export function Bar({

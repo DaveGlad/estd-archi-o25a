@@ -16,7 +16,7 @@ reports
 test-results
 
 # Build output, at any depth. `dist` alone would only match the root one, and a local
-# `nx prune` leaves apps/api/dist/workspace_modules behind — which the build stage then
+# `nx prune` leaves apps/api/dist/workspace_modules behind, which the build stage then
 # copies in, giving Nx two projects called @theetiptop-contest/shared and failing the build.
 dist
 **/dist
@@ -34,10 +34,11 @@ apps/api/src/generated
 .gitignore
 .github
 
-# Local tooling
+# Local tooling. The glob covers every editor and agent directory without naming them
+# one by one, which is a list that is always out of date.
 .vscode
 .idea
-.claude
+.*/
 .editorconfig
 .prettierrc
 .prettierignore

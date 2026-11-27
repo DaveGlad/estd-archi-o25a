@@ -17,7 +17,7 @@ import type { PrismaClient } from '../apps/api/src/generated/prisma/client';
  * Two of the tests below exist only to pin that down. They build a pool where one customer
  * holds many participations and several hold one each, then check that the draw treats
  * them identically. A draw over PARTICIPATIONS instead of PARTICIPANTS would pass every
- * other test in this suite and fail these two — which is the whole point.
+ * other test in this suite and fail these two, which is the whole point.
  *
  * Requires a seeded and generated database.
  */
@@ -84,8 +84,8 @@ describe('grand prize draw fairness', () => {
    * The fairness property itself, checked on a synthetic pool.
    *
    * Built in memory rather than by inserting thousands of participations: the question is
-   * about the drawing function, and the database's role — collapsing participations into
-   * participants — is already covered above.
+   * about the drawing function, and the database's role, collapsing participations into
+   * participants, is already covered above.
    */
   describe('every participant has the same chance', () => {
     it('gives a participant with 40 entries the same odds as one with 1', () => {
@@ -136,7 +136,7 @@ describe('grand prize draw fairness', () => {
       const fingerprint = () => createHash('sha256').update(pool.join('\n')).digest('hex');
 
       // The bailiff recomputes this from a database export: it has to be a pure function
-      // of the ordered pool and nothing else — no timestamp, no insertion order.
+      // of the ordered pool and nothing else, no timestamp, no insertion order.
       expect(fingerprint()).toBe(fingerprint());
       expect(fingerprint()).toMatch(/^[0-9a-f]{64}$/);
     });

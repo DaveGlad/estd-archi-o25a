@@ -3,7 +3,7 @@
  *
  * Changes nothing on screen. What it does is let a search engine understand what the
  * operation actually is, and makes the frequently-asked questions eligible for a rich
- * result — which is one of the few SEO levers that is entirely under our control.
+ * result, which is one of the few SEO levers that is entirely under our control.
  */
 
 import { SITE_URL } from '../../lib/site-url';

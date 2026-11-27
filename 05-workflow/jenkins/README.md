@@ -16,11 +16,11 @@ L'administration de Jenkins reste à l'équipe plateforme décrite au CST partie
 ## Les trois pipelines
 
 Le point 7 impose que le workflow s'adapte à tous les projets de l'agence. Trois formes de
-projet, trois pipelines — et c'est ce qui **prouve** la généricité au lieu de l'affirmer.
+projet, trois pipelines, et c'est ce qui **prouve** la généricité au lieu de l'affirmer.
 
 | Projet | Fichier | Où il vit réellement |
 |---|---|---|
-| Site administrable (le client Thé Tip Top) | — | `06-app/theetiptop-contest/Jenkinsfile` |
+| Site administrable (le client Thé Tip Top) |, | `06-app/theetiptop-contest/Jenkinsfile` |
 | Site vitrine HTML/CSS | `Jenkinsfile.site-vitrine` | À copier à la racine de `demo-site-vitrine` |
 | Application mobile hybride | `Jenkinsfile.app-mobile` | À copier à la racine de `demo-app-mobile` |
 
@@ -34,7 +34,7 @@ soit.
 |---|---|---|---|
 | Optimisation des assets | **Tout le build** : minification HTML/CSS/JS, AVIF/WebP, pré-compression | Faite par Next.js et webpack pendant le build | Bundle Metro |
 | Tests | Validation HTML, liens morts, Lighthouse | Unitaires, intégration (vraie base), fonctionnels sur l'environnement déployé | Unitaires, puis parcours sur émulateur |
-| Artefact | Image Nginx | Trois images Docker | **`.aab` / `.ipa` signés** — pas une image |
+| Artefact | Image Nginx | Trois images Docker | **`.aab` / `.ipa` signés**, pas une image |
 | Déploiement | Automatique en dev, validé en prod | Automatique en dev et préprod, validé en prod | **Pas de déploiement** : mise à jour OTA, puis piste de test |
 
 La troisième colonne est celle qui casse les hypothèses confortables des deux autres, et le
@@ -75,7 +75,7 @@ ne peut pas recommencer.
 ## Jenkins est configuré par code, pas à la souris
 
 `casc/jenkins.yaml` est lu au démarrage par le greffon Configuration as Code. Tout ce dont
-Jenkins a besoin pour être opérationnel y est, dans le dépôt, relu en merge request — et
+Jenkins a besoin pour être opérationnel y est, dans le dépôt, relu en merge request, et
 rien n'est cliqué dans l'interface.
 
 C'est ce qui rend la CI reproductible. **Un Jenkins configuré à la main est un flocon de
@@ -93,7 +93,7 @@ Trois décisions qui s'y lisent :
 | Jobs **multibranches** | GitFlow crée et supprime des branches en permanence. Une liste de jobs tenue à la main dérive en un sprint, et la branche qui manque est toujours celle qui comptait |
 
 `plugins.txt` épingle les versions. Un greffon qui bouge sous le contrôleur change le
-comportement de tous les pipelines sans que rien ne change dans ce dépôt — et une mise à
+comportement de tous les pipelines sans que rien ne change dans ce dépôt, et une mise à
 jour doit être une merge request, comme le reste. La liste ne contient que ce que les
 trois `Jenkinsfile` utilisent réellement : un contrôleur à quatre-vingts greffons est un
 contrôleur dont chaque montée de version casse quelque chose.
@@ -153,4 +153,4 @@ permet de publier une application qui se fait passer pour celle du client.
 en profondeur 1 par défaut, et `nx affected` a besoin de la base de comparaison : sans
 l'historique, il ne trouve pas le point de divergence et **reconstruit tout**, en silence.
 Le pipeline reste vert, simplement trois fois plus lent, ce qui est la pire forme de
-régression — personne ne la cherche. C'est la tâche W19 du backlog.
+régression, personne ne la cherche. C'est la tâche W19 du backlog.

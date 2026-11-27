@@ -96,15 +96,15 @@ Les trois risques les plus critiques ont tous une parade qui consiste à retirer
 
 | Lot | Intitulé | Charge | Coût |
 |---|---|---|---|
-| 0 | Cadrage et lancement | 3 j | 1 695 € |
-| 1 | Études et stratégie | 18 j | 8 145 € |
-| 2 | Conception fonctionnelle | 14 j | 7 260 € |
-| 3 | Identité visuelle et maquettes | 20 j | 9 320 € |
-| 4 | Développement | 63 j | 33 535 € |
-| 5 | Recette et mise en ligne | 19 j | 10 185 € |
-| 6 | Dispositif de communication | 15 j | 6 525 € |
-| 7 | Pilotage et suivi | 10 j | 5 650 € |
-| | **Total** | **162 j** | **82 315 €** |
+| 0 | Cadrage et lancement | 3 j | 1 980 € |
+| 1 | Études et stratégie | 18 j | 9 180 € |
+| 2 | Conception fonctionnelle | 14 j | 8 140 € |
+| 3 | Identité visuelle et maquettes | 20 j | 10 410 € |
+| 4 | Développement | 63 j | 37 450 € |
+| 5 | Recette et mise en ligne | 19 j | 11 540 € |
+| 6 | Dispositif de communication | 15 j | 7 275 € |
+| 7 | Pilotage et suivi | 10 j | 6 600 € |
+| | **Total** | **162 j** | **92 575 €** |
 
 ### Détail des tâches
 

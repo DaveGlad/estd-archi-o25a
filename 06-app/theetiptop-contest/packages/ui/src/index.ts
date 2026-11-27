@@ -3,7 +3,7 @@
  * (`apps/admin`).
  *
  * The split into two Next.js applications is the decision recorded in
- * `DECISIONS.md` § 3 — a separate back office means a smaller attack surface on the
+ * `DECISIONS.md` § 3, a separate back office means a smaller attack surface on the
  * public site and genuinely distinct rights. That split only works if the two
  * applications look like one product, which is what this package is for: the tokens, the
  * primitives and the charts live here, so a change to the brand reaches both.

@@ -1,0 +1,24 @@
+# Node toolchain for the pipeline's quality gates.
+#
+#   docker build -f Dockerfile.node-ci -t furious-ducks/node-ci:1 .
+#
+# `node:24-alpine` plus git, and that `plus git` is the whole point. Nx computes the
+# affected project graph by asking git what changed, so inside the stock image every
+# `nx affected` ends with
+#
+#     NX   spawnSync git ENOENT
+#
+# which names neither git nor the image, and reads like an Nx bug.
+#
+# An image rather than `apk add git` in each stage: `reuseNode true` keeps the workspace
+# between stages but starts a NEW container for each, so the package would be installed
+# four times per build, over the network, for the life of the project.
+
+FROM node:24-alpine
+
+RUN apk add --no-cache git openssh-client ca-certificates
+
+# Nx refuses to read a repository owned by another uid, which is what happens when the
+# workspace is bind-mounted from an agent running as a different user. The build then
+# fails on "detected dubious ownership", again without naming the cause.
+RUN git config --global --add safe.directory '*'

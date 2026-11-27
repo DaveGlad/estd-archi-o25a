@@ -7,7 +7,7 @@
 #
 # Task W14, and the reason it is a separate task from W13: a backup that has never been
 # restored is a hypothesis. This script is what turns it into a fact, and it runs on a
-# schedule — monthly, weekly during the 30 days of the contest, as written in CDC part F.
+# schedule, monthly, weekly during the 30 days of the contest, as written in CDC part F.
 #
 # It restores into a container created for the occasion and destroyed afterwards. It never
 # touches a live database: a restore drill that can damage production is a drill nobody
@@ -15,13 +15,13 @@
 
 set -Eeuo pipefail
 
-readonly KIND="${1:-daily}"
+KIND="${1:-daily}"
 readonly REMOTE="${BACKUP_REMOTE:?BACKUP_REMOTE is required}"
 readonly WORK="$(mktemp -d /tmp/restore-test.XXXXXX)"
 readonly CONTAINER="restore-test-$$"
 readonly REPORT="/var/log/theetiptop/restore-test-$(date -u +%Y-%m-%d).md"
 
-# Every exit path cleans up, including the failures — otherwise the first failed drill
+# Every exit path cleans up, including the failures, otherwise the first failed drill
 # leaves a container and a few gigabytes behind, and the second one fails on disk space
 # for reasons that have nothing to do with the backup.
 cleanup() {
@@ -37,12 +37,41 @@ pass() { log "✅ $*"; }
 FAILURES=0
 mkdir -p "$(dirname "$REPORT")"
 
-log "# Test de restauration — $(date -u +%Y-%m-%d\ %H:%M) UTC"
+log "# Test de restauration, $(date -u +%Y-%m-%d\ %H:%M) UTC"
 log ""
 
 # --------------------------------------------------------------- 1. fetch and decrypt
-STAMP="${2:-$(rclone lsf "${REMOTE}/${KIND}/" | sort | tail -1)}"
-[[ -n "$STAMP" ]] || { fail "no backup found in ${REMOTE}/${KIND}/"; exit 1; }
+# Fall back to the other set rather than cry wolf on day one.
+#
+# The timer asks for the monthly archive, and the first monthly one is made at the start
+# of the following month. A fresh installation would therefore alert on its very first
+# run, for a backup that is not late but not yet due, and an alert that fires when nothing
+# is wrong is an alert the on-call learns to ignore.
+#
+# Falling back is said out loud. Finding NOTHING at all is still a failure, because that
+# one means the backups are not running.
+#
+# `|| true` on both listings, and it is not decoration. rclone answers exit code 3 for a
+# directory that does not exist, and a failed command substitution inside an assignment
+# carries its status to `set -e`, so the script died on the very line that was supposed to
+# detect the missing directory. The fallback below had become unreachable: the first run
+# aborted with status 3 and no message at all, which reads like a broken script rather
+# than a backup set that is simply one month young.
+latest_in() { rclone lsf "${REMOTE}/${1}/" 2>/dev/null | sort | tail -1 || true; }
+
+STAMP="${2:-$(latest_in "$KIND" || true)}"
+if [[ -z "$STAMP" ]]; then
+  for fallback in daily monthly; do
+    [[ "$fallback" == "$KIND" ]] && continue
+    STAMP="$(latest_in "$fallback" || true)"
+    if [[ -n "$STAMP" ]]; then
+      log "no ${KIND} archive yet, falling back to the latest ${fallback} one"
+      KIND="$fallback"
+      break
+    fi
+  done
+fi
+[[ -n "$STAMP" ]] || { fail "no backup found at all in ${REMOTE}"; exit 1; }
 
 log "Sauvegarde testée : \`${STAMP}\`"
 
@@ -110,16 +139,27 @@ fi
 # b) The split the bailiff holds a copy of. A restore that lost rows unevenly would still
 #    produce a database that opens and queries fine, and a contest that no longer matches
 #    its filed rules.
+#
+# Two details in this one query, both of which had to be got wrong once to be seen.
+#
+# The separator is dollar-quoted, `$sep$, $sep$`. It is a STRING, so double quotes are not
+# an option, Postgres reads those as a column name and answers `column ", " does not
+# exist`; and a single quote cannot appear inside the single-quoted shell argument the
+# query travels in. Dollar quoting is the one form that needs neither.
+#
+# And the sort runs on the number, with the formatting applied afterwards. Ordering the
+# text would have put `6.00` ahead of `20.00`, since `.` sorts before `0`, so the check
+# would have failed on a perfectly correct restore.
 SPLIT="$(query '
-  SELECT string_agg(share, ", " ORDER BY share DESC)
+  SELECT string_agg(to_char(share, $fmt$FM990.00$fmt$), $sep$, $sep$ ORDER BY share DESC)
   FROM (
-    SELECT round(count(*) * 100.0 / sum(count(*)) OVER (), 2)::text AS share
+    SELECT round(count(*) * 100.0 / sum(count(*)) OVER (), 2) AS share
     FROM "TicketCode" GROUP BY "prizeId"
   ) s')"
 if [[ "$SPLIT" == "60.00, 20.00, 10.00, 6.00, 4.00" ]]; then
   pass "Répartition : ${SPLIT} %"
 else
-  fail "Répartition : ${SPLIT} % — attendu 60.00, 20.00, 10.00, 6.00, 4.00"
+  fail "Répartition : ${SPLIT} %, attendu 60.00, 20.00, 10.00, 6.00, 4.00"
 fi
 
 # c) Participations and their users came back together. A dump restored without its
@@ -132,10 +172,19 @@ ORPHANS="$(query '
 
 # d) The indexes, not just the data. pg_restore rebuilds them, and a restore that
 #    "succeeded" without the unique index on `code` would let the same code be played
-#    twice — the one guarantee the whole application rests on.
+#    twice, the one guarantee the whole application rests on.
+#
+#    Both comparisons are against STRINGS here, the table's name as a value in a catalogue
+#    column and a pattern, so both are dollar-quoted like the separator above. They were
+#    written `\"TicketCode\"`, which inside a single-quoted shell argument keeps its
+#    backslashes and reaches Postgres as nonsense; and the `2>/dev/null || echo 0` that
+#    followed turned the resulting error into a count of zero. The check then reported the
+#    index as missing on a database that had it, which is the one answer worse than no
+#    check at all: a red light that says nothing about the thing it is watching. The
+#    silencer is gone with it, so a broken query fails as a broken query.
 UNIQUE_INDEX="$(query '
   SELECT count(*) FROM pg_indexes
-  WHERE tablename = \"TicketCode\" AND indexdef LIKE \"%UNIQUE%(code)%\"' 2>/dev/null || echo 0)"
+  WHERE tablename = $t$TicketCode$t$ AND indexdef LIKE $p$%UNIQUE%(code)%$p$')"
 [[ "$UNIQUE_INDEX" -ge 1 ]] && pass "Index unique sur le code présent" || fail "Index unique sur le code ABSENT"
 
 # --------------------------------------------------------------------- 5. verdict

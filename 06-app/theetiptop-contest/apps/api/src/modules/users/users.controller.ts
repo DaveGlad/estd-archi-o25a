@@ -99,7 +99,7 @@ export class UsersController {
     description: [
       'Droit à l’effacement, article 17 du RGPD, mis en œuvre par **anonymisation et non par suppression**.',
       '',
-      'Les données identifiantes sont effacées et les sessions révoquées ; les participations sont conservées sous une identité anonymisée. Justification : l’article 17.3 autorise la conservation nécessaire au respect d’une obligation légale et à la constatation de droits, et un jeu-concours contrôlé par un huissier en relève — sans les participations, la répartition 60/20/10/6/4 % ne serait plus démontrable et un lot remis ne serait plus prouvable.',
+      'Les données identifiantes sont effacées et les sessions révoquées ; les participations sont conservées sous une identité anonymisée. Justification : l’article 17.3 autorise la conservation nécessaire au respect d’une obligation légale et à la constatation de droits, et un jeu-concours contrôlé par un huissier en relève, sans les participations, la répartition 60/20/10/6/4 % ne serait plus démontrable et un lot remis ne serait plus prouvable.',
       '',
       'Détaillé dans le cahier de légalité, partie H du cahier des charges.',
     ].join('\n'),

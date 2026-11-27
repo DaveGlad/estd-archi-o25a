@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1001.5999999999999" height="1954" viewBox="0 0 1001.5999999999999 1954" font-family="Helvetica, Arial, sans-serif">
+<rect width="1001.5999999999999" height="1954" fill="#ffffff"/>
+<text x="16" y="30" font-size="17" font-weight="600" fill="#1b2733">Figure 2. Cycle de vie d&#x27;une fonctionnalité, du besoin à la production</text>
+<text x="16" y="52" font-size="11" fill="#5a6b7d">La passerelle « Build vert et tests E2E OK ? » est ce qui rend la Definition of Done vérifiable au lieu de déclarative : code écrit ne vaut pas story terminée.</text>
+<path d="M 139.0 156.0 L 139.0 208.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 270.0 L 139.0 318.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 380.0 L 139.0 428.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 490.0 L 139.0 526.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 96.0 569.0 L 66.0 569.0 L 66.0 349.0 L 54.0 349.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 612.0 L 139.0 648.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 710.0 L 139.0 758.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 820.0 L 139.0 856.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 96.0 899.0 L 66.0 899.0 L 66.0 349.0 L 54.0 349.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 942.0 L 139.0 978.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 1040.0 L 139.0 1076.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 96.0 1119.0 L 66.0 1119.0 L 66.0 129.0 L 112.0 129.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 1162.0 L 139.0 1198.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 1260.0 L 139.0 1308.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 1370.0 L 139.0 1418.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 1480.0 L 139.0 1516.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 182.0 1559.0 L 284.0 1559.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 284.0 1559.0 L 254.0 1559.0 L 254.0 1339.0 L 224.0 1339.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 1602.0 L 139.0 1638.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 139.0 1700.0 L 139.0 1752.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<circle cx="139.0" cy="129.0" r="27.0" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Story sélectionnée</text>
+<text x="139.0" y="187.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">en sprint planning</text>
+<rect x="54.0" y="208.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="139.0" y="243.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Créer la branche feature</text>
+<rect x="54.0" y="318.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="139.0" y="353.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Développer et committer</text>
+<rect x="54.0" y="428.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="139.0" y="456.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Ouvrir une merge request</text>
+<text x="139.0" y="469.5" font-size="10.5" fill="#1b2733" text-anchor="middle">vers develop</text>
+<polygon points="139.0,526.0 182.0,569.0 139.0,612.0 96.0,569.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 126.0 556.0 L 152.0 582.0 M 152.0 556.0 L 126.0 582.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="190.0" y="566.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Revue de code</text>
+<text x="190.0" y="579.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">approuvée ?</text>
+<rect x="54.0" y="648.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="683.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Merge sur develop</text>
+<rect x="54.0" y="758.0" width="170" height="62" rx="8" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
+<text x="139.0" y="786.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Processus G.2</text>
+<text x="139.0" y="799.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Déploiement dev</text>
+<polygon points="139.0,856.0 182.0,899.0 139.0,942.0 96.0,899.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 126.0 886.0 L 152.0 912.0 M 152.0 886.0 L 126.0 912.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="190.0" y="896.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Build vert et</text>
+<text x="190.0" y="909.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">tests E2E OK ?</text>
+<rect x="54.0" y="978.0" width="170" height="62" rx="8" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="139.0" y="1006.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Story conforme à la</text>
+<text x="139.0" y="1019.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Definition of Done</text>
+<polygon points="139.0,1076.0 182.0,1119.0 139.0,1162.0 96.0,1119.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 126.0 1106.0 L 152.0 1132.0 M 152.0 1106.0 L 126.0 1132.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="190.0" y="1123.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Fin de sprint ?</text>
+<rect x="54.0" y="1198.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="139.0" y="1233.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Créer la branche release</text>
+<rect x="54.0" y="1308.0" width="170" height="62" rx="8" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
+<text x="139.0" y="1336.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Processus G.3</text>
+<text x="139.0" y="1349.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Déploiement préproduction</text>
+<rect x="54.0" y="1418.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="139.0" y="1446.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Sprint review avec le</text>
+<text x="139.0" y="1459.5" font-size="10.5" fill="#1b2733" text-anchor="middle">client</text>
+<polygon points="139.0,1516.0 182.0,1559.0 139.0,1602.0 96.0,1559.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 126.0 1546.0 L 152.0 1572.0 M 152.0 1546.0 L 126.0 1572.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="190.0" y="1563.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Recette validée ?</text>
+<rect x="284.0" y="1528.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="369.0" y="1556.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Correctifs sur</text>
+<text x="369.0" y="1569.5" font-size="10.5" fill="#1b2733" text-anchor="middle">la branche release</text>
+<rect x="54.0" y="1638.0" width="170" height="62" rx="8" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
+<text x="139.0" y="1666.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Processus G.4</text>
+<text x="139.0" y="1679.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Déploiement production</text>
+<circle cx="139.0" cy="1779.0" r="27.0" fill="#ffffff" stroke="#2f5d8c" stroke-width="3.5"/>
+<text x="139.0" y="1824.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Fonctionnalité</text>
+<text x="139.0" y="1837.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">en production</text>
+<text x="82.0" y="562.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="147.0" y="630.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="82.0" y="892.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="147.0" y="960.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="82.0" y="1112.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="147.0" y="1180.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="233.0" y="1539.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="147.0" y="1620.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<circle cx="24" cy="1910" r="8" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="40" y="1914" font-size="10" fill="#43525f">Événement de début</text>
+<rect x="146.8" y="1903" width="18" height="14" rx="3" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="170.8" y="1914" font-size="10" fill="#43525f">Tâche</text>
+<rect x="204.8" y="1903" width="18" height="14" rx="3" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="228.8" y="1914" font-size="10" fill="#43525f">Tâche automatique</text>
+<rect x="330.0" y="1903" width="18" height="14" rx="3" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="354.0" y="1914" font-size="10" fill="#43525f">Tâche humaine</text>
+<polygon points="440.8,1902 448.8,1910 440.8,1918 432.8,1910" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="456.8" y="1914" font-size="10" fill="#43525f">Passerelle exclusive</text>
+<rect x="574.8" y="1903" width="18" height="14" rx="3" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
+<text x="598.8" y="1914" font-size="10" fill="#43525f">Appel de sous-processus</text>
+<circle cx="741.5999999999999" cy="1910" r="8" fill="#ffffff" stroke="#2f5d8c" stroke-width="3"/>
+<text x="757.5999999999999" y="1914" font-size="10" fill="#43525f">Événement de fin</text>
+<circle cx="861.1999999999999" cy="1910" r="8" fill="#fdecea" stroke="#a6342a" stroke-width="3"/>
+<text x="877.1999999999999" y="1914" font-size="10" fill="#43525f">Fin sur erreur</text>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5a6b7d"/></marker></defs>
+</svg>

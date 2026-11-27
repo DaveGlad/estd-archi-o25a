@@ -1,4 +1,4 @@
-// Pipeline of the Thé Tip Top contest site — the "site administrable" of the three
+// Pipeline of the Thé Tip Top contest site, the "site administrable" of the three
 // project shapes the agency's workflow has to serve.
 //
 // This file lives in the PROJECT repository, not in Jenkins. That is requirement n° 5 of
@@ -16,10 +16,18 @@
 // Read `05-workflow/jenkins/README.md` for the agent images and credential ids.
 
 pipeline {
-  // No global agent: each stage picks the image it needs. A stage that only runs `docker`
-  // has no business carrying a 400 MB Node toolchain, and the Docker-in-Docker socket is
-  // mounted only where it is actually used.
-  agent none
+  // One agent for the whole pipeline, and one workspace with it.
+  //
+  // `agent none` was the first shape, on the reasoning that a stage running only `docker`
+  // need not carry a Node toolchain. It does not work here: with no global agent each
+  // stage allocates its own node and its own EMPTY workspace, and `skipDefaultCheckout`
+  // means nothing checks the code out again. The build failed on `npm ci` complaining
+  // about a missing package-lock.json that is, in fact, committed.
+  //
+  // `reuseNode true` on the per-stage Docker agents is what makes this efficient: each
+  // stage still runs in the image it needs, inside this workspace, without a second
+  // checkout.
+  agent { label 'docker' }
 
   options {
     timestamps()
@@ -34,11 +42,19 @@ pipeline {
   }
 
   environment {
-    REGISTRY          = 'registry.wk-archi-o25a-15m-g1.fr'
+    // The single host, because that is the only name that resolves today. The registry
+    // answers on its `/v2` path -- see 05-workflow/compose.workflow-singlehost.yml. It
+    // moves back to registry.wk-archi-… the day that domain is bought.
+    REGISTRY          = 'srv1581779.hstgr.cloud'
     IMAGE_NAMESPACE   = 'theetiptop'
     // The commit, never `latest`. A deployed artefact has to be identifiable and
-    // reversible — CST D.2, "Versionnement des images".
-    TAG               = "${env.GIT_COMMIT ?: 'dev'}".take(12)
+    // reversible, CST D.2, "Versionnement des images".
+    //
+    // `env.GIT_COMMIT` is not populated at this point in a multibranch job, so the
+    // fallback was silently winning and every build pushed the same `dev` tag, exactly
+    // the moving tag this is meant to avoid. The checkout step records the real commit in
+    // `COMMIT_SHA`, and the build number keeps the two apart if a commit is rebuilt.
+    TAG               = "${env.GIT_COMMIT ?: 'b' + env.BUILD_NUMBER}".take(12)
     NX_BASE           = 'origin/develop'
     // Self-hosted build cache on a persistent volume. No hosted cache service: that would
     // breach requirement n° 6 (open source only) and add an external dependency.
@@ -49,23 +65,27 @@ pipeline {
   stages {
 
     stage('Checkout') {
-      agent { label 'docker' }
       steps {
         // Full history, not the shallow default: `nx affected` needs the merge base, and a
         // shallow clone makes it fall back to rebuilding everything.
-        checkout scmGit(
-          branches: scm.branches,
-          extensions: [[$class: 'CloneOption', shallow: false, noTags: false]],
-          userRemoteConfigs: scm.userRemoteConfigs
-        )
-        stash name: 'source', useDefaultExcludes: false
+        script {
+          // The real commit, recorded from the checkout itself rather than guessed from
+          // an environment variable that is empty here.
+          def scmVars = checkout scmGit(
+            branches: scm.branches,
+            extensions: [[$class: 'CloneOption', shallow: false, noTags: false]],
+            userRemoteConfigs: scm.userRemoteConfigs
+          )
+          env.TAG = scmVars.GIT_COMMIT.take(12)
+          echo "Artefacts tagged ${env.TAG}"
+        }
       }
     }
 
     stage('Install') {
       agent {
         docker {
-          image 'node:24-alpine'
+          image 'furious-ducks/node-ci:1'
           // The npm and Nx caches survive between builds. Without them every build
           // re-downloads the whole dependency tree, which is slow and, for a workflow sold
           // on an eco-responsible footprint, wasteful of bandwidth that costs real energy.
@@ -85,18 +105,26 @@ pipeline {
     }
 
     stage('Quality gates') {
-      agent {
-        docker {
-          image 'node:24-alpine'
-          args '-v nx-cache:/cache -v npm-cache:/root/.npm'
-          reuseNode true
-        }
-      }
+      // No `agent` on this stage. Declarative Jenkins refuses one on a stage that holds a
+      // `parallel` block: "agent is not allowed in stage as it contains parallel or
+      // matrix stages". The agent goes on each branch instead, which is also more honest
+      // about what runs where.
+      //
       // Four independent checks. Run in parallel because none of them needs another's
       // output, and because a developer should learn about all four failures at once
       // rather than one per push.
       parallel {
         stage('Lint') {
+        agent {
+          docker {
+            image 'furious-ducks/node-ci:1'
+            // Built on the host, never pushed: `alwaysPull false` stops Docker looking
+            // for it on Docker Hub, where it does not exist.
+            alwaysPull false
+            args '-v nx-cache:/cache -v npm-cache:/root/.npm'
+            reuseNode true
+          }
+        }
           steps {
             dir('06-app/theetiptop-contest') {
               sh 'npx nx affected -t lint --base=$NX_BASE --head=HEAD'
@@ -104,6 +132,16 @@ pipeline {
           }
         }
         stage('Types') {
+        agent {
+          docker {
+            image 'furious-ducks/node-ci:1'
+            // Built on the host, never pushed: `alwaysPull false` stops Docker looking
+            // for it on Docker Hub, where it does not exist.
+            alwaysPull false
+            args '-v nx-cache:/cache -v npm-cache:/root/.npm'
+            reuseNode true
+          }
+        }
           steps {
             dir('06-app/theetiptop-contest') {
               sh 'npx nx affected -t typecheck --base=$NX_BASE --head=HEAD'
@@ -111,6 +149,16 @@ pipeline {
           }
         }
         stage('Unit tests') {
+        agent {
+          docker {
+            image 'furious-ducks/node-ci:1'
+            // Built on the host, never pushed: `alwaysPull false` stops Docker looking
+            // for it on Docker Hub, where it does not exist.
+            alwaysPull false
+            args '-v nx-cache:/cache -v npm-cache:/root/.npm'
+            reuseNode true
+          }
+        }
           steps {
             dir('06-app/theetiptop-contest') {
               sh 'npm run test:unit'
@@ -118,14 +166,34 @@ pipeline {
           }
         }
         stage('Secret scan') {
+          // No Docker agent on this one, deliberately. It runs gitleaks IN a container,
+          // so it needs the Docker CLI of the host agent. Nested inside `node:24-alpine`
+          // it failed with "docker: not found" -- the tool was being asked to launch a
+          // container from inside a container that has no client.
           steps {
             dir('06-app/theetiptop-contest') {
               // DevSecOps gate from CST C.2. A leaked secret is not caught by any test:
               // the build is green and the credential is public.
+              // The report is written to the repository ROOT, then moved. `reports/` is
+              // generated and absent from a fresh clone, and gitleaks refuses to create
+              // the directory: it fails with "Report path is not writable", which reads
+              // like a permission problem and is a missing folder.
+              //
+              // `|| true` on the scan itself, then an explicit check: gitleaks exits
+              // non-zero both when it finds a secret and when it cannot write its report,
+              // and those two deserve different reactions.
               sh '''
                 docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest \
                   detect --source=/repo --no-banner --redact \
-                  --report-format=sarif --report-path=/repo/reports/gitleaks.sarif
+                  --report-format=sarif --report-path=/repo/gitleaks.sarif || SCAN_FAILED=1
+
+                mkdir -p reports
+                [ -f gitleaks.sarif ] && mv gitleaks.sarif reports/gitleaks.sarif
+
+                if [ "${SCAN_FAILED:-0}" = "1" ]; then
+                  echo "gitleaks a signalé au moins un secret. Rapport : reports/gitleaks.sarif"
+                  exit 1
+                fi
               '''
             }
           }
@@ -134,17 +202,44 @@ pipeline {
     }
 
     stage('Integration tests') {
-      agent { label 'docker' }
       steps {
         dir('06-app/theetiptop-contest') {
           // Against a real PostgreSQL and a real Redis, thrown away afterwards. The
           // concurrency guarantee on playing a code lives in an `UPDATE ... WHERE` and in a
-          // unique index — a mocked client would prove nothing about either.
+          // unique index, a mocked client would prove nothing about either.
+          //
+          // The 500 000 codes are generated here, on every build, and that is the point
+          // rather than an expense: `code-distribution.integration.spec.ts` recounts the
+          // 60/20/10/6/4 % split IN THE DATABASE. Seeding a handful of codes instead
+          // would leave the one guarantee the filed rules rest on untested. It costs
+          // about 90 seconds on this machine.
+          // Written as explicit `docker run` rather than a stage-level Docker agent,
+          // because this stage needs two things at once: the Docker CLI to bring the
+          // throw-away database up, and Node to run the migrations and the suite. The
+          // agent has the first, the node image has the second.
+          //
+          // The Node container joins the compose project's own network, so it reaches
+          // PostgreSQL and Redis by service name. The alternative, publishing ports to
+          // the host, would make two concurrent builds fight over them.
+          //
+          // `--volumes-from "$(hostname)"` and NOT `-v "$PWD:/w"`. The agent is itself a
+          // container, and the daemon it talks to is the host's: a bind mount resolves
+          // its source on the HOST, where the agent's workspace path does not exist. The
+          // mount silently succeeds and the container finds an empty directory, so the
+          // first command fails on a missing package.json that is plainly there.
+          // Inheriting the agent's volumes is how the Docker Pipeline plugin does it for
+          // the stages above.
           sh '''
             docker compose -f ../../05-workflow/docker/compose.ci.yml -p ci-$BUILD_NUMBER up -d --wait
-            npm run db:deploy
-            npm run db:seed
-            npm run test:integration
+
+            docker run --rm \
+              --network ci-${BUILD_NUMBER}_default \
+              --volumes-from "$(hostname)" -w "$PWD" \
+              -v nx-cache:/cache -v npm-cache:/root/.npm \
+              -e DATABASE_URL="postgresql://theetiptop:theetiptop@postgres:5432/theetiptop_ci?schema=public" \
+              -e REDIS_URL="redis://redis:6379" \
+              furious-ducks/node-ci:1 \
+              sh -c 'npm run db:deploy && npm run db:seed && npm run codes:generate && npm run test:integration'
           '''
         }
       }
@@ -161,11 +256,10 @@ pipeline {
       // Nothing is published from a feature branch: an image nobody will deploy still costs
       // registry storage and a vulnerability scan.
       when { anyOf { branch 'develop'; branch pattern: 'release/.*', comparator: 'REGEXP'; buildingTag() } }
-      agent { label 'docker' }
       steps {
         dir('06-app/theetiptop-contest') {
           script {
-            // Asset optimisation — requirement 4a — happens inside these builds: Next.js
+            // Asset optimisation, requirement 4a, happens inside these builds: Next.js
             // minifies, tree-shakes and fingerprints its output during `next build`, and
             // the API bundle is minified by webpack. Doing it again in a separate stage
             // would be a second, divergent implementation of the same thing.
@@ -175,7 +269,29 @@ pipeline {
             // built with the preprod URL calls preprod whatever the production compose
             // says. See 05-workflow/docker/README.md.
             def envName = env.TAG_NAME ? 'prod' : (env.BRANCH_NAME == 'develop' ? 'dev' : 'preprod')
-            def host = envName == 'prod' ? 'dsp5-archi-o25a-15m-g1.fr' : "${envName}.dsp5-archi-o25a-15m-g1.fr"
+
+            // Production is addressed by its hostname. The other two are not published,
+            // one hostname resolves on this host, so they are addressed on the loopback,
+            // on the ports compose.norouting.yml binds there.
+            //
+            // The URL baked in has to be the one the BROWSER will really use, since it
+            // cannot be changed at run time. Baking `https://api.dev.…` into an environment
+            // where that name does not resolve gave a front end that renders and whose every
+            // client-side call fails, and a functional suite with nothing to sign in to.
+            //
+            // One host for the three applications is also what makes the session work: the
+            // cookie the API sets on `127.0.0.1` is sent back by the site, because a cookie
+            // is scoped by host and ignores the port.
+            def apiUrl = [
+              prod: 'https://api.dsp5-archi-o25a-15m-g3.fr',
+              dev: 'http://127.0.0.1:3133',
+              preprod: 'http://127.0.0.1:3233',
+            ][envName]
+            def siteUrl = [
+              prod: 'https://dsp5-archi-o25a-15m-g3.fr',
+              dev: 'http://127.0.0.1:3100',
+              preprod: 'http://127.0.0.1:3200',
+            ][envName]
 
             sh """
               docker build -f ../../05-workflow/docker/Dockerfile.api \
@@ -187,12 +303,12 @@ pipeline {
                 -t \$REGISTRY/\$IMAGE_NAMESPACE/migrate:\$TAG .
 
               docker build -f ../../05-workflow/docker/Dockerfile.web \
-                --build-arg NEXT_PUBLIC_API_URL=https://api.${host} \
-                --build-arg NEXT_PUBLIC_SITE_URL=https://${host} \
+                --build-arg NEXT_PUBLIC_API_URL=${apiUrl} \
+                --build-arg NEXT_PUBLIC_SITE_URL=${siteUrl} \
                 -t \$REGISTRY/\$IMAGE_NAMESPACE/web:\$TAG-${envName} .
 
               docker build -f ../../05-workflow/docker/Dockerfile.admin \
-                --build-arg NEXT_PUBLIC_API_URL=https://api.${host} \
+                --build-arg NEXT_PUBLIC_API_URL=${apiUrl} \
                 -t \$REGISTRY/\$IMAGE_NAMESPACE/admin:\$TAG-${envName} .
             """
             env.DEPLOY_ENV = envName
@@ -203,7 +319,6 @@ pipeline {
 
     stage('Scan images') {
       when { anyOf { branch 'develop'; branch pattern: 'release/.*', comparator: 'REGEXP'; buildingTag() } }
-      agent { label 'docker' }
       steps {
         // Before publication, not after: an image in the registry is an image somebody can
         // deploy. HIGH and CRITICAL fail the build; everything else is reported.
@@ -221,7 +336,6 @@ pipeline {
 
     stage('Push to registry') {
       when { anyOf { branch 'develop'; branch pattern: 'release/.*', comparator: 'REGEXP'; buildingTag() } }
-      agent { label 'docker' }
       steps {
         // Requirement 4c: the CI stores the images it builds. Self-hosted registry, so the
         // artefacts stay under the agency's control.
@@ -242,40 +356,118 @@ pipeline {
 
     stage('Deploy to dev') {
       when { branch 'develop' }
-      agent { label 'docker' }
       steps {
         // Requirement 4b, fully automatic. A merge into develop is in dev minutes later,
         // which is what makes the environment worth looking at.
-        sh './05-workflow/jenkins/scripts/deploy.sh dev "$TAG"'
+        // The registry needs credentials to pull, and the push stage logged out.
+        withCredentials([usernamePassword(credentialsId: 'registry-credentials',
+                                          usernameVariable: 'REGISTRY_USER',
+                                          passwordVariable: 'REGISTRY_PASSWORD')]) {
+          sh './05-workflow/jenkins/scripts/deploy.sh dev "$TAG"'
+        }
+      }
+    }
+
+    stage('Seed and warm up dev') {
+      when { branch 'develop' }
+      steps {
+        dir('06-app/theetiptop-contest') {
+          // A migrated database is an empty one. The functional suite signs in as the demo
+          // customer and plays a code out of the pool, so both have to exist before it runs
+          //, and `deploy.sh` deliberately does not seed, because the same script deploys
+          // production and seeding production would overwrite live data.
+          //
+          // Both commands are safe to re-run, which matters: this runs on every merge into
+          // develop, not once. The seed is a series of upserts keyed on natural keys, and
+          // `--if-empty` makes the generator leave a pool that is already there alone
+          // instead of refusing to run. See prisma/generate-codes.ts.
+          //
+          // `--network host`, so the loopback addresses in the env file below resolve to
+          // the ports compose.norouting.yml publishes for dev.
+          sh '''
+            docker run --rm --network host \
+              --volumes-from "$(hostname)" -w "$PWD" \
+              -v nx-cache:/cache -v npm-cache:/root/.npm \
+              --env-file /etc/theetiptop/env/.env.dev-host \
+              furious-ducks/node-ci:1 \
+              sh -c 'npm run db:seed && npm run codes:generate -- --if-empty'
+          '''
+
+          // Warm the deployment before measuring it. See tools/warm-up.mjs for why,
+          // and for the trap: this has to run inside a container on the HOST network,
+          // because the addresses are the host's loopback and a Jenkins agent is itself
+          // a container with a loopback of its own.
+          sh '''
+            docker run --rm --network host \
+              --volumes-from "$(hostname)" -w "$PWD" \
+              furious-ducks/node-ci:1 \
+              node tools/warm-up.mjs http://127.0.0.1:3100 http://127.0.0.1:3101
+          '''
+        }
       }
     }
 
     stage('Functional tests on dev') {
       when { branch 'develop' }
-      agent {
-        docker {
-          image 'mcr.microsoft.com/playwright:v1.65.0-noble'
-          args '-v npm-cache:/root/.npm'
-          reuseNode true
-        }
-      }
       steps {
         dir('06-app/theetiptop-contest') {
           // Against the DEPLOYED environment, not a local dev server. These tests exist to
           // prove the artefact that was just published actually works where it was put;
           // running them against `next dev` would test something nobody deploys.
-          sh 'npx playwright test --reporter=junit'
+          //
+          // The three E2E_* variables are what switch playwright.config.ts off its
+          // `webServer` block. Without them the suite starts three servers of its own from
+          // the checkout and tests those, a different binary from the one just deployed,
+          // which is the one thing this stage exists to check.
+          //
+          // The env file carries DATABASE_URL and REDIS_URL on the loopback, for the
+          // fixtures: they take an untouched code out of the pool before a test and put it
+          // back after, and clear the suite's own rate-limit counters so the third run of
+          // the morning is not refused. It is passed as a FILE rather than as `-e KEY=value`
+          // so the database password does not end up in the build log, which Jenkins writes
+          // with `set -x`.
+          //
+          // Explicit `docker run` rather than a stage-level Docker agent: the earlier shape
+          // reported `tests=0` and a bare exit 1, because the container's working directory
+          // was the workspace root and `testDir: './e2e'` resolved to a path that does not
+          // exist there. Nothing in the log said so.
+          //
+          // No `--reporter=junit` either. The flag REPLACES the reporter list in
+          // playwright.config.ts, which writes the JUnit file to reports/junit/ for the
+          // `junit` step in the post block and the HTML report next to it. With the flag the
+          // XML went to the console and the post block collected nothing.
+          //
+          // `--ipc=host` is what Playwright's own Docker guidance asks for. Chromium puts
+          // its shared buffers in /dev/shm, which Docker sizes at 64 MB by default, and a
+          // tab that outgrows it dies with a crash the test reports as a navigation
+          // timeout -- intermittently, on whichever spec happens to be heaviest.
+          sh '''
+            docker run --rm --network host --ipc=host \
+              --volumes-from "$(hostname)" -w "$PWD" \
+              -v npm-cache:/root/.npm \
+              --env-file /etc/theetiptop/env/.env.dev-host \
+              -e CI=1 \
+              -e E2E_SITE_URL=http://127.0.0.1:3100 \
+              -e E2E_ADMIN_URL=http://127.0.0.1:3101 \
+              -e E2E_API_URL=http://127.0.0.1:3133 \
+              mcr.microsoft.com/playwright:v1.65.0-noble \
+              npx playwright test
+          '''
         }
       }
     }
 
     stage('Deploy to preprod') {
       when { branch pattern: 'release/.*', comparator: 'REGEXP' }
-      agent { label 'docker' }
       steps {
         // Requirement 4d. Automatic, because preprod exists to be looked at by the client
         // during the sprint review, and a manual step would make it stale.
-        sh './05-workflow/jenkins/scripts/deploy.sh preprod "$TAG"'
+        // The registry needs credentials to pull, and the push stage logged out.
+        withCredentials([usernamePassword(credentialsId: 'registry-credentials',
+                                          usernameVariable: 'REGISTRY_USER',
+                                          passwordVariable: 'REGISTRY_PASSWORD')]) {
+          sh './05-workflow/jenkins/scripts/deploy.sh preprod "$TAG"'
+        }
       }
     }
 
@@ -284,7 +476,7 @@ pipeline {
       agent none
       steps {
         // Requirement 4e leaves the level of automation to us, and this is the line we
-        // drew — justified in CST D.1, "Pourquoi la production n'est pas entièrement
+        // drew, justified in CST D.1, "Pourquoi la production n'est pas entièrement
         // automatique". The contest runs for 30 days on codes already printed on receipts
         // in customers' pockets. A bad deployment is not rolled back by a fix: the codes
         // are out there. Everything up to production is automatic; crossing into it is a
@@ -297,35 +489,39 @@ pipeline {
 
     stage('Deploy to production') {
       when { buildingTag() }
-      agent { label 'docker' }
       steps {
-        sh './05-workflow/jenkins/scripts/deploy.sh prod "$TAG"'
+        // The registry needs credentials to pull, and the push stage logged out.
+        withCredentials([usernamePassword(credentialsId: 'registry-credentials',
+                                          usernameVariable: 'REGISTRY_USER',
+                                          passwordVariable: 'REGISTRY_PASSWORD')]) {
+          sh './05-workflow/jenkins/scripts/deploy.sh prod "$TAG"'
+        }
       }
     }
   }
 
   post {
     always {
-      node('docker') {
-        unstash 'source'
-        dir('06-app/theetiptop-contest') {
-          // Requirement 4g: send and store the test reports. JUnit for the trend graph
-          // Jenkins builds over time, archive for the run-by-run evidence the brief asks
-          // the agency to keep.
-          junit allowEmptyResults: true, testResults: 'reports/junit/*.xml'
-          archiveArtifacts artifacts: 'reports/**/*', allowEmptyArchive: true, fingerprint: true
-          publishHTML(target: [
-            reportDir: 'playwright-report', reportFiles: 'index.html',
-            reportName: 'Playwright', allowMissing: true, keepAll: true, alwaysLinkToLastBuild: true
-          ])
-        }
+      dir('06-app/theetiptop-contest') {
+        // Requirement 4g: send and store the test reports. JUnit for the trend graph
+        // Jenkins builds over time, archive for the run-by-run evidence the brief asks
+        // the agency to keep.
+        junit allowEmptyResults: true, testResults: 'reports/junit/*.xml'
+        archiveArtifacts artifacts: 'reports/**/*', allowEmptyArchive: true, fingerprint: true
+        // `reports/playwright`, which is the `outputFolder` in playwright.config.ts, not
+        // Playwright's own default of `playwright-report`. Pointing at the default left the
+        // link in the sidebar empty on every build.
+        publishHTML(target: [
+          reportDir: 'reports/playwright', reportFiles: 'index.html',
+          reportName: 'Playwright', allowMissing: true, keepAll: true, alwaysLinkToLastBuild: true
+        ])
       }
     }
     failure {
       // Only on failure, and only to the people who can act on it. A pipeline that notifies
       // on every success trains everyone to filter it out, including the failures.
       emailext(
-        subject: "Build KO — ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+        subject: "Build KO, ${env.JOB_NAME} #${env.BUILD_NUMBER}",
         body: '''${SCRIPT, template="groovy-html.template"}''',
         mimeType: 'text/html',
         recipientProviders: [developers(), requestor()]

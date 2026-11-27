@@ -14,7 +14,7 @@ export type DrawActionResult =
  * The decision itself is entirely server-side, in the API: the pool is
  * `SELECT DISTINCT userId`, the seed comes from the OS CSPRNG, and the winner is picked
  * there. This action only triggers it and relays the refusal reasons, which are what the
- * screen needs in order to explain itself — `CONTEST_NOT_CLOSED` and `ALREADY_DRAWN` are
+ * screen needs in order to explain itself, `CONTEST_NOT_CLOSED` and `ALREADY_DRAWN` are
  * both 409 and need very different copy.
  */
 export async function executeDrawAction(): Promise<DrawActionResult> {

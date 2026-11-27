@@ -14,7 +14,7 @@ import { UnauthorizedException } from '../exceptions/domain.exception.js';
  *
  * Registered globally in `AppModule`: authentication is the default, and every public
  * route carries an explicit `@Public()`. Endpoints reserved for the tills carry
- * `@ApiKeyConsumerOnly()` and are handled by `ApiKeyGuard` instead — this guard steps
+ * `@ApiKeyConsumerOnly()` and are handled by `ApiKeyGuard` instead, this guard steps
  * aside for them rather than demanding a session a till will never have.
  */
 @Injectable()

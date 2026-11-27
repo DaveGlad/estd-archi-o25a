@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1248" height="1120" viewBox="0 0 1248 1120" font-family="Helvetica, Arial, sans-serif">
+<rect width="1248" height="1120" fill="#ffffff"/>
+<text x="16" y="30" font-size="17" font-weight="600" fill="#1b2733">Figure 3. Déploiement en développement, entièrement automatique</text>
+<text x="16" y="52" font-size="11" fill="#5a6b7d">Le tag de l&#x27;image reprend le hash du commit, donc on sait à tout instant quelle version exacte tourne. Le retour arrière sur échec de la sonde est automatique.</text>
+<rect x="8" y="72" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="72" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="153.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 153.0)">Développeur</text>
+<rect x="8" y="234" width="1224" height="162" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="234" width="34" height="162" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="315.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 315.0)">Gitea</text>
+<rect x="8" y="396" width="1224" height="382" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="396" width="34" height="382" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="587.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 587.0)">Jenkins</text>
+<rect x="8" y="778" width="1224" height="272" fill="none" stroke="#8fa3b8"/>
+<rect x="8" y="778" width="34" height="272" fill="#f2f5f8" stroke="#8fa3b8"/>
+<text x="25.0" y="914.0" font-size="12" font-weight="600" fill="#1b2733" text-anchor="middle" transform="rotate(-90 25.0 914.0)">Environnement dev</text>
+<path d="M 166.0 129.0 L 284.0 129.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 369.0 160.0 L 369.0 186.0 L 599.0 186.0 L 599.0 260.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 291.0 L 744.0 291.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 829.0 322.0 L 829.0 348.0 L 139.0 348.0 L 139.0 422.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 453.0 L 284.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 453.0 L 514.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 453.0 L 744.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 914.0 453.0 L 1016.0 453.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 496.0 L 1059.0 646.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 496.0 L 1059.0 535.0 L 139.0 535.0 L 139.0 532.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 563.0 L 326.0 563.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 369.0 606.0 L 369.0 632.0 L 1059.0 632.0 L 1059.0 646.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 412.0 563.0 L 514.0 563.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 563.0 L 786.0 563.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 829.0 606.0 L 829.0 632.0 L 1059.0 632.0 L 1059.0 646.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 872.0 563.0 L 974.0 563.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 594.0 L 1059.0 620.0 L 139.0 620.0 L 139.0 642.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 673.0 L 284.0 673.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 673.0 L 556.0 673.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 599.0 716.0 L 599.0 746.0 L 1059.0 746.0 L 1059.0 646.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 642.0 673.0 L 744.0 673.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 829.0 704.0 L 829.0 730.0 L 139.0 730.0 L 139.0 804.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 835.0 L 284.0 835.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 454.0 835.0 L 514.0 835.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 835.0 L 744.0 835.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 914.0 835.0 L 1016.0 835.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 878.0 L 1059.0 918.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 1059.0 878.0 L 1059.0 917.0 L 139.0 917.0 L 139.0 914.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 224.0 945.0 L 326.0 945.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 326.0 945.0 L 296.0 945.0 L 296.0 673.0 L 1032.0 673.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 412.0 945.0 L 514.0 945.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<path d="M 684.0 945.0 L 802.0 945.0" fill="none" stroke="#5a6b7d" stroke-width="1.4" marker-end="url(#a)"/>
+<circle cx="139.0" cy="129.0" r="27.0" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="174.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Merge request</text>
+<text x="139.0" y="187.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">approuvée</text>
+<rect x="284.0" y="98.0" width="170" height="62" rx="8" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="369.0" y="133.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Merge sur develop</text>
+<rect x="514.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="295.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Enregistrer le commit</text>
+<rect x="744.0" y="260.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="295.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Émettre le webhook</text>
+<rect x="54.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="450.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Démarrer un agent</text>
+<text x="139.0" y="463.5" font-size="10.5" fill="#1b2733" text-anchor="middle">conteneurisé</text>
+<rect x="284.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="450.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Checkout du code</text>
+<text x="369.0" y="463.5" font-size="10.5" fill="#1b2733" text-anchor="middle">et du Jenkinsfile</text>
+<rect x="514.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="450.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Installer les dépendances</text>
+<text x="599.0" y="463.5" font-size="10.5" fill="#1b2733" text-anchor="middle">cache monté en volume</text>
+<rect x="744.0" y="422.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="450.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Analyse statique</text>
+<text x="829.0" y="463.5" font-size="10.5" fill="#1b2733" text-anchor="middle">détection de secrets</text>
+<polygon points="1059.0,410.0 1102.0,453.0 1059.0,496.0 1016.0,453.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 1046.0 440.0 L 1072.0 466.0 M 1072.0 440.0 L 1046.0 466.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="1110.0" y="450.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Analyse</text>
+<text x="1110.0" y="463.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">conforme ?</text>
+<rect x="54.0" y="532.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="567.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Tests unitaires</text>
+<polygon points="369.0,520.0 412.0,563.0 369.0,606.0 326.0,563.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 356.0 550.0 L 382.0 576.0 M 382.0 550.0 L 356.0 576.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="420.0" y="567.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Tests OK ?</text>
+<rect x="514.0" y="532.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="567.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Tests d&#x27;intégration</text>
+<polygon points="829.0,520.0 872.0,563.0 829.0,606.0 786.0,563.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 816.0 550.0 L 842.0 576.0 M 842.0 550.0 L 816.0 576.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="880.0" y="567.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Tests OK ?</text>
+<rect x="974.0" y="532.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="1059.0" y="560.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Build applicatif</text>
+<text x="1059.0" y="573.5" font-size="10.5" fill="#1b2733" text-anchor="middle">minification des assets</text>
+<rect x="54.0" y="642.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="670.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Construire l&#x27;image</text>
+<text x="139.0" y="683.5" font-size="10.5" fill="#1b2733" text-anchor="middle">tag = hash du commit</text>
+<rect x="284.0" y="642.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="677.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Scanner l&#x27;image</text>
+<polygon points="599.0,630.0 642.0,673.0 599.0,716.0 556.0,673.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 586.0 660.0 L 612.0 686.0 M 612.0 660.0 L 586.0 686.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="650.0" y="670.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Vulnérabilité</text>
+<text x="650.0" y="683.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">critique ?</text>
+<rect x="744.0" y="642.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="670.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Publier l&#x27;image</text>
+<text x="829.0" y="683.5" font-size="10.5" fill="#1b2733" text-anchor="middle">au registry</text>
+<circle cx="1059.0" cy="673.0" r="27.0" fill="#fdecea" stroke="#a6342a" stroke-width="3.5"/>
+<text x="1059.0" y="718.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Build rouge</text>
+<text x="1059.0" y="731.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">notification équipe</text>
+<rect x="54.0" y="804.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="832.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Récupérer l&#x27;image</text>
+<text x="139.0" y="845.5" font-size="10.5" fill="#1b2733" text-anchor="middle">depuis le registry</text>
+<rect x="284.0" y="804.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="369.0" y="839.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Appliquer les migrations</text>
+<rect x="514.0" y="804.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="839.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Redémarrer les conteneurs</text>
+<rect x="744.0" y="804.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="829.0" y="839.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Sonde de santé</text>
+<polygon points="1059.0,792.0 1102.0,835.0 1059.0,878.0 1016.0,835.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 1046.0 822.0 L 1072.0 848.0 M 1072.0 822.0 L 1046.0 848.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="1110.0" y="832.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Service</text>
+<text x="1110.0" y="845.5" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">disponible ?</text>
+<rect x="54.0" y="914.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="139.0" y="949.0" font-size="10.5" fill="#1b2733" text-anchor="middle">Tests fonctionnels E2E</text>
+<polygon points="369.0,902.0 412.0,945.0 369.0,988.0 326.0,945.0" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<path d="M 356.0 932.0 L 382.0 958.0 M 382.0 932.0 L 356.0 958.0" stroke="#9a6a17" stroke-width="2" fill="none"/>
+<text x="420.0" y="949.0" font-size="10.5" fill="#1b2733" text-anchor="start" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">E2E OK ?</text>
+<rect x="514.0" y="914.0" width="170" height="62" rx="8" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="599.0" y="942.5" font-size="10.5" fill="#1b2733" text-anchor="middle">Publier et archiver</text>
+<text x="599.0" y="955.5" font-size="10.5" fill="#1b2733" text-anchor="middle">les rapports</text>
+<circle cx="829.0" cy="945.0" r="27.0" fill="#ffffff" stroke="#2f5d8c" stroke-width="3.5"/>
+<text x="829.0" y="990.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Déploiement dev réussi</text>
+<text x="829.0" y="1003.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">notification</text>
+<circle cx="1059.0" cy="945.0" r="27.0" fill="#fdecea" stroke="#a6342a" stroke-width="3.5"/>
+<text x="1059.0" y="990.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">Retour à l&#x27;image</text>
+<text x="1059.0" y="1003.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">précédente,</text>
+<text x="1059.0" y="1016.0" font-size="10.5" fill="#1b2733" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="5.5">notification</text>
+<text x="1067.0" y="607.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="635.8" y="529.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="576.0" y="626.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="463.0" y="543.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="898.0" y="626.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="923.0" y="543.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="737.0" y="740.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="693.0" y="653.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="1067.0" y="898.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="635.8" y="911.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<text x="312.0" y="938.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Non</text>
+<text x="463.0" y="925.0" font-size="10" fill="#43525f" text-anchor="middle" paint-order="stroke" stroke="#ffffff" stroke-width="3.5">Oui</text>
+<circle cx="24" cy="1076" r="8" fill="#ffffff" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="40" y="1080" font-size="10" fill="#43525f">Événement de début</text>
+<rect x="146.8" y="1069" width="18" height="14" rx="3" fill="#eef4fb" stroke="#2f5d8c" stroke-width="1.8"/>
+<text x="170.8" y="1080" font-size="10" fill="#43525f">Tâche</text>
+<rect x="204.8" y="1069" width="18" height="14" rx="3" fill="#eaf3ee" stroke="#2f6d4f" stroke-width="1.8"/>
+<text x="228.8" y="1080" font-size="10" fill="#43525f">Tâche automatique</text>
+<rect x="330.0" y="1069" width="18" height="14" rx="3" fill="#fdf3e3" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="354.0" y="1080" font-size="10" fill="#43525f">Tâche humaine</text>
+<polygon points="440.8,1068 448.8,1076 440.8,1084 432.8,1076" fill="#fffbe9" stroke="#9a6a17" stroke-width="1.8"/>
+<text x="456.8" y="1080" font-size="10" fill="#43525f">Passerelle exclusive</text>
+<rect x="574.8" y="1069" width="18" height="14" rx="3" fill="#f1eef8" stroke="#59438f" stroke-width="3.5"/>
+<text x="598.8" y="1080" font-size="10" fill="#43525f">Appel de sous-processus</text>
+<circle cx="741.5999999999999" cy="1076" r="8" fill="#ffffff" stroke="#2f5d8c" stroke-width="3"/>
+<text x="757.5999999999999" y="1080" font-size="10" fill="#43525f">Événement de fin</text>
+<circle cx="861.1999999999999" cy="1076" r="8" fill="#fdecea" stroke="#a6342a" stroke-width="3"/>
+<text x="877.1999999999999" y="1080" font-size="10" fill="#43525f">Fin sur erreur</text>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5a6b7d"/></marker></defs>
+</svg>

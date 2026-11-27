@@ -10,8 +10,8 @@
  *
  * Exits non-zero on any discrepancy, so the Jenkins pipeline fails the build rather than
  * deploying a contest whose split does not match the filed rules. The same assertions are
- * run as a Vitest integration test; this entry point exists so an operator — or the
- * bailiff — can run the check without the test harness.
+ * run as a Vitest integration test; this entry point exists so an operator, or the
+ * bailiff, can run the check without the test harness.
  */
 
 import { createHash } from 'node:crypto';
@@ -80,21 +80,21 @@ async function main(): Promise<void> {
     }
 
     const actual = countByPrizeId.get(prize.id) ?? 0;
-    check(`${spec.key} — count`, spec.quantity, actual);
+    check(`${spec.key}, count`, spec.quantity, actual);
 
     // The percentage is recomputed from the actual count rather than trusted: the whole
     // point of the check is that the stored target and the reality might disagree.
     const actualPercentage = total > 0 ? ((actual / total) * 100).toFixed(2) : '0.00';
-    check(`${spec.key} — share`, `${spec.percentage.toFixed(2)} %`, `${actualPercentage} %`);
+    check(`${spec.key}, share`, `${spec.percentage.toFixed(2)} %`, `${actualPercentage} %`);
   }
 
   // --- 3. The grand prize is attached to no code ------------------------------
   const grandPrize = contest.prizes.find((prize) => prize.type === 'GRAND_PRIZE');
   const grandPrizeCodes = grandPrize ? (countByPrizeId.get(grandPrize.id) ?? 0) : 0;
-  check('grand prize — codes attached', 0, grandPrizeCodes);
+  check('grand prize, codes attached', 0, grandPrizeCodes);
 
   // --- 4. Uniqueness ----------------------------------------------------------
-  // Enforced by a unique index, so a mismatch would mean the index is gone — which is
+  // Enforced by a unique index, so a mismatch would mean the index is gone, which is
   // exactly the kind of thing a migration can do by accident.
   const distinct = await prisma.ticketCode.findMany({
     where: { contestId: contest.id },
@@ -125,7 +125,7 @@ async function main(): Promise<void> {
     results.push({
       label: 'pool fingerprint',
       expected: 'recorded at generation',
-      actual: 'absent — pool generated before this check existed',
+      actual: 'absent, pool generated before this check existed',
       passed: false,
     });
   }
@@ -142,7 +142,7 @@ async function main(): Promise<void> {
 
   // --- Report -----------------------------------------------------------------
   const width = Math.max(...results.map((result) => result.label.length));
-  console.log(`Conformity of the code pool — contest "${contest.name}"\n`);
+  console.log(`Conformity of the code pool, contest "${contest.name}"\n`);
 
   for (const result of results) {
     const status = result.passed ? '✓' : '✗';

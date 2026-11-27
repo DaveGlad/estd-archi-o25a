@@ -28,7 +28,7 @@ npm run codes:verify       # contrôle de la répartition 60/20/10/6/4 %
 npm run db:seed:demo       # ~3 s : 1 200 clients, 2 000 participations
 
 # 5. Les trois applications, dans trois terminaux
-npm run dev:api            # http://localhost:3333  — Swagger sur /docs
+npm run dev:api            # http://localhost:3333, Swagger sur /docs
 npm run dev:web            # http://localhost:3000
 npm run dev:admin          # http://localhost:3001
 ```
@@ -68,7 +68,7 @@ tools/        Outillage de build
 | | Raison |
 |---|---|
 | `api` séparée des fronts | Elle sert **trois consommateurs**, dont deux que nous n'écrivons pas : les caisses des 10 boutiques et le futur site e-commerce. D'où une API REST versionnée et documentée, et non un back-end privé |
-| `admin` séparée de `web` | Le site public est la surface exposée — indexée, ouverte aux anonymes ; le back-office ne l'est pas. Séparées, les écrans d'administration ne sont même pas joignables sur l'hôte public, et les deux se déploient avec des règles d'entrée distinctes |
+| `admin` séparée de `web` | Le site public est la surface exposée, indexée, ouverte aux anonymes ; le back-office ne l'est pas. Séparées, les écrans d'administration ne sont même pas joignables sur l'hôte public, et les deux se déploient avec des règles d'entrée distinctes |
 
 ## Les commandes
 
@@ -126,10 +126,26 @@ Les trois tests qui portent réellement les exigences du sujet :
 | Comment l'image de l'API est passée de 1,46 Go à 471 Mo | `05-workflow/docker/README.md` et `tools/pin-runtime-deps.mjs` |
 | Pourquoi `COOKIE_DOMAIN` est vide en local et obligatoire en production | `apps/api/src/config/env.ts` |
 
+## Une dépendance forcée
+
+`package.json` contient un `overrides` sur **sharp**, et il mérite une explication parce
+qu'un `overrides` sans justification est une dette silencieuse.
+
+Next tire `sharp` pour l'optimisation d'images et l'épingle en `^0.34.5`. Trivy signale
+trois vulnérabilités **HIGH** sur cette ligne, corrigées en 0.35.5. Un `overrides` est le
+seul moyen de relever une dépendance transitive sans attendre que le parent bouge. À
+retirer le jour où Next remonte de lui-même.
+
+> **Aucun pseudo-commentaire dans ce bloc.** npm valide chaque clé de `overrides`
+> comme un nom de paquet. Une clé `_comment` fait échouer le chargement de l'arbre
+> virtuel, et npm rapporte alors « can only install with an existing package-lock.json »,
+> un message qui désigne le verrou alors que le verrou est intact. Un build a été perdu
+> là-dessus.
+
 ## Conventions
 
-- **Commentaires de code en anglais.** La prose du projet — dossiers, README, textes
-  affichés à l'utilisateur — reste en français.
+- **Commentaires de code en anglais.** La prose du projet, dossiers, README, textes
+  affichés à l'utilisateur, reste en français.
 - **TypeScript partout**, y compris les fichiers de configuration : `prisma.config.ts`,
   `next.config.ts`, `playwright.config.ts`, `vitest.config.mts`.
 - **`.env` jamais versionné**, jamais embarqué dans une image Docker. Les secrets sont

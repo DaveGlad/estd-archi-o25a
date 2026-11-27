@@ -1,16 +1,16 @@
 # Checklist des rendus et du nommage
 
-> ⚠️ Le nommage est noté. `{classe}` = numéro de classe, `{n}` = numéro du groupe Teams.
+> Le nommage est noté. `{classe}` = numéro de classe, `{n}` = numéro du groupe Teams.
 > Convention : `ESTD ARCHI {classe} – G{n} – {Document}`. Attention au **tiret demi-cadratin « – »**, pas au trait d'union.
 
-## ⛔ Rendus dépassés, à traiter en urgence
+## Rendus dépassés, à traiter en urgence
 
 | Fichier attendu | Date initiale | Action |
 |---|---|---|
 | `ESTD ARCHI {classe} – G{n} – Compréhension projet.docx` (ou `.pdf`) | 26 mai 2026 | Rendre malgré le retard + prévenir le formateur |
 | `ESTD ARCHI {classe} – G{n} – Vérification avancée projet.docx` | 29 juin 2026 | Idem |
 
-## 📁 `2026-08-31/` : CDC et CST définitifs, avant 9h
+## `2026-08-31/` : CDC et CST définitifs, avant 9h
 
 **Obligatoire**
 - [ ] `ESTD ARCHI {classe} – G{n} – Cahier des charges.pdf`
@@ -23,7 +23,7 @@
 
 > Non rendu ⇒ **pas de soutenance**. Retard ⇒ pénalités.
 
-## 📁 `2026-11-16/` : site et workflow en ligne, avant 9h
+## `2026-11-16/` : site et workflow en ligne, avant 9h
 
 - [ ] `ESTD ARCHI {classe} – G{n} – Accès site internet et comptes divers.pdf` contenant :
   - [ ] URL du site en ligne
@@ -40,7 +40,7 @@
 - [ ] Copyright et mentions légales : **« projet étudiant fictif, aucun achat ni réservation réel »**
 - [ ] Site et workflow **maintenus en ligne au moins jusqu'au jury de validation**
 
-## 📁 `2026-12-14/` : archive projet, avant 9h
+## `2026-12-14/` : archive projet, avant 9h
 
 Archive `ESTD ARCHI {classe} – G{n} – Archive projet de fin d'année` contenant **obligatoirement** :
 
@@ -54,7 +54,7 @@ Archive `ESTD ARCHI {classe} – G{n} – Archive projet de fin d'année` conten
 - [ ] `ESTD ARCHI {classe} – G{n} – Accès site internet - workflow et comptes divers.pdf`
 - [ ] `ESTD ARCHI {classe} – G{n} – Accès organisation projet.pdf`
 
-## 🎤 Soutenance, semaine du 14 décembre
+## Soutenance, semaine du 14 décembre
 
 - [ ] Présentation de groupe **15-20 min**
 - [ ] Entretiens **individuels** ~15 min : chacun doit pouvoir justifier **l'intégralité** des deux dossiers

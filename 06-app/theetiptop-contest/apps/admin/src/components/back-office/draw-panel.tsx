@@ -178,7 +178,7 @@ export function DrawPanel({ initialDraw }: { initialDraw: DrawDto | null }) {
       </Button>
 
       {/* The button is not disabled before the closing date. The API refuses the draw and
-          explains why, which is better than a greyed-out control that gives no reason —
+          explains why, which is better than a greyed-out control that gives no reason,
           and it means the front end holds no copy of a rule the API already owns. */}
     </div>
   );

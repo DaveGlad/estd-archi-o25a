@@ -5,7 +5,7 @@ import { defineConfig, devices } from '@playwright/test';
  * next to unit, integration and performance.
  *
  * These drive a real browser against the real public site, the real back office and the
- * real API — no mocking anywhere. That is the point: the three deploy separately and talk
+ * real API, no mocking anywhere. That is the point: the three deploy separately and talk
  * to each other over HTTP with a shared session cookie, and nothing short of a browser
  * exercises that path.
  *
@@ -27,7 +27,7 @@ export default defineConfig({
   timeout: 60_000,
   expect: { timeout: 10_000 },
 
-  // The suite mutates shared state — it plays codes out of the pool and hands prizes over.
+  // The suite mutates shared state, it plays codes out of the pool and hands prizes over.
   // Two workers racing on the same database would make each other's assertions
   // non-deterministic, which is the one thing a functional test must not be.
   workers: 1,
@@ -89,8 +89,14 @@ export default defineConfig({
    *
    * The pipeline therefore runs `nx run-many -t build` before this stage, and that build
    * is a cached Nx target the earlier stages already produced.
+   *
+   * None of this applies when `E2E_SITE_URL` is set, which is the case in the pipeline's
+   * "Functional tests on dev" stage: the variable means "test this already deployed
+   * environment", so there is nothing to start. Starting the three servers anyway would run
+   * the suite against a build made here instead of the images that were just deployed,
+   * which is the one thing that stage exists to check.
    */
-  webServer: [
+  webServer: process.env['E2E_SITE_URL'] ? undefined : [
     {
       command: 'npx nx serve @theetiptop-contest/api',
       url: `${API_URL}/health`,

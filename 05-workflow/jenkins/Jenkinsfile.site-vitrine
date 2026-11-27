@@ -1,4 +1,4 @@
-// Pipeline of the `demo-site-vitrine` repository — a plain HTML/CSS brochure site.
+// Pipeline of the `demo-site-vitrine` repository, a plain HTML/CSS brochure site.
 //
 // First of the three project shapes requirement n° 7 names: "Site vitrine HTML-CSS". It
 // exists to prove the workflow is generic rather than built around one project. A pipeline
@@ -10,7 +10,7 @@
 //   - a Nginx image serving static files, with no runtime to speak of
 //
 // What it does not need: database migrations, integration tests, a release train. Stages
-// are therefore absent rather than stubbed — an empty stage that always passes is a lie
+// are therefore absent rather than stubbed, an empty stage that always passes is a lie
 // told once per build.
 //
 // Copy this file to the root of the vitrine repository.
@@ -26,7 +26,7 @@ pipeline {
   }
 
   environment {
-    REGISTRY        = 'registry.wk-archi-o25a-15m-g1.fr'
+    REGISTRY        = 'registry.wk-archi-o25a-15m-g3.fr'
     IMAGE_NAMESPACE = 'demo'
     IMAGE_NAME      = 'site-vitrine'
     TAG             = "${env.GIT_COMMIT ?: 'dev'}".take(12)
@@ -123,7 +123,7 @@ pipeline {
       steps {
         unstash 'dist'
         // nginx:alpine serving `dist`, nothing else. No runtime, no dependencies, nothing
-        // to patch monthly — which is the right answer for a static site and the reason
+        // to patch monthly, which is the right answer for a static site and the reason
         // this shape deploys in seconds.
         sh 'docker build -t $REGISTRY/$IMAGE_NAMESPACE/$IMAGE_NAME:$TAG .'
       }

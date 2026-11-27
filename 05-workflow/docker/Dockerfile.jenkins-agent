@@ -1,0 +1,44 @@
+# Jenkins build agent, with the Docker CLI.
+#
+#   docker build -f Dockerfile.jenkins-agent -t furious-ducks/jenkins-agent:1 .
+#
+# The stock `jenkins/agent` image carries a JDK and the remoting jar, and nothing else.
+# That is enough for a pipeline whose steps are plain shell, and not enough for ours: every
+# quality gate runs inside `agent { docker { image 'node:24-alpine' } }`, which makes the
+# AGENT invoke `docker run`. Without the client the build fails with
+#
+#     script.sh.copy: 1: docker: not found
+#
+# and the stage trace blames the step rather than the image, so the first instinct is to
+# look at the Jenkinsfile.
+#
+# Only the CLIENT lives here. The daemon is the host's, reached through the socket that
+# compose mounts into the agent container. The agent is removed after every build, so
+# nothing it installs survives into the next one.
+
+FROM jenkins/agent:latest-jdk21
+
+USER root
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates curl gnupg \
+ && install -m 0755 -d /etc/apt/keyrings \
+ && curl -fsSL https://download.docker.com/linux/debian/gpg \
+      | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
+ && chmod a+r /etc/apt/keyrings/docker.gpg \
+ && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+      > /etc/apt/sources.list.d/docker.list \
+ && apt-get update \
+ # buildx too, not just the client. The pipeline sets DOCKER_BUILDKIT=1, and without
+ # the plugin every `docker build` stops on "BuildKit is enabled but the buildx
+ # component is missing or broken" -- which sounds like a broken daemon and is a
+ # missing package in this image.
+ && apt-get install -y --no-install-recommends docker-ce-cli docker-buildx-plugin docker-compose-plugin git \
+ && rm -rf /var/lib/apt/lists/*
+
+# Stays root. The agent has to read the mounted Docker socket, and the group that owns it
+# differs between hosts, so matching a gid in the image would break on the next machine.
+# The container is thrown away after each build and runs only code from the repository it
+# was provisioned for.
+USER root

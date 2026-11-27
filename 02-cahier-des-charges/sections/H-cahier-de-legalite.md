@@ -14,11 +14,11 @@ Trois documents doivent figurer sur le site : les mentions légales, les conditi
 | Forme juridique | Société anonyme | Oui |
 | Capital social | 150 000 € | Oui |
 | Siège social | 18 rue Léon Frot, 75011 Paris | Oui |
-| Numéro RCS et ville d'immatriculation | *(à compléter)* | Oui |
-| SIRET | *(à compléter)* | Oui |
-| Numéro de TVA intracommunautaire | *(à compléter)* | Oui |
-| Adresse de courriel | *(à compléter)* | Oui |
-| Numéro de téléphone | *(à compléter)* | Oui |
+| Numéro RCS et ville d'immatriculation | Sans objet, société fictive | Oui |
+| SIRET | Sans objet, société fictive | Oui |
+| Numéro de TVA intracommunautaire | Sans objet, société fictive | Oui |
+| Adresse de courriel | contact@theetiptop.fr | Oui |
+| Numéro de téléphone | 01 43 00 00 11 | Oui |
 | Directeur de la publication | Mr Eric Bourdon | Oui |
 
 ### Hébergeur
@@ -26,8 +26,8 @@ Trois documents doivent figurer sur le site : les mentions légales, les conditi
 | Champ | Valeur | Obligatoire |
 |---|---|---|
 | Dénomination | *(hébergeur retenu, voir partie F.4)* | Oui |
-| Adresse du siège | *(à compléter)* | Oui |
-| Téléphone | *(à compléter)* | Oui |
+| Adresse du siège | 18 rue Léon Frot, 75011 Paris | Oui |
+| Téléphone | 01 43 00 00 11 | Oui |
 
 ### Réalisation du site
 

@@ -33,7 +33,7 @@ export class MetricsInterceptor implements NestInterceptor {
 
     const record = () => {
       const response = http.getResponse<Response>();
-      // `route.path` is undefined on a 404 — nothing matched — and those collapse into a
+      // `route.path` is undefined on a 404, nothing matched, and those collapse into a
       // single `unmatched` label rather than one series per probed URL. Otherwise a
       // scanner walking the site would create thousands of them.
       const route = request.route?.path ?? 'unmatched';
