@@ -393,34 +393,15 @@ pipeline {
               sh -c 'npm run db:seed && npm run codes:generate -- --if-empty'
           '''
 
-          // Warm the deployment before measuring it.
-          //
-          // A functional assertion waits ten seconds. The first request to a route on a
-          // freshly started container is the slowest one it will ever serve: the Next
-          // server resolves the route, and the API behind it opens its first connection
-          // to a database that has just been seeded with half a million rows. Build 34
-          // failed on exactly that, and on nothing else: the stores page reported zero
-          // items to the test and ten items to anyone who looked a minute later.
-          //
-          // Loosening the assertion would have hidden it. Hitting each page once first
-          // costs a few seconds and measures the application rather than its cold start.
-          // It also fails here, with a clear message, rather than three stages later
-          // inside a browser.
+          // Warm the deployment before measuring it. See tools/warm-up.mjs for why,
+          // and for the trap: this has to run inside a container on the HOST network,
+          // because the addresses are the host's loopback and a Jenkins agent is itself
+          // a container with a loopback of its own.
           sh '''
-            for page in / /boutiques /jeu-concours /participer /connexion; do
-              printf 'warm-up %-16s ' "$page"
-              for attempt in $(seq 1 30); do
-                code=$(curl -s -o /dev/null -w '%{http_code}' -m 20 "http://127.0.0.1:3100$page" || echo 000)
-                [ "$code" = "200" ] && break
-                sleep 2
-              done
-              echo "$code"
-              [ "$code" = "200" ] || { echo "la page $page ne repond pas 200 apres 60 s"; exit 1; }
-            done
-
-            printf 'warm-up %-16s ' "back-office"
-            code=$(curl -s -o /dev/null -w '%{http_code}' -m 20 http://127.0.0.1:3101/connexion || echo 000)
-            echo "$code"
+            docker run --rm --network host \
+              --volumes-from "$(hostname)" -w "$PWD" \
+              furious-ducks/node-ci:1 \
+              node tools/warm-up.mjs http://127.0.0.1:3100 http://127.0.0.1:3101
           '''
         }
       }
