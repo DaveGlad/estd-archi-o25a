@@ -69,6 +69,41 @@ export function createAuth(prisma: PrismaService, config: AppConfig) {
 
     database: prismaAdapter(prisma, { provider: 'postgresql' }),
 
+    /**
+     * Brute-force protection, set deliberately rather than inherited.
+     *
+     * Better Auth turns its limiter on by default in production and allows **three**
+     * sign-in attempts before answering 429. That default was never chosen here, and it
+     * is wrong for this site in a way that only shows up with real users: a household, a
+     * school or an office sits behind one public address, so the third person to sign in
+     * that minute is refused, with a message that says nothing about why. On a contest
+     * open to 500 000 participants that is a support queue, not a security measure.
+     *
+     * It surfaced as two red functional tests. The suite signs in twenty-two times across
+     * its two browser projects, which run in parallel from one address, so it tripped the
+     * limiter and the tests timed out waiting for a navigation that never came. The tests
+     * were right: they reproduced, on a small scale, exactly what a shared connection does.
+     *
+     * Ten attempts a minute per address is the value retained. A password is twelve
+     * characters minimum over an alphabet of about seventy, so ten guesses a minute is not
+     * a path to anything, while leaving room for several people and for the person who
+     * mistypes twice and pastes from a password manager on the third try.
+     *
+     * The limiter is per ADDRESS, which is what protects the service. Protecting one
+     * ACCOUNT from a distributed attempt is a different control and belongs with the
+     * participation limiter in `ParticipationsService`, which counts per user.
+     */
+    rateLimit: {
+      enabled: true,
+      window: 60,
+      max: 100,
+      customRules: {
+        '/sign-in/email': { window: 60, max: 10 },
+        '/sign-up/email': { window: 60, max: 5 },
+        '/forget-password': { window: 300, max: 3 },
+      },
+    },
+
     emailAndPassword: {
       enabled: true,
       minPasswordLength: MIN_PASSWORD_LENGTH,
